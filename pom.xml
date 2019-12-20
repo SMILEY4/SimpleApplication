@@ -8,14 +8,17 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <main-class>de.ruegnerlukas.test.TestApplication</main-class>
+        <!--        <jdk-path>path/to/jdk/bin/java</jdk-path>-->
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
         <javafx.version>11</javafx.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <javafx-maven-plugin.version>0.0.1</javafx-maven-plugin.version>
-        <main-class>de.ruegnerlukas.simpleapplication.test.TestApplication</main-class>
-<!--        <jdk-path>path/to/jdk/bin/java</jdk-path>-->
+        <lombok.version>1.18.10</lombok.version>
+        <mapstruct-processor.version>1.3.0.Final</mapstruct-processor.version>
+        <reflections.version>0.9.11</reflections.version>
     </properties>
 
     <dependencies>
@@ -28,6 +31,22 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct-processor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${reflections.version}</version>
         </dependency>
     </dependencies>
 
@@ -48,7 +67,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx-maven-plugin.version}</version>
                 <configuration>
-<!--                    <executable>${jdk-path}</executable>-->
+                    <!--                    <executable>${jdk-path}</executable>-->
                     <mainClass>${main-class}</mainClass>
                 </configuration>
             </plugin>
