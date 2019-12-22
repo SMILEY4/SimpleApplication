@@ -12,28 +12,45 @@ import java.util.List;
 public class AnnotatedApplicationListener implements ApplicationListener {
 
 
-	private final Class<?> clazz;
+	/**
+	 * The object of the annotated listener
+	 */
 	private final Object object;
+
+	/**
+	 * All methods of the object annotated with {@link OnAppStartup}
+	 */
 	private final List<Method> methodsOnApplicationStartup;
+
+	/**
+	 * All methods of the object annotated with {@link OnAppClose}
+	 */
 	private final List<Method> methodsOonApplicationExit;
 
 
 
 
-	public AnnotatedApplicationListener(Class<?> clazz) {
-		this.clazz = clazz;
-		this.object = loadObject(clazz);
-		this.methodsOnApplicationStartup = loadMethods(clazz, OnAppStartup.class);
-		this.methodsOonApplicationExit = loadMethods(clazz, OnAppClose.class);
+	/**
+	 * @param listenerClass the class of the annotated listener
+	 */
+	AnnotatedApplicationListener(final Class<?> listenerClass) {
+		this.object = loadObject(listenerClass);
+		this.methodsOnApplicationStartup = loadMethods(listenerClass, OnAppStartup.class);
+		this.methodsOonApplicationExit = loadMethods(listenerClass, OnAppClose.class);
 	}
 
 
 
 
-	private Object loadObject(Class<?> clazz) {
+	/**
+	 * Instantiates the given class and returns the object or null.
+	 *
+	 * @param listenerClass the class of the annotated listener
+	 */
+	private Object loadObject(final Class<?> listenerClass) {
 		Object obj = null;
 		try {
-			obj = clazz.getDeclaredConstructor().newInstance();
+			obj = listenerClass.getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -43,9 +60,16 @@ public class AnnotatedApplicationListener implements ApplicationListener {
 
 
 
-	private List<Method> loadMethods(Class<?> clazz, Class<? extends Annotation> annotation) {
+	/**
+	 * Searches the given class of the listener for methods annotated with the given annotation.
+	 *
+	 * @param listenerClass the class of the annotated listener
+	 * @param annotation    the annotation to check
+	 * @return a list of methods
+	 */
+	private List<Method> loadMethods(final Class<?> listenerClass, final Class<? extends Annotation> annotation) {
 		List<Method> methods = new ArrayList<>();
-		for (Method m : clazz.getDeclaredMethods()) {
+		for (Method m : listenerClass.getDeclaredMethods()) {
 			if (m.isAnnotationPresent(annotation)) {
 				methods.add(m);
 			}

@@ -6,9 +6,23 @@ import org.reflections.Reflections;
 
 import java.util.Set;
 
-public class ApplicationListenerScanner {
+public final class ApplicationListenerScanner {
 
 
+	/**
+	 * Utility class
+	 */
+	private ApplicationListenerScanner() {
+	}
+
+
+
+
+	/**
+	 * Scans the given package for listener annotations and registers the listeners.
+	 *
+	 * @param rootPackage the root package of the project
+	 */
 	public static void process(final String rootPackage) {
 		final Reflections reflections = new Reflections(rootPackage);
 		final Set<Class<?>> listeners = reflections.getTypesAnnotatedWith(AppListener.class);
