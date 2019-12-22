@@ -1,5 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.slot;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +33,7 @@ public final class SlotProvider {
 	 * @return the created slot or null if a slot with the given id already exists
 	 */
 	public static Slot newSlot(final String slotId, final SlotAction action) {
+		Validations.INPUT.notBlank(slotId, "The id of the slot may not be null or empty.");
 		if (SLOTS.containsKey(slotId)) {
 			System.err.println("Slot with id '" + slotId + "' already exists.");
 			return null;

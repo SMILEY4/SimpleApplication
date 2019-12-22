@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.styling;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import javafx.scene.Parent;
 
 import java.util.HashSet;
@@ -23,9 +24,11 @@ public class CSSStyle {
 
 	/**
 	 * The constructor.
+	 *
 	 * @param url the url of the css-file
 	 */
 	CSSStyle(final String url) {
+		Validations.INPUT.notBlank(url, "The url may not be null or empty.");
 		this.url = url;
 	}
 
@@ -34,9 +37,11 @@ public class CSSStyle {
 
 	/**
 	 * Applies this style to the given node.
+	 *
 	 * @param node the node
 	 */
 	public void applyToNode(final Parent node) {
+		Validations.INPUT.notNull(node, "The node to apply the styling to may not be null.");
 		nodes.add(node);
 		reload(node, true);
 	}
@@ -46,6 +51,7 @@ public class CSSStyle {
 
 	/**
 	 * Removes this style from the given node.
+	 *
 	 * @param node the node
 	 */
 	public void removeFromNode(final Parent node) {
@@ -68,9 +74,11 @@ public class CSSStyle {
 
 
 
+
 	/**
 	 * Reloads this style for the given node.
-	 * @param node the node
+	 *
+	 * @param node       the node
 	 * @param applyStyle whether to apply or remove this style
 	 */
 	private void reload(final Parent node, final boolean applyStyle) {

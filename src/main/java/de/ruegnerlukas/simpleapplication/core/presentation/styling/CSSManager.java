@@ -1,5 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.styling;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.HashSet;
@@ -32,6 +34,7 @@ public final class CSSManager {
 	 * @return the created {@link CSSStyle}
 	 */
 	public static CSSStyle fromFile(final File file) {
+		Validations.INPUT.notNull(file, "The css-file may not be null.");
 		try {
 			final CSSStyle style = new CSSStyle(file.toURI().toURL().toExternalForm());
 			registerCssStyle(style);
@@ -51,6 +54,7 @@ public final class CSSManager {
 	 * @param style the {@link CSSStyle}
 	 */
 	private static void registerCssStyle(final CSSStyle style) {
+		Validations.INPUT.notNull(style, "The style may not be null.");
 		managedCSSStyles.add(style);
 	}
 

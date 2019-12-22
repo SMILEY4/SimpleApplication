@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.common.listeners;
 
 import de.ruegnerlukas.simpleapplication.common.listeners.annotations.OnAppClose;
 import de.ruegnerlukas.simpleapplication.common.listeners.annotations.OnAppStartup;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +16,7 @@ public class AnnotatedApplicationListener implements ApplicationListener {
 	/**
 	 * The object of the annotated listener
 	 */
-	private final Object object;
+	private final Object listenerObject;
 
 	/**
 	 * All methods of the object annotated with {@link OnAppStartup}
@@ -34,7 +35,9 @@ public class AnnotatedApplicationListener implements ApplicationListener {
 	 * @param listenerClass the class of the annotated listener
 	 */
 	AnnotatedApplicationListener(final Class<?> listenerClass) {
-		this.object = loadObject(listenerClass);
+		Validations.INPUT.notNull(listenerClass, "Class of the listener is null.");
+		this.listenerObject = loadObject(listenerClass);
+		Validations.STATE.notNull(listenerObject, "Class of the listener could not be instantiated.");
 		this.methodsOnApplicationStartup = loadMethods(listenerClass, OnAppStartup.class);
 		this.methodsOonApplicationExit = loadMethods(listenerClass, OnAppClose.class);
 	}
@@ -84,7 +87,7 @@ public class AnnotatedApplicationListener implements ApplicationListener {
 	public void onApplicationStartup() {
 		methodsOnApplicationStartup.forEach(m -> {
 			try {
-				m.invoke(object);
+				m.invoke(listenerObject);
 			} catch (IllegalAccessException | InvocationTargetException e) {
 				e.printStackTrace();
 			}
@@ -98,7 +101,7 @@ public class AnnotatedApplicationListener implements ApplicationListener {
 	public void onApplicationClose() {
 		methodsOonApplicationExit.forEach(m -> {
 			try {
-				m.invoke(object);
+				m.invoke(listenerObject);
 			} catch (IllegalAccessException | InvocationTargetException e) {
 				e.printStackTrace();
 			}

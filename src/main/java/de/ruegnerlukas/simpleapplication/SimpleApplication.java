@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication;
 
 import de.ruegnerlukas.simpleapplication.common.listeners.ApplicationListener;
 import de.ruegnerlukas.simpleapplication.common.listeners.ApplicationListenerScanner;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.presentation.JFXApplication;
 
 import java.util.ArrayList;
@@ -29,6 +30,11 @@ public final class SimpleApplication {
 	 */
 	private static List<ApplicationListener> listeners = new ArrayList<>();
 
+	/**
+	 * Whether the application was started.
+	 */
+	private static boolean applicationStated = false;
+
 
 
 
@@ -36,6 +42,7 @@ public final class SimpleApplication {
 	 * @param rootPackage the root package containing the application.
 	 */
 	public static void setProjectRootPackage(final String rootPackage) {
+		Validations.INPUT.notBlank(rootPackage, "The rootPackage may not be null or empty.");
 		SimpleApplication.applicationRootPackage = rootPackage;
 	}
 
@@ -48,6 +55,7 @@ public final class SimpleApplication {
 	 * @param listener the {@link ApplicationListener}
 	 */
 	public static void registerApplicationListener(final ApplicationListener listener) {
+		Validations.INPUT.notNull(listener, "The listener may not be null.");
 		listeners.add(listener);
 		listener.onListenerRegistered();
 	}
@@ -71,6 +79,7 @@ public final class SimpleApplication {
 	 * Starts the application.
 	 */
 	public static void startApplication() {
+		Validations.STATE.isFalse(applicationStated, "The application was already started.");
 		ApplicationListenerScanner.process(applicationRootPackage);
 		listeners.forEach(ApplicationListener::onApplicationStartup);
 		JFXApplication.start();
@@ -83,6 +92,7 @@ public final class SimpleApplication {
 	 * Stops and closes the application.
 	 */
 	public static void closeApplication() {
+		Validations.STATE.isTrue(applicationStated, "The application is not running.");
 		listeners.forEach(ApplicationListener::onApplicationClose);
 	}
 

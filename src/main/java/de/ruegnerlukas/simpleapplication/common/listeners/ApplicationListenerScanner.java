@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.common.listeners;
 
 import de.ruegnerlukas.simpleapplication.SimpleApplication;
 import de.ruegnerlukas.simpleapplication.common.listeners.annotations.AppListener;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import org.reflections.Reflections;
 
 import java.util.Set;
@@ -24,6 +25,7 @@ public final class ApplicationListenerScanner {
 	 * @param rootPackage the root package of the project
 	 */
 	public static void process(final String rootPackage) {
+		Validations.INPUT.notBlank(rootPackage, "The rootPackage may not be null or empty.");
 		final Reflections reflections = new Reflections(rootPackage);
 		final Set<Class<?>> listeners = reflections.getTypesAnnotatedWith(AppListener.class);
 		for (Class<?> c : listeners) {

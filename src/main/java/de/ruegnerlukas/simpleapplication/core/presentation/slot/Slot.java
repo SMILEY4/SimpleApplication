@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.slot;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -25,6 +26,7 @@ public class Slot {
 	 * @param action the {@link SlotAction} of this slot
 	 */
 	Slot(final String id, final SlotAction action) {
+		Validations.INPUT.notBlank(id, "The id of the slot may not be null or empty.");
 		this.id = id;
 		this.action = action;
 	}
