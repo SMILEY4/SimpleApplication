@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.uimodule;
 
-import de.ruegnerlukas.simpleapplication.common.events.group.ListenableEventGroup;
-import de.ruegnerlukas.simpleapplication.common.events.group.TriggerableEventGroup;
+import de.ruegnerlukas.simpleapplication.common.events.ListenableEventGroup;
+import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventGroup;
 
 public interface ModuleController {
 

@@ -1,7 +1,5 @@
 package de.ruegnerlukas.simpleapplication.common.events;
 
-import de.ruegnerlukas.simpleapplication.common.events.group.ListenableEventGroup;
-import de.ruegnerlukas.simpleapplication.common.events.group.TriggerableEventGroup;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

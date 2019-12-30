@@ -2,8 +2,8 @@ package de.ruegnerlukas.simpleapplication.core.presentation.uimodule;
 
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEvent;
 import de.ruegnerlukas.simpleapplication.common.events.OnEvent;
-import de.ruegnerlukas.simpleapplication.common.events.group.ListenableEventGroup;
-import de.ruegnerlukas.simpleapplication.common.events.group.TriggerableEventGroup;
+import de.ruegnerlukas.simpleapplication.common.events.ListenableEventGroup;
+import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventGroup;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.presentation.utils.Anchors;
 import javafx.fxml.FXMLLoader;

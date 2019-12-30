@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.common.events.group;
+package de.ruegnerlukas.simpleapplication.common.events;
 
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEvent;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;

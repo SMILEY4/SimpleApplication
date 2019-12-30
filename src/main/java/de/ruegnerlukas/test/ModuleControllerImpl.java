@@ -2,8 +2,8 @@ package de.ruegnerlukas.test;
 
 import de.ruegnerlukas.simpleapplication.common.events.OnEvent;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEvent;
-import de.ruegnerlukas.simpleapplication.common.events.group.ListenableEventGroup;
-import de.ruegnerlukas.simpleapplication.common.events.group.TriggerableEventGroup;
+import de.ruegnerlukas.simpleapplication.common.events.ListenableEventGroup;
+import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventGroup;
 import de.ruegnerlukas.simpleapplication.core.presentation.JFXApplication;
 import de.ruegnerlukas.simpleapplication.core.presentation.PresentationConfig;
 import de.ruegnerlukas.simpleapplication.core.presentation.uimodule.ModuleController;

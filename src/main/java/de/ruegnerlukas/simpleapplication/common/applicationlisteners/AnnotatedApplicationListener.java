@@ -1,7 +1,5 @@
 package de.ruegnerlukas.simpleapplication.common.applicationlisteners;
 
-import de.ruegnerlukas.simpleapplication.common.applicationlisteners.annotations.OnAppClose;
-import de.ruegnerlukas.simpleapplication.common.applicationlisteners.annotations.OnAppStartup;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import lombok.extern.slf4j.Slf4j;
 

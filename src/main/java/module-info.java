@@ -9,10 +9,14 @@ module de.ruegnerlukas.simpleapplication {
 	opens de.ruegnerlukas.test to javafx.fxml;
 
 	exports de.ruegnerlukas.simpleapplication;
-    exports de.ruegnerlukas.simpleapplication.core.presentation;
+
+	exports de.ruegnerlukas.simpleapplication.common.applicationlisteners;
+	exports de.ruegnerlukas.simpleapplication.common.events;
+	exports de.ruegnerlukas.simpleapplication.common.plugins;
+	exports de.ruegnerlukas.simpleapplication.common.validation;
+
+	exports de.ruegnerlukas.simpleapplication.core.presentation;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.uimodule;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.utils;
-	exports de.ruegnerlukas.simpleapplication.common.events;
-	exports de.ruegnerlukas.simpleapplication.common.events.group;
-	exports de.ruegnerlukas.test;
+
 }

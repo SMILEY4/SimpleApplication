@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.applicationlisteners;
 
 import de.ruegnerlukas.simpleapplication.SimpleApplication;
-import de.ruegnerlukas.simpleapplication.common.applicationlisteners.annotations.AppListener;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import org.reflections.Reflections;
 

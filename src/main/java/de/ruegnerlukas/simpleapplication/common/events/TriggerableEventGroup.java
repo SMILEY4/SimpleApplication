@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.common.events.group;
+package de.ruegnerlukas.simpleapplication.common.events;
 
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEvent;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
