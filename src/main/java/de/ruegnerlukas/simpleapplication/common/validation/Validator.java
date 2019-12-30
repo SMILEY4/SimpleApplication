@@ -387,7 +387,7 @@ public class Validator {
 	 * @return the number itself
 	 */
 	public Number isNegative(final long number, final String errorMessage) {
-		if (number < 0) {
+		if (number >= 0) {
 			failedValidation(errorMessage);
 		}
 		return number;
@@ -404,7 +404,7 @@ public class Validator {
 	 * @return the number itself
 	 */
 	public Number isNegative(final double number, final String errorMessage) {
-		if (number < 0) {
+		if (number >= 0) {
 			failedValidation(errorMessage);
 		}
 		return number;
@@ -421,7 +421,7 @@ public class Validator {
 	 * @return the number itself
 	 */
 	public Number isNotNegative(final long number, final String errorMessage) {
-		if (number >= 0) {
+		if (number < 0) {
 			failedValidation(errorMessage);
 		}
 		return number;
@@ -438,7 +438,7 @@ public class Validator {
 	 * @return the number itself
 	 */
 	public Number isNotNegative(final double number, final String errorMessage) {
-		if (number >= 0) {
+		if (number < 0) {
 			failedValidation(errorMessage);
 		}
 		return number;
@@ -455,7 +455,7 @@ public class Validator {
 	 * @return the number itself
 	 */
 	public Number isPositive(final long number, final String errorMessage) {
-		if (number > 0) {
+		if (number <= 0) {
 			failedValidation(errorMessage);
 		}
 		return number;
@@ -472,7 +472,7 @@ public class Validator {
 	 * @return the number itself
 	 */
 	public Number isPositive(final double number, final String errorMessage) {
-		if (number > 0) {
+		if (number <= 0) {
 			failedValidation(errorMessage);
 		}
 		return number;
