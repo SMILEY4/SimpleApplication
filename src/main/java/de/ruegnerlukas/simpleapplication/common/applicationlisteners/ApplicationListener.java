@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.common.listeners;
+package de.ruegnerlukas.simpleapplication.common.applicationlisteners;
 
 public interface ApplicationListener {
 

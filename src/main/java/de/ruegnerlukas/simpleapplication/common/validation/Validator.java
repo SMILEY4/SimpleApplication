@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.validation;
 
+import java.io.File;
 import java.util.Collection;
 
 /**
@@ -597,6 +598,23 @@ public class Validator {
 			}
 		}
 		return object;
+	}
+
+
+
+
+	/**
+	 * Checks if the given file is not null and exists.
+	 *
+	 * @param file         the file to examine
+	 * @param errorMessage the error message when the file is null or does not exist.
+	 * @return the file itself
+	 */
+	public File exists(final File file, final String errorMessage) {
+		if (file == null || !file.exists()) {
+			failedValidation(errorMessage);
+		}
+		return file;
 	}
 
 

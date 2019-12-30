@@ -1,9 +1,10 @@
 package de.ruegnerlukas.simpleapplication;
 
-import de.ruegnerlukas.simpleapplication.common.listeners.ApplicationListener;
-import de.ruegnerlukas.simpleapplication.common.listeners.ApplicationListenerScanner;
+import de.ruegnerlukas.simpleapplication.common.applicationlisteners.ApplicationListener;
+import de.ruegnerlukas.simpleapplication.common.applicationlisteners.ApplicationListenerScanner;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.presentation.JFXApplication;
+import de.ruegnerlukas.simpleapplication.core.presentation.PresentationConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,16 @@ public final class SimpleApplication {
 
 
 	/**
+	 * @param config the presentation configuration
+	 */
+	public static void setPresentationConfig(final PresentationConfig config) {
+		JFXApplication.setPresentationConfig(config);
+	}
+
+
+
+
+	/**
 	 * Registers the given {@link ApplicationListener}
 	 *
 	 * @param listener the {@link ApplicationListener}
@@ -80,7 +91,9 @@ public final class SimpleApplication {
 	 */
 	public static void startApplication() {
 		Validations.STATE.isFalse(applicationStated, "The application was already started.");
-		ApplicationListenerScanner.process(applicationRootPackage);
+		if (applicationRootPackage != null) {
+			ApplicationListenerScanner.process(applicationRootPackage);
+		}
 		listeners.forEach(ApplicationListener::onApplicationStartup);
 		JFXApplication.start();
 	}

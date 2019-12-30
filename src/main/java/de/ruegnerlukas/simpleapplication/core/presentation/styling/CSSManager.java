@@ -1,12 +1,14 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.styling;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.Set;
 
+@Slf4j
 public final class CSSManager {
 
 
@@ -34,13 +36,13 @@ public final class CSSManager {
 	 * @return the created {@link CSSStyle}
 	 */
 	public static CSSStyle fromFile(final File file) {
-		Validations.INPUT.notNull(file, "The css-file may not be null.");
+		Validations.INPUT.exists(file, "The css-file does not exist.");
 		try {
 			final CSSStyle style = new CSSStyle(file.toURI().toURL().toExternalForm());
 			registerCssStyle(style);
 			return style;
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			log.error("Could not load css file.", e);
 			return null;
 		}
 	}

@@ -1,8 +1,9 @@
-package de.ruegnerlukas.simpleapplication.common.listeners;
+package de.ruegnerlukas.simpleapplication.common.applicationlisteners;
 
-import de.ruegnerlukas.simpleapplication.common.listeners.annotations.OnAppClose;
-import de.ruegnerlukas.simpleapplication.common.listeners.annotations.OnAppStartup;
+import de.ruegnerlukas.simpleapplication.common.applicationlisteners.annotations.OnAppClose;
+import de.ruegnerlukas.simpleapplication.common.applicationlisteners.annotations.OnAppStartup;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -10,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class AnnotatedApplicationListener implements ApplicationListener {
 
 
@@ -55,7 +57,7 @@ public class AnnotatedApplicationListener implements ApplicationListener {
 		try {
 			obj = listenerClass.getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Error instantiating annotated listener.", e);
 		}
 		return obj;
 	}
@@ -89,7 +91,7 @@ public class AnnotatedApplicationListener implements ApplicationListener {
 			try {
 				m.invoke(listenerObject);
 			} catch (IllegalAccessException | InvocationTargetException e) {
-				e.printStackTrace();
+				log.error("Error invoking onApplicationStartup method.", e);
 			}
 		});
 	}
@@ -103,7 +105,7 @@ public class AnnotatedApplicationListener implements ApplicationListener {
 			try {
 				m.invoke(listenerObject);
 			} catch (IllegalAccessException | InvocationTargetException e) {
-				e.printStackTrace();
+				log.error("Error invoking onApplicationClose method.", e);
 			}
 		});
 	}

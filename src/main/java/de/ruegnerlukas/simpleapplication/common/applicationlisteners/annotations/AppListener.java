@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.common.listeners.annotations;
+package de.ruegnerlukas.simpleapplication.common.applicationlisteners.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention (RetentionPolicy.RUNTIME)
-@Target ({ElementType.METHOD})
-public @interface OnAppClose {
+@Target (ElementType.TYPE)
+public @interface AppListener {
 
 
 }
