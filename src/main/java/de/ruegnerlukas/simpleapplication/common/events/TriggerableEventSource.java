@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.common.events;
 
-public interface TriggerableEventSource {
+public interface TriggerableEventSource<T extends Event> {
 
 
 	/**
-	 * Triggers the given {@link Event}.
+	 * Triggers this event source with the given {@link Event}.
 	 *
 	 * @param event the event
 	 */
-	void trigger(Event event);
+	void trigger(T event);
 
 }

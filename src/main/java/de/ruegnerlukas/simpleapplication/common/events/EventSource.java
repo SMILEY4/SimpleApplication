@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.events;
 
-public interface EventSource extends ListenableEventSource, TriggerableEventSource {
+public interface EventSource<T extends Event> extends ListenableEventSource, TriggerableEventSource<T> {
 
 
 }

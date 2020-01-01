@@ -2,17 +2,35 @@ package de.ruegnerlukas.simpleapplication.common.events;
 
 import de.ruegnerlukas.simpleapplication.common.events.listeners.EventListener;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleEventSource implements EventSource {
+public class GenericFixedEventSource<T extends Event> implements FixedTriggerableEventSource, ListenableEventSource {
 
+
+	/**
+	 * The event triggered by this event source.
+	 */
+	@Getter
+	private final T event;
 
 	/**
 	 * The list of subscribers of this event source.
 	 */
 	private List<EventListener> subscribers = new ArrayList<>();
+
+
+
+
+	/**
+	 * @param event the event triggered by this event source
+	 */
+	public GenericFixedEventSource(final T event) {
+		this.event = event;
+		this.event.setChannels(new String[]{});
+	}
 
 
 
@@ -43,12 +61,10 @@ public class SimpleEventSource implements EventSource {
 
 
 	@Override
-	public void trigger(final Event event) {
-		Validations.INPUT.notNull(event, "The event must not be null.");
-		event.setChannels(new String[]{});
+	public void trigger() {
 		event.setReceivers(getSubscriberCount());
 		event.setTimestamp(System.currentTimeMillis());
-		subscribers.forEach(listener -> listener.onEvent(event));
+		subscribers.forEach(listener -> listener.onEvent(getEvent()));
 	}
 
 

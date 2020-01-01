@@ -23,6 +23,7 @@ public class EventBusTest {
 		final int subscriberCount = EVENTS.publish(CHANNEL, EVENT);
 		assertThat(subscriberCount).isEqualTo(1);
 		verify(listener).onEvent(eq(EVENT));
+		assertThat(EVENT.getChannels()).containsExactly(CHANNEL);
 	}
 
 
@@ -42,6 +43,7 @@ public class EventBusTest {
 		assertThat(subscriberCount).isEqualTo(2);
 		verify(listenerA).onEvent(eq(EVENT));
 		verify(listenerB).onEvent(eq(EVENT));
+		assertThat(EVENT.getChannels()).containsExactly(CHANNEL);
 	}
 
 
@@ -66,6 +68,8 @@ public class EventBusTest {
 		assertThat(subscriberCountB).isEqualTo(1);
 		verify(listenerA).onEvent(eq(EVENT_A));
 		verify(listenerB).onEvent(eq(EVENT_B));
+		assertThat(EVENT_A.getChannels()).containsExactly(CHANNEL_A);
+		assertThat(EVENT_B.getChannels()).containsExactly(CHANNEL_B);
 	}
 
 

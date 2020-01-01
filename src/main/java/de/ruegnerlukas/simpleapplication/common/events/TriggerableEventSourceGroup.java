@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class TriggerableEventSourceGroup {
+public class TriggerableEventSourceGroup implements EventSourceGroup<TriggerableEventSource> {
 
 
 	/**
@@ -34,12 +34,7 @@ public class TriggerableEventSourceGroup {
 
 
 
-	/**
-	 * Adds the given event source with the given name to this group.
-	 *
-	 * @param name        the name of the source
-	 * @param eventSource the {@link TriggerableEventSource}
-	 */
+	@Override
 	public void addEventSource(final String name, final TriggerableEventSource eventSource) {
 		this.eventSources.put(name, eventSource);
 	}
@@ -47,10 +42,7 @@ public class TriggerableEventSourceGroup {
 
 
 
-	/**
-	 * @param name the name of the event source
-	 * @return the {@link ListenableEventSource} with the given name or null.
-	 */
+	@Override
 	public TriggerableEventSource getEventSource(final String name) {
 		return this.eventSources.get(name);
 	}
@@ -58,10 +50,7 @@ public class TriggerableEventSourceGroup {
 
 
 
-	/**
-	 * @param name the name of the event source
-	 * @return an optional with a {@link TriggerableEventSource} with the given name.
-	 */
+	@Override
 	public Optional<TriggerableEventSource> getEventSourceOptional(final String name) {
 		return Optional.ofNullable(getEventSource(name));
 	}

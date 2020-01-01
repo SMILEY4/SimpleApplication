@@ -13,7 +13,7 @@ public interface ListenableEventSource {
 	void subscribe(EventListener listener);
 
 	/**
-	 * Unsubscribes the given {@link EventListener} from this event source.
+	 * Unsubscribe the given {@link EventListener} from this event source.
 	 *
 	 * @param listener the listener
 	 */
