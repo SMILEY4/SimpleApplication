@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.uimodule;
 
-import de.ruegnerlukas.simpleapplication.common.events.ListenableEvent;
-import de.ruegnerlukas.simpleapplication.common.events.TriggerableEvent;
+import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSource;
+import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSource;
 
 import java.util.Map;
 
@@ -16,19 +16,12 @@ public interface ModuleView {
 	/**
 	 * @return a map of all events that this view exposes to the controller of the same module.
 	 */
-	Map<String, ListenableEvent> getEventEndpoints();
+	Map<String, ListenableEventSource> getEventEndpoints();
 
 	/**
 	 * @return a map of all functions that this view exposes to the controller of the same module.
 	 */
-	Map<String, TriggerableEvent> getFunctionEndpoints();
+	Map<String, TriggerableEventSource> getFunctionEndpoints();
 
-//	default <T> TriggerableEvent<T> getFunctionEndpoint(String name) {
-//		return (TriggerableEvent<T>) getFunctionEndpoints().get(name);
-//	}
-//
-//	default <T> ListenableEvent<T> getEventEndpoint(String name) {
-//		return (ListenableEvent<T>) getEventEndpoints().get(name);
-//	}
 
 }
