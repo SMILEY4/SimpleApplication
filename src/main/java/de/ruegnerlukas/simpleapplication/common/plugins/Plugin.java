@@ -22,25 +22,36 @@ public abstract class Plugin {
 	private final String displayName;
 
 	/**
-	 * Whether the plugin should be hidden from the user.
+	 * A list of plugin-ids/system-ids this plugin depends on.
 	 */
-	private final boolean hidden;
+	private final String[] pluginDependencies;
 
 
 
 
 	/**
-	 * @param id          the unique identifier of this plugin
-	 * @param version     the version of this plugin
-	 * @param displayName a readable name of this plugin
-	 * @param hidden      whether the plugin should be hidden from the user
+	 * @param id                 the unique identifier of this plugin
+	 * @param version            the version of this plugin
+	 * @param displayName        a readable name of this plugin
+	 * @param pluginDependencies a list of plugin-ids/system-ids this plugin depends on.
+	 *                           All plugins/systems must be loaded before this plugin is loaded
 	 */
-	public Plugin(final String id, final String version, final String displayName, final boolean hidden) {
+	public Plugin(final String id, final String version, final String displayName, final String[] pluginDependencies) {
 		this.id = id;
 		this.version = version;
 		this.displayName = displayName;
-		this.hidden = hidden;
+		this.pluginDependencies = pluginDependencies;
 	}
+
+
+
+
+	/**
+	 * @return true, when the plugin was successfully loaded
+	 */
+	public abstract boolean onLoad();
+
+	public abstract void onDestroy();
 
 
 }

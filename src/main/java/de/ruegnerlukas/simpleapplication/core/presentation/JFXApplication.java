@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.presentation;
 
-import de.ruegnerlukas.simpleapplication.ApplicationEvents;
+import de.ruegnerlukas.simpleapplication.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.SimpleApplication;
 import de.ruegnerlukas.simpleapplication.common.events.events.EmptyEvent;
 import de.ruegnerlukas.simpleapplication.common.events.events.GenericEvent;
@@ -49,7 +49,7 @@ public class JFXApplication extends Application {
 	public void start(final Stage primaryStage) throws Exception {
 		JFXApplication.primaryStage = primaryStage;
 		setScene(presentationConfig);
-		SimpleApplication.getEvents().publish(ApplicationEvents.START, new EmptyEvent());
+		SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_START, new EmptyEvent());
 	}
 
 
@@ -66,7 +66,7 @@ public class JFXApplication extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle(config.getTitle());
 		primaryStage.show();
-		SimpleApplication.getEvents().publish(ApplicationEvents.CHANGE_SCENE, new GenericEvent<>(presentationConfig));
+		SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_CHANGE_SCENE, new GenericEvent<>(presentationConfig));
 	}
 
 

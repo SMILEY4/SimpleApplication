@@ -346,6 +346,104 @@ public class Validator {
 
 
 	/**
+	 * Asserts that the given collection contains the given object (and is not null).
+	 *
+	 * @param collection   the collection to examine
+	 * @param obj          the object
+	 * @param errorMessage the error message when the collection does not contain the object or is null.
+	 * @param <T>          Generic type
+	 * @return the collection itself
+	 */
+	public <T> Collection<T> contains(final Collection<T> collection, final T obj, final String errorMessage) {
+		if (collection == null || !collection.contains(obj)) {
+			failedValidation(errorMessage);
+		}
+		return collection;
+	}
+
+
+
+
+	/**
+	 * Asserts that the given array contains the given object (and is not null).
+	 *
+	 * @param array        the array to examine
+	 * @param obj          the object
+	 * @param errorMessage the error message when the array does not contain the object or is null.
+	 * @param <T>          Generic type
+	 * @return the array itself
+	 */
+	public <T> T[] contains(final T[] array, final T obj, final String errorMessage) {
+		if (array == null) {
+			failedValidation(errorMessage);
+		} else {
+			boolean containsObject = false;
+			for (final T element : array) {
+				if (element != null && element.equals(obj)) {
+					containsObject = true;
+					break;
+				}
+			}
+			if (!containsObject) {
+				failedValidation(errorMessage);
+			}
+		}
+		return array;
+	}
+
+
+
+
+	/**
+	 * Asserts that the given collection does not contain the given object (and is not null).
+	 *
+	 * @param collection   the collection to examine
+	 * @param obj          the object
+	 * @param errorMessage the error message when the collection contains the object or is null.
+	 * @param <T>          Generic type
+	 * @return the collection itself
+	 */
+	public <T> Collection<T> containsNot(final Collection<T> collection, final T obj, final String errorMessage) {
+		if (collection == null || collection.contains(obj)) {
+			failedValidation(errorMessage);
+		}
+		return collection;
+	}
+
+
+
+
+	/**
+	 * Asserts that the given array does not contain the given object (and is not null).
+	 *
+	 * @param array        the array to examine
+	 * @param obj          the object
+	 * @param errorMessage the error message when the array contains the object or is null.
+	 * @param <T>          Generic type
+	 * @return the array itself
+	 */
+	public <T> T[] containsNot(final T[] array, final T obj, final String errorMessage) {
+		if (array == null) {
+			failedValidation(errorMessage);
+		} else {
+			boolean containsObject = false;
+			for (final T element : array) {
+				if (element != null && element.equals(obj)) {
+					containsObject = true;
+					break;
+				}
+			}
+			if (containsObject) {
+				failedValidation(errorMessage);
+			}
+		}
+		return array;
+	}
+
+
+
+
+	/**
 	 * Assert that the given boolean is true
 	 *
 	 * @param bool         the boolean to examine

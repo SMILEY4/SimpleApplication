@@ -75,7 +75,7 @@ public final class SimpleApplication {
 	public static void startApplication() {
 		Validations.STATE.isFalse(SimpleApplication.applicationStated, "The application was already started.");
 		// init internal systems here
-		getEvents().publish(ApplicationEvents.INITIALIZE, new EmptyEvent());
+		getEvents().publish(ApplicationConstants.EVENT_INITIALIZE, new EmptyEvent());
 		JFXApplication.start();
 	}
 
@@ -88,7 +88,7 @@ public final class SimpleApplication {
 	public static void closeApplication() {
 		Validations.STATE.isTrue(SimpleApplication.applicationStated, "The application is not running.");
 		// clean up internal systems here
-		getEvents().publish(ApplicationEvents.STOP, new EmptyEvent());
+		getEvents().publish(ApplicationConstants.EVENT_STOP, new EmptyEvent());
 	}
 
 
