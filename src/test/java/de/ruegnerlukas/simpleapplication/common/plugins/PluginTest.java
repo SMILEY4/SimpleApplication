@@ -23,18 +23,18 @@ public class PluginTest {
 
 		manager.register(plugin);
 		verify(plugin, never()).onLoad();
-		verify(plugin, never()).onDestroy();
+		verify(plugin, never()).onUnload();
 
 		manager.unload(PLUGIN_ID);
 		verify(plugin, never()).onLoad();
-		verify(plugin, never()).onDestroy();
+		verify(plugin, never()).onUnload();
 
 		manager.load(PLUGIN_ID);
 		verify(plugin).onLoad();
-		verify(plugin, never()).onDestroy();
+		verify(plugin, never()).onUnload();
 
 		manager.unload(PLUGIN_ID);
-		verify(plugin).onDestroy();
+		verify(plugin).onUnload();
 	}
 
 
@@ -53,7 +53,7 @@ public class PluginTest {
 
 		manager.registerAndLoad(plugin);
 		verify(plugin, never()).onLoad();
-		verify(plugin, never()).onDestroy();
+		verify(plugin, never()).onUnload();
 
 		manager.load(SYSTEM_ID);
 		verify(plugin).onLoad();
@@ -108,7 +108,7 @@ public class PluginTest {
 		verify(plugin).onLoad();
 
 		manager.unload(SYSTEM_ID);
-		verify(plugin).onDestroy();
+		verify(plugin).onUnload();
 	}
 
 

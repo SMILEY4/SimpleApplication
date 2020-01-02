@@ -65,7 +65,7 @@ public class TestPluginUtils {
 
 
 		@Override
-		public void onDestroy() {
+		public void onUnload() {
 
 		}
 

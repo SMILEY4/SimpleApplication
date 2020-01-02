@@ -47,11 +47,15 @@ public abstract class Plugin {
 
 
 	/**
+	 * Called when the plugin is loaded.
 	 * @return true, when the plugin was successfully loaded
 	 */
 	public abstract boolean onLoad();
 
-	public abstract void onDestroy();
+	/**
+	 * Called when the plugin is unloaded
+	 */
+	public abstract void onUnload();
 
 
 }
