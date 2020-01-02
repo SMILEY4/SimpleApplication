@@ -3,37 +3,36 @@ package de.ruegnerlukas.simpleapplication.common.events;
 
 import de.ruegnerlukas.simpleapplication.common.events.listeners.EventListener;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public final class EventBus {
-
-
-	/**
-	 * The instance.
-	 */
-	private static final EventBus INSTANCE = new EventBus();
-
-
-
-
-	/**
-	 * @return the instance of {@link EventBus}.
-	 */
-	public static EventBus get() {
-		return INSTANCE;
-	}
-
-
 
 
 	/**
 	 * The map of subscribed listeners. Key is the name of the channel.
 	 */
 	private final Map<String, List<EventListener>> subscribers = new HashMap<>();
+
+
+
+
+	/**
+	 * Subscribe the given listener to the given channels.
+	 *
+	 * @param channels the names of the channels
+	 * @param listener the {@link EventListener}
+	 */
+	public void subscribe(final String[] channels, final EventListener listener) {
+		for (String channel : channels) {
+			subscribe(channel, listener);
+		}
+	}
 
 
 
@@ -49,6 +48,21 @@ public final class EventBus {
 		Validations.INPUT.notNull(listener, "The listener must not be null.");
 		final List<EventListener> listeners = subscribers.computeIfAbsent(channel, key -> new ArrayList<>());
 		listeners.add(listener);
+	}
+
+
+
+
+	/**
+	 * Unsubscribe the given listener from the given channels.
+	 *
+	 * @param channels the names of the channels
+	 * @param listener the {@link EventListener}
+	 */
+	public void unsubscribe(final String[] channels, final EventListener listener) {
+		for (String channel : channels) {
+			unsubscribe(channel, listener);
+		}
 	}
 
 
@@ -71,6 +85,22 @@ public final class EventBus {
 
 
 	/**
+	 * Publish a new event in the given channels.
+	 *
+	 * @param channels the names of the channels
+	 * @param event    the {@link Event}
+	 * @return the number of listeners that received the given event
+	 */
+	public void publish(final String[] channels, final Event event) {
+		for (String channel : channels) {
+			publish(channel, event);
+		}
+	}
+
+
+
+
+	/**
 	 * Publish a new event in the given channel.
 	 *
 	 * @param channel the name of the channel
@@ -85,6 +115,8 @@ public final class EventBus {
 		event.setReceivers(0);
 		final List<EventListener> listeners = subscribers.get(channel);
 		int count = 0;
+		log.debug("Publish event to {} listeners: {} in [{}].",
+				(listeners != null ? listeners.size() : 0), event.getClass(), String.join(",", event.getChannels()));
 		if (listeners != null) {
 			count = listeners.size();
 			event.setReceivers(count);

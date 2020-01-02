@@ -1,11 +1,22 @@
 package de.ruegnerlukas.simpleapplication;
 
+import de.ruegnerlukas.simpleapplication.common.events.EventBus;
+import de.ruegnerlukas.simpleapplication.common.events.events.EmptyEvent;
 import de.ruegnerlukas.simpleapplication.common.plugins.PluginManager;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.presentation.JFXApplication;
 import de.ruegnerlukas.simpleapplication.core.presentation.PresentationConfig;
 
 public final class SimpleApplication {
+
+
+	/**
+	 * Utility class
+	 */
+	private SimpleApplication() {
+	}
+
+
 
 
 	/**
@@ -20,12 +31,19 @@ public final class SimpleApplication {
 	private static PluginManager pluginManager = new PluginManager();
 
 
+	/**
+	 * The global application event bus.
+	 */
+	private static EventBus applicationEventBus = new EventBus();
+
+
 
 
 	/**
-	 * Utility class
+	 * @return the global application event bus.
 	 */
-	private SimpleApplication() {
+	public static EventBus getEvents() {
+		return applicationEventBus;
 	}
 
 
@@ -56,6 +74,8 @@ public final class SimpleApplication {
 	 */
 	public static void startApplication() {
 		Validations.STATE.isFalse(SimpleApplication.applicationStated, "The application was already started.");
+		// init internal systems here
+		getEvents().publish(ApplicationEvents.INITIALIZE, new EmptyEvent());
 		JFXApplication.start();
 	}
 
@@ -67,6 +87,8 @@ public final class SimpleApplication {
 	 */
 	public static void closeApplication() {
 		Validations.STATE.isTrue(SimpleApplication.applicationStated, "The application is not running.");
+		// clean up internal systems here
+		getEvents().publish(ApplicationEvents.STOP, new EmptyEvent());
 	}
 
 
