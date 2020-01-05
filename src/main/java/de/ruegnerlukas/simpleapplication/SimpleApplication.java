@@ -4,9 +4,81 @@ import de.ruegnerlukas.simpleapplication.common.events.EventBus;
 import de.ruegnerlukas.simpleapplication.common.events.events.EmptyEvent;
 import de.ruegnerlukas.simpleapplication.common.plugins.PluginManager;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.core.presentation.JFXApplication;
 import de.ruegnerlukas.simpleapplication.core.presentation.PresentationConfig;
+import javafx.application.Platform;
 
+/*
+digraph G {
+    "EVENT_INIT"
+    -> "load SYSTEM_ID_ROOT"
+    -> "EVENT_SYSTEM_LOADED"
+    -> "load base ui module"
+    -> "EVENT_CHANGE_SCENE"
+    -> "EVENT_START"
+    -> "load SYSTEM_ID_JFXROOT"
+    -> "EVENT_SYSTEM_LOADED (2)"
+    -> "...running..."
+    -> "unload SYSTEM_ID_JFXROOT"
+    -> "EVENT_SYSTEM_UNLOADED"
+    -> "unload SYSTEM_ID_ROOT"
+    -> "EVENT_SYSTEM_UNLOADED (2)"
+    -> "EVENT_STOP"
+
+    "EVENT_SYSTEM_LOADED"
+    -> "EVENT_PLUGIN_LOADED"
+    -> "EVENT_PLUGIN_LOADED"
+    -> "load base ui module"
+
+    "EVENT_SYSTEM_LOADED (2)"
+    -> "EVENT_PLUGIN_LOADED (2)"
+    -> "EVENT_PLUGIN_LOADED (2)"
+    -> "...running..."
+
+    "EVENT_SYSTEM_UNLOADED"
+    -> "EVENT_PLUGIN_UNLOADED"
+    -> "EVENT_PLUGIN_UNLOADED"
+    -> "unload SYSTEM_ID_ROOT"
+
+    "EVENT_SYSTEM_UNLOADED (2)"
+    -> "EVENT_PLUGIN_UNLOADED (2)"
+    -> "EVENT_PLUGIN_UNLOADED (2)"
+    -> "EVENT_STOP"
+}
+ */
+
+
+
+
+
+
+/**
+ * Application Lifecycle:
+ * <p>
+ * SimpleApplication.startApplication()
+ * - event EVENT_INITIALIZE
+ * - load SYSTEM_ID_ROOT
+ * - event EVENT_SYSTEM_LOADED
+ * - loading plugins (if possible/necessary)
+ * -> event EVENT_PLUGIN_LOADED
+ * - load base module
+ * - event EVENT_CHANGE_SCENE
+ * - event EVENT_START
+ * - load SYSTEM_ID_JFXROOT
+ * - event EVENT_SYSTEM_LOADED
+ * - loading plugins (if possible/necessary)
+ * -> event EVENT_PLUGIN_LOADED
+ * <p>
+ * SimpleApplication.stopApplication() or close-command from javafx
+ * - unload SYSTEM_ID_JFXROOT
+ * - event EVENT_SYSTEM_UNLOADED
+ * - unloading plugins (if possible/necessary)
+ * -> event EVENT_PLUGIN_UNLOADED
+ * - unload SYSTEM_ID_ROOT
+ * - event EVENT_SYSTEM_UNLOADED
+ * - unloading plugins (if possible/necessary)
+ * -> event EVENT_PLUGIN_UNLOADED
+ * - event EVENT_STOP
+ */
 public final class SimpleApplication {
 
 
@@ -74,8 +146,10 @@ public final class SimpleApplication {
 	 */
 	public static void startApplication() {
 		Validations.STATE.isFalse(SimpleApplication.applicationStated, "The application was already started.");
+		SimpleApplication.applicationStated = true;
 		// init internal systems here
 		getEvents().publish(ApplicationConstants.EVENT_INITIALIZE, new EmptyEvent());
+		getPluginManager().load(ApplicationConstants.SYSTEM_ID_ROOT);
 		JFXApplication.start();
 	}
 
@@ -85,10 +159,24 @@ public final class SimpleApplication {
 	/**
 	 * Stops and closes the application.
 	 */
-	public static void closeApplication() {
+	public static void stopApplication() {
 		Validations.STATE.isTrue(SimpleApplication.applicationStated, "The application is not running.");
+		SimpleApplication.applicationStated = false;
+		Platform.exit();
+	}
+
+
+
+
+	/**
+	 * Called when the application is stopped. Usually called from javafx
+	 */
+	static void onStopApplication() {
 		// clean up internal systems here
+		getPluginManager().unload(ApplicationConstants.SYSTEM_ID_JFXROOT);
+		getPluginManager().unload(ApplicationConstants.SYSTEM_ID_ROOT);
 		getEvents().publish(ApplicationConstants.EVENT_STOP, new EmptyEvent());
+		SimpleApplication.applicationStated = false;
 	}
 
 

@@ -1,5 +1,8 @@
 package de.ruegnerlukas.simpleapplication.common.plugins;
 
+import de.ruegnerlukas.simpleapplication.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.SimpleApplication;
+import de.ruegnerlukas.simpleapplication.common.events.events.GenericEvent;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,7 +69,7 @@ public class PluginManager {
 	 *
 	 * @param id the id to load
 	 */
-	public void load(final String id) {
+	public synchronized void load(final String id) {
 		Validations.STATE.containsNot(loadedIds, id, "Plugin/System with id {} is already loaded.", id);
 		if (plugins.containsKey(id)) {
 			final Plugin plugin = plugins.get(id);
@@ -74,6 +77,7 @@ public class PluginManager {
 		} else {
 			setIdState(id, true);
 			log.info("System with id {} loaded.", id);
+			SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_SYSTEM_LOADED, new GenericEvent<>(id));
 			checkAndLoadUnloadedPlugins();
 		}
 	}
@@ -86,7 +90,7 @@ public class PluginManager {
 	 *
 	 * @param id the id to unload
 	 */
-	public void unload(final String id) {
+	public synchronized void unload(final String id) {
 		Validations.STATE.containsNot(unloadedIds, id, "Plugin/System with id {} is already unloaded.", id);
 		if (loadedIds.contains(id)) {
 			if (plugins.containsKey(id)) {
@@ -95,6 +99,7 @@ public class PluginManager {
 			} else {
 				setIdState(id, false);
 				log.info("System with id {} unloaded.", id);
+				SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_SYSTEM_UNLOADED, new GenericEvent<>(id));
 				checkAndUnloadLoadedPlugins();
 			}
 		}
@@ -114,6 +119,7 @@ public class PluginManager {
 			if (loaded) {
 				setIdState(plugin.getId(), true);
 				log.info("Loaded plugin {} ({}).", plugin.getId(), plugin.getVersion());
+				SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_PLUGIN_LOADED, new GenericEvent<>(plugin.getId()));
 				if (checkUnloaded) {
 					checkAndLoadUnloadedPlugins();
 				}
@@ -135,6 +141,7 @@ public class PluginManager {
 		plugin.onUnload();
 		setIdState(plugin.getId(), false);
 		log.info("Unloaded plugin {} ({}).", plugin.getId(), plugin.getVersion());
+		SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_PLUGIN_UNLOADED, new GenericEvent<>(plugin.getId()));
 		if (checkLoaded) {
 			checkAndUnloadLoadedPlugins();
 		}

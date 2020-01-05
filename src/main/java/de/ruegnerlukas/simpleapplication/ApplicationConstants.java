@@ -29,14 +29,16 @@ public final class ApplicationConstants {
 	public static final String EVENT_INITIALIZE = "application_init";
 
 	/**
-	 * The application is first visible to the user.
+	 * A new stage/{@link de.ruegnerlukas.simpleapplication.core.presentation.PresentationConfig} is loaded and visible to the user.
+	 * Called before {@link ApplicationConstants#EVENT_START}.
+	 */
+	public static final String EVENT_CHANGE_SCENE = "application_change_scene";
+
+	/**
+	 * The application is first visible to the user. Called after {@link ApplicationConstants#EVENT_CHANGE_SCENE}.
 	 */
 	public static final String EVENT_START = "application_start";
 
-	/**
-	 * A new stage/{@link de.ruegnerlukas.simpleapplication.core.presentation.PresentationConfig} is loaded and visible to the user.
-	 */
-	public static final String EVENT_CHANGE_SCENE = "application_change_scene";
 
 	/**
 	 * Final event right before the application is closed.
@@ -53,4 +55,14 @@ public final class ApplicationConstants {
 	 */
 	public static final String EVENT_PLUGIN_UNLOADED = "plugin_unloaded";
 
+
+	/**
+	 * A system was loaded.
+	 */
+	public static final String EVENT_SYSTEM_LOADED = "system_loaded";
+
+	/**
+	 * A system was unloaded.
+	 */
+	public static final String EVENT_SYSTEM_UNLOADED = "system_unloaded";
 }

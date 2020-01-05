@@ -25,7 +25,10 @@ public class PluginTest {
 		verify(plugin, never()).onLoad();
 		verify(plugin, never()).onUnload();
 
-		manager.unload(PLUGIN_ID);
+		try {
+			manager.unload(PLUGIN_ID);
+		} catch (IllegalStateException ignored) {
+		}
 		verify(plugin, never()).onLoad();
 		verify(plugin, never()).onUnload();
 
@@ -158,7 +161,10 @@ public class PluginTest {
 		manager.registerAndLoad(pluginA);
 		verify(pluginA).onLoad();
 
-		manager.registerAndLoad(pluginB);
+		try {
+			manager.registerAndLoad(pluginB);
+		} catch (IllegalStateException ignored) {
+		}
 		verify(pluginB, never()).onLoad();
 	}
 

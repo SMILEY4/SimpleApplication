@@ -43,6 +43,8 @@ public class UIModule extends AnchorPane {
 		Validations.INPUT.notNull(controller, "The controller must not be null.");
 		this.view = view;
 		this.controller = controller;
+		view.initializeView(this);
+		initController(controller, view);
 	}
 
 
@@ -63,7 +65,7 @@ public class UIModule extends AnchorPane {
 
 		try {
 			final Parent fxmlRoot = loadFXML(fxmlURL, view);
-			view.initializeView();
+			view.initializeView(this);
 			Anchors.setAnchors(fxmlRoot, 0);
 			this.getChildren().add(fxmlRoot);
 			if (fxmlRoot instanceof Region) {
@@ -76,16 +78,25 @@ public class UIModule extends AnchorPane {
 			log.error("Could not load fxml file.", e);
 		}
 
-		ListenableEventSourceGroup listenableEventGroup = new ListenableEventSourceGroup(view.getEventEndpoints());
-		controller.initialize(
-				listenableEventGroup,
-				new TriggerableEventSourceGroup(view.getFunctionEndpoints())
-		);
+		initController(controller, view);
 	}
 
 
 
 
+	/**
+	 * Initializes the controller of this module
+	 *
+	 * @param controller the {@link ModuleController}
+	 * @param view       the {@link ModuleView}
+	 */
+	private void initController(final ModuleController controller, final ModuleView view) {
+		final ListenableEventSourceGroup listenableEventGroup = new ListenableEventSourceGroup(view.getEventEndpoints());
+		controller.initialize(
+				listenableEventGroup,
+				new TriggerableEventSourceGroup(view.getFunctionEndpoints())
+		);
+	}
 
 
 
