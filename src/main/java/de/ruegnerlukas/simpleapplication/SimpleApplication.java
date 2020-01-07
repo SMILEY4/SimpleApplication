@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication;
 
 import de.ruegnerlukas.simpleapplication.common.events.EventBus;
 import de.ruegnerlukas.simpleapplication.common.events.events.EmptyEvent;
+import de.ruegnerlukas.simpleapplication.common.extensions.ExtensionHandler;
 import de.ruegnerlukas.simpleapplication.common.plugins.PluginManager;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.presentation.PresentationConfig;
@@ -104,6 +105,11 @@ public final class SimpleApplication {
 
 
 	/**
+	 * The manager for extension points
+	 */
+	private static ExtensionHandler extensionHandler = new ExtensionHandler();
+
+	/**
 	 * The global application event bus.
 	 */
 	private static EventBus applicationEventBus = new EventBus();
@@ -126,6 +132,16 @@ public final class SimpleApplication {
 	 */
 	public static PluginManager getPluginManager() {
 		return SimpleApplication.pluginManager;
+	}
+
+
+
+
+	/**
+	 * @return the extension point manager
+	 */
+	public static ExtensionHandler getExtensionHandler() {
+		return SimpleApplication.extensionHandler;
 	}
 
 

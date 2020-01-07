@@ -14,6 +14,7 @@ module de.ruegnerlukas.simpleapplication {
 
 	exports de.ruegnerlukas.simpleapplication.common.plugins;
 	exports de.ruegnerlukas.simpleapplication.common.validation;
+	exports de.ruegnerlukas.simpleapplication.common.extensions;
 
 	exports de.ruegnerlukas.simpleapplication.core.presentation;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.styling;
