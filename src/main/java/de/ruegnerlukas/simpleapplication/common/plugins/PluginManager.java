@@ -65,6 +65,36 @@ public class PluginManager {
 
 
 	/**
+	 * @return a list of the ids of all currently registered plugins
+	 */
+	public List<String> getRegisteredPlugins() {
+		return new ArrayList<>(plugins.keySet());
+	}
+
+
+
+
+	/**
+	 * @return a list of the ids of all currently loaded plugins
+	 */
+	public List<String> getLoadedPlugins() {
+		return new ArrayList<>(loadedIds);
+	}
+
+
+
+
+	/**
+	 * @return a list of the ids of all currently unloaded plugins
+	 */
+	public List<String> getUnloadedPlugins() {
+		return new ArrayList<>(unloadedIds);
+	}
+
+
+
+
+	/**
 	 * Loads the plugin/system with the given id.
 	 *
 	 * @param id the id to load
@@ -246,16 +276,6 @@ public class PluginManager {
 			}
 		}
 		return true;
-	}
-
-
-
-
-	/**
-	 * @return a list of the ids of all currently loaded plugins/systems
-	 */
-	public List<String> getLoadedIds() {
-		return new ArrayList<>(loadedIds);
 	}
 
 

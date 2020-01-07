@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.common.events;
+package de.ruegnerlukas.simpleapplication.common.validation;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validator;
 import org.junit.Before;

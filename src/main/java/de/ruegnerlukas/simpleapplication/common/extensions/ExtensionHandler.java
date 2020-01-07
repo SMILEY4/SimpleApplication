@@ -1,6 +1,10 @@
 package de.ruegnerlukas.simpleapplication.common.extensions;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,6 +25,11 @@ public class ExtensionHandler {
 	 * @param extensionPoint the {@link ExtensionPoint} to add
 	 */
 	public void register(final ExtensionPoint extensionPoint) {
+		Validations.INPUT.notNull(extensionPoint, "The extension point must not be null.");
+		Validations.INPUT.notNull(extensionPoint.getId(), "The id of the extension point must not be null.");
+		Validations.INPUT.containsNotKey(extensionPoints, extensionPoint.getId(),
+				"An extension point with the id {} is already registered.", extensionPoint.getId());
+		extensionPoints.put(extensionPoint.getId(), extensionPoint);
 	}
 
 
@@ -31,7 +40,7 @@ public class ExtensionHandler {
 	 * @return the {@link ExtensionPoint} with the given id or null
 	 */
 	public ExtensionPoint getExtensionPoint(final String id) {
-		return null;
+		return extensionPoints.get(id);
 	}
 
 
@@ -42,7 +51,17 @@ public class ExtensionHandler {
 	 * @return an {@link java.util.Optional} with the {@link ExtensionPoint} with the given id
 	 */
 	public Optional<ExtensionPoint> getExtensionPointOptional(final String id) {
-		return null;
+		return Optional.ofNullable(getExtensionPoint(id));
+	}
+
+
+
+
+	/**
+	 * @return a list of the ids of all currently registered {@link ExtensionPoint}s
+	 */
+	public List<String> getRegisteredExtensionPoints() {
+		return new ArrayList<>(extensionPoints.keySet());
 	}
 
 

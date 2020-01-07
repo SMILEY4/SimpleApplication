@@ -24,6 +24,10 @@ public class PluginTest {
 		manager.register(plugin);
 		verify(plugin, never()).onLoad();
 		verify(plugin, never()).onUnload();
+		assertThat(manager.getRegisteredPlugins()).containsExactly(PLUGIN_ID);
+		assertThat(manager.getLoadedPlugins()).isEmpty();
+		assertThat(manager.getUnloadedPlugins()).containsExactly(PLUGIN_ID);
+
 
 		try {
 			manager.unload(PLUGIN_ID);
@@ -31,13 +35,22 @@ public class PluginTest {
 		}
 		verify(plugin, never()).onLoad();
 		verify(plugin, never()).onUnload();
+		assertThat(manager.getRegisteredPlugins()).containsExactly(PLUGIN_ID);
+		assertThat(manager.getLoadedPlugins()).isEmpty();
+		assertThat(manager.getUnloadedPlugins()).containsExactly(PLUGIN_ID);
 
 		manager.load(PLUGIN_ID);
 		verify(plugin).onLoad();
 		verify(plugin, never()).onUnload();
+		assertThat(manager.getRegisteredPlugins()).containsExactly(PLUGIN_ID);
+		assertThat(manager.getLoadedPlugins()).containsExactly(PLUGIN_ID);
+		assertThat(manager.getUnloadedPlugins()).isEmpty();
 
 		manager.unload(PLUGIN_ID);
 		verify(plugin).onUnload();
+		assertThat(manager.getRegisteredPlugins()).containsExactly(PLUGIN_ID);
+		assertThat(manager.getLoadedPlugins()).isEmpty();
+		assertThat(manager.getUnloadedPlugins()).containsExactly(PLUGIN_ID);
 	}
 
 
@@ -79,16 +92,16 @@ public class PluginTest {
 		manager.register(TestPluginUtils.createPlugin("8", new String[]{"3"}));
 		manager.register(TestPluginUtils.createPlugin("9", new String[]{"6"}));
 
-		assertThat(manager.getLoadedIds()).isEmpty();
+		assertThat(manager.getLoadedPlugins()).isEmpty();
 
 		manager.load("0");
-		assertThat(manager.getLoadedIds()).containsExactlyInAnyOrder("0", "4", "5");
+		assertThat(manager.getLoadedPlugins()).containsExactlyInAnyOrder("0", "4", "5");
 
 		manager.load("1");
-		assertThat(manager.getLoadedIds()).containsExactlyInAnyOrder("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+		assertThat(manager.getLoadedPlugins()).containsExactlyInAnyOrder("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
 
 		manager.registerAndLoad(TestPluginUtils.createPlugin("10", new String[]{"5"}));
-		assertThat(manager.getLoadedIds()).containsExactlyInAnyOrder("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+		assertThat(manager.getLoadedPlugins()).containsExactlyInAnyOrder("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
 
 	}
 
@@ -133,10 +146,10 @@ public class PluginTest {
 
 		manager.load("0");
 		manager.load("1");
-		assertThat(manager.getLoadedIds()).containsExactlyInAnyOrder("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+		assertThat(manager.getLoadedPlugins()).containsExactlyInAnyOrder("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
 
 		manager.unload("3");
-		assertThat(manager.getLoadedIds()).containsExactlyInAnyOrder("0", "1", "2", "4", "5");
+		assertThat(manager.getLoadedPlugins()).containsExactlyInAnyOrder("0", "1", "2", "4", "5");
 
 	}
 

@@ -17,7 +17,7 @@ public abstract class ExtensionPoint {
 
 
 	/**
-	 * Hand the given data to this extension point
+	 * Hands the given data to this extension point
 	 *
 	 * @param data the data
 	 * @return a result
