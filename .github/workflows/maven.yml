@@ -17,6 +17,4 @@ jobs:
       with:
         java-version: 11.0.5
     - name: Build with Maven
-      run: |
-        mvn -B package --file pom.xml
-        mvn deploy -Dregistry=https://maven.pkg.github.com/SMILEY4 -Dtoken=GH_TOKEN
+      run: mvn -B package --file pom.xml
