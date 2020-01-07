@@ -9,7 +9,7 @@ public abstract class ExtensionPoint {
 
 
 	/**
-	 * The unique id of this extension point
+	 * The unique id of this extension point.
 	 */
 	private final String id;
 
