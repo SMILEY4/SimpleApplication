@@ -5,7 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -288,7 +290,7 @@ public class ValidationsTest {
 
 
 	@Test
-	public void testContainsNoNullrray() {
+	public void testContainsNoNullArray() {
 		TEST.containsNoNull(new String[]{"a", "b"}, "msg");
 		assertThat(TEST.getAndReset()).isFalse();
 
@@ -299,6 +301,150 @@ public class ValidationsTest {
 		assertThat(TEST.getAndReset()).isTrue();
 
 		TEST.containsNoNull((String[]) null, "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+	}
+
+
+
+
+	@Test
+	public void testContainsCollection() {
+		TEST.contains(List.of("a", "b", "c"), "b", "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.contains(List.of("a", "b", "c"), "x", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.contains(List.of(), "e", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.contains((ArrayList) null, "e", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+	}
+
+
+
+
+	@Test
+	public void testContainsArray() {
+		TEST.contains(new String[]{"a", "b", "c"}, "b", "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.contains(new String[]{"a", "b", "c"}, "x", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.contains(new String[]{}, "x", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.contains((String[]) null, "e", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+	}
+
+
+
+
+	@Test
+	public void testContainsKey() {
+		TEST.containsKey(Map.of("a", 1, "b", 2, "c", 3), "b", "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsKey(Map.of("a", 1, "b", 2, "c", 3), "x", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.containsKey(Map.of(), "e", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.containsKey((HashMap) null, "e", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+	}
+
+
+
+
+	@Test
+	public void testContainsValue() {
+		TEST.containsValue(Map.of("a", 1, "b", 2, "c", 3), 2, "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsValue(Map.of("a", 1, "b", 2, "c", 3), 0, "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.containsValue(Map.of(), 0, "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.containsValue((HashMap) null, 0, "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+	}
+
+
+
+
+	@Test
+	public void testContainsNotCollection() {
+		TEST.containsNot(List.of("a", "b", "c"), "b", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.containsNot(List.of("a", "b", "c"), "x", "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsNot(List.of(), "e", "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsNot((ArrayList) null, "e", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+	}
+
+
+
+
+	@Test
+	public void testContainsNotArray() {
+		TEST.containsNot(new String[]{"a", "b", "c"}, "b", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.containsNot(new String[]{"a", "b", "c"}, "x", "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsNot(new String[]{}, "x", "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsNot((String[]) null, "e", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+	}
+
+
+
+
+	@Test
+	public void testContainsNotKey() {
+		TEST.containsNotKey(Map.of("a", 1, "b", 2, "c", 3), "b", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.containsNotKey(Map.of("a", 1, "b", 2, "c", 3), "x", "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsNotKey(Map.of(), "e", "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsNotKey((HashMap) null, "e", "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+	}
+
+
+
+
+	@Test
+	public void testContainsNotValue() {
+		TEST.containsNotValue(Map.of("a", 1, "b", 2, "c", 3), 2, "msg");
+		assertThat(TEST.getAndReset()).isTrue();
+
+		TEST.containsNotValue(Map.of("a", 1, "b", 2, "c", 3), 0, "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsNotValue(Map.of(), 0, "msg");
+		assertThat(TEST.getAndReset()).isFalse();
+
+		TEST.containsNotValue((HashMap) null, 0, "msg");
 		assertThat(TEST.getAndReset()).isTrue();
 	}
 

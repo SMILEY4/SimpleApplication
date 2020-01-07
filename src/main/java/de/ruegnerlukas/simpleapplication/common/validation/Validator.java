@@ -4,6 +4,7 @@ import org.slf4j.helpers.MessageFormatter;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Class for validating inputs
@@ -437,6 +438,56 @@ public class Validator {
 
 
 	/**
+	 * Asserts that the given map contains the given key (and is not null).
+	 *
+	 * @param map          the map to examine
+	 * @param key          the key
+	 * @param errorMessage the error message when the map does not contain the key or is null.
+	 * @param args         the arguments to insert into the message
+	 * @param <K>          Generic type of the key
+	 * @param <V>          Generic type of the value
+	 * @return the map itself
+	 */
+	public <K, V> Map<K, V> containsKey(final Map<K, V> map, final K key, final String errorMessage, final Object... args) {
+		if (map == null) {
+			failedValidation(formatMessage(errorMessage, args));
+		} else {
+			if (!map.containsKey(key)) {
+				failedValidation(formatMessage(errorMessage, args));
+			}
+		}
+		return map;
+	}
+
+
+
+
+	/**
+	 * Asserts that the given map contains the given value (and is not null).
+	 *
+	 * @param map          the map to examine
+	 * @param value        the value
+	 * @param errorMessage the error message when the map does not contain the value or is null.
+	 * @param args         the arguments to insert into the message
+	 * @param <K>          Generic type of the key
+	 * @param <V>          Generic type of the value
+	 * @return the map itself
+	 */
+	public <K, V> Map<K, V> containsValue(final Map<K, V> map, final V value, final String errorMessage, final Object... args) {
+		if (map == null) {
+			failedValidation(formatMessage(errorMessage, args));
+		} else {
+			if (!map.containsValue(value)) {
+				failedValidation(formatMessage(errorMessage, args));
+			}
+		}
+		return map;
+	}
+
+
+
+
+	/**
 	 * Asserts that the given collection does not contain the given object (and is not null).
 	 *
 	 * @param collection   the collection to examine
@@ -482,6 +533,56 @@ public class Validator {
 			}
 		}
 		return array;
+	}
+
+
+
+
+	/**
+	 * Asserts that the given map does not contain the given key (and is not null).
+	 *
+	 * @param map          the map to examine
+	 * @param key          the key
+	 * @param errorMessage the error message when the map does contain the key or is null.
+	 * @param args         the arguments to insert into the message
+	 * @param <K>          Generic type of the key
+	 * @param <V>          Generic type of the value
+	 * @return the map itself
+	 */
+	public <K, V> Map<K, V> containsNotKey(final Map<K, V> map, final K key, final String errorMessage, final Object... args) {
+		if (map == null) {
+			failedValidation(formatMessage(errorMessage, args));
+		} else {
+			if (map.containsKey(key)) {
+				failedValidation(formatMessage(errorMessage, args));
+			}
+		}
+		return map;
+	}
+
+
+
+
+	/**
+	 * Asserts that the given map does not contain the given value (and is not null).
+	 *
+	 * @param map          the map to examine
+	 * @param value        the value
+	 * @param errorMessage the error message when the map does contain the value or is null.
+	 * @param args         the arguments to insert into the message
+	 * @param <K>          Generic type of the key
+	 * @param <V>          Generic type of the value
+	 * @return the map itself
+	 */
+	public <K, V> Map<K, V> containsNotValue(final Map<K, V> map, final V value, final String errorMessage, final Object... args) {
+		if (map == null) {
+			failedValidation(formatMessage(errorMessage, args));
+		} else {
+			if (map.containsValue(value)) {
+				failedValidation(formatMessage(errorMessage, args));
+			}
+		}
+		return map;
 	}
 
 
