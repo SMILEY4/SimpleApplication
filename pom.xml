@@ -23,6 +23,7 @@
         <slf4j.version>1.7.29</slf4j.version>
         <logback-classic.version>1.2.3</logback-classic.version>
         <mockito.version>3.2.4</mockito.version>
+        <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
     </properties>
 
     <dependencies>
@@ -77,6 +78,11 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>${maven-checkstyle-plugin.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -107,7 +113,30 @@
                     <mainClass>${main-class}</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle-rules.xml</configLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>8.28</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
+
 
 </project>
