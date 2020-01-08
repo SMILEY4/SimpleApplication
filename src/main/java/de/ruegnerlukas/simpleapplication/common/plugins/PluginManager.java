@@ -149,7 +149,8 @@ public class PluginManager {
 			if (loaded) {
 				setIdState(plugin.getId(), true);
 				log.info("Loaded plugin {} ({}).", plugin.getId(), plugin.getVersion());
-				SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_PLUGIN_LOADED, new GenericEvent<>(plugin.getId()));
+				SimpleApplication.getEvents().publish(
+						ApplicationConstants.EVENT_PLUGIN_LOADED, new GenericEvent<>(plugin.getId()));
 				if (checkUnloaded) {
 					checkAndLoadUnloadedPlugins();
 				}
