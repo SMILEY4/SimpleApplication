@@ -24,6 +24,11 @@ public final class ApplicationConstants {
 	public static final String SYSTEM_ID_JFXROOT = "application_jfxroot";
 
 	/**
+	 * The prefix for the id of a scene.
+	 */
+	public static final String SYSTEM_ID_SCENE_PREFIX = "application_scene_";
+
+	/**
 	 * After the application was first created and basic systems are initialized.
 	 */
 	public static final String EVENT_INITIALIZE = "application_init";
@@ -65,4 +70,5 @@ public final class ApplicationConstants {
 	 * A system was unloaded.
 	 */
 	public static final String EVENT_SYSTEM_UNLOADED = "system_unloaded";
+
 }

@@ -31,5 +31,9 @@ public class PresentationConfig {
 	 */
 	private ModuleFactory baseModule;
 
+	/**
+	 * The id of this config.
+	 */
+	private String id;
 
 }

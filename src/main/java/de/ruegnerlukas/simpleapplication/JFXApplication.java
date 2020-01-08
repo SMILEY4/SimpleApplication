@@ -24,8 +24,6 @@ public class JFXApplication extends Application {
 
 
 
-
-
 	/**
 	 * @param config the presentation configuration
 	 */
@@ -63,12 +61,15 @@ public class JFXApplication extends Application {
 	 * @param config the presentation config
 	 */
 	public static void setScene(final PresentationConfig config) {
-		Validations.PRESENCE.notNull(presentationConfig, "Presentation config for primary stage is not set (null).");
+		Validations.INPUT.notNull(config, "Presentation config must not be null.");
+		SimpleApplication.getPluginManager().unload(ApplicationConstants.SYSTEM_ID_SCENE_PREFIX + presentationConfig.getId());
+		setPresentationConfig(config);
 		final Scene scene = new Scene(config.getBaseModule().module(), config.getWidth(), config.getHeight());
 		primaryStage.setScene(scene);
 		primaryStage.setTitle(config.getTitle());
 		primaryStage.show();
-		SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_CHANGE_SCENE, new GenericEvent<>(presentationConfig));
+		SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_CHANGE_SCENE, new GenericEvent<>(config));
+		SimpleApplication.getPluginManager().load(ApplicationConstants.SYSTEM_ID_SCENE_PREFIX + config.getId());
 	}
 
 

@@ -21,6 +21,7 @@ public class TestApplication {
 
 	public static void main(String[] args) {
 		SimpleApplication.setPresentationConfig(PresentationConfig.builder()
+				.id("test_scene")
 				.title("Test App")
 				.width(600)
 				.height(450)
