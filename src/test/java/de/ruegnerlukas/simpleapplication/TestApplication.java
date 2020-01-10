@@ -2,10 +2,14 @@ package de.ruegnerlukas.simpleapplication;
 
 import de.ruegnerlukas.simpleapplication.common.events.GenericEventSource;
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSource;
+import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSourceGroup;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSource;
+import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSourceGroup;
 import de.ruegnerlukas.simpleapplication.common.events.events.EmptyEvent;
+import de.ruegnerlukas.simpleapplication.common.extensions.ExtensionPoint;
 import de.ruegnerlukas.simpleapplication.common.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.presentation.PresentationConfig;
+import de.ruegnerlukas.simpleapplication.core.presentation.uimodule.ModuleController;
 import de.ruegnerlukas.simpleapplication.core.presentation.uimodule.ModuleFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.uimodule.ModuleView;
 import de.ruegnerlukas.simpleapplication.core.presentation.uimodule.UIModule;
@@ -13,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -62,12 +67,25 @@ public class TestApplication {
 									public Map<String, TriggerableEventSource> getFunctionEndpoints() {
 										return Map.of();
 									}
+
+
 								},
-								(events, functions) -> {
-									events.getEventSource("on_exit").subscribe(event -> {
-										log.info("Pressed the exit button.");
-										SimpleApplication.stopApplication();
-									});
+								new ModuleController() {
+									@Override
+									public void initialize(ListenableEventSourceGroup events, TriggerableEventSourceGroup functions) {
+										events.getEventSource("on_exit").subscribe(event -> {
+											log.info("Pressed the exit button.");
+											SimpleApplication.stopApplication();
+										});
+									}
+
+
+
+
+									@Override
+									public List<ExtensionPoint> getExtensionPoints() {
+										return List.of();
+									}
 								}
 						);
 					}

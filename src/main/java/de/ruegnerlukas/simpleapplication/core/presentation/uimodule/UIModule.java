@@ -1,7 +1,9 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.uimodule;
 
+import de.ruegnerlukas.simpleapplication.SimpleApplication;
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSourceGroup;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSourceGroup;
+import de.ruegnerlukas.simpleapplication.common.extensions.ExtensionPoint;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.presentation.utils.Anchors;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 /**
  * A UIModule is a larger chunk of a ui.
@@ -43,7 +46,7 @@ public class UIModule extends AnchorPane {
 		Validations.INPUT.notNull(controller, "The controller must not be null.");
 		this.view = view;
 		this.controller = controller;
-		view.initializeView(this);
+		initView(view);
 		initController(controller, view);
 	}
 
@@ -65,7 +68,7 @@ public class UIModule extends AnchorPane {
 
 		try {
 			final Parent fxmlRoot = loadFXML(fxmlURL, view);
-			view.initializeView(this);
+			initView(view);
 			Anchors.setAnchors(fxmlRoot, 0);
 			this.getChildren().add(fxmlRoot);
 			if (fxmlRoot instanceof Region) {
@@ -85,6 +88,16 @@ public class UIModule extends AnchorPane {
 
 
 	/**
+	 * Initializes the view of this module
+	 */
+	private void initView(final ModuleView view) {
+		view.initializeView(this);
+	}
+
+
+
+
+	/**
 	 * Initializes the controller of this module
 	 *
 	 * @param controller the {@link ModuleController}
@@ -96,6 +109,11 @@ public class UIModule extends AnchorPane {
 				listenableEventGroup,
 				new TriggerableEventSourceGroup(view.getFunctionEndpoints())
 		);
+		Optional.ofNullable(controller.getExtensionPoints()).ifPresent(extensionPoints -> {
+			for (ExtensionPoint extensionPoint : extensionPoints) {
+				SimpleApplication.getExtensionHandler().register(extensionPoint);
+			}
+		});
 	}
 
 

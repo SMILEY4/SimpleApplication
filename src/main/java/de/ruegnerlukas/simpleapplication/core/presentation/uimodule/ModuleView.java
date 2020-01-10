@@ -27,5 +27,4 @@ public interface ModuleView {
 	 */
 	Map<String, TriggerableEventSource> getFunctionEndpoints();
 
-
 }
