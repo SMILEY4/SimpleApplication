@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation;
 
 import de.ruegnerlukas.simpleapplication.core.presentation.uimodule.ModuleFactory;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
+@AllArgsConstructor
 public class PresentationConfig {
 
 

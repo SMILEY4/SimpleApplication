@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Class for validating inputs
+ * Class for validating objects and values
  */
 public class Validator {
 
@@ -25,6 +25,18 @@ public class Validator {
 			result = MessageFormatter.arrayFormat(message, args).getMessage();
 		}
 		return result;
+	}
+
+
+
+
+	/**
+	 * Throws the exception on failed validation.
+	 *
+	 * @param message the message of the exception
+	 */
+	protected void failedValidation(final String message) {
+		// do nothing by default
 	}
 
 
@@ -875,16 +887,5 @@ public class Validator {
 		return file;
 	}
 
-
-
-
-	/**
-	 * Throws the exception on failed validation.
-	 *
-	 * @param message the message of the exception
-	 */
-	protected void failedValidation(final String message) {
-		// do nothing by default
-	}
 
 }
