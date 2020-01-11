@@ -1,11 +1,10 @@
 package de.ruegnerlukas.simpleapplication;
 
-import de.ruegnerlukas.simpleapplication.common.events.GenericEventSource;
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSource;
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSourceGroup;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSource;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSourceGroup;
-import de.ruegnerlukas.simpleapplication.common.events.events.EmptyEvent;
+import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEvent;
 import de.ruegnerlukas.simpleapplication.common.extensions.ExtensionPoint;
 import de.ruegnerlukas.simpleapplication.common.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.presentation.PresentationConfig;
@@ -37,7 +36,7 @@ public class TestApplication {
 								new ModuleView() {
 									private Button btnExit;
 
-									private GenericEventSource<EmptyEvent> btnExitEvent = new GenericEventSource<>();
+									private EmptyEvent.EmptyEventSource btnExitEvent = new EmptyEvent.EmptyEventSource();
 
 
 
@@ -48,7 +47,7 @@ public class TestApplication {
 										btnExit = new Button("Exit");
 										moduleRoot.getChildren().add(btnExit);
 										btnExit.setOnAction(e -> {
-											btnExitEvent.trigger(new EmptyEvent());
+											btnExitEvent.trigger();
 										});
 									}
 
@@ -56,7 +55,7 @@ public class TestApplication {
 
 
 									@Override
-									public Map<String, ListenableEventSource> getEventEndpoints() {
+									public Map<String, ListenableEventSource<?>> getEventEndpoints() {
 										return Map.of("on_exit", btnExitEvent);
 									}
 
@@ -64,7 +63,7 @@ public class TestApplication {
 
 
 									@Override
-									public Map<String, TriggerableEventSource> getFunctionEndpoints() {
+									public Map<String, TriggerableEventSource<?>> getFunctionEndpoints() {
 										return Map.of();
 									}
 
@@ -73,7 +72,7 @@ public class TestApplication {
 								new ModuleController() {
 									@Override
 									public void initialize(ListenableEventSourceGroup events, TriggerableEventSourceGroup functions) {
-										events.getEventSource("on_exit").subscribe(event -> {
+										events.find("on_exit").subscribe(event -> {
 											log.info("Pressed the exit button.");
 											SimpleApplication.stopApplication();
 										});

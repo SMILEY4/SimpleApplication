@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication;
 
-import de.ruegnerlukas.simpleapplication.common.events.EventBusImpl;
 import de.ruegnerlukas.simpleapplication.common.events.EventBus;
-import de.ruegnerlukas.simpleapplication.common.events.events.EmptyEvent;
+import de.ruegnerlukas.simpleapplication.common.events.EventBusImpl;
+import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEventPackage;
 import de.ruegnerlukas.simpleapplication.common.extensions.ExtensionHandler;
 import de.ruegnerlukas.simpleapplication.common.plugins.PluginManager;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
@@ -165,7 +165,7 @@ public final class SimpleApplication {
 		Validations.STATE.isFalse(SimpleApplication.applicationStated, "The application was already started.");
 		SimpleApplication.applicationStated = true;
 		// init internal systems here
-		getEvents().publish(ApplicationConstants.EVENT_INITIALIZE, new EmptyEvent());
+		getEvents().publish(ApplicationConstants.EVENT_INITIALIZE, new EmptyEventPackage());
 		getPluginManager().load(ApplicationConstants.SYSTEM_ID_ROOT);
 		JFXApplication.start();
 	}
@@ -192,7 +192,7 @@ public final class SimpleApplication {
 		// clean up internal systems here
 		getPluginManager().unload(ApplicationConstants.SYSTEM_ID_JFXROOT);
 		getPluginManager().unload(ApplicationConstants.SYSTEM_ID_ROOT);
-		getEvents().publish(ApplicationConstants.EVENT_STOP, new EmptyEvent());
+		getEvents().publish(ApplicationConstants.EVENT_STOP, new EmptyEventPackage());
 		SimpleApplication.applicationStated = false;
 	}
 

@@ -20,11 +20,11 @@ public interface ModuleView {
 	/**
 	 * @return a map of all events that this view exposes to the controller of the same module.
 	 */
-	Map<String, ListenableEventSource> getEventEndpoints();
+	Map<String, ListenableEventSource<?>> getEventEndpoints();
 
 	/**
 	 * @return a map of all functions that this view exposes to the controller of the same module.
 	 */
-	Map<String, TriggerableEventSource> getFunctionEndpoints();
+	Map<String, TriggerableEventSource<?>> getFunctionEndpoints();
 
 }

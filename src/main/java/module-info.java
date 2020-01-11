@@ -9,8 +9,7 @@ module de.ruegnerlukas.simpleapplication {
 	exports de.ruegnerlukas.simpleapplication;
 
 	exports de.ruegnerlukas.simpleapplication.common.events;
-	exports de.ruegnerlukas.simpleapplication.common.events.listeners;
-	exports de.ruegnerlukas.simpleapplication.common.events.events;
+	exports de.ruegnerlukas.simpleapplication.common.events.specializedevents;
 
 	exports de.ruegnerlukas.simpleapplication.common.plugins;
 	exports de.ruegnerlukas.simpleapplication.common.validation;

@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.common.events2;
+package de.ruegnerlukas.simpleapplication.common.events;
 
 public interface EventListener<T> {
 

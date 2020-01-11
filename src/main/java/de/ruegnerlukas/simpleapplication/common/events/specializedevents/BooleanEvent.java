@@ -1,8 +1,8 @@
-package de.ruegnerlukas.simpleapplication.common.events2.specializedevents;
+package de.ruegnerlukas.simpleapplication.common.events.specializedevents;
 
-import de.ruegnerlukas.simpleapplication.common.events2.EventListener;
-import de.ruegnerlukas.simpleapplication.common.events2.EventSource;
-import de.ruegnerlukas.simpleapplication.common.events2.FixedEventSource;
+import de.ruegnerlukas.simpleapplication.common.events.EventListener;
+import de.ruegnerlukas.simpleapplication.common.events.EventSource;
+import de.ruegnerlukas.simpleapplication.common.events.FixedEventSource;
 
 public class BooleanEvent {
 

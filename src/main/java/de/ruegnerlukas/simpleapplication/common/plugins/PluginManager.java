@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.common.plugins;
 
 import de.ruegnerlukas.simpleapplication.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.SimpleApplication;
-import de.ruegnerlukas.simpleapplication.common.events.events.GenericEvent;
+import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import lombok.extern.slf4j.Slf4j;
 
@@ -107,7 +107,7 @@ public class PluginManager {
 		} else {
 			setIdState(id, true);
 			log.info("System with id {} loaded.", id);
-			SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_SYSTEM_LOADED, new GenericEvent<>(id));
+			SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_SYSTEM_LOADED, new EventPackage<>(id));
 			checkAndLoadUnloadedPlugins();
 		}
 	}
@@ -129,7 +129,7 @@ public class PluginManager {
 			} else {
 				setIdState(id, false);
 				log.info("System with id {} unloaded.", id);
-				SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_SYSTEM_UNLOADED, new GenericEvent<>(id));
+				SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_SYSTEM_UNLOADED, new EventPackage<>(id));
 				checkAndUnloadLoadedPlugins();
 			}
 		}
@@ -150,7 +150,7 @@ public class PluginManager {
 				setIdState(plugin.getId(), true);
 				log.info("Loaded plugin {} ({}).", plugin.getId(), plugin.getVersion());
 				SimpleApplication.getEvents().publish(
-						ApplicationConstants.EVENT_PLUGIN_LOADED, new GenericEvent<>(plugin.getId()));
+						ApplicationConstants.EVENT_PLUGIN_LOADED, new EventPackage<>(plugin.getId()));
 				if (checkUnloaded) {
 					checkAndLoadUnloadedPlugins();
 				}
@@ -172,7 +172,7 @@ public class PluginManager {
 		plugin.onUnload();
 		setIdState(plugin.getId(), false);
 		log.info("Unloaded plugin {} ({}).", plugin.getId(), plugin.getVersion());
-		SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_PLUGIN_UNLOADED, new GenericEvent<>(plugin.getId()));
+		SimpleApplication.getEvents().publish(ApplicationConstants.EVENT_PLUGIN_UNLOADED, new EventPackage<>(plugin.getId()));
 		if (checkLoaded) {
 			checkAndUnloadLoadedPlugins();
 		}

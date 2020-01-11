@@ -4,14 +4,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * The base class for an event.
- */
-public class Event {
+public class EventPackage<T> {
 
 
 	/**
-	 * The names of the channels this event was published in (If it was sent over an {@link EventBusImpl}).
+	 * The names of the channels this event was published in.
 	 */
 	@Getter
 	@Setter (AccessLevel.PACKAGE)
@@ -30,5 +27,22 @@ public class Event {
 	@Getter
 	@Setter (AccessLevel.PACKAGE)
 	private int receivers;
+
+
+	/**
+	 * The event/data of this package.
+	 */
+	@Getter
+	private final T event;
+
+
+
+
+	/**
+	 * @param event the event/data of this package.
+	 */
+	public EventPackage(final T event) {
+		this.event = event;
+	}
 
 }

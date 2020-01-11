@@ -1,29 +1,31 @@
 package de.ruegnerlukas.simpleapplication.common.events;
 
-
-import de.ruegnerlukas.simpleapplication.common.events.listeners.EventListener;
+import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EventBusListener;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public final class EventBusImpl implements EventBus {
+public class EventBusImpl implements EventBus {
 
 
 	/**
 	 * The map of subscribed listeners. Key is the name of the channel.
 	 */
-	private final Map<String, List<EventListener>> subscribers = new HashMap<>();
+	private final Map<String, List<EventBusListener>> subscribers = new HashMap<>();
 
 
 
 
 	@Override
-	public void subscribe(final String[] channels, final EventListener listener) {
+	public void subscribe(final String[] channels, final EventBusListener<?> listener) {
+		Validations.INPUT.notNull(channels, "The channels must not be null.");
+		Validations.INPUT.notNull(listener, "The listener must not be null.");
 		for (String channel : channels) {
 			subscribe(channel, listener);
 		}
@@ -33,18 +35,19 @@ public final class EventBusImpl implements EventBus {
 
 
 	@Override
-	public void subscribe(final String channel, final EventListener listener) {
+	public void subscribe(final String channel, final EventBusListener<?> listener) {
 		Validations.INPUT.notBlank(channel, "The channel must not be null or empty.");
 		Validations.INPUT.notNull(listener, "The listener must not be null.");
-		final List<EventListener> listeners = subscribers.computeIfAbsent(channel, key -> new ArrayList<>());
-		listeners.add(listener);
+		final List<EventBusListener> list = subscribers.computeIfAbsent(channel, k -> new ArrayList<>());
+		list.add(listener);
 	}
 
 
 
 
 	@Override
-	public void unsubscribe(final String[] channels, final EventListener listener) {
+	public void unsubscribe(final String[] channels, final EventBusListener<?> listener) {
+		Validations.INPUT.notNull(channels, "The channels must not be null.");
 		for (String channel : channels) {
 			unsubscribe(channel, listener);
 		}
@@ -54,10 +57,9 @@ public final class EventBusImpl implements EventBus {
 
 
 	@Override
-	public void unsubscribe(final String channel, final EventListener listener) {
-		final List<EventListener> listeners = subscribers.get(channel);
-		if (listener != null) {
-			listeners.remove(listener);
+	public void unsubscribe(final String channel, final EventBusListener<?> listener) {
+		if (subscribers.containsKey(channel)) {
+			subscribers.get(channel).remove(listener);
 		}
 	}
 
@@ -65,7 +67,9 @@ public final class EventBusImpl implements EventBus {
 
 
 	@Override
-	public void publish(final String[] channels, final Event event) {
+	public void publish(final String[] channels, final EventPackage<?> event) {
+		Validations.INPUT.notNull(channels, "The channels must not be null.");
+		Validations.INPUT.notNull(event, "The event must not be null.");
 		for (String channel : channels) {
 			publish(channel, event);
 		}
@@ -75,20 +79,18 @@ public final class EventBusImpl implements EventBus {
 
 
 	@Override
-	public int publish(final String channel, final Event event) {
+	public int publish(final String channel, final EventPackage<?> event) {
 		Validations.INPUT.notBlank(channel, "The channel must not be null or empty.");
 		Validations.INPUT.notNull(event, "The event must not be null.");
+		int count = subscribers.getOrDefault(channel, Collections.emptyList()).size();
 		event.setChannels(new String[]{channel});
 		event.setTimestamp(System.currentTimeMillis());
-		event.setReceivers(0);
-		final List<EventListener> listeners = subscribers.get(channel);
-		int count = 0;
+		event.setReceivers(count);
 		log.debug("Publish event to {} listeners: {} in [{}].",
-				(listeners != null ? listeners.size() : 0), event.getClass(), String.join(",", event.getChannels()));
-		if (listeners != null) {
-			count = listeners.size();
-			event.setReceivers(count);
-			listeners.forEach(listener -> listener.onEvent(event));
+				count, event.getEvent(), String.join(",", event.getChannels()));
+		if (count > 0) {
+			final List<EventBusListener> list = subscribers.get(channel);
+			list.forEach(listener -> listener.onEvent(event));
 		}
 		return count;
 	}
@@ -98,13 +100,7 @@ public final class EventBusImpl implements EventBus {
 
 	@Override
 	public int getSubscriberCount(final String channel) {
-		final List<EventListener> listeners = subscribers.get(channel);
-		int count = 0;
-		if (listeners != null) {
-			count = listeners.size();
-		}
-		return count;
+		return subscribers.getOrDefault(channel, Collections.emptyList()).size();
 	}
-
 
 }

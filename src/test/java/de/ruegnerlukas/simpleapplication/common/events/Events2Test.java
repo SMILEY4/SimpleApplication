@@ -1,8 +1,8 @@
-package de.ruegnerlukas.simpleapplication.common.events2;
+package de.ruegnerlukas.simpleapplication.common.events;
 
-import de.ruegnerlukas.simpleapplication.common.events2.specializedevents.EmptyEvent;
-import de.ruegnerlukas.simpleapplication.common.events2.specializedevents.EventBusListener;
-import de.ruegnerlukas.simpleapplication.common.events2.specializedevents.StringEvent;
+import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEvent;
+import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EventBusListener;
+import de.ruegnerlukas.simpleapplication.common.events.specializedevents.StringEvent;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;

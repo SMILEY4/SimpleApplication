@@ -1,27 +1,21 @@
 package de.ruegnerlukas.simpleapplication.common.events;
 
-import de.ruegnerlukas.simpleapplication.common.events.listeners.EventListener;
-
-public interface ListenableEventSource {
+public interface ListenableEventSource<T> {
 
 
 	/**
-	 * Subscribes the given {@link EventListener} to this event source.
+	 * Subscribes the given listener to this event source.
 	 *
-	 * @param listener the listener
+	 * @param listener the {@link EventListener}
 	 */
-	void subscribe(EventListener listener);
+	void subscribe(EventListener<T> listener);
 
 	/**
-	 * Unsubscribe the given {@link EventListener} from this event source.
+	 * Unsubscribes the given listener from this event source.
 	 *
-	 * @param listener the listener
+	 * @param listener the {@link EventListener}
 	 */
-	void unsubscribe(EventListener listener);
+	void unsubscribe(EventListener<T> listener);
 
-	/**
-	 * @return the total number of subscribed listeners.
-	 */
-	int getSubscriberCount();
 
 }

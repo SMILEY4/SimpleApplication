@@ -1,13 +1,36 @@
 package de.ruegnerlukas.simpleapplication.common.events;
 
-public class FixedEventSource extends GenericFixedEventSource<Event> {
+import lombok.Getter;
+import lombok.Setter;
+
+public class FixedEventSource<T> extends EventSource<T> {
 
 
 	/**
-	 * @param event the event triggered by this event source
+	 * The event to trigger.
 	 */
-	public FixedEventSource(final Event event) {
-		super(event);
+	@Getter
+	@Setter
+	private T event;
+
+
+
+
+	/**
+	 * @param event the event to trigger
+	 */
+	public FixedEventSource(final T event) {
+		setEvent(event);
+	}
+
+
+
+
+	/**
+	 * Triggers the event of this fixed event source.
+	 */
+	public void trigger() {
+		trigger(getEvent());
 	}
 
 }
