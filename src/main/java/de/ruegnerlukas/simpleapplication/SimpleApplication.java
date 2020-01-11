@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication;
 
+import de.ruegnerlukas.simpleapplication.common.events.EventBusImpl;
 import de.ruegnerlukas.simpleapplication.common.events.EventBus;
 import de.ruegnerlukas.simpleapplication.common.events.events.EmptyEvent;
 import de.ruegnerlukas.simpleapplication.common.extensions.ExtensionHandler;
@@ -112,7 +113,7 @@ public final class SimpleApplication {
 	/**
 	 * The global application event bus.
 	 */
-	private static EventBus applicationEventBus = new EventBus();
+	private static EventBus applicationEventBus = new EventBusImpl();
 
 
 

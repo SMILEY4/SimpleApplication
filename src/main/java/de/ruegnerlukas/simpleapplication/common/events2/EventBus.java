@@ -1,6 +1,7 @@
-package de.ruegnerlukas.simpleapplication.common.events;
+package de.ruegnerlukas.simpleapplication.common.events2;
 
-import de.ruegnerlukas.simpleapplication.common.events.listeners.EventListener;
+
+import de.ruegnerlukas.simpleapplication.common.events2.specializedevents.EventBusListener;
 
 public interface EventBus {
 
@@ -9,51 +10,50 @@ public interface EventBus {
 	 * Subscribe the given listener to the given channels.
 	 *
 	 * @param channels the names of the channels
-	 * @param listener the {@link EventListener}
+	 * @param listener the {@link EventBusListener}
 	 */
-	void subscribe(String[] channels, EventListener listener);
+	void subscribe(String[] channels, EventBusListener<?> listener);
 
 	/**
 	 * Subscribe the given listener to the given channel.
 	 *
 	 * @param channel  the name of the channel
-	 * @param listener the {@link EventListener}
+	 * @param listener the {@link EventBusListener}
 	 */
-	void subscribe(String channel, EventListener listener);
+	void subscribe(String channel, EventBusListener<?> listener);
 
 	/**
 	 * Unsubscribe the given listener from the given channels.
 	 *
 	 * @param channels the names of the channels
-	 * @param listener the {@link EventListener}
+	 * @param listener the {@link EventBusListener}
 	 */
-	void unsubscribe(String[] channels, EventListener listener);
+	void unsubscribe(String[] channels, EventBusListener<?> listener);
 
 	/**
 	 * Unsubscribe the given listener from the given channel.
 	 *
 	 * @param channel  the name of the channel
-	 * @param listener the {@link EventListener}
+	 * @param listener the {@link EventBusListener}
 	 */
-	void unsubscribe(String channel, EventListener listener);
+	void unsubscribe(String channel, EventBusListener<?> listener);
 
 	/**
 	 * Publish a new event in the given channels.
 	 *
 	 * @param channels the names of the channels
-	 * @param event    the {@link Event}
-	 * @return the number of listeners that received the given event
+	 * @param event    the {@link EventPackage}
 	 */
-	void publish(String[] channels, Event event);
+	void publish(String[] channels, EventPackage<?> event);
 
 	/**
 	 * Publish a new event in the given channel.
 	 *
 	 * @param channel the name of the channel
-	 * @param event   the {@link Event}
+	 * @param event   the {@link EventPackage}
 	 * @return the number of listeners that received the given event
 	 */
-	int publish(String channel, Event event);
+	int publish(String channel, EventPackage<?> event);
 
 	/**
 	 * @param channel the name of the channel

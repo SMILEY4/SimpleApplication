@@ -14,7 +14,7 @@ public class EventBusTest {
 
 	@Test
 	public void testSimpleListener() {
-		final EventBus EVENTS = new EventBus();
+		final EventBus EVENTS = new EventBusImpl();
 		final String CHANNEL = "test";
 		final Event EVENT = new Event();
 		final EventListener listener = Mockito.mock(EventListener.class);
@@ -31,7 +31,7 @@ public class EventBusTest {
 
 	@Test
 	public void testMultipleListeners() {
-		final EventBus EVENTS = new EventBus();
+		final EventBus EVENTS = new EventBusImpl();
 		final String CHANNEL = "test";
 		final Event EVENT = new Event();
 		final EventListener listenerA = Mockito.mock(EventListener.class);
@@ -51,7 +51,7 @@ public class EventBusTest {
 
 	@Test
 	public void testMultipleChannels() {
-		final EventBus EVENTS = new EventBus();
+		final EventBus EVENTS = new EventBusImpl();
 		final Event EVENT_A = new Event();
 		final Event EVENT_B = new Event();
 		final String CHANNEL_A = "test_a";
@@ -77,7 +77,7 @@ public class EventBusTest {
 
 	@Test
 	public void testUnsubscribe() {
-		final EventBus EVENTS = new EventBus();
+		final EventBus EVENTS = new EventBusImpl();
 		final String CHANNEL = "test";
 		final Event EVENT = new Event();
 		final EventListener listener = Mockito.mock(EventListener.class);
