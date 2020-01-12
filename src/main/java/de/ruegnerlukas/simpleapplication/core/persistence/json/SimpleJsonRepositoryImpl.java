@@ -300,7 +300,7 @@ public class SimpleJsonRepositoryImpl implements JsonRepository {
 			file.getParentFile().mkdirs();
 		}
 		try {
-			mapper.writeValue(file, object);
+			mapper.writerWithDefaultPrettyPrinter().writeValue(file, object);
 		} catch (IOException e) {
 			log.error("Could not write object with id " + id + " to file at " + path + ".", e);
 		}

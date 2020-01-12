@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.persistence;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
-import de.ruegnerlukas.simpleapplication.core.persistence.json.DummyObject;
 import de.ruegnerlukas.simpleapplication.core.persistence.json.JsonRepository;
 import de.ruegnerlukas.simpleapplication.core.persistence.json.SimpleJsonRepositoryImpl;
 import org.junit.Test;
