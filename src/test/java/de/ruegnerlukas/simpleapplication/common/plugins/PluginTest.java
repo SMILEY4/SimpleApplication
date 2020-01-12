@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.plugins;
 
+import de.ruegnerlukas.simpleapplication.ApplicationConstants;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -15,6 +16,8 @@ public class PluginTest {
 	public void testSinglePlugin() {
 		final PluginManager manager = new PluginManager();
 		final String PLUGIN_ID = "test_plugin";
+
+		manager.load(ApplicationConstants.SYSTEM_ID_ROOT);
 
 		final Plugin plugin = Mockito.mock(TestPluginUtils.TestPlugin.class);
 		when(plugin.onLoad()).thenReturn(true);
@@ -62,6 +65,8 @@ public class PluginTest {
 		final String PLUGIN_ID = "test_plugin";
 		final String SYSTEM_ID = "test_system";
 
+		manager.load(ApplicationConstants.SYSTEM_ID_ROOT);
+
 		final Plugin plugin = Mockito.mock(TestPluginUtils.TestPlugin.class);
 		when(plugin.onLoad()).thenReturn(true);
 		when(plugin.getId()).thenReturn(PLUGIN_ID);
@@ -82,6 +87,8 @@ public class PluginTest {
 	public void testLoadWithComplexDependencies() {
 
 		final PluginManager manager = new PluginManager();
+
+		manager.load(ApplicationConstants.SYSTEM_ID_ROOT);
 
 		manager.register(TestPluginUtils.createPlugin("2", new String[]{"0", "1"}));
 		manager.register(TestPluginUtils.createPlugin("3", new String[]{"0", "1"}));
@@ -114,6 +121,8 @@ public class PluginTest {
 		final String PLUGIN_ID = "test_plugin";
 		final String SYSTEM_ID = "test_system";
 
+		manager.load(ApplicationConstants.SYSTEM_ID_ROOT);
+
 		final Plugin plugin = Mockito.mock(TestPluginUtils.TestPlugin.class);
 		when(plugin.onLoad()).thenReturn(true);
 		when(plugin.getId()).thenReturn(PLUGIN_ID);
@@ -134,6 +143,7 @@ public class PluginTest {
 	public void testUnloadWithComplexDependencies() {
 
 		final PluginManager manager = new PluginManager();
+		manager.load(ApplicationConstants.SYSTEM_ID_ROOT);
 
 		manager.register(TestPluginUtils.createPlugin("2", new String[]{"0", "1"}));
 		manager.register(TestPluginUtils.createPlugin("3", new String[]{"0", "1"}));
@@ -160,6 +170,8 @@ public class PluginTest {
 	public void testRegisterPluginTwice() {
 		final PluginManager manager = new PluginManager();
 		final String PLUGIN_ID = "test_plugin";
+
+		manager.load(ApplicationConstants.SYSTEM_ID_ROOT);
 
 		final Plugin pluginA = Mockito.mock(TestPluginUtils.TestPlugin.class);
 		when(pluginA.onLoad()).thenReturn(true);

@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.persistence;
+package de.ruegnerlukas.simpleapplication.core.persistence.json;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

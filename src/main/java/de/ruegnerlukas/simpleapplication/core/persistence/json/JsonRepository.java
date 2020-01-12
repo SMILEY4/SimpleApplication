@@ -30,6 +30,7 @@ public interface JsonRepository {
 	 */
 	<T> Optional<T> getAsObject(Class<T> type);
 
+
 	/**
 	 * Return the json entity/file with the given id as an object of the given type.
 	 *
@@ -38,6 +39,7 @@ public interface JsonRepository {
 	 * @return an {@link Optional} with the object or null
 	 */
 	<T> Optional<T> getAsObject(String id, Class<T> type);
+
 
 	/**
 	 * @return a list of all stored ids
@@ -52,7 +54,6 @@ public interface JsonRepository {
 	 * @return whether the object already exists.
 	 */
 	boolean exists(Class<?> type);
-
 
 	/**
 	 * Checks if an object with the given id already exists.

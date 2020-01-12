@@ -75,20 +75,24 @@ public class PluginManager {
 
 
 	/**
-	 * @return a list of the ids of all currently loaded plugins
+	 * @return a list of the ids of all currently loaded plugins and systems
 	 */
 	public List<String> getLoadedPlugins() {
-		return new ArrayList<>(loadedIds);
+		final List<String> list = new ArrayList<>(loadedIds);
+		list.remove(ApplicationConstants.SYSTEM_ID_ROOT);
+		return list;
 	}
 
 
 
 
 	/**
-	 * @return a list of the ids of all currently unloaded plugins
+	 * @return a list of the ids of all currently unloaded plugins and systems
 	 */
 	public List<String> getUnloadedPlugins() {
-		return new ArrayList<>(unloadedIds);
+		final List<String> list = new ArrayList<>(unloadedIds);
+		list.remove(ApplicationConstants.SYSTEM_ID_ROOT);
+		return list;
 	}
 
 
@@ -271,6 +275,9 @@ public class PluginManager {
 	 * @return whether the dependencies of the plugin are loaded.
 	 */
 	private boolean satisfiedDependencies(final Plugin plugin) {
+		if (!isLoaded(ApplicationConstants.SYSTEM_ID_ROOT)) {
+			return false;
+		}
 		for (String dep : plugin.getPluginDependencies()) {
 			if (!loadedIds.contains(dep)) {
 				return false;
@@ -302,6 +309,9 @@ public class PluginManager {
 	 * @return true, if they are loaded
 	 */
 	private boolean areLoaded(final String... ids) {
+		if (!isLoaded(ApplicationConstants.SYSTEM_ID_ROOT)) {
+			return false;
+		}
 		for (String id : ids) {
 			if (!isLoaded(id)) {
 				return false;
