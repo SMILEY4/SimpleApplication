@@ -37,6 +37,29 @@ public final class Resource {
 
 
 	/**
+	 * Creates a new {@link Resource} with the given path relative to the root directory.
+	 *
+	 * @param path the relative path to the file
+	 * @return the create resource
+	 */
+	public static Resource externalRelative(final String path) {
+		return Resource.external(getRootDirectory().getPath() + "/" + path);
+	}
+
+
+
+
+	/**
+	 * @return the current root directory
+	 */
+	public static Resource getRootDirectory() {
+		return Resource.external(new File("").getAbsolutePath());
+	}
+
+
+
+
+	/**
 	 * The path to the resource.
 	 */
 	private final String path;
