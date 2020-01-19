@@ -40,6 +40,18 @@ public class JsonRepositoryEngine {
 
 
 	/**
+	 * @param id the id of the file/entity
+	 * @return whether the file with the given id exists
+	 */
+	public boolean exists(final String id) {
+		final String path = convertToFilePath(id);
+		return Files.exists(Paths.get(path));
+	}
+
+
+
+
+	/**
 	 * @param id the valid id of the file/entity.
 	 * @return the content of the file with the given id as a (json-) string
 	 */

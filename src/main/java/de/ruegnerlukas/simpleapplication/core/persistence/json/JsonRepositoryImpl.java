@@ -15,7 +15,7 @@ import java.util.Set;
  * A unique id corresponds to one file (and one object).
  */
 @Slf4j
-public class SimpleJsonRepositoryImpl implements JsonRepository {
+public class JsonRepositoryImpl implements JsonRepository {
 
 
 	/**
@@ -35,7 +35,7 @@ public class SimpleJsonRepositoryImpl implements JsonRepository {
 	/**
 	 * @param directory the root directory of the repository.
 	 */
-	public SimpleJsonRepositoryImpl(final Resource directory) {
+	public JsonRepositoryImpl(final Resource directory) {
 		this(directory.getPath());
 	}
 
@@ -45,7 +45,7 @@ public class SimpleJsonRepositoryImpl implements JsonRepository {
 	/**
 	 * @param directory the root directory of the repository.
 	 */
-	public SimpleJsonRepositoryImpl(final String directory) {
+	public JsonRepositoryImpl(final String directory) {
 		this.engine = new JsonRepositoryEngine(directory);
 	}
 

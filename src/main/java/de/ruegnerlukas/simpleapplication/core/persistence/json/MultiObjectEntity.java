@@ -2,11 +2,13 @@ package de.ruegnerlukas.simpleapplication.core.persistence.json;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class MultiObjectEntity {
 
 

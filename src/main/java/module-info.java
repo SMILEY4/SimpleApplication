@@ -11,6 +11,7 @@ module de.ruegnerlukas.simpleapplication {
 
 	// opens
 	opens de.ruegnerlukas.simpleapplication.core.presentation to javafx.fxml;
+	opens de.ruegnerlukas.simpleapplication.core.persistence.json to com.fasterxml.jackson.databind;
 
 	// exports
 	exports de.ruegnerlukas.simpleapplication;
