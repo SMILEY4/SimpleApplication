@@ -2,8 +2,8 @@ package de.ruegnerlukas.simpleapplication.persistence;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.persistence.json.DummyObject;
-import de.ruegnerlukas.simpleapplication.core.persistence.json.MultiObjectJsonRepository;
-import de.ruegnerlukas.simpleapplication.core.persistence.json.MultiObjectJsonRepositoryImpl;
+import de.ruegnerlukas.simpleapplication.core.persistence.json.JsonRepository;
+import de.ruegnerlukas.simpleapplication.core.persistence.json.JsonRepositoryImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class MultiObjectJsonRepositoryTest {
 
 		final Resource directory = Resource.externalRelative(DIRECTORY);
 
-		final MultiObjectJsonRepository repository = new MultiObjectJsonRepositoryImpl(directory);
+		final JsonRepository repository = new JsonRepositoryImpl(directory);
 		final DummyObject object = DummyObject.random();
 
 		// insert
@@ -82,7 +82,7 @@ public class MultiObjectJsonRepositoryTest {
 
 		final Resource directory = Resource.externalRelative("testMOE");
 
-		final MultiObjectJsonRepository repository = new MultiObjectJsonRepositoryImpl(directory);
+		final JsonRepository repository = new JsonRepositoryImpl(directory);
 		final DummyObject objectA = DummyObject.random();
 		final DummyObject objectB = DummyObject.random();
 
