@@ -43,7 +43,7 @@ public final class Resource {
 	 * @return the create resource
 	 */
 	public static Resource externalRelative(final String path) {
-		return Resource.external(getRootDirectory().getPath() + "/" + path);
+		return Resource.external(getRootDirectory().getPath() + "\\" + path);
 	}
 
 
