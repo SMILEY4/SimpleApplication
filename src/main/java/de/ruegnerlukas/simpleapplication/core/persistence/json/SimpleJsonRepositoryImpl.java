@@ -4,11 +4,8 @@ import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Stores and manages object as json-files.
@@ -18,10 +15,10 @@ import java.util.Set;
 public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 
-	/**
-	 * All known ids in this repository.
-	 */
-	private final Set<String> storedIds = new HashSet<>();
+//	/**
+//	 * All known ids in this repository.
+//	 */
+//	private final Set<String> storedIds = new HashSet<>();
 
 
 	/**
@@ -65,7 +62,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 	public Optional<String> getAsJsonString(final String id) {
 		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.contains(storedIds, validId, "The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
 		String content = null;
 		if (exists(validId)) {
 			content = engine.getFileAsString(validId);
@@ -89,7 +86,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 	public <T> Optional<T> getAsObject(final String id, final Class<T> type) {
 		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.contains(storedIds, validId, "The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
 		T object = null;
 		if (exists(validId)) {
 			object = engine.getFileAsObject(validId, type);
@@ -102,7 +99,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public List<String> getAllIds() {
-		return new ArrayList<>(storedIds);
+		return engine.getIds();
 	}
 
 
@@ -111,7 +108,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 	@Override
 	public boolean exists(final Class<?> type) {
 		Validations.INPUT.notNull(type, "The type cannot be null.");
-		return storedIds.contains(engine.convertToValidId(type));
+		return engine.exists(engine.convertToValidId(type));
 	}
 
 
@@ -120,8 +117,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 	@Override
 	public boolean exists(final String id) {
 		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
-		return storedIds.contains(engine.convertToValidId(id));
-
+		return engine.exists(engine.convertToValidId(id));
 	}
 
 
@@ -129,7 +125,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public int count() {
-		return storedIds.size();
+		return getAllIds().size();
 	}
 
 
@@ -152,7 +148,6 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 			log.warn("The object with the id {} already exists and will not be inserted again.", id);
 		} else {
 			engine.writeToFile(validId, object);
-			storedIds.add(validId);
 		}
 	}
 
@@ -222,7 +217,6 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 			log.warn("The object with the id {} does not exist and will not be deleted.", id);
 		} else {
 			engine.deleteFile(validId);
-			storedIds.remove(validId);
 		}
 	}
 

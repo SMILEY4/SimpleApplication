@@ -8,11 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Stores and manages object as json-files.
@@ -38,11 +36,6 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 
 
-
-	/**
-	 * All known ids in this repository.
-	 */
-	private final Set<String> storedIds = new HashSet<>();
 
 	/**
 	 * The types of all known ids in this repository.
@@ -95,7 +88,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 	public Optional<String> getAsJsonString(final String id) {
 		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.contains(storedIds, validId, "The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isTrue(engine.exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
 		Validations.INPUT.isEqual(getEntityType(validId), EntityType.SINGLE_OBJECT,
 				"The requested file contains multiple entities and cant be accessed this way");
 		String content = null;
@@ -123,7 +116,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
 		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.contains(storedIds, validId, "The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
 		Validations.INPUT.isEqual(getEntityType(validId), EntityType.MULTI_OBJECT_ENTITY,
 				"The requested file is not a multi-object-file and cant be accessed this way");
 		String content = null;
@@ -150,7 +143,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 	public <T> Optional<T> getAsObject(final String id, final Class<T> type) {
 		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.contains(storedIds, validId, "The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
 		Validations.INPUT.isEqual(getEntityType(validId), EntityType.SINGLE_OBJECT,
 				"The requested file contains multiple entities and cant be accessed this way");
 		T object = null;
@@ -178,7 +171,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
 		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.contains(storedIds, validId, "The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
 		Validations.INPUT.isEqual(getEntityType(validId), EntityType.MULTI_OBJECT_ENTITY,
 				"The requested file is not a multi-object-file and cant be accessed this way");
 		T object = null;
@@ -194,7 +187,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public List<String> getAllIds() {
-		return new ArrayList<>(storedIds);
+		return engine.getIds();
 	}
 
 
@@ -226,7 +219,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 	@Override
 	public boolean exists(final Class<?> type) {
 		Validations.INPUT.notNull(type, "The type cannot be null.");
-		return storedIds.contains(engine.convertToValidId(type));
+		return engine.exists(engine.convertToValidId(type));
 	}
 
 
@@ -235,8 +228,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 	@Override
 	public boolean exists(final String id) {
 		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
-		return storedIds.contains(engine.convertToValidId(id));
-
+		return engine.exists(engine.convertToValidId(id));
 	}
 
 
@@ -274,7 +266,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public int count() {
-		return storedIds.size();
+		return getAllIds().size();
 	}
 
 
@@ -311,7 +303,6 @@ public class JsonRepositoryImpl implements JsonRepository {
 			log.warn("The object with the id {} already exists and will not be inserted again.", id);
 		} else {
 			engine.writeToFile(validId, object);
-			storedIds.add(validId);
 			entityTypes.put(validId, EntityType.SINGLE_OBJECT);
 		}
 	}
@@ -342,7 +333,6 @@ public class JsonRepositoryImpl implements JsonRepository {
 			if (jsonEntity != null) {
 				moe.getJsonEntities().put(subId, jsonEntity);
 				engine.writeToFile(validId, moe);
-				storedIds.add(validId);
 				entityTypes.put(validId, EntityType.MULTI_OBJECT_ENTITY);
 			}
 		}
@@ -473,7 +463,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 			log.warn("The object with the id {} does not exist and will not be deleted.", id);
 		} else {
 			engine.deleteFile(validId);
-			storedIds.remove(validId);
+			entityTypes.remove(validId);
 		}
 	}
 
@@ -504,7 +494,6 @@ public class JsonRepositoryImpl implements JsonRepository {
 				if (removed) {
 					if (moe.getJsonEntities().isEmpty()) {
 						engine.deleteFile(validId);
-						storedIds.remove(validId);
 						entityTypes.remove(validId);
 					} else {
 						engine.writeToFile(validId, moe);
@@ -531,6 +520,26 @@ public class JsonRepositoryImpl implements JsonRepository {
 			return mapper.readValue(entity.getJsonEntities().get(subId), type);
 		} catch (JsonProcessingException e) {
 			log.error("Error parsing sub-entity with sub-id " + subId + ".", e);
+			return null;
+		}
+	}
+
+
+
+
+	/**
+	 * @param id the valid id
+	 * @return the type of the file/entity with the given id
+	 */
+	private EntityType getType(final String id) {
+		if (exists(id)) {
+			try {
+				mapper.readValue(engine.getFileAsString(id), MultiObjectEntity.class);
+				return EntityType.MULTI_OBJECT_ENTITY;
+			} catch (JsonProcessingException ignore) {
+				return EntityType.SINGLE_OBJECT;
+			}
+		} else {
 			return null;
 		}
 	}

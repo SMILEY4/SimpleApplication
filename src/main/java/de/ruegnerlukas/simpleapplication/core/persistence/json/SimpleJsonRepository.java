@@ -14,6 +14,7 @@ public interface SimpleJsonRepository {
 	 */
 	Optional<String> getAsJsonString(Class<?> type);
 
+
 	/**
 	 * Return the json entity/file with the given id as a string.
 	 *
@@ -21,6 +22,7 @@ public interface SimpleJsonRepository {
 	 * @return an {@link Optional} with the string or null
 	 */
 	Optional<String> getAsJsonString(String id);
+
 
 	/**
 	 * Return the json entity/file with the given type as an object of the given type.
