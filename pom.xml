@@ -21,6 +21,7 @@
         <slf4j.version>1.7.29</slf4j.version>
         <logback-classic.version>1.2.3</logback-classic.version>
         <jackson-core.version>2.10.1</jackson-core.version>
+        <guice.version>4.2.2</guice.version>
         <!-- Tests-->
         <junit.version>4.12</junit.version>
         <assertj.version>3.14.0</assertj.version>
@@ -76,6 +77,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
         </dependency>
         <!-- Tests -->
         <dependency>
