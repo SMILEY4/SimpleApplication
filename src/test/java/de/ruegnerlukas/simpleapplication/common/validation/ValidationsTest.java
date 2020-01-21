@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.validation;
 
+
 import org.junit.Before;
 import org.junit.Test;
 

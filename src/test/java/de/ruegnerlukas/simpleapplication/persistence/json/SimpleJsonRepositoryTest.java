@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.persistence;
+package de.ruegnerlukas.simpleapplication.persistence.json;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.persistence.json.DummyObject;

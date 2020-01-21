@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.persistence;
+package de.ruegnerlukas.simpleapplication.persistence.json;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.persistence.json.DummyObject;
@@ -17,7 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MultiObjectJsonRepositoryTest {
 
 
-	private final String DIRECTORY = "testMOE";
+	private final String DIRECTORY_SINGLE = "testMOES";
+	private final String DIRECTORY_MULTI= "testMOE";
 
 
 
@@ -25,9 +26,14 @@ public class MultiObjectJsonRepositoryTest {
 	@Before
 	@After
 	public void deleteDirectory() {
-		final Resource directory = Resource.externalRelative(DIRECTORY);
+		final Resource directoryMulti = Resource.externalRelative(DIRECTORY_MULTI);
 		try {
-			Files.deleteIfExists(Paths.get(directory.getPath()));
+			Files.deleteIfExists(Paths.get(directoryMulti.getPath()));
+		} catch (IOException ignore) {
+		}
+		final Resource directorySingle = Resource.externalRelative(DIRECTORY_MULTI);
+		try {
+			Files.deleteIfExists(Paths.get(directorySingle.getPath()));
 		} catch (IOException ignore) {
 		}
 	}
@@ -38,19 +44,21 @@ public class MultiObjectJsonRepositoryTest {
 	@Test
 	public void testSingle() {
 
-		final Resource directory = Resource.externalRelative(DIRECTORY);
+		final Resource directory = Resource.externalRelative(DIRECTORY_SINGLE);
 
 		final JsonRepository repository = new JsonRepositoryImpl(directory);
 		final DummyObject object = DummyObject.random();
 
+		final String ID = "dummySingle";
+
 		// insert
-		repository.insert(object);
+		repository.insert(ID, object);
 		assertThat(repository.count()).isEqualTo(1);
-		assertThat(repository.exists(DummyObject.class)).isTrue();
-		assertThat(repository.getAllIds()).containsExactlyInAnyOrder("dummyObject");
+		assertThat(repository.exists(ID)).isTrue();
+		assertThat(repository.getAllIds()).containsExactlyInAnyOrder(ID);
 
 		// get #1
-		final DummyObject objectGet1 = repository.getAsObject(DummyObject.class).get();
+		final DummyObject objectGet1 = repository.getAsObject(ID, DummyObject.class).get();
 		assertThat(objectGet1).isNotNull();
 		assertThat(objectGet1.getName()).isEqualTo(object.getName());
 		assertThat(objectGet1.getTimestamp()).isEqualTo(object.getTimestamp());
@@ -58,19 +66,19 @@ public class MultiObjectJsonRepositoryTest {
 
 		// update
 		object.setName("Another name");
-		repository.update(object);
+		repository.update(ID, object);
 
 		// get #2
-		final DummyObject objectGet2 = repository.getAsObject(DummyObject.class).get();
+		final DummyObject objectGet2 = repository.getAsObject(ID, DummyObject.class).get();
 		assertThat(objectGet2).isNotNull();
 		assertThat(objectGet2.getName()).isEqualTo(object.getName());
 		assertThat(objectGet2.getTimestamp()).isEqualTo(object.getTimestamp());
 		assertThat(objectGet2.getSomeNumber()).isEqualTo(object.getSomeNumber());
 
 		// delete
-		repository.delete(DummyObject.class);
+		repository.delete(ID);
 		assertThat(repository.count()).isEqualTo(0);
-		assertThat(repository.exists(DummyObject.class)).isFalse();
+		assertThat(repository.exists(ID)).isFalse();
 		assertThat(repository.getAllIds()).isEmpty();
 	}
 

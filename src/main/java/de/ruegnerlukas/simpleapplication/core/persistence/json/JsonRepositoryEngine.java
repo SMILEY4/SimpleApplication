@@ -63,7 +63,6 @@ public class JsonRepositoryEngine {
 				final String filename = path.getFileName().toString();
 				if (filename.endsWith(".json")) {
 					final String id = filename.substring(0, filename.length() - ".json".length());
-					System.out.println(id);
 					ids.add(id);
 				}
 			});
