@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.extensions;
 
+
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

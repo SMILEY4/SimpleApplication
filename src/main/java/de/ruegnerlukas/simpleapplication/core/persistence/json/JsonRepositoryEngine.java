@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class JsonRepositoryEngine {
@@ -46,6 +48,29 @@ public class JsonRepositoryEngine {
 	public boolean exists(final String id) {
 		final String path = convertToFilePath(id);
 		return Files.exists(Paths.get(path));
+	}
+
+
+
+
+	/**
+	 * @return a list of ids of all files in the repositories directory.
+	 */
+	public List<String> getIds() {
+		try {
+			final List<String> ids = new ArrayList<>();
+			Files.list(Paths.get(directory)).forEach(path -> {
+				final String filename = path.getFileName().toString();
+				if (filename.endsWith(".json")) {
+					final String id = filename.substring(0, filename.length() - ".json".length());
+					ids.add(id);
+				}
+			});
+			return ids;
+		} catch (IOException e) {
+			log.error("Failed to list files.", e);
+		}
+		return List.of();
 	}
 
 
@@ -173,5 +198,6 @@ public class JsonRepositoryEngine {
 	public String convertToValidId(final String str) {
 		return str.strip().replace(' ', '_');
 	}
+
 
 }
