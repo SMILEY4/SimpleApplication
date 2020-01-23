@@ -25,10 +25,10 @@ public class ExtensionHandler {
 	 * @param extensionPoint the {@link ExtensionPoint} to add
 	 */
 	public void register(final ExtensionPoint extensionPoint) {
-		Validations.INPUT.notNull(extensionPoint, "The extension point must not be null.");
-		Validations.INPUT.notNull(extensionPoint.getId(), "The id of the extension point must not be null.");
-		Validations.INPUT.containsNotKey(extensionPoints, extensionPoint.getId(),
-				"An extension point with the id {} is already registered.", extensionPoint.getId());
+		Validations.INPUT.notNull(extensionPoint).exception("The extension point must not be null.");
+		Validations.INPUT.notNull(extensionPoint.getId()).exception("The id of the extension point must not be null.");
+		Validations.INPUT.containsNotKey(extensionPoints, extensionPoint.getId())
+				.exception("An extension point with the id {} is already registered.", extensionPoint.getId());
 		extensionPoints.put(extensionPoint.getId(), extensionPoint);
 	}
 

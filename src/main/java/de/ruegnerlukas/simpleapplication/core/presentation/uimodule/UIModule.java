@@ -42,8 +42,8 @@ public class UIModule extends AnchorPane {
 	 * @param controller the {@link ModuleController}
 	 */
 	public UIModule(final ModuleView view, final ModuleController controller) {
-		Validations.INPUT.notNull(view, "The view must not be null.");
-		Validations.INPUT.notNull(controller, "The controller must not be null.");
+		Validations.INPUT.notNull(view).exception("The view must not be null.");
+		Validations.INPUT.notNull(controller).exception("The controller must not be null.");
 		this.view = view;
 		this.controller = controller;
 		initView(view);
@@ -59,9 +59,9 @@ public class UIModule extends AnchorPane {
 	 * @param fxmlURL    the url of the fxml-file for this module
 	 */
 	public UIModule(final ModuleView view, final ModuleController controller, final URL fxmlURL) {
-		Validations.INPUT.notNull(view, "The view must not be null.");
-		Validations.INPUT.notNull(controller, "The controller must not be null.");
-		Validations.INPUT.notNull(fxmlURL, "The url of the fxml-file must not be null.");
+		Validations.INPUT.notNull(view).exception("The view must not be null.");
+		Validations.INPUT.notNull(controller).exception("The controller must not be null.");
+		Validations.INPUT.notNull(fxmlURL).exception("The url of the fxml-file must not be null.");
 
 		this.view = view;
 		this.controller = controller;

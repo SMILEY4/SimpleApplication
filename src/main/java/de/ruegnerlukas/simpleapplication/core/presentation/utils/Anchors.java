@@ -29,7 +29,7 @@ public final class Anchors {
 	 * @param right  the anchor for the right side. Null to add no constraint
 	 */
 	public static void setAnchors(final Node node, final Number top, final Number bottom, final Number left, final Number right) {
-		Validations.INPUT.notNull(node, "The node can not be null.");
+		Validations.INPUT.notNull(node).exception("The node can not be null.");
 		AnchorPane.setTopAnchor(node, (top == null ? null : top.doubleValue()));
 		AnchorPane.setBottomAnchor(node, (bottom == null ? null : bottom.doubleValue()));
 		AnchorPane.setLeftAnchor(node, (left == null ? null : left.doubleValue()));
@@ -46,7 +46,7 @@ public final class Anchors {
 	 * @param anchor the value for anchors on all sides
 	 */
 	public static void setAnchors(final Node node, final int anchor) {
-		Validations.INPUT.notNull(node, "The node can not be null.");
+		Validations.INPUT.notNull(node).exception("The node can not be null.");
 		setAnchors(node, (double) anchor);
 	}
 
@@ -60,7 +60,7 @@ public final class Anchors {
 	 * @param anchor the value for anchors on all sides
 	 */
 	public static void setAnchors(final Node node, final double anchor) {
-		Validations.INPUT.notNull(node, "The node can not be null.");
+		Validations.INPUT.notNull(node).exception("The node can not be null.");
 		AnchorPane.setTopAnchor(node, anchor);
 		AnchorPane.setBottomAnchor(node, anchor);
 		AnchorPane.setLeftAnchor(node, anchor);

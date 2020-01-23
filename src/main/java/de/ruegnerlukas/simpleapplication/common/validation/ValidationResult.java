@@ -63,6 +63,16 @@ public class ValidationResult {
 
 
 	/**
+	 * @return whether the validation failed.
+	 */
+	public boolean failed() {
+		return this.failed;
+	}
+
+
+
+
+	/**
 	 * @param callback the callback to execute. The parameter of the callback is a boolean indicating whether the validation failed.
 	 */
 	public ValidationResult then(final Callback<Boolean> callback) {

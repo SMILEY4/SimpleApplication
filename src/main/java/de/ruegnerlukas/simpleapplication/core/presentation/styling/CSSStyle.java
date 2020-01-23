@@ -28,7 +28,7 @@ public class CSSStyle {
 	 * @param url the url of the css-file
 	 */
 	CSSStyle(final String url) {
-		Validations.INPUT.notBlank(url, "The url may not be null or empty.");
+		Validations.INPUT.notBlank(url).exception("The url may not be null or empty.");
 		this.url = url;
 	}
 
@@ -41,7 +41,7 @@ public class CSSStyle {
 	 * @param node the node
 	 */
 	public void applyToNode(final Parent node) {
-		Validations.INPUT.notNull(node, "The node to apply the styling to may not be null.");
+		Validations.INPUT.notNull(node).exception("The node to apply the styling to may not be null.");
 		nodes.add(node);
 		reload(node, true);
 	}

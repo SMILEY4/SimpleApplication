@@ -162,7 +162,7 @@ public final class SimpleApplication {
 	 * Starts the application.
 	 */
 	public static void startApplication() {
-		Validations.STATE.isFalse(SimpleApplication.applicationStated, "The application was already started.");
+		Validations.STATE.isFalse(SimpleApplication.applicationStated).exception("The application was already started.");
 		SimpleApplication.applicationStated = true;
 		// init internal systems here
 		getEvents().publish(ApplicationConstants.EVENT_INITIALIZE, new EmptyEventPackage());
@@ -177,7 +177,7 @@ public final class SimpleApplication {
 	 * Stops and closes the application.
 	 */
 	public static void stopApplication() {
-		Validations.STATE.isTrue(SimpleApplication.applicationStated, "The application is not running.");
+		Validations.STATE.isTrue(SimpleApplication.applicationStated).exception("The application is not running.");
 		SimpleApplication.applicationStated = false;
 		Platform.exit();
 	}
