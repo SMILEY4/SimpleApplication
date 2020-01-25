@@ -55,7 +55,8 @@ public class PluginManager {
 	 * @param plugin the plugin
 	 */
 	public void register(final Plugin plugin) {
-		Validations.STATE.containsNot(plugins.keySet(), plugin.getId(), "Plugin {} is already registered.", plugin.getId());
+		Validations.STATE.containsNot(plugins.keySet(), plugin.getId())
+				.exception("Plugin {} is already registered.", plugin.getId());
 		log.info("Registered plugin {} ({}).", plugin.getId(), plugin.getVersion());
 		plugins.put(plugin.getId(), plugin);
 		unloadedIds.add(plugin.getId());
@@ -104,7 +105,7 @@ public class PluginManager {
 	 * @param id the id to load
 	 */
 	public synchronized void load(final String id) {
-		Validations.STATE.containsNot(loadedIds, id, "Plugin/System with id {} is already loaded.", id);
+		Validations.STATE.containsNot(loadedIds, id).exception("Plugin/System with id {} is already loaded.", id);
 		if (plugins.containsKey(id)) {
 			final Plugin plugin = plugins.get(id);
 			load(plugin, true);
@@ -125,7 +126,7 @@ public class PluginManager {
 	 * @param id the id to unload
 	 */
 	public synchronized void unload(final String id) {
-		Validations.STATE.containsNot(unloadedIds, id, "Plugin/System with id {} is already unloaded.", id);
+		Validations.STATE.containsNot(unloadedIds, id).exception("Plugin/System with id {} is already unloaded.", id);
 		if (loadedIds.contains(id)) {
 			if (plugins.containsKey(id)) {
 				final Plugin plugin = plugins.get(id);

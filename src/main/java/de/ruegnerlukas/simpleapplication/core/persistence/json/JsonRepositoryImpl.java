@@ -77,7 +77,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public Optional<String> getAsJsonString(final Class<?> type) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
 		return getAsJsonString(engine.convertToValidId(type));
 	}
 
@@ -86,11 +86,11 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public Optional<String> getAsJsonString(final String id) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.isTrue(engine.exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
-		Validations.INPUT.isEqual(getEntityType(validId), EntityType.SINGLE_OBJECT,
-				"The requested file contains multiple entities and cant be accessed this way");
+		Validations.INPUT.isTrue(engine.exists(validId)).exception("The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isEqual(getEntityType(validId), EntityType.SINGLE_OBJECT)
+				.exception("The requested file contains multiple entities and cant be accessed this way");
 		String content = null;
 		if (exists(validId)) {
 			content = engine.getFileAsString(validId);
@@ -103,8 +103,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public Optional<String> getAsJsonString(final Class<?> type, final String subId) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		return getAsJsonString(engine.convertToValidId(type), subId);
 	}
 
@@ -113,12 +113,12 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public Optional<String> getAsJsonString(final String id, final String subId) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
-		Validations.INPUT.isEqual(getEntityType(validId), EntityType.MULTI_OBJECT_ENTITY,
-				"The requested file is not a multi-object-file and cant be accessed this way");
+		Validations.INPUT.isTrue(exists(validId)).exception("The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isEqual(getEntityType(validId), EntityType.MULTI_OBJECT_ENTITY)
+				.exception("The requested file is not a multi-object-file and cant be accessed this way");
 		String content = null;
 		if (exists(validId, subId)) {
 			final MultiObjectEntity moe = getMultiObjectEntity(validId);
@@ -132,7 +132,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public <T> Optional<T> getAsObject(final Class<T> type) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
 		return getAsObject(engine.convertToValidId(type), type);
 	}
 
@@ -141,11 +141,11 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public <T> Optional<T> getAsObject(final String id, final Class<T> type) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
-		Validations.INPUT.isEqual(getEntityType(validId), EntityType.SINGLE_OBJECT,
-				"The requested file contains multiple entities and cant be accessed this way");
+		Validations.INPUT.isTrue(exists(validId)).exception("The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isEqual(getEntityType(validId), EntityType.SINGLE_OBJECT)
+				.exception("The requested file contains multiple entities and cant be accessed this way");
 		T object = null;
 		if (exists(validId)) {
 			object = engine.getFileAsObject(validId, type);
@@ -158,8 +158,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public <T> Optional<T> getAsObject(final Class<T> type, final String subId) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		return getAsObject(engine.convertToValidId(type), subId, type);
 	}
 
@@ -168,12 +168,12 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public <T> Optional<T> getAsObject(final String id, final String subId, final Class<T> type) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
-		Validations.INPUT.isEqual(getEntityType(validId), EntityType.MULTI_OBJECT_ENTITY,
-				"The requested file is not a multi-object-file and cant be accessed this way");
+		Validations.INPUT.isTrue(exists(validId)).exception("The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isEqual(getEntityType(validId), EntityType.MULTI_OBJECT_ENTITY)
+				.exception("The requested file is not a multi-object-file and cant be accessed this way");
 		T object = null;
 		if (exists(validId)) {
 			final MultiObjectEntity moe = getMultiObjectEntity(validId);
@@ -195,7 +195,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public List<String> getAllSubIds(final Class<?> type) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
 		return getAllSubIds(engine.convertToValidId(type));
 	}
 
@@ -204,7 +204,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public List<String> getAllSubIds(final String id) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final MultiObjectEntity moe = getMultiObjectEntity(engine.convertToValidId(id));
 		if (moe != null) {
 			return new ArrayList<>(moe.getJsonEntities().keySet());
@@ -218,7 +218,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public boolean exists(final Class<?> type) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
 		return engine.exists(engine.convertToValidId(type));
 	}
 
@@ -227,7 +227,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public boolean exists(final String id) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		return engine.exists(engine.convertToValidId(id));
 	}
 
@@ -236,8 +236,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public boolean exists(final Class<?> type, final String subId) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		if (!exists(type)) {
 			return false;
 		} else {
@@ -251,8 +251,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public boolean exists(final String id, final String subId) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		if (!exists(id)) {
 			return false;
 		} else {
@@ -274,7 +274,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public int count(final String id) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final MultiObjectEntity moe = getMultiObjectEntity(engine.convertToValidId(id));
 		if (moe != null) {
 			return moe.getJsonEntities().size();
@@ -288,7 +288,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void insert(final Object object) {
-		Validations.INPUT.notNull(object, "The object cannot be null.");
+		Validations.INPUT.notNull(object).exception("The object cannot be null.");
 		insert(engine.convertToValidId(object.getClass()), object);
 	}
 
@@ -297,7 +297,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void insert(final String id, final Object object) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (exists(validId)) {
 			log.warn("The object with the id {} already exists and will not be inserted again.", id);
@@ -312,8 +312,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void insert(final Object object, final String subId) {
-		Validations.INPUT.notNull(object, "The object cannot be null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notNull(object).exception("The object cannot be null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		insert(engine.convertToValidId(object.getClass()), subId, object);
 	}
 
@@ -322,8 +322,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void insert(final String id, final String subId, final Object object) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (exists(validId, subId)) {
 			log.warn("The object with the id {} and sub-id {} already exists and will not be inserted again.", id, subId);
@@ -343,7 +343,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void update(final Object object) {
-		Validations.INPUT.notNull(object, "The object cannot be null.");
+		Validations.INPUT.notNull(object).exception("The object cannot be null.");
 		update(engine.convertToValidId(object.getClass()), object);
 	}
 
@@ -352,13 +352,13 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void update(final String id, final Object object) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (!exists(validId)) {
 			log.warn("The object with the id {} does not exist and will not be updated.", id);
 		} else {
-			Validations.INPUT.isEqual(getEntityType(validId), EntityType.SINGLE_OBJECT,
-					"The requested file contains multiple entities and cant be updated this way");
+			Validations.INPUT.isEqual(getEntityType(validId), EntityType.SINGLE_OBJECT)
+					.exception("The requested file contains multiple entities and cant be updated this way");
 			engine.writeToFile(validId, object);
 		}
 	}
@@ -368,8 +368,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void update(final Object object, final String subId) {
-		Validations.INPUT.notNull(object, "The object cannot be null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notNull(object).exception("The object cannot be null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		update(engine.convertToValidId(object.getClass()), subId, object);
 	}
 
@@ -378,14 +378,14 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void update(final String id, final String subId, final Object object) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (!exists(validId, subId)) {
 			log.warn("The object with the id {} and sub-id {} does not exist and will not be updated.", id, subId);
 		} else {
-			Validations.INPUT.isEqual(getEntityType(validId), EntityType.MULTI_OBJECT_ENTITY,
-					"The requested file is not a multi-object-file and cant be updated this way");
+			Validations.INPUT.isEqual(getEntityType(validId), EntityType.MULTI_OBJECT_ENTITY)
+					.exception("The requested file is not a multi-object-file and cant be updated this way");
 			final MultiObjectEntity moe = getMultiObjectEntity(validId);
 			final String jsonEntity = toMultiObjectEntityString(object);
 			if (moe != null && jsonEntity != null) {
@@ -400,7 +400,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void upsert(final Object object) {
-		Validations.INPUT.notNull(object, "The object cannot be null.");
+		Validations.INPUT.notNull(object).exception("The object cannot be null.");
 		upsert(engine.convertToValidId(object.getClass()), object);
 	}
 
@@ -409,7 +409,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void upsert(final String id, final Object object) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (exists(validId)) {
 			update(validId, object);
@@ -423,8 +423,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void upsert(final Object object, final String subId) {
-		Validations.INPUT.notNull(object, "The object cannot be null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notNull(object).exception("The object cannot be null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		upsert(engine.convertToValidId(object.getClass()), subId, object);
 	}
 
@@ -433,8 +433,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void upsert(final String id, final String subId, final Object object) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (exists(validId, subId)) {
 			update(validId, subId, object);
@@ -448,7 +448,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void delete(final Class<?> type) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
 		delete(engine.convertToValidId(type));
 	}
 
@@ -457,7 +457,7 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void delete(final String id) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (!exists(validId)) {
 			log.warn("The object with the id {} does not exist and will not be deleted.", id);
@@ -472,8 +472,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void delete(final Class<?> type, final String subId) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		delete(engine.convertToValidId(type), subId);
 	}
 
@@ -482,8 +482,8 @@ public class JsonRepositoryImpl implements JsonRepository {
 
 	@Override
 	public void delete(final String id, final String subId) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
-		Validations.INPUT.notBlank(subId, "The sub-id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
+		Validations.INPUT.notBlank(subId).exception("The sub-id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (!exists(validId, subId)) {
 			log.warn("The object with the id {} and sub-id {} does not exist and will not be deleted.", id, subId);

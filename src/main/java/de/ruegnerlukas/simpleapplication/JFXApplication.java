@@ -61,7 +61,7 @@ public class JFXApplication extends Application {
 	 * @param config the presentation config
 	 */
 	public static void setScene(final PresentationConfig config) {
-		Validations.INPUT.notNull(config, "Presentation config must not be null.");
+		Validations.INPUT.notNull(config).exception("Presentation config must not be null.");
 		SimpleApplication.getPluginManager().unload(ApplicationConstants.SYSTEM_ID_SCENE_PREFIX + presentationConfig.getId());
 		setPresentationConfig(config);
 		final Scene scene = new Scene(config.getBaseModule().module(), config.getWidth(), config.getHeight());

@@ -78,7 +78,7 @@ public final class Resource {
 	 * @param internal whether the path is internal or absolute
 	 */
 	private Resource(final String path, final boolean internal) {
-		Validations.INPUT.notBlank(path, "The path must not be null or empty.");
+		Validations.INPUT.notBlank(path).exception("The path must not be null or empty.");
 		this.path = path;
 		this.internal = internal;
 	}
@@ -130,7 +130,7 @@ public final class Resource {
 	 * @return this resource as a {@link File}
 	 */
 	public File asFile() {
-		Validations.STATE.isFalse(isInternal(), "The resource '{}' must be an external file.", getPath());
+		Validations.STATE.isFalse(isInternal()).exception("The resource '{}' must be an external file.", getPath());
 		return new File(getPath());
 	}
 
@@ -141,7 +141,7 @@ public final class Resource {
 	 * @return this resource as an {@link InputStream}
 	 */
 	public InputStream asInputStream() {
-		Validations.STATE.isTrue(isInternal(), "The resource '{}' must be an internal file.", getPath());
+		Validations.STATE.isTrue(isInternal()).exception("The resource '{}' must be an internal file.", getPath());
 		return this.getClass().getClassLoader().getResourceAsStream(getPath());
 	}
 

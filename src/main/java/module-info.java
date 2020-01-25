@@ -19,6 +19,8 @@ module de.ruegnerlukas.simpleapplication {
 	exports de.ruegnerlukas.simpleapplication.common.events;
 	exports de.ruegnerlukas.simpleapplication.common.events.specializedevents;
 
+	exports de.ruegnerlukas.simpleapplication.common.callbacks;
+
 	exports de.ruegnerlukas.simpleapplication.common.plugins;
 	exports de.ruegnerlukas.simpleapplication.common.validation;
 	exports de.ruegnerlukas.simpleapplication.common.extensions;

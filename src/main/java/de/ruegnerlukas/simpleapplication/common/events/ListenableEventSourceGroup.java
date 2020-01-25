@@ -43,8 +43,8 @@ public class ListenableEventSourceGroup {
 	 * @param eventSource the event source
 	 */
 	public void add(final String name, final ListenableEventSource<?> eventSource) {
-		Validations.INPUT.notBlank(name, "The name must not be null.");
-		Validations.INPUT.notNull(eventSource, "The event source must not be null.");
+		Validations.INPUT.notBlank(name).exception("The name must not be null.");
+		Validations.INPUT.notNull(eventSource).exception("The event source must not be null.");
 		this.eventSources.put(name, eventSource);
 	}
 

@@ -18,7 +18,7 @@ public class EventSource<T> implements ListenableEventSource<T>, TriggerableEven
 
 	@Override
 	public void subscribe(final EventListener<T> listener) {
-		Validations.INPUT.notNull(listener, "The listener must not be null.");
+		Validations.INPUT.notNull(listener).exception("The listener must not be null.");
 		subscribers.add(listener);
 	}
 
@@ -35,7 +35,7 @@ public class EventSource<T> implements ListenableEventSource<T>, TriggerableEven
 
 	@Override
 	public void trigger(final T event) {
-		Validations.INPUT.notNull(event, "The event must not be null.");
+		Validations.INPUT.notNull(event).exception("The event must not be null.");
 		subscribers.forEach(listener -> listener.onEvent(event));
 	}
 

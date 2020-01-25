@@ -51,7 +51,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public Optional<String> getAsJsonString(final Class<?> type) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
 		return getAsJsonString(engine.convertToValidId(type));
 	}
 
@@ -60,9 +60,9 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public Optional<String> getAsJsonString(final String id) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isTrue(exists(validId)).exception("The id {} ({}) is not known to this repository.", validId, id);
 		String content = null;
 		if (exists(validId)) {
 			content = engine.getFileAsString(validId);
@@ -75,7 +75,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public <T> Optional<T> getAsObject(final Class<T> type) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
 		return getAsObject(engine.convertToValidId(type), type);
 	}
 
@@ -84,9 +84,9 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public <T> Optional<T> getAsObject(final String id, final Class<T> type) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
-		Validations.INPUT.isTrue(exists(validId), "The id {} ({}) is not known to this repository.", validId, id);
+		Validations.INPUT.isTrue(exists(validId)).exception("The id {} ({}) is not known to this repository.", validId, id);
 		T object = null;
 		if (exists(validId)) {
 			object = engine.getFileAsObject(validId, type);
@@ -107,7 +107,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public boolean exists(final Class<?> type) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
 		return engine.exists(engine.convertToValidId(type));
 	}
 
@@ -116,7 +116,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public boolean exists(final String id) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		return engine.exists(engine.convertToValidId(id));
 	}
 
@@ -133,7 +133,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public void insert(final Object object) {
-		Validations.INPUT.notNull(object, "The object cannot be null.");
+		Validations.INPUT.notNull(object).exception("The object cannot be null.");
 		insert(engine.convertToValidId(object.getClass()), object);
 	}
 
@@ -142,7 +142,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public void insert(final String id, final Object object) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (exists(validId)) {
 			log.warn("The object with the id {} already exists and will not be inserted again.", id);
@@ -156,7 +156,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public void update(final Object object) {
-		Validations.INPUT.notNull(object, "The object cannot be null.");
+		Validations.INPUT.notNull(object).exception("The object cannot be null.");
 		update(engine.convertToValidId(object.getClass()), object);
 	}
 
@@ -165,7 +165,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public void update(final String id, final Object object) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (!exists(validId)) {
 			log.warn("The object with the id {} does not exist and will not be updated.", id);
@@ -179,7 +179,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public void upsert(final Object object) {
-		Validations.INPUT.notNull(object, "The object cannot be null.");
+		Validations.INPUT.notNull(object).exception("The object cannot be null.");
 		upsert(engine.convertToValidId(object.getClass()), object);
 	}
 
@@ -188,7 +188,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public void upsert(final String id, final Object object) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (exists(validId)) {
 			update(validId, object);
@@ -202,7 +202,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public void delete(final Class<?> type) {
-		Validations.INPUT.notNull(type, "The type cannot be null.");
+		Validations.INPUT.notNull(type).exception("The type cannot be null.");
 		delete(engine.convertToValidId(type));
 	}
 
@@ -211,7 +211,7 @@ public class SimpleJsonRepositoryImpl implements SimpleJsonRepository {
 
 	@Override
 	public void delete(final String id) {
-		Validations.INPUT.notBlank(id, "The id cannot be empty or null.");
+		Validations.INPUT.notBlank(id).exception("The id cannot be empty or null.");
 		final String validId = engine.convertToValidId(id);
 		if (!exists(validId)) {
 			log.warn("The object with the id {} does not exist and will not be deleted.", id);

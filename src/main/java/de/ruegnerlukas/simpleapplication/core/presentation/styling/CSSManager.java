@@ -36,7 +36,7 @@ public final class CSSManager {
 	 * @return the created {@link CSSStyle}
 	 */
 	public static CSSStyle fromFile(final File file) {
-		Validations.INPUT.exists(file, "The css-file does not exist.");
+		Validations.INPUT.exists(file).exception("The css-file does not exist.");
 		try {
 			final CSSStyle style = new CSSStyle(file.toURI().toURL().toExternalForm());
 			registerCssStyle(style);
@@ -56,7 +56,7 @@ public final class CSSManager {
 	 * @param style the {@link CSSStyle}
 	 */
 	private static void registerCssStyle(final CSSStyle style) {
-		Validations.INPUT.notNull(style, "The style may not be null.");
+		Validations.INPUT.notNull(style).exception("The style may not be null.");
 		managedCSSStyles.add(style);
 	}
 
