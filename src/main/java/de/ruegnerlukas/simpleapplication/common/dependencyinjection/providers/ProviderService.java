@@ -3,7 +3,6 @@ package de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.ObjectType;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.RequestType;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.AbstractFactory;
-import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 
 import java.util.HashMap;
@@ -14,7 +13,7 @@ public final class ProviderService {
 
 
 	/**
-	 * All registered {@link InstanceFactory}s.
+	 * All registered {@link AbstractFactory}s.
 	 */
 	private static final Map<FactoryKey, AbstractFactory<?, ?>> FACTORIES = new HashMap<>();
 
@@ -36,7 +35,7 @@ public final class ProviderService {
 
 
 	/**
-	 * Registers the given {@link InstanceFactory}.
+	 * Registers the given factory.
 	 *
 	 * @param factory the factory to register
 	 */

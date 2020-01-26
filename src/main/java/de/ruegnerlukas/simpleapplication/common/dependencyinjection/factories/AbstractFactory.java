@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories;
 
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.ObjectType;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.RequestType;
-import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.Provider;
 import lombok.Getter;
 
 public abstract class AbstractFactory<R, P> {
@@ -15,14 +14,14 @@ public abstract class AbstractFactory<R, P> {
 	private final ObjectType objectType;
 
 	/**
-	 * The type of the object to be provided. {@link Provider}s requesting this type will get an instance created by this factory.
+	 * The type of the object to be provided. Providers requesting this type will get an instance created by this factory.
 	 */
 	@Getter
 	private final Class<R> providedType;
 
 
 	/**
-	 * The name of the object to be provided. {@link Provider}s requesting this name will get an instance created by this factory.
+	 * The name of the object to be provided. Providers requesting this name will get an instance created by this factory.
 	 */
 	@Getter
 	private final String providedName;
@@ -41,7 +40,7 @@ public abstract class AbstractFactory<R, P> {
 	 * @param objectType   The type of the object to be created.
 	 * @param providedType The type of the object to be provided
 	 * @param providedName The name of the object to be provided
-	 * @param requestType  The type of the provider / whether to usethe {@link AbstractFactory#providedType}
+	 * @param requestType  The type of the provider / whether to use the {@link AbstractFactory#providedType}
 	 *                     or {@link AbstractFactory#providedName}
 	 */
 	protected AbstractFactory(final ObjectType objectType, final Class<R> providedType, final String providedName,

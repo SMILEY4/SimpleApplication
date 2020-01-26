@@ -5,12 +5,14 @@ import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.In
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.ListFactory;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.MapFactory;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.SetFactory;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.ArrayProvider;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.ListProvider;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.MapProvider;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.SetProvider;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.StringProvider;
 import lombok.AllArgsConstructor;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,6 +91,8 @@ public class DITest {
 				return Map.of("Test", new UserImpl(MY_USER_NAME, MY_USER_ID));
 			}
 		});
+
+		ProviderService.registerFactory(new StringFactory("string", "The Test String"));
 
 	}
 
@@ -185,6 +189,13 @@ public class DITest {
 		assertThat(map).isNotNull();
 	}
 
+
+
+	@Test
+	public void testStringProvider() {
+		final String str = new StringProvider("string").get();
+		assertThat(str).isEqualTo("The Test String");
+	}
 
 
 
