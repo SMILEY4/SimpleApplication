@@ -62,7 +62,7 @@ public class DITest {
 			}
 		});
 
-		ProviderService.registerFactory(new ArrayFactory<>(UserImpl.class) {
+		ProviderService.registerFactory(new ArrayFactory<>("User Array") {
 			@Override
 			public UserImpl[] buildObject() {
 				return new UserImpl[0];
@@ -72,14 +72,14 @@ public class DITest {
 		ProviderService.registerFactory(new ListFactory<User>("User List") {
 			@Override
 			public List<User> buildObject() {
-				return List.of();
+				return List.of(new UserImpl(MY_USER_NAME, MY_USER_ID));
 			}
 		});
 
 		ProviderService.registerFactory(new SetFactory<User>("User Set") {
 			@Override
 			public Set<User> buildObject() {
-				return Set.of();
+				return Set.of(new UserImpl(MY_USER_NAME, MY_USER_ID));
 			}
 		});
 
@@ -154,7 +154,7 @@ public class DITest {
 
 	@Test
 	public void testArrayProvider() {
-		final User[] array = new ArrayProvider<>(UserImpl.class).get();
+		final User[] array = new ArrayProvider<User>("User Array").get();
 		assertThat(array).isNotNull();
 	}
 

@@ -21,7 +21,7 @@ public final class ProviderService {
 	/**
 	 * All created singleton instances.
 	 */
-	private static final Map<Class<?>, Object> SINGLETON_INSTANCES = new HashMap<>();
+	private static final Map<FactoryKey, Object> SINGLETON_INSTANCES = new HashMap<>();
 
 
 
@@ -61,13 +61,14 @@ public final class ProviderService {
 	 * @return the requested instance
 	 */
 	static synchronized <T> T requestInstanceByType(final Class<?> type) {
-		final AbstractFactory<?, ?> factory = FACTORIES.get(FactoryKey.fromType(type));
+		final FactoryKey factoryKey = FactoryKey.fromType(type);
+		final AbstractFactory<?, ?> factory = FACTORIES.get(factoryKey);
 		Validations.STATE.notNull(factory).exception("No factory for the type {} registered.", type);
 		if (ObjectType.SINGLETON == factory.getObjectType()) {
-			if (!SINGLETON_INSTANCES.containsKey(factory.getProvidedType())) {
-				SINGLETON_INSTANCES.put(factory.getProvidedType(), factory.buildObject());
+			if (!SINGLETON_INSTANCES.containsKey(factoryKey)) {
+				SINGLETON_INSTANCES.put(factoryKey, factory.buildObject());
 			}
-			return (T) SINGLETON_INSTANCES.get(factory.getProvidedType());
+			return (T) SINGLETON_INSTANCES.get(factoryKey);
 		} else {
 			return (T) factory.buildObject();
 		}
@@ -84,13 +85,14 @@ public final class ProviderService {
 	 * @return the requested instance
 	 */
 	static synchronized <T> T requestInstanceByName(final String name) {
-		final AbstractFactory<?, ?> factory = FACTORIES.get(FactoryKey.fromName(name));
+		final FactoryKey factoryKey = FactoryKey.fromName(name);
+		final AbstractFactory<?, ?> factory = FACTORIES.get(factoryKey);
 		Validations.STATE.notNull(factory).exception("No factory for the name {} registered.", name);
 		if (ObjectType.SINGLETON == factory.getObjectType()) {
-			if (!SINGLETON_INSTANCES.containsKey(factory.getProvidedType())) {
-				SINGLETON_INSTANCES.put(factory.getProvidedType(), factory.buildObject());
+			if (!SINGLETON_INSTANCES.containsKey(factoryKey)) {
+				SINGLETON_INSTANCES.put(factoryKey, factory.buildObject());
 			}
-			return (T) SINGLETON_INSTANCES.get(factory.getProvidedType());
+			return (T) SINGLETON_INSTANCES.get(factoryKey);
 		} else {
 			return (T) factory.buildObject();
 		}
