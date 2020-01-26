@@ -2,12 +2,22 @@ package de.ruegnerlukas.simpleapplication.common.dependencyinjection;
 
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.ArrayFactory;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.InstanceFactory;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.ListFactory;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.MapFactory;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.SetFactory;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.ArrayProvider;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.ListProvider;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.MapProvider;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.ProviderService;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.SetProvider;
 import lombok.AllArgsConstructor;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,6 +66,27 @@ public class DITest {
 			@Override
 			public UserImpl[] buildObject() {
 				return new UserImpl[0];
+			}
+		});
+
+		ProviderService.registerFactory(new ListFactory<User>("User List") {
+			@Override
+			public List<User> buildObject() {
+				return List.of();
+			}
+		});
+
+		ProviderService.registerFactory(new SetFactory<User>("User Set") {
+			@Override
+			public Set<User> buildObject() {
+				return Set.of();
+			}
+		});
+
+		ProviderService.registerFactory(new MapFactory<String, User>("User Map") {
+			@Override
+			public Map<String, User> buildObject() {
+				return Map.of("Test", new UserImpl(MY_USER_NAME, MY_USER_ID));
 			}
 		});
 
@@ -123,10 +154,35 @@ public class DITest {
 
 	@Test
 	public void testArrayProvider() {
-
 		final User[] array = new ArrayProvider<>(UserImpl.class).get();
-
 		assertThat(array).isNotNull();
+	}
+
+
+
+
+	@Test
+	public void testListProvider() {
+		final List<User> list = new ListProvider<User>("User List").get();
+		assertThat(list).isNotNull();
+	}
+
+
+
+
+	@Test
+	public void testSetProvider() {
+		final Set<User> set = new SetProvider<User>("User Set").get();
+		assertThat(set).isNotNull();
+	}
+
+
+
+
+	@Test
+	public void testMapProvider() {
+		final Map<String, User> map = new MapProvider<String, User>("User Map").get();
+		assertThat(map).isNotNull();
 	}
 
 
