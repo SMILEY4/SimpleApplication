@@ -1,5 +1,10 @@
 package de.ruegnerlukas.simpleapplication.common.dependencyinjection;
 
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.ArrayFactory;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.InstanceFactory;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.ArrayProvider;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.Provider;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers.ProviderService;
 import lombok.AllArgsConstructor;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,24 +31,31 @@ public class DITest {
 	@Before
 	public void setup() {
 
-		ProviderService.registerFactory(new InstanceFactory<>(ObjectType.NON_SINGLETON, User.class) {
+		ProviderService.registerFactory(new InstanceFactory<>(User.class, ObjectType.NON_SINGLETON) {
 			@Override
 			public User buildObject() {
 				return new UserImpl(USER_NAME, USER_ID);
 			}
 		});
 
-		ProviderService.registerFactory(new InstanceFactory<>(ObjectType.SINGLETON, Administrator.class) {
+		ProviderService.registerFactory(new InstanceFactory<>(Administrator.class) {
 			@Override
 			public Administrator buildObject() {
 				return new Administrator(ADMIN_NAME, ADMIN_ID, ADMIN_CONTACT);
 			}
 		});
 
-		ProviderService.registerFactory(new InstanceFactory<>(ObjectType.SINGLETON, MY_USER_OBJECT_NAME) {
+		ProviderService.registerFactory(new InstanceFactory<>(MY_USER_OBJECT_NAME) {
 			@Override
 			public User buildObject() {
 				return new UserImpl(MY_USER_NAME, MY_USER_ID);
+			}
+		});
+
+		ProviderService.registerFactory(new ArrayFactory<>(UserImpl.class) {
+			@Override
+			public UserImpl[] buildObject() {
+				return new UserImpl[0];
 			}
 		});
 
@@ -104,6 +116,17 @@ public class DITest {
 		assertThat(user).isNotNull();
 		assertThat(user.getName()).isEqualTo(MY_USER_NAME);
 		assertThat(user.getId()).isEqualTo(MY_USER_ID);
+	}
+
+
+
+
+	@Test
+	public void testArrayProvider() {
+
+		final User[] array = new ArrayProvider<>(UserImpl.class).get();
+
+		assertThat(array).isNotNull();
 	}
 
 

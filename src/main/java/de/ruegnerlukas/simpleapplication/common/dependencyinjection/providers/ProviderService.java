@@ -1,5 +1,9 @@
-package de.ruegnerlukas.simpleapplication.common.dependencyinjection;
+package de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers;
 
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.ObjectType;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.RequestType;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.AbstractFactory;
+import de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 
 import java.util.HashMap;
@@ -12,7 +16,7 @@ public final class ProviderService {
 	/**
 	 * All registered {@link InstanceFactory}s.
 	 */
-	private static final Map<FactoryKey, InstanceFactory<?>> FACTORIES = new HashMap<>();
+	private static final Map<FactoryKey, AbstractFactory<?, ?>> FACTORIES = new HashMap<>();
 
 	/**
 	 * All created singleton instances.
@@ -36,7 +40,7 @@ public final class ProviderService {
 	 *
 	 * @param factory the factory to register
 	 */
-	public static void registerFactory(final InstanceFactory<?> factory) {
+	public static void registerFactory(final AbstractFactory<?, ?> factory) {
 		FactoryKey key;
 		if (RequestType.BY_TYPE == factory.getRequestType()) {
 			key = FactoryKey.fromType(factory.getProvidedType());
@@ -56,8 +60,8 @@ public final class ProviderService {
 	 * @param <T>  the Generic Type
 	 * @return the requested instance
 	 */
-	static <T> T requestInstanceByType(final Class<?> type) {
-		final InstanceFactory<?> factory = FACTORIES.get(FactoryKey.fromType(type));
+	static synchronized <T> T requestInstanceByType(final Class<?> type) {
+		final AbstractFactory<?, ?> factory = FACTORIES.get(FactoryKey.fromType(type));
 		Validations.STATE.notNull(factory).exception("No factory for the type {} registered.", type);
 		if (ObjectType.SINGLETON == factory.getObjectType()) {
 			if (!SINGLETON_INSTANCES.containsKey(factory.getProvidedType())) {
@@ -79,8 +83,8 @@ public final class ProviderService {
 	 * @param <T>  the Generic Type
 	 * @return the requested instance
 	 */
-	static <T> T requestInstanceByName(final String name) {
-		final InstanceFactory<?> factory = FACTORIES.get(FactoryKey.fromName(name));
+	static synchronized <T> T requestInstanceByName(final String name) {
+		final AbstractFactory<?, ?> factory = FACTORIES.get(FactoryKey.fromName(name));
 		Validations.STATE.notNull(factory).exception("No factory for the name {} registered.", name);
 		if (ObjectType.SINGLETON == factory.getObjectType()) {
 			if (!SINGLETON_INSTANCES.containsKey(factory.getProvidedType())) {
