@@ -22,14 +22,14 @@ public class DITest {
 	@Before
 	public void setup() {
 
-		Provider.registerFactory(new ObjectFactory<>(ObjectType.NON_SINGLETON, User.class) {
+		ProviderService.registerFactory(new InstanceFactory<>(ObjectType.NON_SINGLETON, User.class) {
 			@Override
 			public User buildObject() {
 				return new UserImpl(USER_NAME, USER_ID);
 			}
 		});
 
-		Provider.registerFactory(new ObjectFactory<>(ObjectType.SINGLETON, Administrator.class) {
+		ProviderService.registerFactory(new InstanceFactory<>(ObjectType.SINGLETON, Administrator.class) {
 			@Override
 			public Administrator buildObject() {
 				return new Administrator(ADMIN_NAME, ADMIN_ID, ADMIN_CONTACT);
