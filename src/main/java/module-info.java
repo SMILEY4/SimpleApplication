@@ -26,9 +26,9 @@ module de.ruegnerlukas.simpleapplication {
 	exports de.ruegnerlukas.simpleapplication.common.extensions;
 	exports de.ruegnerlukas.simpleapplication.common.resources;
 
-	exports de.ruegnerlukas.simpleapplication.common.dependencyinjection;
-	exports de.ruegnerlukas.simpleapplication.common.dependencyinjection.factories;
-	exports de.ruegnerlukas.simpleapplication.common.dependencyinjection.providers;
+	exports de.ruegnerlukas.simpleapplication.common.instanceproviders;
+	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.factories;
+	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.providers;
 
 
 	exports de.ruegnerlukas.simpleapplication.core.presentation;
