@@ -386,4 +386,34 @@ public class ValidationsTest {
 	}
 
 
+
+
+	@Test
+	public void testTypeOf() {
+
+		class A {
+
+
+		}
+
+		class A1 extends A {
+
+
+		}
+
+		class A2 extends A {
+
+
+		}
+
+		final Object a = new A();
+		final Object a1 = new A1();
+
+		assertFalse(Validations.STATE.typeOf(a, A.class).failed());
+		assertFalse(Validations.STATE.typeOf(a1, A.class).failed());
+		assertTrue(Validations.STATE.typeOf(a, A1.class).failed());
+		assertTrue(Validations.STATE.typeOf(a1, A2.class).failed());
+
+	}
+
 }

@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.RequestType;
 
 import java.util.Set;
 
-public abstract class SetFactory<T> extends AbstractFactory<T, Set<T>> {
+public abstract class SetFactory<T> extends GenericFactory<T, Set<T>> {
 
 
 	/**

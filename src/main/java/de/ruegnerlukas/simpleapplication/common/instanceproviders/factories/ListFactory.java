@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.RequestType;
 
 import java.util.List;
 
-public abstract class ListFactory<T> extends AbstractFactory<T, List<T>> {
+public abstract class ListFactory<T> extends GenericFactory<T, List<T>> {
 
 
 	/**

@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.core.presentation.styling;
+package de.ruegnerlukas.simpleapplication.core.presentation.utils;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import javafx.scene.Parent;

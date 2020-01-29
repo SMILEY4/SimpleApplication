@@ -10,7 +10,7 @@ module de.ruegnerlukas.simpleapplication {
 	requires static lombok;
 
 	// opens
-	opens de.ruegnerlukas.simpleapplication.core.presentation to javafx.fxml;
+	opens de.ruegnerlukas.simpleapplication.core.presentation.module to javafx.fxml;
 	opens de.ruegnerlukas.simpleapplication.core.persistence.json to com.fasterxml.jackson.databind;
 
 	// exports
@@ -23,17 +23,13 @@ module de.ruegnerlukas.simpleapplication {
 
 	exports de.ruegnerlukas.simpleapplication.common.plugins;
 	exports de.ruegnerlukas.simpleapplication.common.validation;
-	exports de.ruegnerlukas.simpleapplication.common.extensions;
 	exports de.ruegnerlukas.simpleapplication.common.resources;
 
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.factories;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.providers;
 
-
-	exports de.ruegnerlukas.simpleapplication.core.presentation;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.styling;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.uimodule;
+	exports de.ruegnerlukas.simpleapplication.core.presentation.module;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.utils;
 
 	exports de.ruegnerlukas.simpleapplication.core.persistence.json;

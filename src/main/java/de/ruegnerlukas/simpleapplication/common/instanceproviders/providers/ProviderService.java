@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.common.instanceproviders.providers;
 
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.ObjectType;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.RequestType;
-import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.AbstractFactory;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.GenericFactory;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 
 import java.util.HashMap;
@@ -13,9 +13,9 @@ public final class ProviderService {
 
 
 	/**
-	 * All registered {@link AbstractFactory}s.
+	 * All registered {@link GenericFactory}s.
 	 */
-	private static final Map<FactoryKey, AbstractFactory<?, ?>> FACTORIES = new HashMap<>();
+	private static final Map<FactoryKey, GenericFactory<?, ?>> FACTORIES = new HashMap<>();
 
 	/**
 	 * All created singleton instances.
@@ -39,7 +39,7 @@ public final class ProviderService {
 	 *
 	 * @param factory the factory to register
 	 */
-	public static void registerFactory(final AbstractFactory<?, ?> factory) {
+	public static void registerFactory(final GenericFactory<?, ?> factory) {
 		FactoryKey key;
 		if (RequestType.BY_TYPE == factory.getRequestType()) {
 			key = FactoryKey.fromType(factory.getProvidedType());
@@ -61,7 +61,7 @@ public final class ProviderService {
 	 */
 	static synchronized <T> T requestInstanceByType(final Class<?> type) {
 		final FactoryKey factoryKey = FactoryKey.fromType(type);
-		final AbstractFactory<?, ?> factory = FACTORIES.get(factoryKey);
+		final GenericFactory<?, ?> factory = FACTORIES.get(factoryKey);
 		Validations.STATE.notNull(factory).exception("No factory for the type {} registered.", type);
 		if (ObjectType.SINGLETON == factory.getObjectType()) {
 			if (!SINGLETON_INSTANCES.containsKey(factoryKey)) {
@@ -85,7 +85,7 @@ public final class ProviderService {
 	 */
 	static synchronized <T> T requestInstanceByName(final String name) {
 		final FactoryKey factoryKey = FactoryKey.fromName(name);
-		final AbstractFactory<?, ?> factory = FACTORIES.get(factoryKey);
+		final GenericFactory<?, ?> factory = FACTORIES.get(factoryKey);
 		Validations.STATE.notNull(factory).exception("No factory for the name {} registered.", name);
 		if (ObjectType.SINGLETON == factory.getObjectType()) {
 			if (!SINGLETON_INSTANCES.containsKey(factoryKey)) {
