@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TestApplication {
 
 
-//	public static void main(String[] args) {
+	public static void main(String[] args) {
 //		SimpleApplication.setPresentationConfig(PresentationConfig.builder()
 //				.id("test_scene")
 //				.title("Test App")
@@ -91,7 +91,7 @@ public class TestApplication {
 //		});
 //
 //		SimpleApplication.startApplication();
-//	}
+	}
 
 
 }
