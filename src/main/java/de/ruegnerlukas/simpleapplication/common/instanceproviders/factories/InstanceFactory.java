@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.common.instanceproviders.factories;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.ObjectType;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.RequestType;
 
-public abstract class InstanceFactory<T> extends AbstractFactory<T, T> {
+public abstract class InstanceFactory<T> extends GenericFactory<T, T> {
 
 
 	/**

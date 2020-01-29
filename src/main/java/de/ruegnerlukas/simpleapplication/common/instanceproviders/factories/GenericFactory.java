@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.ObjectType;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.RequestType;
 import lombok.Getter;
 
-public abstract class AbstractFactory<R, P> {
+public abstract class GenericFactory<R, P> implements AbstractFactory<P> {
 
 
 	/**
@@ -28,7 +28,7 @@ public abstract class AbstractFactory<R, P> {
 
 
 	/**
-	 * The type of the provider / whether to use the {@link AbstractFactory#providedType} or {@link AbstractFactory#providedName}.
+	 * The type of the provider / whether to use the {@link GenericFactory#providedType} or {@link GenericFactory#providedName}.
 	 */
 	@Getter
 	private final RequestType requestType;
@@ -40,25 +40,16 @@ public abstract class AbstractFactory<R, P> {
 	 * @param objectType   The type of the object to be created.
 	 * @param providedType The type of the object to be provided
 	 * @param providedName The name of the object to be provided
-	 * @param requestType  The type of the provider / whether to use the {@link AbstractFactory#providedType}
-	 *                     or {@link AbstractFactory#providedName}
+	 * @param requestType  The type of the provider / whether to use the {@link GenericFactory#providedType}
+	 *                     or {@link GenericFactory#providedName}
 	 */
-	protected AbstractFactory(final ObjectType objectType, final Class<R> providedType, final String providedName,
-							  final RequestType requestType) {
+	protected GenericFactory(final ObjectType objectType, final Class<R> providedType, final String providedName,
+							 final RequestType requestType) {
 		this.objectType = objectType;
 		this.providedType = providedType;
 		this.providedName = providedName;
 		this.requestType = requestType;
 	}
 
-
-
-
-	/**
-	 * Creates a new object.
-	 *
-	 * @return the created object
-	 */
-	public abstract P buildObject();
 
 }

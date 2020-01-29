@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.RequestType;
 
 import java.util.Map;
 
-public abstract class MapFactory<K, V> extends AbstractFactory<Map.Entry<K, V>, Map<K, V>> {
+public abstract class MapFactory<K, V> extends GenericFactory<Map.Entry<K, V>, Map<K, V>> {
 
 
 	/**
