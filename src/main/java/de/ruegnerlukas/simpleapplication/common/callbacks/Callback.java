@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.callbacks;
 
-public interface Callback<T> {
+public interface Callback<T, R> {
 
 
 	/**
@@ -9,6 +9,6 @@ public interface Callback<T> {
 	 * @param t the input value
 	 * @return a result
 	 */
-	T execute(T t);
+	R execute(T t);
 
 }
