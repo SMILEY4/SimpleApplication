@@ -1,85 +1,26 @@
 package de.ruegnerlukas.simpleapplication;
 
-import de.ruegnerlukas.simpleapplication.common.events.EventBus;
-import de.ruegnerlukas.simpleapplication.common.events.EventBusImpl;
-import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEventPackage;
-import de.ruegnerlukas.simpleapplication.common.plugins.PluginManager;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.GenericFactory;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import javafx.application.Platform;
 
-/*
-digraph G {
-    "EVENT_INIT"
-    -> "load SYSTEM_ID_ROOT"
-    -> "EVENT_SYSTEM_LOADED"
-    -> "load base ui module"
-    -> "EVENT_CHANGE_SCENE"
-    -> "EVENT_START"
-    -> "load SYSTEM_ID_JFXROOT"
-    -> "EVENT_SYSTEM_LOADED (2)"
-    -> "...running..."
-    -> "unload SYSTEM_ID_JFXROOT"
-    -> "EVENT_SYSTEM_UNLOADED"
-    -> "unload SYSTEM_ID_ROOT"
-    -> "EVENT_SYSTEM_UNLOADED (2)"
-    -> "EVENT_STOP"
+import java.util.ArrayList;
+import java.util.List;
 
-    "EVENT_SYSTEM_LOADED"
-    -> "EVENT_PLUGIN_LOADED"
-    -> "EVENT_PLUGIN_LOADED"
-    -> "load base ui module"
-
-    "EVENT_SYSTEM_LOADED (2)"
-    -> "EVENT_PLUGIN_LOADED (2)"
-    -> "EVENT_PLUGIN_LOADED (2)"
-    -> "...running..."
-
-    "EVENT_SYSTEM_UNLOADED"
-    -> "EVENT_PLUGIN_UNLOADED"
-    -> "EVENT_PLUGIN_UNLOADED"
-    -> "unload SYSTEM_ID_ROOT"
-
-    "EVENT_SYSTEM_UNLOADED (2)"
-    -> "EVENT_PLUGIN_UNLOADED (2)"
-    -> "EVENT_PLUGIN_UNLOADED (2)"
-    -> "EVENT_STOP"
-}
- */
-
-
-
-
-
-
-/**
- * Application Lifecycle:
- * <p>
- * SimpleApplication.startApplication()
- * - event EVENT_INITIALIZE
- * - load SYSTEM_ID_ROOT
- * - event EVENT_SYSTEM_LOADED
- * - loading plugins (if possible/necessary)
- * -> event EVENT_PLUGIN_LOADED
- * - load base module
- * - event EVENT_CHANGE_SCENE
- * - event EVENT_START
- * - load SYSTEM_ID_JFXROOT
- * - event EVENT_SYSTEM_LOADED
- * - loading plugins (if possible/necessary)
- * -> event EVENT_PLUGIN_LOADED
- * <p>
- * SimpleApplication.stopApplication() or close-command from javafx
- * - unload SYSTEM_ID_JFXROOT
- * - event EVENT_SYSTEM_UNLOADED
- * - unloading plugins (if possible/necessary)
- * -> event EVENT_PLUGIN_UNLOADED
- * - unload SYSTEM_ID_ROOT
- * - event EVENT_SYSTEM_UNLOADED
- * - unloading plugins (if possible/necessary)
- * -> event EVENT_PLUGIN_UNLOADED
- * - event EVENT_STOP
- */
 public final class SimpleApplication {
+
+
+	/**
+	 * Whether the application was started
+	 */
+	private static boolean applicationStarted = false;
+
+	/**
+	 * The list of {@link ProviderConfiguration} added before starting the application.
+	 */
+	private static final List<ProviderConfiguration> PROVIDER_CONFIGURATIONS = new ArrayList<>();
+
+
 
 
 	/**
@@ -92,48 +33,17 @@ public final class SimpleApplication {
 
 
 	/**
-	 * Whether the application was started.
+	 * Adds the given configuration.
+	 * All factories of this config will be registered with and usable by providers after the application was started.
+	 *
+	 * @param config the configuration
 	 */
-	private static boolean applicationStated = false;
-
-
-	/**
-	 * The manager for plugins.
-	 */
-	private static PluginManager pluginManager = new PluginManager();
-
-
-
-	/**
-	 * The global application event bus.
-	 */
-	private static EventBus applicationEventBus = new EventBusImpl();
-
-
-
-
-	/**
-	 * @return the global application event bus.
-	 */
-	public static EventBus getEvents() {
-		return applicationEventBus;
+	public static void addProviderConfiguration(final ProviderConfiguration config) {
+		Validations.INPUT.notNull(config).exception("The configuration must not be null.");
+		Validations.STATE.isFalse(applicationStarted)
+				.exception("New configurations cant be added after the application was started.");
+		PROVIDER_CONFIGURATIONS.add(config);
 	}
-
-
-
-
-	/**
-	 * @return the plugin manager
-	 */
-	public static PluginManager getPluginManager() {
-		return SimpleApplication.pluginManager;
-	}
-
-
-
-
-
-
 
 
 
@@ -142,38 +52,22 @@ public final class SimpleApplication {
 	 * Starts the application.
 	 */
 	public static void startApplication() {
-		Validations.STATE.isFalse(SimpleApplication.applicationStated).exception("The application was already started.");
-		SimpleApplication.applicationStated = true;
-		// init internal systems here
-		getEvents().publish(ApplicationConstants.EVENT_INITIALIZE, new EmptyEventPackage());
-		getPluginManager().load(ApplicationConstants.SYSTEM_ID_ROOT);
-		JFXApplication.start();
+		Validations.STATE.isFalse(applicationStarted).exception("The application is already running and cant be started again.");
+		setupProvider();
 	}
 
 
 
 
 	/**
-	 * Stops and closes the application.
+	 * Setup for all things provider related.
 	 */
-	public static void stopApplication() {
-		Validations.STATE.isTrue(SimpleApplication.applicationStated).exception("The application is not running.");
-		SimpleApplication.applicationStated = false;
-		Platform.exit();
-	}
-
-
-
-
-	/**
-	 * Called when the application is stopped. Usually called from javafx
-	 */
-	static void onStopApplication() {
-		// clean up internal systems here
-		getPluginManager().unload(ApplicationConstants.SYSTEM_ID_JFXROOT);
-		getPluginManager().unload(ApplicationConstants.SYSTEM_ID_ROOT);
-		getEvents().publish(ApplicationConstants.EVENT_STOP, new EmptyEventPackage());
-		SimpleApplication.applicationStated = false;
+	private static void setupProvider() {
+		for (ProviderConfiguration configuration : PROVIDER_CONFIGURATIONS) {
+			for (GenericFactory<?, ?> factory : configuration.getFactories()) {
+				ProviderService.registerFactory(factory);
+			}
+		}
 	}
 
 
