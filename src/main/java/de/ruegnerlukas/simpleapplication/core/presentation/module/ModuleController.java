@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSourceGro
 import java.util.Collections;
 import java.util.List;
 
-public interface Controller {
+public interface ModuleController {
 
 
 	/**
