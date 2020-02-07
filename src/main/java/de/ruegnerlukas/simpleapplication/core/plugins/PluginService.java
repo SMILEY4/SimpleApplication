@@ -12,13 +12,24 @@ import java.util.Set;
 public class PluginService {
 
 
+	/**
+	 * All currently loaded ids.
+	 */
 	private Set<String> loadedIds = new HashSet<>();
 
+	/**
+	 * All currently loaded plugins.
+	 */
 	private Map<String, Plugin> loadedPlugins = new HashMap<>();
 
 
 
 
+	/**
+	 * Loads the given plugin as a core plugin.
+	 *
+	 * @param plugin the plugin to load
+	 */
 	public void loadCorePlugin(final Plugin plugin) {
 		Validations.INPUT.notNull(plugin).exception("Plugin can not be null.");
 		if (loadedPlugins.containsKey(plugin.getId())) {
@@ -34,6 +45,11 @@ public class PluginService {
 
 
 
+	/**
+	 * Unloads the given (core) plugin.
+	 *
+	 * @param plugin the plugin to unload
+	 */
 	public void unloadCorePlugin(final Plugin plugin) {
 		Validations.INPUT.notNull(plugin).exception("Plugin can not be null.");
 		if (!loadedPlugins.containsKey(plugin.getId())) {
@@ -49,6 +65,12 @@ public class PluginService {
 
 
 
+	/**
+	 * Checks if the given id is currently loaded.
+	 *
+	 * @param id the id to check
+	 * @return whether the id is currently loaded.
+	 */
 	public boolean isLoaded(final String id) {
 		return loadedIds.contains(id);
 	}

@@ -9,14 +9,29 @@ import lombok.Getter;
 public class View {
 
 
+	/**
+	 * The unique id of this view.
+	 */
 	private final String id;
 
+	/**
+	 * The width of this view in pixels.
+	 */
 	private final int width;
 
+	/**
+	 * The height of this view in pixels.
+	 */
 	private final int height;
 
+	/**
+	 * The title of this view.
+	 */
 	private final String title;
 
-	private final Parent node; // TODO temp
+	/**
+	 * The root node of this view.
+	 */
+	private final Parent node;
 
 }

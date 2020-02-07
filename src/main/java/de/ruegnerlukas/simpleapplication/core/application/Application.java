@@ -18,17 +18,37 @@ import lombok.extern.slf4j.Slf4j;
 public class Application {
 
 
+	/**
+	 * The provider for the {@link PluginService}.
+	 */
 	private final Provider<PluginService> pluginServiceProvider = new Provider<>(PluginService.class);
+
+	/**
+	 * The provider for the {@link ViewService}.
+	 */
 	private final Provider<ViewService> viewServiceProvider = new Provider<>(ViewService.class);
+
+	/**
+	 * The provider for the {@link EventService}.
+	 */
 	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
 
+	/**
+	 * The plugin finder providing the core plugins.
+	 */
 	private final PluginFinder pluginFinder;
 
+	/**
+	 * The event when the javafx-application was started / when the {@link ViewService} is initialized.
+	 */
 	private final FixedEventSource<String> eventPresentationStarted = new FixedEventSource<>("");
 
 
 
 
+	/**
+	 * @param corePluginFinder the plugin finder providing the core plugins
+	 */
 	public Application(final PluginFinder corePluginFinder) {
 		this.pluginFinder = corePluginFinder;
 	}
@@ -36,6 +56,9 @@ public class Application {
 
 
 
+	/**
+	 * Start the application.
+	 */
 	public void run() {
 		log.info("Running application.");
 		final Callback<Stage> startCallback = this::onStart;
@@ -46,6 +69,11 @@ public class Application {
 
 
 
+	/**
+	 * Called when the javafx application was started.
+	 *
+	 * @param stage the primary stage
+	 */
 	private void onStart(final Stage stage) {
 		log.info("Application on start.");
 		setupProviderConfigurations();
@@ -58,6 +86,9 @@ public class Application {
 
 
 
+	/**
+	 * Setup of the providers.
+	 */
 	private void setupProviderConfigurations() {
 		log.info("Setup provider configurations.");
 		final CoreProviderConfiguration coreConfig = new CoreProviderConfiguration();
@@ -70,15 +101,21 @@ public class Application {
 
 
 
+	/**
+	 * Setup of the application events and {@link EventService}.
+	 */
 	private void setupApplicationEvents() {
 		log.info("Setup events.");
 		final EventService eventService = eventServiceProvider.get();
-		eventService.addEvent("presentation_initialized", eventPresentationStarted);
+		eventService.registerEvent("presentation_initialized", eventPresentationStarted);
 	}
 
 
 
 
+	/**
+	 * Setup and load the core plugins and the {@link PluginService}.
+	 */
 	private void setupPlugins() {
 		log.info("Setup plugins.");
 		final PluginService pluginService = pluginServiceProvider.get();
@@ -91,6 +128,11 @@ public class Application {
 
 
 
+	/**
+	 * Setup the {@link ViewService}.
+	 *
+	 * @param stage the primary stage
+	 */
 	private void setupViews(final Stage stage) {
 		log.info("Setup views.");
 		final ViewService viewService = viewServiceProvider.get();
@@ -101,6 +143,9 @@ public class Application {
 
 
 
+	/**
+	 * Called when the javafx application was stopped.
+	 */
 	private void onStop() {
 		log.info("Application on stop.");
 		final PluginService pluginService = pluginServiceProvider.get();

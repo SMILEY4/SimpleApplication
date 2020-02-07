@@ -9,11 +9,19 @@ import java.util.List;
 public abstract class ProviderConfiguration {
 
 
+	/**
+	 * All added factories.
+	 */
 	private final List<GenericFactory<?, ?>> factories = new ArrayList<>();
 
 
 
 
+	/**
+	 * Adds the given factory to this configuration.
+	 *
+	 * @param factory the {@link GenericFactory} to add.
+	 */
 	protected void add(final GenericFactory<?, ?> factory) {
 		factories.add(factory);
 	}
@@ -21,6 +29,9 @@ public abstract class ProviderConfiguration {
 
 
 
+	/**
+	 * @return An unmodifiable list of all factories of this configuration.
+	 */
 	public List<GenericFactory<?, ?>> getFactories() {
 		return Collections.unmodifiableList(factories);
 	}
@@ -28,6 +39,9 @@ public abstract class ProviderConfiguration {
 
 
 
+	/**
+	 * Configure and add all factories of this configuration here.
+	 */
 	public abstract void configure();
 
 }
