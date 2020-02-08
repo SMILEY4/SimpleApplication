@@ -11,17 +11,13 @@ module de.ruegnerlukas.simpleapplication {
 
 	// opens
 	opens de.ruegnerlukas.simpleapplication.core.presentation.module to javafx.fxml;
-	opens de.ruegnerlukas.simpleapplication.core.persistence.json to com.fasterxml.jackson.databind;
 
 	// exports
-	exports de.ruegnerlukas.simpleapplication;
-
 	exports de.ruegnerlukas.simpleapplication.common.events;
 	exports de.ruegnerlukas.simpleapplication.common.events.specializedevents;
 
 	exports de.ruegnerlukas.simpleapplication.common.callbacks;
 
-	exports de.ruegnerlukas.simpleapplication.common.plugins;
 	exports de.ruegnerlukas.simpleapplication.common.validation;
 	exports de.ruegnerlukas.simpleapplication.common.resources;
 
@@ -32,6 +28,5 @@ module de.ruegnerlukas.simpleapplication {
 	exports de.ruegnerlukas.simpleapplication.core.presentation.module;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.utils;
 
-	exports de.ruegnerlukas.simpleapplication.core.persistence.json;
 
 }

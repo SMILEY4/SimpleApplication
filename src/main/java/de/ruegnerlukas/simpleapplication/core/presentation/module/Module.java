@@ -34,7 +34,7 @@ public class Module extends AnchorPane {
 	 * @param view       the view of this module
 	 * @param controller the controller of this module
 	 */
-	public Module(final View view, final Controller controller) {
+	public Module(final ModuleView view, final ModuleController controller) {
 		this(view, controller, null);
 	}
 
@@ -46,7 +46,7 @@ public class Module extends AnchorPane {
 	 * @param controller the controller of this module
 	 * @param fxmlFile   the fxml-file to use with this module (or null)
 	 */
-	public Module(final View view, final Controller controller, final Resource fxmlFile) {
+	public Module(final ModuleView view, final ModuleController controller, final Resource fxmlFile) {
 		Validations.INPUT.notNull(view).exception("The view may not be null.");
 		Validations.INPUT.notNull(controller).exception("The controller may not be null.");
 
@@ -111,7 +111,7 @@ public class Module extends AnchorPane {
 	 * @param view the view providing the events
 	 * @return the created group
 	 */
-	private ListenableEventSourceGroup buildInternalEventGroup(final View view) {
+	private ListenableEventSourceGroup buildInternalEventGroup(final ModuleView view) {
 		final ListenableEventSourceGroup group = new ListenableEventSourceGroup();
 		if (view.getExposedEvents() != null) {
 			for (ExposedEvent event : view.getExposedEvents()) {
@@ -133,7 +133,7 @@ public class Module extends AnchorPane {
 	 * @param view the view providing the commands
 	 * @return the created group
 	 */
-	private TriggerableEventSourceGroup buildInternalCommandGroup(final View view) {
+	private TriggerableEventSourceGroup buildInternalCommandGroup(final ModuleView view) {
 		final TriggerableEventSourceGroup group = new TriggerableEventSourceGroup();
 		if (view.getExposedCommands() != null) {
 			for (ExposedCommand command : view.getExposedCommands()) {
@@ -156,7 +156,7 @@ public class Module extends AnchorPane {
 	 * @param controller the controller providing events
 	 * @return the created group
 	 */
-	private ListenableEventSourceGroup buildLocalEventGroup(final View view, final Controller controller) {
+	private ListenableEventSourceGroup buildLocalEventGroup(final ModuleView view, final ModuleController controller) {
 		final ListenableEventSourceGroup group = new ListenableEventSourceGroup();
 		if (view.getExposedEvents() != null) {
 			for (ExposedEvent event : view.getExposedEvents()) {
@@ -187,7 +187,7 @@ public class Module extends AnchorPane {
 	 * @param controller the controller providing commands
 	 * @return the created group
 	 */
-	private TriggerableEventSourceGroup buildLocalCommandGroup(final View view, final Controller controller) {
+	private TriggerableEventSourceGroup buildLocalCommandGroup(final ModuleView view, final ModuleController controller) {
 		final TriggerableEventSourceGroup group = new TriggerableEventSourceGroup();
 		if (view.getExposedCommands() != null) {
 			for (ExposedCommand command : view.getExposedCommands()) {
