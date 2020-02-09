@@ -3,12 +3,9 @@ package de.ruegnerlukas.simpleapplication.core.application;
 import de.ruegnerlukas.simpleapplication.common.callbacks.Callback;
 import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
 import de.ruegnerlukas.simpleapplication.common.events.FixedEventSource;
-import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.GenericFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
-import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
-import de.ruegnerlukas.simpleapplication.core.plugins.PluginFinder;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import javafx.stage.Stage;
@@ -34,9 +31,9 @@ public class Application {
 	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
 
 	/**
-	 * The plugin finder providing the core plugins.
+	 * The configuration of this application.
 	 */
-	private final PluginFinder pluginFinder;
+	private final ApplicationConfiguration configuration;
 
 	/**
 	 * The event when the javafx-application was started / when the {@link ViewService} is initialized.
@@ -47,10 +44,10 @@ public class Application {
 
 
 	/**
-	 * @param corePluginFinder the plugin finder providing the core plugins
+	 * @param configuration the configuration of this application
 	 */
-	public Application(final PluginFinder corePluginFinder) {
-		this.pluginFinder = corePluginFinder;
+	public Application(final ApplicationConfiguration configuration) {
+		this.configuration = configuration;
 	}
 
 
@@ -93,9 +90,8 @@ public class Application {
 		log.info("Setup provider configurations.");
 		final CoreProviderConfiguration coreConfig = new CoreProviderConfiguration();
 		coreConfig.configure();
-		for (GenericFactory<?, ?> factory : coreConfig.getFactories()) {
-			ProviderService.registerFactory(factory);
-		}
+		coreConfig.getFactories().forEach(ProviderService::registerFactory);
+		configuration.getProviderFactories().forEach(ProviderService::registerFactory);
 	}
 
 
@@ -119,10 +115,7 @@ public class Application {
 	private void setupPlugins() {
 		log.info("Setup plugins.");
 		final PluginService pluginService = pluginServiceProvider.get();
-		pluginFinder.findPlugins();
-		for (Plugin plugin : pluginFinder.getPlugins()) {
-			pluginService.loadCorePlugin(plugin);
-		}
+		configuration.getPlugins().forEach(pluginService::loadCorePlugin);
 	}
 
 
@@ -136,7 +129,7 @@ public class Application {
 	private void setupViews(final Stage stage) {
 		log.info("Setup views.");
 		final ViewService viewService = viewServiceProvider.get();
-		viewService.initializePrimary(stage);
+		viewService.initialize(stage, configuration.isShowViewAtStartup(), configuration.getView());
 		eventPresentationStarted.trigger();
 	}
 
@@ -149,9 +142,7 @@ public class Application {
 	private void onStop() {
 		log.info("Application on stop.");
 		final PluginService pluginService = pluginServiceProvider.get();
-		for (Plugin plugin : pluginFinder.getPlugins()) {
-			pluginService.unloadCorePlugin(plugin);
-		}
+		configuration.getPlugins().forEach(pluginService::unloadCorePlugin);
 		log.info("Application stopped.");
 	}
 

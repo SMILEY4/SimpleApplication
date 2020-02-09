@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,36 +22,33 @@ public class ViewService {
 	 */
 	private Map<String, View> views = new HashMap<>();
 
-	/**
-	 * The default width of the stage when no view is shown.
-	 */
-	private static final int DEFAULT_WIDTH = 500;
-
-	/**
-	 * The default height of the stage when no view is shown.
-	 */
-	private static final int DEFAULT_HEIGHT = 400;
-
-	/**
-	 * The default title of the stage when no view is shown.
-	 */
-	private static final String DEFAULT_TITLE = "";
-
 
 
 
 	/**
 	 * Initializes this view service with the primary stage of the javafx application.
 	 *
-	 * @param stage the primary stage
+	 * @param stage             the primary stage
+	 * @param showViewAtStartup
+	 * @param view
 	 */
-	public void initializePrimary(final Stage stage) {
+	public void initialize(final Stage stage, final boolean showViewAtStartup, final View view) {
 		Validations.INPUT.notNull(stage).exception("The stage can not be null.");
 		Validations.STATE.isNull(primaryStage).exception("The view service was already initialized.");
+
+		View startupView = view;
+		if (startupView == null) {
+			startupView = new EmptyView();
+		}
+		registerView(startupView);
+
+		final Scene scene = new Scene(startupView.getNode(), startupView.getWidth(), startupView.getHeight());
 		this.primaryStage = stage;
-		this.primaryStage.setScene(new Scene(new AnchorPane(), DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		this.primaryStage.setTitle(DEFAULT_TITLE);
-		this.primaryStage.show();
+		this.primaryStage.setScene(scene);
+		this.primaryStage.setTitle(startupView.getTitle());
+		if (showViewAtStartup) {
+			this.primaryStage.show();
+		}
 	}
 
 
@@ -99,6 +95,9 @@ public class ViewService {
 		stage.setWidth(view.getWidth());
 		stage.setHeight(view.getHeight());
 		stage.setTitle(view.getTitle());
+		if (!stage.isShowing()) {
+			stage.show();
+		}
 		log.info("Show view {}.", view.getId());
 	}
 
