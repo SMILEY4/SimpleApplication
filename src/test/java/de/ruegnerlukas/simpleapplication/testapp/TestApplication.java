@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
 import de.ruegnerlukas.simpleapplication.core.application.Application;
+import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfiguration;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
-import de.ruegnerlukas.simpleapplication.core.plugins.PluginFinder;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import javafx.scene.control.Button;
@@ -16,15 +18,13 @@ public class TestApplication {
 
 	public static void main(String[] args) {
 
-		final PluginFinder pluginFinder = new PluginFinder() {
-			@Override
-			public void findPlugins() {
-				add(new LoggingPlugin());
-				add(new UIPlugin());
-			}
-		};
+		final ApplicationConfiguration configuration = new ApplicationConfiguration();
+		configuration.getPlugins().add(new LoggingPlugin());
+		configuration.getPlugins().add(new UIPlugin());
+		configuration.getProviderFactories().add(new StringFactory("application_name", "Test App"));
+		configuration.setShowViewAtStartup(false);
 
-		new Application(pluginFinder).run();
+		new Application(configuration).run();
 	}
 
 
@@ -56,6 +56,8 @@ public class TestApplication {
 		private void createViews() {
 			log.info("{} creating views.", this.getId());
 
+			final String applicationName = new StringProvider("application_name").get();
+
 			final ViewService viewService = new Provider<>(ViewService.class).get();
 			final String ID_A = "core.ui.a";
 			final String ID_B = "core.ui.b";
@@ -67,7 +69,7 @@ public class TestApplication {
 					.id(ID_A)
 					.width(300)
 					.height(100)
-					.title("View A")
+					.title(applicationName + " - View A")
 					.node(buttonA)
 					.build();
 
@@ -79,7 +81,7 @@ public class TestApplication {
 					.id(ID_B)
 					.width(200)
 					.height(500)
-					.title("View AB")
+					.title(applicationName + " - View B")
 					.node(buttonB)
 					.build();
 
