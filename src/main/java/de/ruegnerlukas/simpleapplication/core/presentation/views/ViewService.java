@@ -1,6 +1,10 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
+import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +17,19 @@ public class ViewService {
 
 
 	/**
+	 * The provider for the {@link EventService}.
+	 */
+	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
+
+	/**
 	 * The primary stage of the (javafx-) application
 	 */
 	private Stage primaryStage = null;
+
+	/**
+	 * The id of the view currently shown in the primary stage (or null).
+	 */
+	private String currentPrimaryViewId = null;
 
 	/**
 	 * All registered views.
@@ -29,8 +43,8 @@ public class ViewService {
 	 * Initializes this view service with the primary stage of the javafx application.
 	 *
 	 * @param stage             the primary stage
-	 * @param showViewAtStartup
-	 * @param view
+	 * @param showViewAtStartup whether to show a view at startup or hide the window
+	 * @param view              the view to show at startup (or null)
 	 */
 	public void initialize(final Stage stage, final boolean showViewAtStartup, final View view) {
 		Validations.INPUT.notNull(stage).exception("The stage can not be null.");
@@ -47,6 +61,7 @@ public class ViewService {
 		this.primaryStage.setScene(scene);
 		this.primaryStage.setTitle(startupView.getTitle());
 		if (showViewAtStartup) {
+			currentPrimaryViewId = startupView.getId();
 			this.primaryStage.show();
 		}
 	}
@@ -77,7 +92,39 @@ public class ViewService {
 		Validations.INPUT.notBlank(viewId).exception("The view id can not be null or empty.");
 		Validations.INPUT.containsKey(views, viewId).exception("Could not find a view with id {}.", viewId);
 		Validations.PRESENCE.notNull(primaryStage).exception("The primary stage is not yet set.");
+		eventShowViewPrimaryPre(currentPrimaryViewId, viewId);
 		setView(primaryStage, views.get(viewId));
+		final String lastViewId = currentPrimaryViewId;
+		currentPrimaryViewId = viewId;
+		eventShowViewPrimaryPost(lastViewId, currentPrimaryViewId);
+	}
+
+
+
+
+	/**
+	 * Triggers the {@link ApplicationConstants#EVENT_SHOW_VIEW_PRIMARY_PRE}-event.
+	 *
+	 * @param viewIdCurrent the id of the current view
+	 * @param viewIdNext    the id of the next view
+	 */
+	private void eventShowViewPrimaryPre(final String viewIdCurrent, final String viewIdNext) {
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_SHOW_VIEW_PRIMARY_PRE,
+				new EventPackage<>(new String[]{viewIdCurrent, viewIdNext}));
+	}
+
+
+
+
+	/**
+	 * Triggers the {@link ApplicationConstants#EVENT_SHOW_VIEW_PRIMARY_POST}-event.
+	 *
+	 * @param viewIdLast    the id of the last view
+	 * @param viewIdCurrent the id of the current view
+	 */
+	private void eventShowViewPrimaryPost(final String viewIdLast, final String viewIdCurrent) {
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_SHOW_VIEW_PRIMARY_POST,
+				new EventPackage<>(new String[]{viewIdLast, viewIdCurrent}));
 	}
 
 

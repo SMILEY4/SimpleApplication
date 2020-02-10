@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
+import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
 import de.ruegnerlukas.simpleapplication.core.application.Application;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfiguration;
+import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
@@ -38,7 +40,7 @@ public class TestApplication {
 
 
 		public UIPlugin() {
-			super("core.ui", "UI Plugin", "0.1");
+			super("plugin.ui", "UI Plugin", "0.1");
 		}
 
 
@@ -47,7 +49,7 @@ public class TestApplication {
 		@Override
 		public void onLoad() {
 			final EventService eventService = new Provider<>(EventService.class).get();
-			eventService.getEvent("presentation_initialized").subscribe(e -> createViews());
+			eventService.subscribe(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED, e -> createViews());
 		}
 
 
@@ -59,8 +61,8 @@ public class TestApplication {
 			final String applicationName = new StringProvider("application_name").get();
 
 			final ViewService viewService = new Provider<>(ViewService.class).get();
-			final String ID_A = "core.ui.a";
-			final String ID_B = "core.ui.b";
+			final String ID_A = "plugin.ui.a";
+			final String ID_B = "plugin.ui.b";
 
 			final Button buttonA = new Button("Switch A -> B");
 			buttonA.setOnAction(e -> viewService.showViewPrimary(ID_B));
@@ -113,7 +115,7 @@ public class TestApplication {
 
 
 		public LoggingPlugin() {
-			super("core.logging", "Logging Plugin", "0.1");
+			super("plugin.logging", "Logging Plugin", "0.1");
 		}
 
 
@@ -122,6 +124,19 @@ public class TestApplication {
 		@Override
 		public void onLoad() {
 			log.info("LOGGING: onLoad {}.", getId());
+			final EventService eventService = new Provider<>(EventService.class).get();
+			eventService.subscribe(this::onEvent);
+		}
+
+
+
+
+		private void onEvent(final EventPackage<Object> eventPackage) {
+			log.info("LOGGING: event: channel(s)='{}'; receivers='{}'; time='{}': '{}'",
+					String.join(", ", eventPackage.getChannels()),
+					eventPackage.getReceivers(),
+					eventPackage.getTimestamp(),
+					eventPackage.getEvent());
 		}
 
 

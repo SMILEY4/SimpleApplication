@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.core.application;
 
 import de.ruegnerlukas.simpleapplication.common.callbacks.Callback;
 import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
-import de.ruegnerlukas.simpleapplication.common.events.FixedEventSource;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
@@ -30,15 +29,11 @@ public class Application {
 	 */
 	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
 
+
 	/**
 	 * The configuration of this application.
 	 */
 	private final ApplicationConfiguration configuration;
-
-	/**
-	 * The event when the javafx-application was started / when the {@link ViewService} is initialized.
-	 */
-	private final FixedEventSource<String> eventPresentationStarted = new FixedEventSource<>("");
 
 
 
@@ -74,10 +69,10 @@ public class Application {
 	private void onStart(final Stage stage) {
 		log.info("Application on start.");
 		setupProviderConfigurations();
-		setupApplicationEvents();
 		setupPlugins();
 		setupViews(stage);
 		log.info("Application started.");
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_APPLICATION_STARTED);
 	}
 
 
@@ -92,18 +87,6 @@ public class Application {
 		coreConfig.configure();
 		coreConfig.getFactories().forEach(ProviderService::registerFactory);
 		configuration.getProviderFactories().forEach(ProviderService::registerFactory);
-	}
-
-
-
-
-	/**
-	 * Setup of the application events and {@link EventService}.
-	 */
-	private void setupApplicationEvents() {
-		log.info("Setup events.");
-		final EventService eventService = eventServiceProvider.get();
-		eventService.registerEvent("presentation_initialized", eventPresentationStarted);
 	}
 
 
@@ -130,7 +113,7 @@ public class Application {
 		log.info("Setup views.");
 		final ViewService viewService = viewServiceProvider.get();
 		viewService.initialize(stage, configuration.isShowViewAtStartup(), configuration.getView());
-		eventPresentationStarted.trigger();
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED);
 	}
 
 
@@ -141,6 +124,7 @@ public class Application {
 	 */
 	private void onStop() {
 		log.info("Application on stop.");
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_APPLICATION_STOPPING);
 		final PluginService pluginService = pluginServiceProvider.get();
 		configuration.getPlugins().forEach(pluginService::unloadCorePlugin);
 		log.info("Application stopped.");

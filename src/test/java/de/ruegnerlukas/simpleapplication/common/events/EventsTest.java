@@ -151,6 +151,7 @@ public class EventsTest {
 		// subscribe listener to channel
 		final EventBusListener<String> listener = Mockito.mock(EventBusListener.class);
 		bus.subscribe(CHANNEL, listener);
+		assertThat(bus.getSubscriberCount(CHANNEL)).isEqualTo(1);
 
 		// publish event on channel
 		bus.publish(CHANNEL, new EventPackage<>(EVENT));
@@ -162,6 +163,44 @@ public class EventsTest {
 		assertThat(argument.getValue().getChannels()).containsExactlyInAnyOrder(CHANNEL);
 		assertThat(argument.getValue().getReceivers()).isEqualTo(1);
 		assertThat(argument.getValue().getEvent()).isEqualTo(EVENT);
+	}
+
+
+	@Test
+	public void testEventBusAnySubscribers() {
+
+		final String CHANNEL = "test_channel";
+		final String EVENT = "test event";
+
+		// create event bus
+		final EventBus bus = new EventBusImpl();
+
+		// subscribe listener to channel
+		final EventBusListener<String> listener = Mockito.mock(EventBusListener.class);
+		final EventBusListener<String> listenerAny = Mockito.mock(EventBusListener.class);
+
+		bus.subscribe(CHANNEL, listener);
+		bus.subscribe(listenerAny);
+		assertThat(bus.getSubscriberCount(CHANNEL)).isEqualTo(2);
+
+		// publish event on channel
+		bus.publish(CHANNEL, new EventPackage<>(EVENT));
+
+		// verify
+		ArgumentCaptor<EventPackage<String>> argument = ArgumentCaptor.forClass(EventPackage.class);
+		verify(listener).onEvent(argument.capture());
+		assertThat(argument.getValue()).isNotNull();
+		assertThat(argument.getValue().getChannels()).containsExactlyInAnyOrder(CHANNEL);
+		assertThat(argument.getValue().getReceivers()).isEqualTo(2);
+		assertThat(argument.getValue().getEvent()).isEqualTo(EVENT);
+
+		ArgumentCaptor<EventPackage<String>> argumentAny = ArgumentCaptor.forClass(EventPackage.class);
+		verify(listener).onEvent(argumentAny.capture());
+		assertThat(argumentAny.getValue()).isNotNull();
+		assertThat(argumentAny.getValue().getChannels()).containsExactlyInAnyOrder(CHANNEL);
+		assertThat(argumentAny.getValue().getReceivers()).isEqualTo(2);
+		assertThat(argumentAny.getValue().getEvent()).isEqualTo(EVENT);
+
 	}
 
 
