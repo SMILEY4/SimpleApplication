@@ -31,12 +31,12 @@ public final class ApplicationConstants {
 	 * The channel for the event triggered before showing a new view in the primary window.
 	 * The event-data is an array with the id of the current view and the id of the next view.
 	 */
-	public static final String EVENT_SHOW_VIEW_PRIMARY_PRE = "app.show_view_primary.pre";
+	public static final String EVENT_SWITCH_VIEW_PRE = "app.show_view_primary.pre";
 
 	/**
 	 * The channel for the event triggered after switching to a new view in the primary window.
 	 * The event-data is an array with the id of the last view and the id of the current view.
 	 */
-	public static final String EVENT_SHOW_VIEW_PRIMARY_POST = "app.show_view_primary.post";
+	public static final String EVENT_SWITCH_VIEW_POST = "app.show_view_primary.post";
 
 }
