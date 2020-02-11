@@ -65,6 +65,9 @@ public class TestApplication {
 			final String ID_B_POPUP = "plugin.ui.bpopup";
 			final String ID_B_WARN = "plugin.ui.bwarn";
 
+			/*
+			ID_A -> ID_B -> (popup: ID_B_POPUP -> ID_B_WARN) -> ID_A
+			 */
 
 			// VIEW A
 

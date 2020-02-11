@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.Inst
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
+import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 
 public class CoreProviderConfiguration extends ProviderConfiguration {
 
@@ -20,7 +21,7 @@ public class CoreProviderConfiguration extends ProviderConfiguration {
 		add(new InstanceFactory<>(ViewService.class) {
 			@Override
 			public ViewService buildObject() {
-				return new ViewService();
+				return new ViewServiceImpl();
 			}
 		});
 		add(new InstanceFactory<>(EventService.class) {
