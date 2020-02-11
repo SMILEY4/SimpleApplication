@@ -10,8 +10,8 @@ import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewHandle;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
+import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
 import javafx.scene.control.Button;
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,6 +66,7 @@ public class TestApplication {
 			final String ID_B_WARN = "plugin.ui.bwarn";
 
 			/*
+			Shows the views in the following order:
 			ID_A -> ID_B -> (popup: ID_B_POPUP -> ID_B_WARN) -> ID_A
 			 */
 
@@ -106,7 +107,7 @@ public class TestApplication {
 
 			final Button buttonBConfirm = new Button("Confirm switch");
 			buttonBConfirm.setOnAction(e -> {
-				final ViewHandle handlePopup = viewService.getViewHandles(ID_B_POPUP).get(0);
+				final WindowHandle handlePopup = viewService.getViewHandles(ID_B_POPUP).get(0);
 				viewService.showView(ID_B_WARN, handlePopup);
 			});
 
@@ -122,7 +123,7 @@ public class TestApplication {
 
 			final Button buttonBWarn = new Button("You sure ?");
 			buttonBWarn.setOnAction(e -> {
-				final ViewHandle handlePopup = viewService.getViewHandles(ID_B_WARN).get(0);
+				final WindowHandle handlePopup = viewService.getViewHandles(ID_B_WARN).get(0);
 				viewService.closePopup(handlePopup);
 				viewService.showView(ID_A);
 			});

@@ -2,12 +2,15 @@ package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -25,9 +28,9 @@ public class ViewServiceImpl implements ViewService {
 	private final Map<String, View> views = new HashMap<>();
 
 	/**
-	 * All view handles of the currently visible views.
+	 * All window handles of the currently visible windows and views.
 	 */
-	private final Map<String, ViewHandle> viewHandles = new HashMap<>();
+	private final Map<String, WindowHandle> viewHandles = new HashMap<>();
 
 
 
@@ -43,12 +46,11 @@ public class ViewServiceImpl implements ViewService {
 		}
 		registerView(startupView);
 
-		final Scene scene = new Scene(startupView.getNode(), startupView.getWidth(), startupView.getHeight());
 		this.primaryStage = stage;
-		this.primaryStage.setScene(scene);
+		this.primaryStage.setScene(new Scene(startupView.getNode(), startupView.getWidth(), startupView.getHeight()));
 		this.primaryStage.setTitle(startupView.getTitle());
 		if (showViewAtStartup) {
-			this.primaryStage.show();
+			showView(view.getId());
 		}
 	}
 
@@ -77,114 +79,27 @@ public class ViewServiceImpl implements ViewService {
 
 
 	@Override
-	public ViewHandle showView(final String viewId) {
-		Validations.INPUT.notBlank(viewId).exception("The view id can not be null or empty.");
-		Validations.INPUT.containsKey(views, viewId).exception("Could not find a view with id {}.", viewId);
-		Validations.PRESENCE.notNull(primaryStage).exception("The primary stage is not yet set.");
-		final ViewHandle viewHandle = new StageViewHandle(ViewHandle.ID_PRIMARY, views.get(viewId), primaryStage);
-		show(viewHandle);
-		return viewHandle;
+	public WindowHandle showView(final String viewId) {
+		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
+		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
+		Validations.STATE.notNull(primaryStage).exception("The view service is not yet initialized / the primary stage is null.");
+		final WindowHandle handle = new WindowHandle(WindowHandle.ID_PRIMARY, views.get(viewId), primaryStage);
+		viewHandles.put(handle.getHandleId(), handle);
+		return showView(viewId, handle);
 	}
 
 
 
 
 	@Override
-	public ViewHandle showView(final String viewId, final ViewHandle handle) {
-		Validations.INPUT.notBlank(viewId).exception("The view id can not be null or empty.");
-		Validations.INPUT.notNull(handle).exception("The handle can not be null.");
-		Validations.INPUT.containsKey(views, viewId).exception("Could not find a view with id {}.", viewId);
-		ViewHandle viewHandle;
-		if (handle instanceof PopupViewHandle) {
-			viewHandle = new PopupViewHandle(handle.getHandleId(), views.get(viewId), ((PopupViewHandle) handle).getPopup());
-		} else {
-			viewHandle = new StageViewHandle(handle.getHandleId(), views.get(viewId), handle.getStage());
-		}
-		showAsStageViewHandle(viewHandle);
-		return viewHandle;
-	}
-
-
-
-
-	@Override
-	public ViewHandle popupView(final String viewId, final boolean wait) {
-		Validations.INPUT.notBlank(viewId).exception("The view id can not be null or empty.");
-		Validations.INPUT.containsKey(views, viewId).exception("Could not find a view with id {}.", viewId);
-		Validations.PRESENCE.notNull(primaryStage).exception("The primary stage is not yet set.");
-		return popupView(viewId, viewHandles.get(ViewHandle.ID_PRIMARY), wait);
-	}
-
-
-
-
-	@Override
-	public ViewHandle popupView(final String viewId, final ViewHandle parent, final boolean wait) {
-		Validations.INPUT.notBlank(viewId).exception("The view id can not be null or empty.");
-		Validations.INPUT.containsKey(views, viewId).exception("Could not find a view with id {}.", viewId);
-		Validations.PRESENCE.notNull(primaryStage).exception("The primary stage is not yet set.");
-		final Popup popup = new Popup(parent.getStage(), views.get(viewId), wait);
-		final ViewHandle viewHandle = new PopupViewHandle(createHandleId(viewId, popup.hashCode()), views.get(viewId), popup);
-		show(viewHandle);
-		return viewHandle;
-	}
-
-
-
-
-	@Override
-	public void closePopup(final ViewHandle viewHandle) {
-		Validations.INPUT.notNull(viewHandle).exception("The view handle can not be null.");
-		Validations.INPUT.typeOf(viewHandle, PopupViewHandle.class).exception("The view handle must handle a popup.");
-		viewHandles.remove(viewHandle.getHandleId());
-		final PopupViewHandle popupViewHandle = (PopupViewHandle) viewHandle;
-		final Popup popup = popupViewHandle.getPopup();
-		popup.close();
-	}
-
-
-
-
-	@Override
-	public List<ViewHandle> getViewHandles(final String viewId) {
-		return viewHandles
-				.values()
-				.stream()
-				.filter(handle -> handle.getViewId().equals(viewId))
-				.collect(Collectors.toUnmodifiableList());
-	}
-
-
-
-
-	/**
-	 * Shows the given {@link ViewHandle}.
-	 *
-	 * @param viewHandle the handle containing the view
-	 */
-	private void show(final ViewHandle viewHandle) {
-		if (viewHandle instanceof StageViewHandle) {
-			showAsStageViewHandle(viewHandle);
-		}
-		if (viewHandle instanceof PopupViewHandle) {
-			final PopupViewHandle popupViewHandle = (PopupViewHandle) viewHandle;
-			showAsPopupViewHandle(popupViewHandle);
-		}
-	}
-
-
-
-
-	/**
-	 * Shows the given view handle in its stage.
-	 *
-	 * @param viewHandle the view handle
-	 */
-	private void showAsStageViewHandle(final ViewHandle viewHandle) {
-		viewHandles.put(viewHandle.getHandleId(), viewHandle);
-		final Stage stage = viewHandle.getStage();
+	public WindowHandle showView(final String viewId, final WindowHandle handle) {
+		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
+		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
+		Validations.INPUT.notNull(handle).exception("The handle may not be null.");
+		handle.setView(views.get(viewId));
+		final Stage stage = handle.getStage();
 		final Scene scene = stage.getScene();
-		final View view = views.get(viewHandle.getViewId());
+		final View view = handle.getView();
 		scene.setRoot(view.getNode());
 		stage.setWidth(view.getWidth());
 		stage.setHeight(view.getHeight());
@@ -192,34 +107,93 @@ public class ViewServiceImpl implements ViewService {
 		if (!stage.isShowing()) {
 			stage.show();
 		}
+		return handle;
+	}
+
+
+
+
+	@Override
+	public WindowHandle popupView(final String viewId, final boolean wait) {
+		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
+		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
+		return popupView(viewId, viewHandles.get(WindowHandle.ID_PRIMARY), wait);
+	}
+
+
+
+
+	@Override
+	public WindowHandle popupView(final String viewId, final WindowHandle parent, final boolean wait) {
+		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
+		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
+		Validations.INPUT.notNull(parent).exception("The parent may not be null.");
+		Validations.INPUT.containsKey(viewHandles, parent.getHandleId())
+				.exception("The parent '{}' was not found.", parent.getHandleId());
+		final View view = views.get(viewId);
+		final Scene scene = new Scene(view.getNode(), view.getWidth(), view.getHeight());
+		scene.setRoot(view.getNode());
+		final Stage stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initOwner(parent.getStage());
+		stage.setTitle(view.getTitle());
+		stage.setScene(scene);
+		final WindowHandle handle = new WindowHandle(createHandleId(), view, stage);
+		viewHandles.put(handle.getHandleId(), handle);
+		if (wait) {
+			stage.showAndWait();
+		} else {
+			stage.show();
+		}
+		return handle;
+	}
+
+
+
+
+	@Override
+	public void closePopup(final WindowHandle handle) {
+		Validations.INPUT.notNull(handle).exception("The handle may not be null.");
+		Validations.INPUT.containsKey(viewHandles, handle.getHandleId())
+				.exception("The handle '{}' was not found.", handle.getHandleId());
+		handle.getStage().close();
+		handle.getStage().getScene().setRoot(new Pane());
+		viewHandles.remove(handle.getHandleId());
+	}
+
+
+
+
+	@Override
+	public List<WindowHandle> getViewHandles(final String viewId) {
+		return viewHandles
+				.values()
+				.stream()
+				.filter(handle -> handle.getView().getId().equals(viewId))
+				.collect(Collectors.toUnmodifiableList());
 	}
 
 
 
 
 	/**
-	 * Shows the given {@link PopupViewHandle} as a new popup.
-	 *
-	 * @param viewHandle the view handle
+	 * @return the handle of the primary window
 	 */
-	private void showAsPopupViewHandle(final PopupViewHandle viewHandle) {
-		viewHandles.put(viewHandle.getHandleId(), viewHandle);
-		final Popup popup = viewHandle.getPopup();
-		popup.show();
+	@Override
+	public WindowHandle getPrimaryWindowHandle() {
+		return viewHandles.get(WindowHandle.ID_PRIMARY);
 	}
 
 
 
 
 	/**
-	 * Creates an id for a {@link ViewHandle} from the given view id and an object.
+	 * Generates an id for a {@link WindowHandle}.
 	 *
-	 * @param viewId the id of the view
-	 * @param obj    an object to add to the id
-	 * @return an id for a {@link ViewHandle}
+	 * @return an id for a {@link WindowHandle}
 	 */
-	private String createHandleId(final String viewId, final Object obj) {
-		return viewId + "handle" + Integer.toHexString(obj.hashCode());
+	private String createHandleId() {
+		return "windowhandle_" + UUID.randomUUID().toString();
 	}
 
 

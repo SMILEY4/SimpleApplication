@@ -36,44 +36,50 @@ public interface ViewService {
 	 *
 	 * @param viewId the id of the view
 	 */
-	ViewHandle showView(String viewId);
+	WindowHandle showView(String viewId);
 
 	/**
 	 * Replaces the view of the given handle with the view with the given id.
 	 *
 	 * @param viewId the id of the view
-	 * @param handle the handle of the view to replace
+	 * @param handle the handle of the window place the view in
 	 */
-	ViewHandle showView(String viewId, ViewHandle handle);
+	WindowHandle showView(String viewId, WindowHandle handle);
 
 	/**
-	 * Shows the view with the given id in a new popup window.
+	 * Shows the view with the given id in a new window.
 	 *
 	 * @param viewId the id of the view
 	 * @param wait   whether to wait for the popup to close
 	 */
-	ViewHandle popupView(String viewId, boolean wait);
+	WindowHandle popupView(String viewId, boolean wait);
 
 	/**
 	 * Shows the view with the given id in a new popup window with the given view-binding id as the parent.
 	 *
 	 * @param viewId the id of the view
-	 * @param parent the {@link ViewHandle} of the parent stage/popup
+	 * @param parent the {@link WindowHandle} of the parent stage/popup
 	 * @param wait   whether to wait for the popup to close
 	 */
-	ViewHandle popupView(String viewId, ViewHandle parent, boolean wait);
+	WindowHandle popupView(String viewId, WindowHandle parent, boolean wait);
 
 	/**
-	 * Closes the popup with the given view handle.
+	 * Closes the window with the given handle.
 	 *
-	 * @param viewHandle the handle of the popup
+	 * @param handle the handle of the popup window
 	 */
-	void closePopup(ViewHandle viewHandle);
+	void closePopup(WindowHandle handle);
 
 	/**
 	 * @param viewId the id of the view
-	 * @return a list of all current handles for this view
+	 * @return a list of all current window handles showing the give view
 	 */
-	List<ViewHandle> getViewHandles(String viewId);
+	List<WindowHandle> getViewHandles(String viewId);
+
+	/**
+	 * @return the handle of the primary window
+	 */
+	WindowHandle getPrimaryWindowHandle();
+
 
 }
