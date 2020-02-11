@@ -7,7 +7,6 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Prov
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,7 +20,7 @@ public class Application {
 	private final Provider<PluginService> pluginServiceProvider = new Provider<>(PluginService.class);
 
 	/**
-	 * The provider for the {@link ViewServiceImpl}.
+	 * The provider for the {@link ViewService}.
 	 */
 	private final Provider<ViewService> viewServiceProvider = new Provider<>(ViewService.class);
 
@@ -106,7 +105,7 @@ public class Application {
 
 
 	/**
-	 * Setup the {@link ViewServiceImpl}.
+	 * Setup the {@link ViewService}.
 	 *
 	 * @param stage the primary stage
 	 */

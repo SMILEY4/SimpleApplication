@@ -1,6 +1,10 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
+import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -16,6 +20,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ViewServiceImpl implements ViewService {
 
+
+	/**
+	 * The provider for the event service.
+	 */
+	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
 
 	/**
 	 * The primary stage of the (javafx-) application
@@ -96,6 +105,8 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
 		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
 		Validations.INPUT.notNull(handle).exception("The handle may not be null.");
+
+		final String prevView = handle.getView().getId();
 		handle.setView(views.get(viewId));
 		final Stage stage = handle.getStage();
 		final Scene scene = stage.getScene();
@@ -104,9 +115,18 @@ public class ViewServiceImpl implements ViewService {
 		stage.setWidth(view.getWidth());
 		stage.setHeight(view.getHeight());
 		stage.setTitle(view.getTitle());
+
 		if (!stage.isShowing()) {
 			stage.show();
 		}
+
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_SHOW_VIEW, new EventPackage<>(
+				ViewEvent.builder()
+						.prevViewId(prevView.equals(viewId) ? null : prevView)
+						.viewId(viewId)
+						.windowHandle(handle)
+						.build()));
+
 		return handle;
 	}
 
@@ -130,6 +150,7 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.notNull(parent).exception("The parent may not be null.");
 		Validations.INPUT.containsKey(viewHandles, parent.getHandleId())
 				.exception("The parent '{}' was not found.", parent.getHandleId());
+
 		final View view = views.get(viewId);
 		final Scene scene = new Scene(view.getNode(), view.getWidth(), view.getHeight());
 		scene.setRoot(view.getNode());
@@ -140,11 +161,20 @@ public class ViewServiceImpl implements ViewService {
 		stage.setScene(scene);
 		final WindowHandle handle = new WindowHandle(createHandleId(), view, stage);
 		viewHandles.put(handle.getHandleId(), handle);
+
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_OPEN_POPUP, new EventPackage<>(
+				ViewEvent.builder()
+						.prevViewId(null)
+						.viewId(viewId)
+						.windowHandle(handle)
+						.build()));
+
 		if (wait) {
 			stage.showAndWait();
 		} else {
 			stage.show();
 		}
+
 		return handle;
 	}
 
@@ -156,9 +186,18 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.notNull(handle).exception("The handle may not be null.");
 		Validations.INPUT.containsKey(viewHandles, handle.getHandleId())
 				.exception("The handle '{}' was not found.", handle.getHandleId());
+
 		handle.getStage().close();
 		handle.getStage().getScene().setRoot(new Pane());
 		viewHandles.remove(handle.getHandleId());
+
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_CLOSE_POPUP, new EventPackage<>(
+				ViewEvent.builder()
+						.prevViewId(null)
+						.viewId(handle.getView().getId())
+						.windowHandle(handle)
+						.build()));
+
 	}
 
 
