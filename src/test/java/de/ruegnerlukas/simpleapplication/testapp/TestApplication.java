@@ -11,6 +11,7 @@ import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
+import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
 import javafx.scene.control.Button;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,13 +20,11 @@ public class TestApplication {
 
 
 	public static void main(String[] args) {
-
 		final ApplicationConfiguration configuration = new ApplicationConfiguration();
 		configuration.getPlugins().add(new LoggingPlugin());
 		configuration.getPlugins().add(new UIPlugin());
 		configuration.getProviderFactories().add(new StringFactory("application_name", "Test App"));
 		configuration.setShowViewAtStartup(false);
-
 		new Application(configuration).run();
 	}
 
@@ -63,9 +62,18 @@ public class TestApplication {
 			final ViewService viewService = new Provider<>(ViewService.class).get();
 			final String ID_A = "plugin.ui.a";
 			final String ID_B = "plugin.ui.b";
+			final String ID_B_POPUP = "plugin.ui.bpopup";
+			final String ID_B_WARN = "plugin.ui.bwarn";
+
+			/*
+			Shows the views in the following order:
+			ID_A -> ID_B -> (popup: ID_B_POPUP -> ID_B_WARN) -> ID_A
+			 */
+
+			// VIEW A
 
 			final Button buttonA = new Button("Switch A -> B");
-			buttonA.setOnAction(e -> viewService.showViewPrimary(ID_B));
+			buttonA.setOnAction(e -> viewService.showView(ID_B));
 
 			final View viewA = View.builder()
 					.id(ID_A)
@@ -76,8 +84,10 @@ public class TestApplication {
 					.build();
 
 
+			// VIEW B
+
 			final Button buttonB = new Button("Switch B -> A");
-			buttonB.setOnAction(e -> viewService.showViewPrimary(ID_A));
+			buttonB.setOnAction(e -> viewService.popupView(ID_B_POPUP, false));
 
 			final View viewB = View.builder()
 					.id(ID_B)
@@ -90,7 +100,50 @@ public class TestApplication {
 
 			viewService.registerView(viewA);
 			viewService.registerView(viewB);
-			viewService.showViewPrimary(viewA.getId());
+			viewService.showView(viewA.getId());
+
+
+			// VIEW B CONFIRM
+
+			final Button buttonBConfirm = new Button("Confirm switch");
+			buttonBConfirm.setOnAction(e -> {
+				final WindowHandle handlePopup = viewService.getViewHandles(ID_B_POPUP).get(0);
+				viewService.showView(ID_B_WARN, handlePopup);
+			});
+
+
+			final View viewBPopup = View.builder()
+					.id(ID_B_POPUP)
+					.width(300)
+					.height(200)
+					.title(applicationName + " - View B Confirm")
+					.node(buttonBConfirm)
+					.build();
+
+
+			final Button buttonBWarn = new Button("You sure ?");
+			buttonBWarn.setOnAction(e -> {
+				final WindowHandle handlePopup = viewService.getViewHandles(ID_B_WARN).get(0);
+				viewService.closePopup(handlePopup);
+				viewService.showView(ID_A);
+			});
+
+
+			final View viewBWarn = View.builder()
+					.id(ID_B_WARN)
+					.width(300)
+					.height(200)
+					.title(applicationName + " - View B LAST WARNING")
+					.node(buttonBWarn)
+					.build();
+
+
+			viewService.registerView(viewA);
+			viewService.registerView(viewB);
+			viewService.registerView(viewBPopup);
+			viewService.registerView(viewBWarn);
+			viewService.showView(viewA.getId());
+
 		}
 
 
