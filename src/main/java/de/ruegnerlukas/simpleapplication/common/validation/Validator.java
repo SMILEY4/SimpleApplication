@@ -493,7 +493,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given boolean is true
+	 * Assert that the given boolean is true.
 	 *
 	 * @param bool the boolean to examine
 	 * @return the result of the validation
@@ -506,7 +506,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given boolean is false
+	 * Assert that the given boolean is false.
 	 *
 	 * @param bool the boolean to examine
 	 * @return the result of the validation
@@ -519,7 +519,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is negative
+	 * Assert that the given number is negative.
 	 *
 	 * @param number the number to examine
 	 * @return the result of the validation
@@ -532,7 +532,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is negative
+	 * Assert that the given number is negative.
 	 *
 	 * @param number the number to examine
 	 * @return the result of the validation
@@ -545,7 +545,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is not negative
+	 * Assert that the given number is not negative.
 	 *
 	 * @param number the number to examine
 	 * @return the result of the validation
@@ -558,7 +558,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is not negative
+	 * Assert that the given number is not negative.
 	 *
 	 * @param number the number to examine
 	 * @return the result of the validation
@@ -571,7 +571,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is positive
+	 * Assert that the given number is positive.
 	 *
 	 * @param number the number to examine
 	 * @return the result of the validation
@@ -584,7 +584,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is positive
+	 * Assert that the given number is positive.
 	 *
 	 * @param number the number to examine
 	 * @return the result of the validation
@@ -597,7 +597,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is greater than than the other number
+	 * Assert that the given number is greater than than the other number.
 	 *
 	 * @param number the number to examine
 	 * @param other  the other value
@@ -611,7 +611,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is greater than than the other number
+	 * Assert that the given number is greater than than the other number.
 	 *
 	 * @param number the number to examine
 	 * @param other  the other value
@@ -625,7 +625,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is less than than the other number
+	 * Assert that the given number is less than than the other number.
 	 *
 	 * @param number the number to examine
 	 * @param other  the other value
@@ -639,7 +639,7 @@ public class Validator {
 
 
 	/**
-	 * Assert that the given number is less than than the other number
+	 * Assert that the given number is less than than the other number.
 	 *
 	 * @param number the number to examine
 	 * @param other  the other value
@@ -647,6 +647,36 @@ public class Validator {
 	 */
 	public ValidationResult isLessThan(final double number, final double other) {
 		return validated(number >= other);
+	}
+
+
+
+
+	/**
+	 * Assert that the given number is equal or in between the min and max values.
+	 *
+	 * @param value the value to examine
+	 * @param min   the minimum value
+	 * @param max   the maximum value
+	 * @return the result of the validation
+	 */
+	public ValidationResult inRange(final long value, final long min, final long max) {
+		return validated(!(min <= value && value <= max));
+	}
+
+
+
+
+	/**
+	 * Assert that the given number is equal or in between the min and max values.
+	 *
+	 * @param value the value to examine
+	 * @param min   the minimum value
+	 * @param max   the maximum value
+	 * @return the result of the validation
+	 */
+	public ValidationResult inRange(final double value, final double min, final double max) {
+		return validated(!(min <= value && value <= max));
 	}
 
 
