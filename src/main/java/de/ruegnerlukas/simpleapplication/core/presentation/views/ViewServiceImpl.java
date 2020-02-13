@@ -144,18 +144,43 @@ public class ViewServiceImpl implements ViewService {
 
 
 	@Override
+	public WindowHandle popupView(final String viewId, final Modality modality, final boolean wait) {
+		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
+		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
+		Validations.INPUT.notNull(modality).exception("The modality may not be null.");
+		return popupView(viewId, viewHandles.get(WindowHandle.ID_PRIMARY), wait);
+	}
+
+
+
+
+	@Override
 	public WindowHandle popupView(final String viewId, final WindowHandle parent, final boolean wait) {
 		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
 		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
 		Validations.INPUT.notNull(parent).exception("The parent may not be null.");
 		Validations.INPUT.containsKey(viewHandles, parent.getHandleId())
 				.exception("The parent '{}' was not found.", parent.getHandleId());
+		return popupView(viewId, parent, Modality.APPLICATION_MODAL, wait);
+	}
+
+
+
+
+	@Override
+	public WindowHandle popupView(final String viewId, final WindowHandle parent, final Modality modality, final boolean wait) {
+		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
+		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
+		Validations.INPUT.notNull(parent).exception("The parent may not be null.");
+		Validations.INPUT.containsKey(viewHandles, parent.getHandleId())
+				.exception("The parent '{}' was not found.", parent.getHandleId());
+		Validations.INPUT.notNull(modality).exception("The modality may not be null.");
 
 		final View view = views.get(viewId);
 		final Scene scene = new Scene(view.getNode(), view.getWidth(), view.getHeight());
 		scene.setRoot(view.getNode());
 		final Stage stage = new Stage();
-		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initModality(modality);
 		stage.initOwner(parent.getStage());
 		stage.setTitle(view.getTitle());
 		stage.setScene(scene);
