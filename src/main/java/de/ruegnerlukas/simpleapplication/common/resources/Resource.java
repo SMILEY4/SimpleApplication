@@ -11,6 +11,20 @@ public final class Resource {
 
 
 	/**
+	 * The path to the resource.
+	 */
+	private final String path;
+
+
+	/**
+	 * Whether the path is internal or absolute.
+	 */
+	private final boolean internal;
+
+
+
+
+	/**
 	 * Creates a new {@link Resource} with the given path relative to the project.
 	 *
 	 * @param path the path to the file
@@ -55,20 +69,6 @@ public final class Resource {
 	public static Resource getRootDirectory() {
 		return Resource.external(new File("").getAbsolutePath());
 	}
-
-
-
-
-	/**
-	 * The path to the resource.
-	 */
-	private final String path;
-
-
-	/**
-	 * Whether the path is internal or absolute.
-	 */
-	private final boolean internal;
 
 
 
