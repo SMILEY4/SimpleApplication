@@ -4,6 +4,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ViewService {
 
@@ -31,6 +32,13 @@ public interface ViewService {
 	 * @param viewId the id of the view to deregister
 	 */
 	void deregisterView(String viewId);
+
+	/**
+	 * Finds the registered view with the given id
+	 * @param viewId the id of the view
+	 * @return an optional with the view
+	 */
+	Optional<View> findView(String viewId);
 
 	/**
 	 * Shows the view with the given id in the primary window.

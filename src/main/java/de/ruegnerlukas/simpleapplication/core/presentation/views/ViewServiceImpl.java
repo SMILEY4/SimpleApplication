@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -83,6 +84,14 @@ public class ViewServiceImpl implements ViewService {
 		if (views.remove(viewId) != null) {
 			log.info("Deregister view {}.", viewId);
 		}
+	}
+
+
+
+
+	@Override
+	public Optional<View> findView(final String viewId) {
+		return Optional.ofNullable(views.get(viewId));
 	}
 
 
