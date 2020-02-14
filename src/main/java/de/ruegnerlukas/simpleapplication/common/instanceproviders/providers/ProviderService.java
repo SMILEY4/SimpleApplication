@@ -104,6 +104,24 @@ public final class ProviderService {
 
 
 		/**
+		 * Used to calculate hash code.
+		 */
+		private static final int HASH_CODE_MULTIPLIER = 31;
+
+		/**
+		 * The name of the instance (or null)
+		 */
+		private final String name;
+
+		/**
+		 * The type of the instance (or null)
+		 */
+		private final Class<?> type;
+
+
+
+
+		/**
 		 * Creates a new {@link FactoryKey} from the given type.
 		 *
 		 * @param type the type of the instance/factory
@@ -125,24 +143,6 @@ public final class ProviderService {
 		public static FactoryKey fromName(final String name) {
 			return new FactoryKey(name, null);
 		}
-
-
-
-
-		/**
-		 * Used to calculate hash code.
-		 */
-		private static final int HASH_CODE_MULTIPLIER = 31;
-
-		/**
-		 * The name of the instance (or null)
-		 */
-		private final String name;
-
-		/**
-		 * The type of the instance (or null)
-		 */
-		private final Class<?> type;
 
 
 

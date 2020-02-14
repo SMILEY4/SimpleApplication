@@ -7,16 +7,6 @@ public final class Validations {
 
 
 	/**
-	 * Utility class
-	 */
-	private Validations() {
-
-	}
-
-
-
-
-	/**
 	 * Validator for validating input. Throws {@link IllegalArgumentException}.
 	 */
 	public static final Validator INPUT = new Validator((message) -> {
@@ -48,6 +38,16 @@ public final class Validations {
 			return new NotFoundException(message);
 		}
 	});
+
+
+
+
+	/**
+	 * Utility class
+	 */
+	private Validations() {
+
+	}
 
 
 }

@@ -95,7 +95,7 @@ public class Module extends AnchorPane {
 	 * @throws IOException when something went wrong
 	 */
 	private Parent loadFXML(final Resource fxmlFile, final Object fxmlController) throws IOException {
-		FXMLLoader loader = new javafx.fxml.FXMLLoader(fxmlFile.asURL());
+		FXMLLoader loader = new FXMLLoader(fxmlFile.asURL());
 		if (fxmlController != null) {
 			loader.setController(fxmlController);
 		}
