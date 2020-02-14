@@ -7,13 +7,13 @@ import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -56,7 +56,8 @@ public class ViewServiceImpl implements ViewService {
 		registerView(startupView);
 
 		this.primaryStage = stage;
-		this.primaryStage.setScene(new Scene(startupView.getNode(), startupView.getWidth(), startupView.getHeight()));
+		this.primaryStage.setScene(
+				new Scene(startupView.getNode(), startupView.getSize().getWidth(), startupView.getSize().getHeight()));
 		this.primaryStage.setTitle(startupView.getTitle());
 		if (showViewAtStartup) {
 			showView(view.getId());
@@ -88,6 +89,14 @@ public class ViewServiceImpl implements ViewService {
 
 
 	@Override
+	public Optional<View> findView(final String viewId) {
+		return Optional.ofNullable(views.get(viewId));
+	}
+
+
+
+
+	@Override
 	public WindowHandle showView(final String viewId) {
 		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
 		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
@@ -112,8 +121,7 @@ public class ViewServiceImpl implements ViewService {
 		final Scene scene = stage.getScene();
 		final View view = handle.getView();
 		scene.setRoot(view.getNode());
-		stage.setWidth(view.getWidth());
-		stage.setHeight(view.getHeight());
+		setStageSize(stage, view);
 		stage.setTitle(view.getTitle());
 
 		if (!stage.isShowing()) {
@@ -134,30 +142,21 @@ public class ViewServiceImpl implements ViewService {
 
 
 	@Override
-	public WindowHandle popupView(final String viewId, final boolean wait) {
+	public WindowHandle popupView(final String viewId, final PopupConfiguration config) {
 		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
 		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
-		return popupView(viewId, viewHandles.get(WindowHandle.ID_PRIMARY), wait);
-	}
-
-
-
-
-	@Override
-	public WindowHandle popupView(final String viewId, final WindowHandle parent, final boolean wait) {
-		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
-		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
-		Validations.INPUT.notNull(parent).exception("The parent may not be null.");
-		Validations.INPUT.containsKey(viewHandles, parent.getHandleId())
-				.exception("The parent '{}' was not found.", parent.getHandleId());
+		Validations.INPUT.notNull(config).exception("The popup config may not be null.");
 
 		final View view = views.get(viewId);
-		final Scene scene = new Scene(view.getNode(), view.getWidth(), view.getHeight());
+		final Scene scene = new Scene(view.getNode(), view.getSize().getWidth(), view.getSize().getHeight());
 		scene.setRoot(view.getNode());
 		final Stage stage = new Stage();
-		stage.initModality(Modality.APPLICATION_MODAL);
-		stage.initOwner(parent.getStage());
+		stage.initModality(config.getModality());
+		stage.initOwner(config.getParent() == null ? getPrimaryWindowHandle().getStage() : config.getParent().getStage());
+		stage.initStyle(config.getStyle());
+		stage.setAlwaysOnTop(config.isAlwaysOnTop());
 		stage.setTitle(view.getTitle());
+		setStageSize(stage, view);
 		stage.setScene(scene);
 		final WindowHandle handle = new WindowHandle(createHandleId(), view, stage);
 		viewHandles.put(handle.getHandleId(), handle);
@@ -169,7 +168,7 @@ public class ViewServiceImpl implements ViewService {
 						.windowHandle(handle)
 						.build()));
 
-		if (wait) {
+		if (config.isWait()) {
 			stage.showAndWait();
 		} else {
 			stage.show();
@@ -233,6 +232,24 @@ public class ViewServiceImpl implements ViewService {
 	 */
 	private String createHandleId() {
 		return "windowhandle_" + UUID.randomUUID().toString();
+	}
+
+
+
+
+	/**
+	 * Set the size (min, max, pref) of the given {@link Stage} to the size specified in the given {@link View}.
+	 *
+	 * @param stage the stage
+	 * @param view  the view
+	 */
+	private void setStageSize(final Stage stage, final View view) {
+		stage.setWidth(view.getSize().getWidth());
+		stage.setHeight(view.getSize().getHeight());
+		stage.setMinWidth(view.getMinSize().getWidth());
+		stage.setMinHeight(view.getMinSize().getHeight());
+		stage.setMaxWidth(view.getMaxSize().getWidth());
+		stage.setMaxHeight(view.getMaxSize().getHeight());
 	}
 
 

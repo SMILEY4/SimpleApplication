@@ -9,10 +9,13 @@ import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfigurati
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
+import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
+import javafx.geometry.Dimension2D;
 import javafx.scene.control.Button;
+import javafx.stage.StageStyle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -77,22 +80,22 @@ public class TestApplication {
 
 			final View viewA = View.builder()
 					.id(ID_A)
-					.width(300)
-					.height(100)
+					.size(new Dimension2D(300, 100))
+					.maxSize(new Dimension2D(300, 300))
 					.title(applicationName + " - View A")
 					.node(buttonA)
 					.build();
 
-
 			// VIEW B
 
 			final Button buttonB = new Button("Switch B -> A");
-			buttonB.setOnAction(e -> viewService.popupView(ID_B_POPUP, false));
+			buttonB.setOnAction(e -> {
+				viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build());
+			});
 
 			final View viewB = View.builder()
 					.id(ID_B)
-					.width(200)
-					.height(500)
+					.size(new Dimension2D(200, 500))
 					.title(applicationName + " - View B")
 					.node(buttonB)
 					.build();
@@ -114,8 +117,7 @@ public class TestApplication {
 
 			final View viewBPopup = View.builder()
 					.id(ID_B_POPUP)
-					.width(300)
-					.height(200)
+					.size(new Dimension2D(300, 200))
 					.title(applicationName + " - View B Confirm")
 					.node(buttonBConfirm)
 					.build();
@@ -131,8 +133,7 @@ public class TestApplication {
 
 			final View viewBWarn = View.builder()
 					.id(ID_B_WARN)
-					.width(300)
-					.height(200)
+					.size(new Dimension2D(200, 300))
 					.title(applicationName + " - View B LAST WARNING")
 					.node(buttonBWarn)
 					.build();

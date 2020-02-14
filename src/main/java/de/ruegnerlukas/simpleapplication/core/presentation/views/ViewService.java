@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.core.presentation.views;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ViewService {
 
@@ -32,6 +33,14 @@ public interface ViewService {
 	void deregisterView(String viewId);
 
 	/**
+	 * Finds the registered view with the given id
+	 *
+	 * @param viewId the id of the view
+	 * @return an optional with the view
+	 */
+	Optional<View> findView(String viewId);
+
+	/**
 	 * Shows the view with the given id in the primary window.
 	 *
 	 * @param viewId the id of the view
@@ -47,21 +56,12 @@ public interface ViewService {
 	WindowHandle showView(String viewId, WindowHandle handle);
 
 	/**
-	 * Shows the view with the given id in a new window.
-	 *
-	 * @param viewId the id of the view
-	 * @param wait   whether to wait for the popup to close
-	 */
-	WindowHandle popupView(String viewId, boolean wait);
-
-	/**
 	 * Shows the view with the given id in a new popup window with the given view-binding id as the parent.
 	 *
 	 * @param viewId the id of the view
-	 * @param parent the {@link WindowHandle} of the parent stage/popup
-	 * @param wait   whether to wait for the popup to close
+	 * @param config the configuration for the popup
 	 */
-	WindowHandle popupView(String viewId, WindowHandle parent, boolean wait);
+	WindowHandle popupView(String viewId, PopupConfiguration config);
 
 	/**
 	 * Closes the window with the given handle.
