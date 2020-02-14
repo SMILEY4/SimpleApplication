@@ -7,7 +7,6 @@ import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -143,56 +142,21 @@ public class ViewServiceImpl implements ViewService {
 
 
 	@Override
-	public WindowHandle popupView(final String viewId, final boolean wait) {
+	public WindowHandle popupView(final String viewId, final PopupConfiguration config) {
 		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
 		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
-		return popupView(viewId, viewHandles.get(WindowHandle.ID_PRIMARY), wait);
-	}
-
-
-
-
-	@Override
-	public WindowHandle popupView(final String viewId, final Modality modality, final boolean wait) {
-		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
-		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
-		Validations.INPUT.notNull(modality).exception("The modality may not be null.");
-		return popupView(viewId, viewHandles.get(WindowHandle.ID_PRIMARY), wait);
-	}
-
-
-
-
-	@Override
-	public WindowHandle popupView(final String viewId, final WindowHandle parent, final boolean wait) {
-		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
-		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
-		Validations.INPUT.notNull(parent).exception("The parent may not be null.");
-		Validations.INPUT.containsKey(viewHandles, parent.getHandleId())
-				.exception("The parent '{}' was not found.", parent.getHandleId());
-		return popupView(viewId, parent, Modality.APPLICATION_MODAL, wait);
-	}
-
-
-
-
-	@Override
-	public WindowHandle popupView(final String viewId, final WindowHandle parent, final Modality modality, final boolean wait) {
-		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
-		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
-		Validations.INPUT.notNull(parent).exception("The parent may not be null.");
-		Validations.INPUT.containsKey(viewHandles, parent.getHandleId())
-				.exception("The parent '{}' was not found.", parent.getHandleId());
-		Validations.INPUT.notNull(modality).exception("The modality may not be null.");
+		Validations.INPUT.notNull(config).exception("The popup config may not be null.");
 
 		final View view = views.get(viewId);
 		final Scene scene = new Scene(view.getNode(), view.getSize().getWidth(), view.getSize().getHeight());
 		scene.setRoot(view.getNode());
 		final Stage stage = new Stage();
-		stage.initModality(modality);
-		stage.initOwner(parent.getStage());
-		setStageSize(stage, view);
+		stage.initModality(config.getModality());
+		stage.initOwner(config.getParent() == null ? getPrimaryWindowHandle().getStage() : config.getParent().getStage());
+		stage.initStyle(config.getStyle());
+		stage.setAlwaysOnTop(config.isAlwaysOnTop());
 		stage.setTitle(view.getTitle());
+		setStageSize(stage, view);
 		stage.setScene(scene);
 		final WindowHandle handle = new WindowHandle(createHandleId(), view, stage);
 		viewHandles.put(handle.getHandleId(), handle);
@@ -204,7 +168,7 @@ public class ViewServiceImpl implements ViewService {
 						.windowHandle(handle)
 						.build()));
 
-		if (wait) {
+		if (config.isWait()) {
 			stage.showAndWait();
 		} else {
 			stage.show();

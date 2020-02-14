@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -35,6 +34,7 @@ public interface ViewService {
 
 	/**
 	 * Finds the registered view with the given id
+	 *
 	 * @param viewId the id of the view
 	 * @return an optional with the view
 	 */
@@ -56,40 +56,12 @@ public interface ViewService {
 	WindowHandle showView(String viewId, WindowHandle handle);
 
 	/**
-	 * Shows the view with the given id in a new window.
-	 *
-	 * @param viewId the id of the view
-	 * @param wait   whether to wait for the popup to close
-	 */
-	WindowHandle popupView(String viewId, boolean wait);
-
-	/**
-	 * Shows the view with the given id in a new window.
-	 *
-	 * @param viewId   the id of the view
-	 * @param modality the modality for the stage
-	 * @param wait     whether to wait for the popup to close
-	 */
-	WindowHandle popupView(String viewId, Modality modality, boolean wait);
-
-	/**
 	 * Shows the view with the given id in a new popup window with the given view-binding id as the parent.
 	 *
 	 * @param viewId the id of the view
-	 * @param parent the {@link WindowHandle} of the parent stage/popup
-	 * @param wait   whether to wait for the popup to close
+	 * @param config the configuration for the popup
 	 */
-	WindowHandle popupView(String viewId, WindowHandle parent, boolean wait);
-
-	/**
-	 * Shows the view with the given id in a new popup window with the given view-binding id as the parent.
-	 *
-	 * @param viewId   the id of the view
-	 * @param parent   the {@link WindowHandle} of the parent stage/popup
-	 * @param modality the modality for the stage
-	 * @param wait     whether to wait for the popup to close
-	 */
-	WindowHandle popupView(String viewId, WindowHandle parent, Modality modality, boolean wait);
+	WindowHandle popupView(String viewId, PopupConfiguration config);
 
 	/**
 	 * Closes the window with the given handle.

@@ -9,11 +9,13 @@ import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfigurati
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
+import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
 import javafx.geometry.Dimension2D;
 import javafx.scene.control.Button;
+import javafx.stage.StageStyle;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -87,7 +89,9 @@ public class TestApplication {
 			// VIEW B
 
 			final Button buttonB = new Button("Switch B -> A");
-			buttonB.setOnAction(e -> viewService.popupView(ID_B_POPUP, false));
+			buttonB.setOnAction(e -> {
+				viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build());
+			});
 
 			final View viewB = View.builder()
 					.id(ID_B)
