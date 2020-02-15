@@ -100,6 +100,16 @@ public final class ProviderService {
 
 
 
+	/**
+	 * Resets the {@link ProviderService} including removing all registered factories and all created instances.
+	 */
+	public static void cleanup() {
+		FACTORIES.clear();
+		SINGLETON_INSTANCES.clear();
+	}
+
+
+
 	private static final class FactoryKey {
 
 

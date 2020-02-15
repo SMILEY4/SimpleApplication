@@ -35,6 +35,16 @@ public class Application {
 	 */
 	private final ApplicationConfiguration configuration;
 
+	/**
+	 * The starter for the {@link JFXApplication}.
+	 */
+	private JFXApplication.JFXStarter jfxStarter;
+
+	/**
+	 * The core provider configuration.
+	 */
+	private CoreProviderConfiguration coreProviderConfiguration;
+
 
 
 
@@ -43,6 +53,8 @@ public class Application {
 	 */
 	public Application(final ApplicationConfiguration configuration) {
 		this.configuration = configuration;
+		setJFXApplicationStarter(new JFXApplication.JFXStarter());
+		setCoreProviderConfiguration(new CoreProviderConfiguration());
 	}
 
 
@@ -55,7 +67,7 @@ public class Application {
 		log.info("Running application.");
 		final Callback<Stage> startCallback = this::onStart;
 		final EmptyCallback stopCallback = this::onStop;
-		JFXApplication.start(startCallback, stopCallback);
+		jfxStarter.start(startCallback, stopCallback);
 	}
 
 
@@ -83,9 +95,8 @@ public class Application {
 	 */
 	private void setupProviderConfigurations() {
 		log.info("Setup provider configurations.");
-		final CoreProviderConfiguration coreConfig = new CoreProviderConfiguration();
-		coreConfig.configure();
-		coreConfig.getFactories().forEach(ProviderService::registerFactory);
+		coreProviderConfiguration.configure();
+		coreProviderConfiguration.getFactories().forEach(ProviderService::registerFactory);
 		configuration.getProviderFactories().forEach(ProviderService::registerFactory);
 	}
 
@@ -127,7 +138,33 @@ public class Application {
 		eventServiceProvider.get().publish(ApplicationConstants.EVENT_APPLICATION_STOPPING);
 		final PluginService pluginService = pluginServiceProvider.get();
 		configuration.getPlugins().forEach(pluginService::unloadCorePlugin);
+		ProviderService.cleanup();
 		log.info("Application stopped.");
 	}
+
+
+
+
+	/**
+	 * Set the starter for the {@link JFXApplication}. Usually only for internal purposes.
+	 *
+	 * @param starter the starter
+	 */
+	public void setJFXApplicationStarter(final JFXApplication.JFXStarter starter) {
+		this.jfxStarter = starter;
+	}
+
+
+
+
+	/**
+	 * Set the core provider configuration. Usually only for internal purposes.
+	 *
+	 * @param config the configuration.
+	 */
+	public void setCoreProviderConfiguration(final CoreProviderConfiguration config) {
+		this.coreProviderConfiguration = config;
+	}
+
 
 }
