@@ -17,7 +17,7 @@ public class PluginServiceTest {
 
 
 	@Test
-	public void testSimple() {
+	public void testPluginsSimple() {
 
 		final PluginService pluginService = new PluginServiceImpl();
 
@@ -45,6 +45,24 @@ public class PluginServiceTest {
 		verify(plugin, times(1)).onUnload();
 		assertThat(pluginService.isLoaded(plugin.getId())).isFalse();
 
+	}
+
+
+
+
+	@Test
+	public void testComponentsSimple() {
+
+		final String COMPONENT_ID = "test.component";
+		final PluginService pluginService = new PluginServiceImpl();
+
+		assertThat(pluginService.isLoaded(COMPONENT_ID)).isFalse();
+
+		pluginService.loadComponent(COMPONENT_ID);
+		assertThat(pluginService.isLoaded(COMPONENT_ID)).isTrue();
+
+		pluginService.unloadComponent(COMPONENT_ID);
+		assertThat(pluginService.isLoaded(COMPONENT_ID)).isFalse();
 	}
 
 

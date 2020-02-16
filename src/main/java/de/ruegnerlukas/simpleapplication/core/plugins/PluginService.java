@@ -30,6 +30,14 @@ public interface PluginService {
 
 
 	/**
+	 * Loads a generic component with an id. Has no function but can be user for plugins as dependency.
+	 *
+	 * @param id the id of the component
+	 */
+	void loadComponent(String id);
+
+
+	/**
 	 * Load the plugin with the given id. The plugin must be registered.
 	 *
 	 * @param id the id of a plugin to load
@@ -41,6 +49,14 @@ public interface PluginService {
 	 * Loads all currently registered plugins (if possible).
 	 */
 	void loadAllPlugins();
+
+
+	/**
+	 * Unloads a generic component with an id. Has no function but can be user for plugins as dependency.
+	 *
+	 * @param id the id of the component
+	 */
+	void unloadComponent(String id);
 
 
 	/**
