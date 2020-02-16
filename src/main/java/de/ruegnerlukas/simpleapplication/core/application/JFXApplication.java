@@ -27,7 +27,7 @@ public class JFXApplication extends Application {
 	 * @param startCallback callback when the javafx application was started
 	 * @param stopCallback  callback when the javafx application was stopped
 	 */
-	static void start(final Callback<Stage> startCallback, final EmptyCallback stopCallback) {
+	private static void start(final Callback<Stage> startCallback, final EmptyCallback stopCallback) {
 		JFXApplication.startCallback = startCallback;
 		JFXApplication.stopCallback = stopCallback;
 		launch();
@@ -47,6 +47,27 @@ public class JFXApplication extends Application {
 	@Override
 	public void stop() {
 		stopCallback.execute();
+	}
+
+
+
+
+	/**
+	 * The starter for a javafx-application.
+	 */
+	static class JFXStarter {
+
+
+		/**
+		 * Starts the javafx application.
+		 *
+		 * @param startCallback callback when the javafx application was started
+		 * @param stopCallback  callback when the javafx application was stopped
+		 */
+		public void start(final Callback<Stage> startCallback, final EmptyCallback stopCallback) {
+			JFXApplication.start(startCallback, stopCallback);
+		}
+
 	}
 
 }
