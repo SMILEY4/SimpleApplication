@@ -1,30 +1,57 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
+import java.util.List;
+
 public interface PluginService {
 
 
 	/**
-	 * Loads the given plugin as a core plugin.
+	 * Register the given plugins.
 	 *
-	 * @param plugin the plugin to load
+	 * @param plugins the list of plugins to register
 	 */
-	void loadCorePlugin(Plugin plugin);
+	void registerPlugins(List<Plugin> plugins);
 
 
 	/**
-	 * Unloads the given (core) plugin.
+	 * Register the given plugin.
 	 *
-	 * @param plugin the plugin to unload
+	 * @param plugin the plugin to register
 	 */
-	void unloadCorePlugin(Plugin plugin);
+	void registerPlugin(Plugin plugin);
 
 
 	/**
-	 * Checks if the given id is currently loaded.
+	 * Deregister the given plugin. The plugin may not be loaded.
 	 *
-	 * @param id the id to check
-	 * @return whether the id is currently loaded.
+	 * @param id the id of the plugin to deregister
+	 */
+	void deregisterPlugin(String id);
+
+
+	/**
+	 * Load the plugin with the given id. The plugin must be registered.
+	 *
+	 * @param id the id of a plugin to load
+	 */
+	void loadPlugin(String id);
+
+
+	/**
+	 * Unload the plugin with the given id.
+	 *
+	 * @param id the id of a plugin to unload
+	 */
+	void unloadPlugin(String id);
+
+
+	/**
+	 * Check if the plugin or dependency with the given id is loaded.
+	 *
+	 * @param id the id of the plugin or dependency.
+	 * @return whether the id is loaded
 	 */
 	boolean isLoaded(String id);
+
 
 }
