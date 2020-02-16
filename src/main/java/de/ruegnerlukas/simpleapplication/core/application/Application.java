@@ -109,10 +109,8 @@ public class Application {
 	private void setupPlugins() {
 		log.info("Setup plugins.");
 		final PluginService pluginService = pluginServiceProvider.get();
-		configuration.getPlugins().forEach(plugin -> {
-			pluginService.registerPlugin(plugin);
-			pluginService.loadPlugin(plugin.getId());
-		});
+		configuration.getPlugins().forEach(pluginService::registerPlugin);
+		pluginService.loadAllPlugins();
 	}
 
 
@@ -139,11 +137,7 @@ public class Application {
 	private void onStop() {
 		log.info("Application on stop.");
 		eventServiceProvider.get().publish(ApplicationConstants.EVENT_APPLICATION_STOPPING);
-		final PluginService pluginService = pluginServiceProvider.get();
-		configuration.getPlugins().forEach(plugin -> {
-			pluginService.unloadPlugin(plugin.getId());
-			pluginService.deregisterPlugin(plugin.getId());
-		});
+		pluginServiceProvider.get().unloadAllPlugins();
 		ProviderService.cleanup();
 		log.info("Application stopped.");
 	}

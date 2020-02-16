@@ -6,12 +6,15 @@ import de.ruegnerlukas.simpleapplication.core.plugins.PluginServiceImpl;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PluginServiceTest {
+
 
 	@Test
 	public void testSimple() {
@@ -41,6 +44,42 @@ public class PluginServiceTest {
 		pluginService.unloadPlugin(plugin.getId());
 		verify(plugin, times(1)).onUnload();
 		assertThat(pluginService.isLoaded(plugin.getId())).isFalse();
+
+	}
+
+
+
+
+	@Test
+	public void testLoadUnloadAll() {
+
+		final PluginService pluginService = new PluginServiceImpl();
+
+		final Plugin pluginA = Mockito.mock(Plugin.class);
+		when(pluginA.getId()).thenReturn("test.plugin.a");
+		when(pluginA.getDisplayName()).thenReturn("Test Plugin A");
+		when(pluginA.getVersion()).thenReturn("1.0");
+
+		final Plugin pluginB = Mockito.mock(Plugin.class);
+		when(pluginB.getId()).thenReturn("test.plugin.b");
+		when(pluginB.getDisplayName()).thenReturn("Test Plugin B");
+		when(pluginB.getVersion()).thenReturn("1.0");
+
+		pluginService.registerPlugins(List.of(pluginA, pluginB));
+		assertThat(pluginService.isLoaded(pluginA.getId())).isFalse();
+		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
+
+		pluginService.loadAllPlugins();
+		verify(pluginA).onLoad();
+		verify(pluginB).onLoad();
+		assertThat(pluginService.isLoaded(pluginA.getId())).isTrue();
+		assertThat(pluginService.isLoaded(pluginB.getId())).isTrue();
+
+		pluginService.unloadAllPlugins();
+		verify(pluginA).onUnload();
+		verify(pluginB).onUnload();
+		assertThat(pluginService.isLoaded(pluginA.getId())).isFalse();
+		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
 
 	}
 

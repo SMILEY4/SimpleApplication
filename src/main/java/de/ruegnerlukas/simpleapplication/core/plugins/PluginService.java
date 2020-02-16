@@ -38,11 +38,23 @@ public interface PluginService {
 
 
 	/**
+	 * Loads all currently registered plugins (if possible).
+	 */
+	void loadAllPlugins();
+
+
+	/**
 	 * Unload the plugin with the given id.
 	 *
 	 * @param id the id of a plugin to unload
 	 */
 	void unloadPlugin(String id);
+
+
+	/**
+	 * Unloads all currently loaded plugins
+	 */
+	void unloadAllPlugins();
 
 
 	/**

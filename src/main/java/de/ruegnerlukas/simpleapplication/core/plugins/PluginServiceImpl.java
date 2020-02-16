@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class PluginServiceImpl implements PluginService {
@@ -78,6 +79,17 @@ public class PluginServiceImpl implements PluginService {
 
 
 
+	/**
+	 * Loads all currently registered plugins (if possible).
+	 */
+	@Override
+	public void loadAllPlugins() {
+		registeredPlugins.keySet().forEach(this::loadPlugin);
+	}
+
+
+
+
 	@Override
 	public void unloadPlugin(final String id) {
 		Validations.PRESENCE.isTrue(isRegistered(id)).exception("The plugin with the id {} is not registered.", id);
@@ -90,6 +102,21 @@ public class PluginServiceImpl implements PluginService {
 		} else {
 			log.warn("The plugin with the id {} is already unloaded and will not be unloaded again.", plugin.getId());
 		}
+	}
+
+
+
+
+	/**
+	 * Unloads all currently loaded plugins
+	 */
+	@Override
+	public void unloadAllPlugins() {
+		final List<String> pluginIds = loadedIds
+				.stream()
+				.filter(id -> registeredPlugins.containsKey(id))
+				.collect(Collectors.toList());
+		pluginIds.forEach(this::unloadPlugin);
 	}
 
 
