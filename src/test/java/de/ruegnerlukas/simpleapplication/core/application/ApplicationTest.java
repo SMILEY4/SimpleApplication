@@ -83,7 +83,6 @@ public class ApplicationTest {
 
 
 
-
 	@Test
 	public void testWithPlugin() {
 
