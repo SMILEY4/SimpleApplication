@@ -1,26 +1,20 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class PluginServiceImpl implements PluginService {
 
 
 	/**
-	 * All currently loaded ids.
+	 * All currently loaded ids as a graph.
 	 */
-	private Set<IdEntry> loadedIds = new HashSet<>();
+	private final DependencyGraph graph = new DependencyGraph();
 
 
 	/**
@@ -71,7 +65,7 @@ public class PluginServiceImpl implements PluginService {
 		if (isLoaded(id)) {
 			log.warn("The component with the id {} is already loaded and will not be loaded again.", id);
 		} else {
-			loadedIds.add(IdEntry.ofComponent(id));
+			graph.insert(id, List.of());
 			log.info("The component with the id {} was loaded.", id);
 		}
 	}
@@ -87,9 +81,20 @@ public class PluginServiceImpl implements PluginService {
 		if (isLoaded(plugin.getId())) {
 			log.warn("The plugin with the id {} is already loaded and will not be loaded again.", plugin.getId());
 		} else {
-			loadedIds.add(IdEntry.ofPlugin(plugin.getId()));
-			plugin.onLoad();
-			log.info("The plugin with the id {} was loaded.", plugin.getId());
+			boolean dependenciesLoaded = true;
+			for (String depId : plugin.getDependencyIds()) {
+				if (!isLoaded(depId)) {
+					dependenciesLoaded = false;
+					break;
+				}
+			}
+			if (dependenciesLoaded) {
+				graph.insert(plugin.getId(), List.of());
+				plugin.onLoad();
+				log.info("The plugin with the id {} was loaded.", plugin.getId());
+			} else {
+				log.info("Failed to load plugin {}: missing dependencies.", plugin.getId());
+			}
 		}
 	}
 
@@ -108,7 +113,7 @@ public class PluginServiceImpl implements PluginService {
 	public void unloadComponent(final String id) {
 		if (isLoaded(id)) {
 			log.info("Unloading component with the id {}.", id);
-			loadedIds.remove(IdEntry.ofComponent(id));
+			graph.remove(id);
 			log.info("The component with the id {} was unloaded.", id);
 		} else {
 			log.warn("The component with the id {} is already unloaded and will not be unloaded again.", id);
@@ -124,7 +129,7 @@ public class PluginServiceImpl implements PluginService {
 		final Plugin plugin = registeredPlugins.get(id);
 		if (isLoaded(plugin.getId())) {
 			log.info("Unloading plugin with the id {}.", plugin.getId());
-			loadedIds.remove(IdEntry.ofPlugin(plugin.getId()));
+			graph.remove(plugin.getId());
 			plugin.onUnload();
 			log.info("The plugin with the id {} was unloaded.", plugin.getId());
 		} else {
@@ -137,12 +142,7 @@ public class PluginServiceImpl implements PluginService {
 
 	@Override
 	public void unloadAllPlugins() {
-		final List<String> pluginIds = loadedIds
-				.stream()
-				.filter(IdEntry::isPlugin)
-				.map(IdEntry::getId)
-				.collect(Collectors.toList());
-		pluginIds.forEach(this::unloadPlugin);
+		graph.getIds().stream().filter(id -> registeredPlugins.containsKey(id)).forEach(this::unloadPlugin);
 	}
 
 
@@ -150,7 +150,7 @@ public class PluginServiceImpl implements PluginService {
 
 	@Override
 	public boolean isLoaded(final String id) {
-		return loadedIds.contains(IdEntry.ofComponent(id));
+		return graph.exists(id);
 	}
 
 
@@ -166,52 +166,5 @@ public class PluginServiceImpl implements PluginService {
 		return registeredPlugins.containsKey(id);
 	}
 
-
-
-
-	@Getter
-	@AllArgsConstructor
-	@EqualsAndHashCode (exclude = {"isPlugin"})
-	private static class IdEntry {
-
-
-		/**
-		 * Creates a new entry for a component.
-		 *
-		 * @param id the id of the component
-		 * @return the created {@link IdEntry}
-		 */
-		public static IdEntry ofComponent(final String id) {
-			return new IdEntry(id, false);
-		}
-
-
-
-
-		/**
-		 * Creates a new entry for a plugin.
-		 *
-		 * @param id the id of the plugin
-		 * @return the created {@link IdEntry}
-		 */
-		public static IdEntry ofPlugin(final String id) {
-			return new IdEntry(id, true);
-		}
-
-
-
-
-		/**
-		 * The id of the plugin or component.
-		 */
-		private final String id;
-
-		/**
-		 * Whether it is a plugin or a component.
-		 */
-		private final boolean isPlugin;
-
-
-	}
 
 }
