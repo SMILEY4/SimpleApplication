@@ -35,10 +35,20 @@ public class Validator {
 
 
 	/**
-	 * Fail validation without needing to check any objects.
+	 * Fail the validation without needing to check any objects.
 	 */
 	public ValidationResult fail() {
 		return validated(true);
+	}
+
+
+
+
+	/**
+	 * Succeed the validation without needing to check any objects.
+	 */
+	public ValidationResult succeed() {
+		return validated(false);
 	}
 
 

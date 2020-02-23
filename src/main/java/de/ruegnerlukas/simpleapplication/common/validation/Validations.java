@@ -7,35 +7,35 @@ public final class Validations {
 
 
 	/**
-	 * Validator for validating input. Throws {@link IllegalArgumentException}.
+	 * Validator for validating input. Throws {@link ValidateInputException}.
 	 */
 	public static final Validator INPUT = new Validator((message) -> {
 		if (message == null) {
-			return new IllegalArgumentException();
+			return new ValidateInputException("");
 		} else {
-			return new IllegalArgumentException(message);
+			return new ValidateInputException(message);
 		}
 	});
 
 	/**
-	 * Validator for validating state. Throws {@link IllegalStateException}.
+	 * Validator for validating state. Throws {@link ValidateStateException}.
 	 */
 	public static final Validator STATE = new Validator((message) -> {
 		if (message == null) {
-			return new IllegalStateException();
+			return new ValidateStateException("");
 		} else {
-			return new IllegalStateException(message);
+			return new ValidateStateException(message);
 		}
 	});
 
 	/**
-	 * Validator for validating presence. Throws {@link NotFoundException}.
+	 * Validator for validating presence. Throws {@link ValidatePresenceException}.
 	 */
 	public static final Validator PRESENCE = new Validator((message) -> {
 		if (message == null) {
-			return new NotFoundException("");
+			return new ValidatePresenceException("");
 		} else {
-			return new NotFoundException(message);
+			return new ValidatePresenceException(message);
 		}
 	});
 
