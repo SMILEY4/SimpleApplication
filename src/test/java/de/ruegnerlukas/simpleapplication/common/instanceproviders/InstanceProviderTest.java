@@ -94,7 +94,6 @@ public class InstanceProviderTest {
 		});
 
 		ProviderService.registerFactory(new StringFactory("string", "The Test String"));
-
 	}
 
 
@@ -104,15 +103,12 @@ public class InstanceProviderTest {
 	public void testNonSingleton() {
 		final User userA = new Provider<>(User.class).get();
 		final User userB = new Provider<>(User.class).get();
-
 		assertThat(userA).isNotNull();
 		assertThat(userA.getName()).isEqualTo(USER_NAME);
 		assertThat(userA.getId()).isEqualTo(USER_ID);
-
 		assertThat(userB).isNotNull();
 		assertThat(userB.getName()).isEqualTo(USER_NAME);
 		assertThat(userB.getId()).isEqualTo(USER_ID);
-
 		assertThat(userA).isNotEqualTo(userB);
 	}
 
@@ -123,14 +119,11 @@ public class InstanceProviderTest {
 	public void testSingleton() {
 		final Administrator adminA = new Provider<>(Administrator.class).get();
 		final Administrator adminB = new Provider<>(Administrator.class).get();
-
 		assertThat(adminA).isNotNull();
 		assertThat(adminA.getName()).isEqualTo(ADMIN_NAME);
 		assertThat(adminA.getId()).isEqualTo(ADMIN_ID);
 		assertThat(adminA.getContact()).isEqualTo(ADMIN_CONTACT);
-
 		assertThat(adminB).isNotNull();
-
 		assertThat(adminA).isEqualTo(adminB);
 	}
 
