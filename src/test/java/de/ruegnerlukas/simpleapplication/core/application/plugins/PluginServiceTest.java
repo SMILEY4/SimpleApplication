@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 
 public class PluginServiceTest {
 
+
 	@BeforeClass
 	public static void setup() {
 		ProviderService.registerFactory(new InstanceFactory<>(EventService.class) {
@@ -29,6 +30,8 @@ public class PluginServiceTest {
 			}
 		});
 	}
+
+
 
 
 	@Test
@@ -80,14 +83,7 @@ public class PluginServiceTest {
 		final Plugin pluginD = buildPluginMock("d", Set.of("b", "c"));
 		final Plugin pluginE = buildPluginMock("e", Set.of("b"));
 		final Plugin pluginF = buildPluginMock("f", Set.of());
-
-		final PluginService pluginService = new PluginServiceImpl();
-		pluginService.registerPlugin(pluginA);
-		pluginService.registerPlugin(pluginB);
-		pluginService.registerPlugin(pluginC);
-		pluginService.registerPlugin(pluginD);
-		pluginService.registerPlugin(pluginE);
-		pluginService.registerPlugin(pluginF);
+		final PluginService pluginService = createPluginService(pluginA, pluginB, pluginC, pluginD, pluginE, pluginF);
 
 		pluginService.loadPluginWithDependencies(pluginD.getId());
 		verify(pluginA).onLoad();
@@ -124,14 +120,7 @@ public class PluginServiceTest {
 		final Plugin pluginD = buildPluginMock("d", Set.of("b", "c"));
 		final Plugin pluginE = buildPluginMock("e", Set.of("b"));
 		final Plugin pluginF = buildPluginMock("f", Set.of());
-
-		final PluginService pluginService = new PluginServiceImpl();
-		pluginService.registerPlugin(pluginA);
-		pluginService.registerPlugin(pluginB);
-		pluginService.registerPlugin(pluginC);
-		pluginService.registerPlugin(pluginD);
-		pluginService.registerPlugin(pluginE);
-		pluginService.registerPlugin(pluginF);
+		final PluginService pluginService = createPluginService(pluginA, pluginB, pluginC, pluginD, pluginE, pluginF);
 		pluginService.loadAllPlugins();
 
 		pluginService.unloadPlugin(pluginB.getId());
@@ -210,6 +199,23 @@ public class PluginServiceTest {
 		assertThat(pluginService.isLoaded(pluginA.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
 
+	}
+
+
+
+
+	/**
+	 * Creates a new plugin service and registers the given plugins.
+	 *
+	 * @param plugins the plugins
+	 * @return the creates service
+	 */
+	private PluginService createPluginService(final Plugin... plugins) {
+		final PluginService service = new PluginServiceImpl();
+		for (Plugin plugin : plugins) {
+			service.registerPlugin(plugin);
+		}
+		return service;
 	}
 
 
