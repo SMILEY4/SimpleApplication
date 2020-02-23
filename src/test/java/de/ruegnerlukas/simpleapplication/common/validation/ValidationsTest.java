@@ -1,6 +1,8 @@
 package de.ruegnerlukas.simpleapplication.common.validation;
 
 
+import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,7 +14,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ValidationsTest {
-
 
 
 	@Test
@@ -418,5 +419,97 @@ public class ValidationsTest {
 	}
 
 
+
+
+	@Test
+	public void testResultFailed() {
+		assertTrue(Validations.STATE.fail().failed());
+		assertFalse(Validations.STATE.succeed().failed());
+	}
+
+
+
+
+	@Test
+	public void testResultThen() {
+		Validations.STATE.fail().then(Assert::assertTrue);
+		Validations.STATE.succeed().then(Assert::assertFalse);
+	}
+
+
+
+
+	@Test
+	public void testResultOnFail() {
+		Validations.STATE.fail().onFail(() -> {
+		});
+		Validations.STATE.succeed().onFail(() -> Assertions.fail(""));
+	}
+
+
+
+
+	@Test
+	public void testResultOnSuccess() {
+		Validations.STATE.fail().onSuccess(() -> Assertions.fail(""));
+		Validations.STATE.succeed().onSuccess(() -> {
+		});
+	}
+
+
+
+
+	@Test (expected = ValidateInputException.class)
+	public void testResultExceptionINPUT() {
+		Validations.INPUT.fail().exception();
+	}
+
+
+
+
+	@Test (expected = ValidateStateException.class)
+	public void testResultExceptionSTATE() {
+		Validations.STATE.fail().exception();
+	}
+
+
+
+
+	@Test (expected = ValidatePresenceException.class)
+	public void testResultExceptionPRESENCE() {
+		Validations.PRESENCE.fail().exception();
+	}
+
+
+
+
+	@Test (expected = ValidateInputException.class)
+	public void testResultExceptionMsgINPUT() {
+		Validations.INPUT.fail().exception("Msg");
+	}
+
+
+
+
+	@Test (expected = ValidateStateException.class)
+	public void testResultExceptionMsgSTATE() {
+		Validations.STATE.fail().exception("Msg");
+	}
+
+
+
+
+	@Test (expected = ValidatePresenceException.class)
+	public void testResultExceptionMsgPRESENCE() {
+		Validations.PRESENCE.fail().exception("Msg");
+	}
+
+
+
+
+	@Test (expected = IllegalArgumentException.class)
+	public void testResultCustomException() {
+		Validations.INPUT.fail().exception(new IllegalArgumentException());
+	}
 
 }

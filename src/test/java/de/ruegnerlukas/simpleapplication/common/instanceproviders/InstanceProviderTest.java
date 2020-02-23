@@ -13,6 +13,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Prov
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.SetProvider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
+import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateException;
 import lombok.AllArgsConstructor;
 import org.junit.Before;
 import org.junit.Test;
@@ -136,7 +137,7 @@ public class InstanceProviderTest {
 
 
 
-	@Test (expected = IllegalStateException.class)
+	@Test (expected = ValidateStateException.class)
 	public void testNotExistent() {
 		final Object object = new Provider<>(Object.class).get();
 		assertThat(object).isNull();

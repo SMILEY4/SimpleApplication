@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.core.application.plugins;
 
+import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateException;
 import de.ruegnerlukas.simpleapplication.core.plugins.DependencyGraph;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 public class DependencyGraphTest {
 
@@ -167,8 +167,14 @@ public class DependencyGraphTest {
 		graph.addDependency("D", "B", "C");
 		graph.addDependency("E", "B");
 		graph.addDependency("A", "F");
-		assertThatIllegalStateException().isThrownBy(() -> graph.addDependency("F", "D"));
-
+		Exception exception = null;
+		try {
+			graph.addDependency("F", "D");
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertThat(exception).isNotNull();
+		assertThat(exception instanceof ValidateStateException).isTrue();
 	}
 
 
@@ -201,7 +207,14 @@ public class DependencyGraphTest {
 		graph.addDependency("D", "B", "C");
 		graph.addDependency("E", "B");
 		graph.addDependency("A", "F");
-		assertThatIllegalStateException().isThrownBy(() -> graph.addDependency("F", "D"));
+		Exception exception = null;
+		try {
+			graph.addDependency("F", "D");
+		} catch (Exception e) {
+			exception = e;
+		}
+		assertThat(exception).isNotNull();
+		assertThat(exception instanceof ValidateStateException).isTrue();
 		graph.addDependency("G", "H", "I");
 	}
 
