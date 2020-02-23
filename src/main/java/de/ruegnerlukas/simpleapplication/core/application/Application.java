@@ -126,6 +126,7 @@ public class Application {
 		final ViewService viewService = viewServiceProvider.get();
 		viewService.initialize(stage, configuration.isShowViewAtStartup(), configuration.getView());
 		eventServiceProvider.get().publish(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED);
+		pluginServiceProvider.get().loadComponent(ApplicationConstants.COMPONENT_VIEW_SYSTEM);
 	}
 
 
@@ -136,6 +137,7 @@ public class Application {
 	 */
 	private void onStop() {
 		log.info("Application on stop.");
+		pluginServiceProvider.get().unloadComponent(ApplicationConstants.COMPONENT_VIEW_SYSTEM);
 		eventServiceProvider.get().publish(ApplicationConstants.EVENT_APPLICATION_STOPPING);
 		pluginServiceProvider.get().unloadAllPlugins();
 		ProviderService.cleanup();

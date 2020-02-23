@@ -39,17 +39,21 @@ public class ApplicationTest {
 
 		application.run();
 		final List<EventPackage<?>> eventsStart = eventService.getEventPackages();
-		assertThat(eventsStart.size()).isEqualTo(2);
+		assertThat(eventsStart.size()).isEqualTo(3);
 		assertThat(eventsStart.get(0).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED);
 		assertThat(eventsStart.get(0).getEvent() instanceof EmptyEvent).isTrue();
-		assertThat(eventsStart.get(1).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_APPLICATION_STARTED);
-		assertThat(eventsStart.get(1).getEvent() instanceof EmptyEvent).isTrue();
+		assertThat(eventsStart.get(1).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_COMPONENT_LOADED);
+		assertThat(eventsStart.get(1).getEvent()).isEqualTo(ApplicationConstants.COMPONENT_VIEW_SYSTEM);
+		assertThat(eventsStart.get(2).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_APPLICATION_STARTED);
+		assertThat(eventsStart.get(2).getEvent() instanceof EmptyEvent).isTrue();
 
 		starter.stop();
 		final List<EventPackage<?>> eventsStop = eventService.getEventPackages();
-		assertThat(eventsStop.size()).isEqualTo(1);
-		assertThat(eventsStop.get(0).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_APPLICATION_STOPPING);
-		assertThat(eventsStop.get(0).getEvent() instanceof EmptyEvent).isTrue();
+		assertThat(eventsStop.size()).isEqualTo(2);
+		assertThat(eventsStop.get(0).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_COMPONENT_UNLOADED);
+		assertThat(eventsStop.get(0).getEvent()).isEqualTo(ApplicationConstants.COMPONENT_VIEW_SYSTEM);
+		assertThat(eventsStop.get(1).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_APPLICATION_STOPPING);
+		assertThat(eventsStop.get(1).getEvent() instanceof EmptyEvent).isTrue();
 
 	}
 

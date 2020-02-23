@@ -1,16 +1,26 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
+import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 public class PluginServiceImpl implements PluginService {
 
+
+	/**
+	 * The provider for the {@link EventService}.
+	 */
+	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
 
 	/**
 	 * All currently loaded ids as a graph.
@@ -48,6 +58,8 @@ public class PluginServiceImpl implements PluginService {
 				}
 				graph.addDependency(plugin.getId(), dependency);
 			});
+			eventServiceProvider.get().publish(
+					ApplicationConstants.EVENT_PLUGIN_REGISTERED, new EventPackage<>(plugin.getId()));
 			log.info("Successfully registered plugin with the id {}.", plugin.getId());
 		}
 	}
@@ -60,6 +72,7 @@ public class PluginServiceImpl implements PluginService {
 		Validations.STATE.isFalse(isLoaded(id)).exception("The plugin {} can not be deregistered while it is loaded.", id);
 		if (isRegistered(id)) {
 			registeredPlugins.remove(id);
+			eventServiceProvider.get().publish(ApplicationConstants.EVENT_PLUGIN_DEREGISTERED, new EventPackage<>(id));
 			log.info("Successfully de-registered plugin with the id {}.", id);
 		}
 	}
@@ -77,6 +90,7 @@ public class PluginServiceImpl implements PluginService {
 				graph.insert(id);
 			}
 			graph.setLoaded(id);
+			eventServiceProvider.get().publish(ApplicationConstants.EVENT_COMPONENT_LOADED, new EventPackage<>(id));
 			log.info("The component with the id {} was loaded.", id);
 		}
 	}
@@ -112,6 +126,7 @@ public class PluginServiceImpl implements PluginService {
 	private void forceLoadPlugin(final Plugin plugin) {
 		graph.setLoaded(plugin.getId());
 		plugin.onLoad();
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_PLUGIN_LOADED, new EventPackage<>(plugin.getId()));
 	}
 
 
@@ -182,6 +197,7 @@ public class PluginServiceImpl implements PluginService {
 	 */
 	private void forceUnloadComponent(final String id) {
 		graph.setUnloaded(id);
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_COMPONENT_UNLOADED, new EventPackage<>(id));
 	}
 
 
@@ -224,6 +240,7 @@ public class PluginServiceImpl implements PluginService {
 	private void forceUnloadPlugin(final Plugin plugin) {
 		graph.setUnloaded(plugin.getId());
 		plugin.onUnload();
+		eventServiceProvider.get().publish(ApplicationConstants.EVENT_PLUGIN_UNLOADED, new EventPackage<>(plugin.getId()));
 	}
 
 
@@ -256,6 +273,14 @@ public class PluginServiceImpl implements PluginService {
 	@Override
 	public boolean isLoaded(final String id) {
 		return graph.isLoaded(id);
+	}
+
+
+
+
+	@Override
+	public Optional<Plugin> findById(final String id) {
+		return Optional.ofNullable(registeredPlugins.get(id));
 	}
 
 

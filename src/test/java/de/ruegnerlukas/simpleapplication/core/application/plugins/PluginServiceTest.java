@@ -1,8 +1,12 @@
 package de.ruegnerlukas.simpleapplication.core.application.plugins;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
+import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginServiceImpl;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -10,9 +14,21 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class PluginServiceTest {
+
+	@BeforeClass
+	public static void setup() {
+		ProviderService.registerFactory(new InstanceFactory<>(EventService.class) {
+			@Override
+			public EventService buildObject() {
+				return new EventService();
+			}
+		});
+	}
 
 
 	@Test
@@ -87,6 +103,8 @@ public class PluginServiceTest {
 	}
 
 
+
+
 	@Test
 	public void testUnloadPluginWithDependencies() {
 
@@ -127,6 +145,7 @@ public class PluginServiceTest {
 		assertThat(pluginService.isLoaded(pluginE.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginF.getId())).isTrue();
 	}
+
 
 
 

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PluginService {
 
@@ -107,6 +108,15 @@ public interface PluginService {
 	 * @return whether the id is loaded
 	 */
 	boolean isLoaded(String id);
+
+
+	/**
+	 * Finds the {@link Plugin} with the given id.
+	 *
+	 * @param id the id of the plugin
+	 * @return the plugin with the id as an optional.
+	 */
+	Optional<Plugin> findById(String id);
 
 
 }
