@@ -35,6 +35,43 @@ public final class ApplicationConstants {
 	public static final String EVENT_CLOSE_POPUP = "core.view.closepopup";
 
 
+	/**
+	 * The id of the channel for events when a new plugin was registered.
+	 */
+	public static final String EVENT_PLUGIN_REGISTERED = "core.plugin.registered";
+
+	/**
+	 * The id of the channel for events when a new plugin was deregistered.
+	 */
+	public static final String EVENT_PLUGIN_DEREGISTERED = "core.plugin.deregistered";
+
+	/**
+	 * The id of the channel for events when a plugin was loaded.
+	 */
+	public static final String EVENT_PLUGIN_LOADED = "core.plugin.plugin_loaded";
+
+	/**
+	 * The id of the channel for events when a component (in the plugin-service) was loaded.
+	 */
+	public static final String EVENT_COMPONENT_LOADED = "core.plugin.component_loaded";
+
+	/**
+	 * The id of the channel for events when a plugin was unloaded.
+	 */
+	public static final String EVENT_PLUGIN_UNLOADED = "core.plugin.plugin_unloaded";
+
+	/**
+	 * The id of the channel for events when a component (in the plugin-service) was unloaded.
+	 */
+	public static final String EVENT_COMPONENT_UNLOADED = "core.plugin.component_unloaded";
+
+
+	/**
+	 * The id of the view-system-component. While this component is loaded, the view service is initialized and running.
+	 */
+	public static final String COMPONENT_VIEW_SYSTEM = "core.component.viewsystem";
+
+
 
 
 	/**
