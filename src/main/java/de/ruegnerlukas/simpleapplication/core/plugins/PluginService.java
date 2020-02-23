@@ -30,7 +30,7 @@ public interface PluginService {
 
 
 	/**
-	 * Loads a generic component with an id. Has no function but can be user for plugins as dependency.
+	 * Loads a generic component with an id.
 	 *
 	 * @param id the id of the component
 	 */
@@ -38,11 +38,19 @@ public interface PluginService {
 
 
 	/**
-	 * Load the plugin with the given id. The plugin must be registered.
+	 * Load the plugin with the given id. The plugin must be registered and all dependencies must be loaded.
 	 *
 	 * @param id the id of a plugin to load
 	 */
 	void loadPlugin(String id);
+
+
+	/**
+	 * Load the plugin with the given id and the (unloaded) dependencies. The plugin must be registered.
+	 *
+	 * @param id the id of a plugin to load
+	 */
+	void loadPluginWithDependencies(String id);
 
 
 	/**
@@ -52,7 +60,7 @@ public interface PluginService {
 
 
 	/**
-	 * Unloads a generic component with an id. Has no function but can be user for plugins as dependency.
+	 * Unloads a generic component with an id. This will also unload all plugins that depend in this component.
 	 *
 	 * @param id the id of the component
 	 */
@@ -60,7 +68,7 @@ public interface PluginService {
 
 
 	/**
-	 * Unload the plugin with the given id.
+	 * Unload the plugin with the given id. This will also unload all plugins that depend in this plugin.
 	 *
 	 * @param id the id of a plugin to unload
 	 */
@@ -68,15 +76,34 @@ public interface PluginService {
 
 
 	/**
-	 * Unloads all currently loaded plugins
+	 * Unloads all currently loaded plugins.
 	 */
 	void unloadAllPlugins();
 
 
 	/**
+	 * Check if the plugin with the given id can be loaded without having to load any dependencies.
+	 *
+	 * @param pluginId the id of the plugin to check
+	 * @return if the plugin can be loaded without having to load any dependencies.
+	 */
+	boolean canLoadDirectly(String pluginId);
+
+
+	/**
+	 * Check if the plugin/component with the given id can be unloaded without having to unload
+	 * any other plugins depending on it.
+	 *
+	 * @param id the id of the plugin/component to check
+	 * @return whether the given plugin/component can be unloaded without having to unload other plugins.
+	 */
+	boolean canUnloadSafely(String id);
+
+
+	/**
 	 * Check if the plugin or dependency with the given id is loaded.
 	 *
-	 * @param id the id of the plugin or dependency.
+	 * @param id the id of the plugin or component.
 	 * @return whether the id is loaded
 	 */
 	boolean isLoaded(String id);

@@ -88,7 +88,6 @@ public class ApplicationTest {
 
 		final TestPlugin plugin = new TestPlugin("test", "Test", "1.0");
 
-
 		final TestJfxStarter starter = new TestJfxStarter();
 
 		final ApplicationConfiguration applicationConfiguration = new ApplicationConfiguration();

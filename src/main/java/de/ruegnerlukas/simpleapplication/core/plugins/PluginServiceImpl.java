@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.core.plugins;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,13 @@ public class PluginServiceImpl implements PluginService {
 			log.warn("The plugin with the id {} is already registered and will not be registered again.", plugin.getId());
 		} else {
 			registeredPlugins.put(plugin.getId(), plugin);
+			graph.insert(plugin.getId());
+			plugin.getDependencyIds().forEach(dependency -> {
+				if (!graph.exists(dependency)) {
+					graph.insert(dependency);
+				}
+				graph.addDependency(plugin.getId(), dependency);
+			});
 			log.info("Successfully registered plugin with the id {}.", plugin.getId());
 		}
 	}
@@ -61,11 +69,14 @@ public class PluginServiceImpl implements PluginService {
 
 	@Override
 	public void loadComponent(final String id) {
-		log.info("Loading component with the id {}.", id);
 		if (isLoaded(id)) {
 			log.warn("The component with the id {} is already loaded and will not be loaded again.", id);
 		} else {
-			graph.insert(id, List.of());
+			log.info("Loading component with the id {}.", id);
+			if (!graph.exists(id)) {
+				graph.insert(id);
+			}
+			graph.setLoaded(id);
 			log.info("The component with the id {} was loaded.", id);
 		}
 	}
@@ -77,24 +88,52 @@ public class PluginServiceImpl implements PluginService {
 	public void loadPlugin(final String id) {
 		Validations.PRESENCE.isTrue(isRegistered(id)).exception("The plugin with the id {} is not registered.", id);
 		final Plugin plugin = registeredPlugins.get(id);
-		log.info("Loading plugin with the id {}.", plugin.getId());
 		if (isLoaded(plugin.getId())) {
 			log.warn("The plugin with the id {} is already loaded and will not be loaded again.", plugin.getId());
 		} else {
-			boolean dependenciesLoaded = true;
-			for (String depId : plugin.getDependencyIds()) {
-				if (!isLoaded(depId)) {
-					dependenciesLoaded = false;
-					break;
-				}
-			}
-			if (dependenciesLoaded) {
-				graph.insert(plugin.getId(), List.of());
-				plugin.onLoad();
+			log.info("Loading plugin with the id {}.", plugin.getId());
+			if (canLoadDirectly(plugin.getId())) {
+				forceLoadPlugin(plugin);
 				log.info("The plugin with the id {} was loaded.", plugin.getId());
 			} else {
-				log.info("Failed to load plugin {}: missing dependencies.", plugin.getId());
+				log.warn("The plugin with the id {} could not be loaded: missing dependencies.", plugin.getId());
 			}
+		}
+	}
+
+
+
+
+	/**
+	 * Loads the plugin without any additional checks.
+	 *
+	 * @param plugin the plugin to load
+	 */
+	private void forceLoadPlugin(final Plugin plugin) {
+		graph.setLoaded(plugin.getId());
+		plugin.onLoad();
+	}
+
+
+
+
+	@Override
+	public void loadPluginWithDependencies(final String id) {
+		Validations.PRESENCE.isTrue(isRegistered(id)).exception("The plugin with the id {} is not registered.", id);
+		final Plugin plugin = registeredPlugins.get(id);
+		if (isLoaded(plugin.getId())) {
+			log.warn("The plugin with the id {} is already loaded and will not be loaded again.", plugin.getId());
+		} else {
+			log.info("Loading plugin (including dependencies) with the id {}.", plugin.getId());
+			final List<String> dependencies = graph.getDependenciesIndirect(plugin.getId());
+			Collections.reverse(dependencies);
+			for (String dependency : dependencies) {
+				if (!isLoaded(dependency)) {
+					loadPlugin(dependency);
+				}
+			}
+			forceLoadPlugin(plugin);
+			log.info("The plugin with the id {} was loaded.", plugin.getId());
 		}
 	}
 
@@ -103,7 +142,7 @@ public class PluginServiceImpl implements PluginService {
 
 	@Override
 	public void loadAllPlugins() {
-		registeredPlugins.keySet().forEach(this::loadPlugin);
+		registeredPlugins.keySet().forEach(this::loadPluginWithDependencies);
 	}
 
 
@@ -113,11 +152,36 @@ public class PluginServiceImpl implements PluginService {
 	public void unloadComponent(final String id) {
 		if (isLoaded(id)) {
 			log.info("Unloading component with the id {}.", id);
-			graph.remove(id);
+			final List<String> dependOn = graph.getDependsOnIndirect(id);
+			Collections.reverse(dependOn);
+			for (String dependency : dependOn) {
+				if (!isLoaded(dependency)) {
+					if (isRegistered(dependency)) {
+						log.info("Unloading plugin with the id {}.", dependency);
+						forceUnloadPlugin(registeredPlugins.get(dependency));
+					} else {
+						log.info("Unloading component with the id {}.", dependency);
+						forceUnloadComponent(dependency);
+					}
+				}
+			}
+			forceUnloadComponent(id);
 			log.info("The component with the id {} was unloaded.", id);
 		} else {
 			log.warn("The component with the id {} is already unloaded and will not be unloaded again.", id);
 		}
+	}
+
+
+
+
+	/**
+	 * Unloads the component without any additional checks.
+	 *
+	 * @param id the id of the component to unload
+	 */
+	private void forceUnloadComponent(final String id) {
+		graph.setUnloaded(id);
 	}
 
 
@@ -129,12 +193,37 @@ public class PluginServiceImpl implements PluginService {
 		final Plugin plugin = registeredPlugins.get(id);
 		if (isLoaded(plugin.getId())) {
 			log.info("Unloading plugin with the id {}.", plugin.getId());
-			graph.remove(plugin.getId());
-			plugin.onUnload();
+			final List<String> dependOn = graph.getDependsOnIndirect(plugin.getId());
+			Collections.reverse(dependOn);
+			for (String dependency : dependOn) {
+				if (isLoaded(dependency)) {
+					if (isRegistered(dependency)) {
+						log.info("Unloading plugin with the id {}.", dependency);
+						forceUnloadPlugin(registeredPlugins.get(dependency));
+					} else {
+						log.info("Unloading component with the id {}.", dependency);
+						forceUnloadComponent(dependency);
+					}
+				}
+			}
+			forceUnloadPlugin(plugin);
 			log.info("The plugin with the id {} was unloaded.", plugin.getId());
 		} else {
 			log.warn("The plugin with the id {} is already unloaded and will not be unloaded again.", plugin.getId());
 		}
+	}
+
+
+
+
+	/**
+	 * Unloads the plugin without any additional checks.
+	 *
+	 * @param plugin the plugin to unload
+	 */
+	private void forceUnloadPlugin(final Plugin plugin) {
+		graph.setUnloaded(plugin.getId());
+		plugin.onUnload();
 	}
 
 
@@ -149,8 +238,24 @@ public class PluginServiceImpl implements PluginService {
 
 
 	@Override
+	public boolean canLoadDirectly(final String pluginId) {
+		return graph.exists(pluginId) && graph.getDependenciesIndirect(pluginId).stream().allMatch(graph::isLoaded);
+	}
+
+
+
+
+	@Override
+	public boolean canUnloadSafely(final String id) {
+		return graph.getDependsOnIndirect(id).stream().noneMatch(graph::isLoaded);
+	}
+
+
+
+
+	@Override
 	public boolean isLoaded(final String id) {
-		return graph.exists(id);
+		return graph.isLoaded(id);
 	}
 
 

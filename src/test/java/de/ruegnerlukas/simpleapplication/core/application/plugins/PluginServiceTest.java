@@ -7,11 +7,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class PluginServiceTest {
 
@@ -20,11 +19,7 @@ public class PluginServiceTest {
 	public void testPluginsSimple() {
 
 		final PluginService pluginService = new PluginServiceImpl();
-
-		final Plugin plugin = Mockito.mock(Plugin.class);
-		when(plugin.getId()).thenReturn("test.plugin");
-		when(plugin.getDisplayName()).thenReturn("Test Plugin");
-		when(plugin.getVersion()).thenReturn("1.0");
+		final Plugin plugin = buildPluginMock("test.plugin", Set.of());
 
 		pluginService.registerPlugin(plugin);
 		assertThat(pluginService.isLoaded(plugin.getId())).isFalse();
@@ -45,6 +40,103 @@ public class PluginServiceTest {
 		verify(plugin, times(1)).onUnload();
 		assertThat(pluginService.isLoaded(plugin.getId())).isFalse();
 
+	}
+
+
+
+
+	@Test
+	public void testLoadPluginWithDependencies() {
+
+		/*
+		digraph G {
+			B -> A;
+			C -> A;
+			D -> B, C;
+			E -> B;
+			F;
+		}
+		 */
+
+		final Plugin pluginA = buildPluginMock("a", Set.of());
+		final Plugin pluginB = buildPluginMock("b", Set.of("a"));
+		final Plugin pluginC = buildPluginMock("c", Set.of("a"));
+		final Plugin pluginD = buildPluginMock("d", Set.of("b", "c"));
+		final Plugin pluginE = buildPluginMock("e", Set.of("b"));
+		final Plugin pluginF = buildPluginMock("f", Set.of());
+
+		final PluginService pluginService = new PluginServiceImpl();
+		pluginService.registerPlugin(pluginA);
+		pluginService.registerPlugin(pluginB);
+		pluginService.registerPlugin(pluginC);
+		pluginService.registerPlugin(pluginD);
+		pluginService.registerPlugin(pluginE);
+		pluginService.registerPlugin(pluginF);
+
+		pluginService.loadPluginWithDependencies(pluginD.getId());
+		verify(pluginA).onLoad();
+		verify(pluginB).onLoad();
+		verify(pluginC).onLoad();
+		verify(pluginD).onLoad();
+		assertThat(pluginService.isLoaded(pluginA.getId())).isTrue();
+		assertThat(pluginService.isLoaded(pluginB.getId())).isTrue();
+		assertThat(pluginService.isLoaded(pluginC.getId())).isTrue();
+		assertThat(pluginService.isLoaded(pluginD.getId())).isTrue();
+		assertThat(pluginService.isLoaded(pluginE.getId())).isFalse();
+		assertThat(pluginService.isLoaded(pluginF.getId())).isFalse();
+	}
+
+
+	@Test
+	public void testUnloadPluginWithDependencies() {
+
+		/*
+		digraph G {
+			B -> A;
+			C -> A;
+			D -> B, C;
+			E -> B;
+			F;
+		}
+		 */
+
+		final Plugin pluginA = buildPluginMock("a", Set.of());
+		final Plugin pluginB = buildPluginMock("b", Set.of("a"));
+		final Plugin pluginC = buildPluginMock("c", Set.of("a"));
+		final Plugin pluginD = buildPluginMock("d", Set.of("b", "c"));
+		final Plugin pluginE = buildPluginMock("e", Set.of("b"));
+		final Plugin pluginF = buildPluginMock("f", Set.of());
+
+		final PluginService pluginService = new PluginServiceImpl();
+		pluginService.registerPlugin(pluginA);
+		pluginService.registerPlugin(pluginB);
+		pluginService.registerPlugin(pluginC);
+		pluginService.registerPlugin(pluginD);
+		pluginService.registerPlugin(pluginE);
+		pluginService.registerPlugin(pluginF);
+		pluginService.loadAllPlugins();
+
+		pluginService.unloadPlugin(pluginB.getId());
+		verify(pluginE).onUnload();
+		verify(pluginD).onUnload();
+		verify(pluginB).onUnload();
+		assertThat(pluginService.isLoaded(pluginA.getId())).isTrue();
+		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
+		assertThat(pluginService.isLoaded(pluginC.getId())).isTrue();
+		assertThat(pluginService.isLoaded(pluginD.getId())).isFalse();
+		assertThat(pluginService.isLoaded(pluginE.getId())).isFalse();
+		assertThat(pluginService.isLoaded(pluginF.getId())).isTrue();
+	}
+
+
+
+	private Plugin buildPluginMock(final String id, Set<String> dependencies) {
+		final Plugin plugin = Mockito.mock(Plugin.class);
+		when(plugin.getId()).thenReturn(id);
+		when(plugin.getDisplayName()).thenReturn(id);
+		when(plugin.getVersion()).thenReturn("testing");
+		when(plugin.getDependencyIds()).thenReturn(dependencies);
+		return plugin;
 	}
 
 

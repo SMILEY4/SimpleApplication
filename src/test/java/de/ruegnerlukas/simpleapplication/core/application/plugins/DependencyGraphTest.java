@@ -3,17 +3,14 @@ package de.ruegnerlukas.simpleapplication.core.application.plugins;
 import de.ruegnerlukas.simpleapplication.core.plugins.DependencyGraph;
 import org.junit.Test;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 public class DependencyGraphTest {
 
 
 	@Test
 	public void testGraph() {
-
-		final DependencyGraph graph = new DependencyGraph();
 
 		/*
 		digraph G {
@@ -25,14 +22,19 @@ public class DependencyGraphTest {
 		}
 		 */
 
-		graph.insert("A", List.of());
-		graph.insert("B", List.of("A"));
-		graph.insert("C", List.of("A"));
-		graph.insert("D", List.of("B", "C"));
-		graph.insert("E", List.of("B"));
+		final DependencyGraph graph = new DependencyGraph();
+		graph.insert("A");
+		graph.insert("B");
+		graph.insert("C");
+		graph.insert("D");
+		graph.insert("E");
+		graph.addDependency("B", "A");
+		graph.addDependency("C", "A");
+		graph.addDependency("D", "B", "C");
+		graph.addDependency("E", "B");
 
 		assertThat(graph.exists("F")).isFalse();
-		graph.insert("F", List.of());
+		graph.insert("F");
 		assertThat(graph.exists("F")).isTrue();
 
 		assertThat(graph.getIds()).containsExactlyInAnyOrder("A", "B", "C", "D", "E", "F");
@@ -45,6 +47,13 @@ public class DependencyGraphTest {
 		assertThat(graph.getDependencies("E")).containsExactlyInAnyOrder("B");
 		assertThat(graph.getDependencies("F")).isEmpty();
 
+		assertThat(graph.getDependenciesIndirect("A")).isEmpty();
+		assertThat(graph.getDependenciesIndirect("B")).containsExactly("A");
+		assertThat(graph.getDependenciesIndirect("C")).containsExactly("A");
+		assertThat(graph.getDependenciesIndirect("D")).containsExactly("B", "C", "A");
+		assertThat(graph.getDependenciesIndirect("E")).containsExactly("B", "A");
+		assertThat(graph.getDependenciesIndirect("F")).isEmpty();
+
 		assertThat(graph.getDependsOn("A")).containsExactlyInAnyOrder("B", "C");
 		assertThat(graph.getDependsOn("B")).containsExactlyInAnyOrder("E", "D");
 		assertThat(graph.getDependsOn("C")).containsExactlyInAnyOrder("D");
@@ -52,28 +61,148 @@ public class DependencyGraphTest {
 		assertThat(graph.getDependsOn("E")).isEmpty();
 		assertThat(graph.getDependsOn("F")).isEmpty();
 
-		assertThat(graph.getDependsOnIndirect("A")).containsExactlyInAnyOrder("B", "C", "D", "E");
-		assertThat(graph.getDependsOnIndirect("B")).containsExactlyInAnyOrder("E", "D");
-		assertThat(graph.getDependsOnIndirect("C")).containsExactlyInAnyOrder("D");
+		assertThat(graph.getDependsOnIndirect("A")).containsExactly("B", "C", "E", "D");
+		assertThat(graph.getDependsOnIndirect("B")).containsExactly("E", "D");
+		assertThat(graph.getDependsOnIndirect("C")).containsExactly("D");
 		assertThat(graph.getDependsOnIndirect("D")).isEmpty();
 		assertThat(graph.getDependsOnIndirect("E")).isEmpty();
 		assertThat(graph.getDependsOnIndirect("F")).isEmpty();
 
-		final List<String> removedF = graph.remove("F");
-		assertThat(removedF).isEmpty();
+		graph.remove("F");
 		assertThat(graphContainsIds(graph, "A", "B", "C", "D", "E")).isTrue();
 		assertThat(graphContainsIds(graph, "F")).isFalse();
 
-		final List<String> removedB = graph.remove("B");
-		assertThat(removedB).containsExactlyInAnyOrder("E", "D");
-		assertThat(graphContainsIds(graph, "A", "C")).isTrue();
-		assertThat(graphContainsIds(graph, "B", "D", "E", "F")).isFalse();
+		graph.remove("B");
+		assertThat(graphContainsIds(graph, "A", "C", "D", "E")).isTrue();
+		assertThat(graphContainsIds(graph, "F", "B")).isFalse();
+		assertThat(graph.getDependencies("D")).containsExactlyInAnyOrder("C");
+		assertThat(graph.getDependencies("E")).isEmpty();
 
-		final List<String> removedC = graph.remove("C");
-		assertThat(removedC).isEmpty();
-		assertThat(graphContainsIds(graph, "A")).isTrue();
-		assertThat(graphContainsIds(graph, "B", "C", "D", "E", "F")).isFalse();
+		graph.remove("C");
+		assertThat(graphContainsIds(graph, "A", "D", "E")).isTrue();
+		assertThat(graphContainsIds(graph, "B", "C", "F")).isFalse();
+		assertThat(graph.getDependencies("D")).isEmpty();
 
+	}
+
+
+
+
+	@Test
+	public void testLoadingIds() {
+		/*
+		digraph G {
+			B -> A;
+			C -> A;
+			D -> B, C;
+			E -> B;
+			F;
+		}
+		 */
+
+		final DependencyGraph graph = new DependencyGraph();
+		graph.insert("A");
+		graph.insert("B");
+		graph.insert("C");
+		graph.insert("D");
+		graph.insert("E");
+		graph.addDependency("B", "A");
+		graph.addDependency("C", "A");
+		graph.addDependency("D", "B", "C");
+		graph.addDependency("E", "B");
+		graph.insert("F");
+		// TODO
+	}
+
+
+
+
+	@Test
+	public void testCyclesWithout() {
+		/*
+		digraph G {
+			B -> A;
+			C -> A;
+			D -> B, C;
+			E -> B;
+			F;
+		}
+		 */
+		final DependencyGraph graph = new DependencyGraph();
+		graph.insert("A");
+		graph.insert("B");
+		graph.insert("C");
+		graph.insert("D");
+		graph.insert("E");
+		graph.addDependency("B", "A");
+		graph.addDependency("C", "A");
+		graph.addDependency("D", "B", "C");
+		graph.addDependency("E", "B");
+	}
+
+
+
+
+	@Test
+	public void testCyclesWith() {
+		/*
+		digraph G {
+			A -> F;
+			B -> A;
+			C -> A;
+			D -> B, C;
+			E -> B;
+			F -> D;
+		}
+		 */
+		final DependencyGraph graph = new DependencyGraph();
+		graph.insert("A");
+		graph.insert("B");
+		graph.insert("C");
+		graph.insert("D");
+		graph.insert("E");
+		graph.insert("F");
+		graph.addDependency("B", "A");
+		graph.addDependency("C", "A");
+		graph.addDependency("D", "B", "C");
+		graph.addDependency("E", "B");
+		graph.addDependency("A", "F");
+		assertThatIllegalStateException().isThrownBy(() -> graph.addDependency("F", "D"));
+
+	}
+
+
+
+
+	@Test
+	public void testCyclesBoth() {
+		/*
+		digraph G {
+			A -> F;
+			B -> A;
+			C -> A;
+			D -> B, C;
+			E -> B;
+			F -> D;
+		}
+		 */
+		final DependencyGraph graph = new DependencyGraph();
+		graph.insert("A");
+		graph.insert("B");
+		graph.insert("C");
+		graph.insert("D");
+		graph.insert("E");
+		graph.insert("F");
+		graph.insert("G");
+		graph.insert("H");
+		graph.insert("I");
+		graph.addDependency("B", "A");
+		graph.addDependency("C", "A");
+		graph.addDependency("D", "B", "C");
+		graph.addDependency("E", "B");
+		graph.addDependency("A", "F");
+		assertThatIllegalStateException().isThrownBy(() -> graph.addDependency("F", "D"));
+		graph.addDependency("G", "H", "I");
 	}
 
 
