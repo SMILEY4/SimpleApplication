@@ -43,20 +43,30 @@ public class ValidationResult {
 
 
 	/**
-	 * Throws the exception without a message.
+	 * Throws the exception of the specific validator without a message.
 	 */
 	private void throwException() {
-		throwException(null);
+		throwException("");
 	}
 
 
 
 
 	/**
-	 * Throws the exception with the given message.
+	 * Throws the exception of the specific validator with the given message.
 	 */
 	private void throwException(final String message) {
 		throw exceptionBuilder.build(message);
+	}
+
+
+
+
+	/**
+	 * Throws the given {@link RuntimeException}.
+	 */
+	private void throwException(final RuntimeException e) {
+		throw e;
 	}
 
 
@@ -131,6 +141,19 @@ public class ValidationResult {
 	public ValidationResult exception() {
 		if (this.failed) {
 			throwException();
+		}
+		return this;
+	}
+
+
+
+
+	/**
+	 * Throws the given exception when the validation failed.
+	 */
+	public ValidationResult exception(final RuntimeException exception) {
+		if (this.failed) {
+			throwException(exception);
 		}
 		return this;
 	}

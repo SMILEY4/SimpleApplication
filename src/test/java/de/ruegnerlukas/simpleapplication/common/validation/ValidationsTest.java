@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
 public class ValidationsTest {
 
 
+
 	@Test
 	public void testNotNull() {
 		assertFalse(Validations.STATE.notNull(new Object()).failed());
@@ -415,5 +416,7 @@ public class ValidationsTest {
 		assertTrue(Validations.STATE.typeOf(a1, A2.class).failed());
 
 	}
+
+
 
 }
