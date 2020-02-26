@@ -85,7 +85,7 @@ public class PluginServiceImpl implements PluginService {
 		if (isLoaded(id)) {
 			log.warn("The component with the id {} is already loaded and will not be loaded again.", id);
 		} else {
-			log.info("Loading component with the id {}.", id);
+			log.debug("Loading component with the id {}.", id);
 			if (!graph.exists(id)) {
 				graph.insert(id);
 			}
@@ -105,7 +105,7 @@ public class PluginServiceImpl implements PluginService {
 		if (isLoaded(plugin.getId())) {
 			log.warn("The plugin with the id {} is already loaded and will not be loaded again.", plugin.getId());
 		} else {
-			log.info("Loading plugin with the id {}.", plugin.getId());
+			log.debug("Loading plugin with the id {}.", plugin.getId());
 			if (canLoadDirectly(plugin.getId())) {
 				forceLoadPlugin(plugin);
 				log.info("The plugin with the id {} was loaded.", plugin.getId());
@@ -139,7 +139,7 @@ public class PluginServiceImpl implements PluginService {
 		if (isLoaded(plugin.getId())) {
 			log.warn("The plugin with the id {} is already loaded and will not be loaded again.", plugin.getId());
 		} else {
-			log.info("Loading plugin (including dependencies) with the id {}.", plugin.getId());
+			log.debug("Loading plugin (including dependencies) with the id {}.", plugin.getId());
 			final List<String> dependencies = graph.getDependenciesIndirect(plugin.getId());
 			Collections.reverse(dependencies);
 			for (String dependency : dependencies) {
@@ -166,13 +166,13 @@ public class PluginServiceImpl implements PluginService {
 	@Override
 	public void unloadComponent(final String id) {
 		if (isLoaded(id)) {
-			log.info("Unloading component with the id {}.", id);
+			log.debug("Unloading component with the id {}.", id);
 			final List<String> dependOn = graph.getDependsOnIndirect(id);
 			Collections.reverse(dependOn);
 			for (String dependency : dependOn) {
 				if (!isLoaded(dependency)) {
 					if (isRegistered(dependency)) {
-						log.info("Unloading plugin with the id {}.", dependency);
+						log.debug("Unloading plugin with the id {}.", dependency);
 						forceUnloadPlugin(registeredPlugins.get(dependency));
 					} else {
 						log.info("Unloading component with the id {}.", dependency);
@@ -214,10 +214,10 @@ public class PluginServiceImpl implements PluginService {
 			for (String dependency : dependOn) {
 				if (isLoaded(dependency)) {
 					if (isRegistered(dependency)) {
-						log.info("Unloading plugin with the id {}.", dependency);
+						log.debug("Unloading plugin with the id {}.", dependency);
 						forceUnloadPlugin(registeredPlugins.get(dependency));
 					} else {
-						log.info("Unloading component with the id {}.", dependency);
+						log.debug("Unloading component with the id {}.", dependency);
 						forceUnloadComponent(dependency);
 					}
 				}

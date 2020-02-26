@@ -122,12 +122,12 @@ public class ValidationResult {
 	/**
 	 * Logs a failed validation with the given error message (as a warning).
 	 *
-	 * @param errorMesssage the error message
+	 * @param errorMessage the error message
 	 * @param args          the arguments for the message
 	 */
-	public ValidationResult log(final String errorMesssage, final Object... args) {
+	public ValidationResult log(final String errorMessage, final Object... args) {
 		if (this.failed) {
-			log.warn(errorMesssage, args);
+			log.warn(errorMessage, args);
 		}
 		return this;
 	}
