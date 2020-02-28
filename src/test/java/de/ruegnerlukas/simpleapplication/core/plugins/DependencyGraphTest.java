@@ -1,7 +1,6 @@
-package de.ruegnerlukas.simpleapplication.core.application.plugins;
+package de.ruegnerlukas.simpleapplication.core.plugins;
 
 import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateException;
-import de.ruegnerlukas.simpleapplication.core.plugins.DependencyGraph;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
