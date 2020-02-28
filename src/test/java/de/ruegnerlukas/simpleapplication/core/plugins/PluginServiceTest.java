@@ -1,11 +1,8 @@
-package de.ruegnerlukas.simpleapplication.core.application.plugins;
+package de.ruegnerlukas.simpleapplication.core.plugins;
 
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
-import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
-import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
-import de.ruegnerlukas.simpleapplication.core.plugins.PluginServiceImpl;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
