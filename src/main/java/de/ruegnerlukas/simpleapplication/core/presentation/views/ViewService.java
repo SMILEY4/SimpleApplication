@@ -74,7 +74,7 @@ public interface ViewService {
 	 * @param viewId the id of the view
 	 * @return a list of all current window handles showing the give view
 	 */
-	List<WindowHandle> getViewHandles(String viewId);
+	List<WindowHandle> getWindowHandles(String viewId);
 
 	/**
 	 * @return the handle of the primary window

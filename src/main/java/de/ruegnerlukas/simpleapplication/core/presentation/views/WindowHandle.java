@@ -49,4 +49,13 @@ public class WindowHandle {
 	}
 
 
+
+
+	/**
+	 * @return the id of the view of this windows handle
+	 */
+	public String getViewId() {
+		return view.getId();
+	}
+
 }
