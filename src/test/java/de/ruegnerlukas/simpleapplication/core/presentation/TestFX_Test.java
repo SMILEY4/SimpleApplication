@@ -4,10 +4,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit.ApplicationTest;
 
+@Slf4j
 public class TestFX_Test extends ApplicationTest {
 
 	/*
@@ -24,6 +26,7 @@ public class TestFX_Test extends ApplicationTest {
 	 */
 	@Override
 	public void start(Stage stage) {
+		log.info("Starting javafx test.");
 		button = new Button("click me!");
 		button.setOnAction(actionEvent -> button.setText("clicked!"));
 		stage.setScene(new Scene(new StackPane(button), 100, 100));
