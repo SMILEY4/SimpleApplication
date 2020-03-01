@@ -28,6 +28,9 @@
         <mockito.version>3.2.4</mockito.version>
         <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
         <checkstyle.version>8.29</checkstyle.version>
+        <testfx-core.version>4.0.16-alpha</testfx-core.version>
+        <testfx-junit.version>4.0.15-alpha</testfx-junit.version>
+        <openjfx-monocle.version>jdk-11+26</openjfx-monocle.version>
     </properties>
 
     <dependencies>
@@ -109,6 +112,26 @@
             <version>${maven-checkstyle-plugin.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-core</artifactId>
+            <version>${testfx-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit</artifactId>
+            <version>${testfx-junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>openjfx-monocle</artifactId>
+            <version>${openjfx-monocle.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

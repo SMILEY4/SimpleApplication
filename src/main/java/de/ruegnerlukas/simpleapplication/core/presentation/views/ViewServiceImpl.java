@@ -79,7 +79,7 @@ public class ViewServiceImpl implements ViewService {
 
 	@Override
 	public void deregisterView(final String viewId) {
-		Validations.STATE.isEmpty(getViewHandles(viewId)).exception("Cannot deregister a view that is currently in use.");
+		Validations.STATE.isEmpty(getWindowHandles(viewId)).exception("Cannot deregister a view that is currently in use.");
 		if (views.remove(viewId) != null) {
 			log.info("Deregister view {}.", viewId);
 		}
@@ -101,8 +101,11 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.notBlank(viewId).exception("The view id may not be null or empty.");
 		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
 		Validations.STATE.notNull(primaryStage).exception("The view service is not yet initialized / the primary stage is null.");
-		final WindowHandle handle = new WindowHandle(WindowHandle.ID_PRIMARY, views.get(viewId), primaryStage);
-		viewHandles.put(handle.getHandleId(), handle);
+		WindowHandle handle = getPrimaryWindowHandle();
+		if (handle == null) {
+			handle = new WindowHandle(WindowHandle.ID_PRIMARY, views.get(viewId), primaryStage);
+			viewHandles.put(handle.getHandleId(), handle);
+		}
 		return showView(viewId, handle);
 	}
 
@@ -192,7 +195,7 @@ public class ViewServiceImpl implements ViewService {
 
 		eventServiceProvider.get().publish(ApplicationConstants.EVENT_CLOSE_POPUP, new EventPackage<>(
 				ViewEvent.builder()
-						.prevViewId(null)
+						.prevViewId(handle.getView().getId())
 						.viewId(handle.getView().getId())
 						.windowHandle(handle)
 						.build()));
@@ -203,7 +206,7 @@ public class ViewServiceImpl implements ViewService {
 
 
 	@Override
-	public List<WindowHandle> getViewHandles(final String viewId) {
+	public List<WindowHandle> getWindowHandles(final String viewId) {
 		return viewHandles
 				.values()
 				.stream()

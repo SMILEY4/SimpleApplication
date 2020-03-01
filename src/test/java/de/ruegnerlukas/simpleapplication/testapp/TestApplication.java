@@ -110,7 +110,7 @@ public class TestApplication {
 
 			final Button buttonBConfirm = new Button("Confirm switch");
 			buttonBConfirm.setOnAction(e -> {
-				final WindowHandle handlePopup = viewService.getViewHandles(ID_B_POPUP).get(0);
+				final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_POPUP).get(0);
 				viewService.showView(ID_B_WARN, handlePopup);
 			});
 
@@ -125,7 +125,7 @@ public class TestApplication {
 
 			final Button buttonBWarn = new Button("You sure ?");
 			buttonBWarn.setOnAction(e -> {
-				final WindowHandle handlePopup = viewService.getViewHandles(ID_B_WARN).get(0);
+				final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_WARN).get(0);
 				viewService.closePopup(handlePopup);
 				viewService.showView(ID_A);
 			});

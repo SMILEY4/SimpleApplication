@@ -45,7 +45,7 @@ public class ExposedCommand {
 	 * @return a new {@link ExposedCommand} with the given name, source and {@link UIExtensionScope#LOCAL} as its scope
 	 */
 	public static <T> ExposedCommand local(final String name, final TriggerableEventSource<T> eventSource) {
-		return new ExposedCommand(name, eventSource, UIExtensionScope.INTERNAL);
+		return new ExposedCommand(name, eventSource, UIExtensionScope.LOCAL);
 	}
 
 
@@ -57,7 +57,7 @@ public class ExposedCommand {
 	 * @return a new {@link ExposedCommand} with the given name, source and {@link UIExtensionScope#GLOBAL} as its scope
 	 */
 	public static <T> ExposedCommand global(final String name, final TriggerableEventSource<T> eventSource) {
-		return new ExposedCommand(name, eventSource, UIExtensionScope.INTERNAL);
+		return new ExposedCommand(name, eventSource, UIExtensionScope.GLOBAL);
 	}
 
 
