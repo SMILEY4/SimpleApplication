@@ -2,9 +2,12 @@ package de.ruegnerlukas.simpleapplication.core.plugins;
 
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
+import de.ruegnerlukas.simpleapplication.common.validation.ValidatePresenceException;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import java.util.List;
@@ -16,6 +19,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PluginServiceTest {
+
+
+	@Rule
+	public ExpectedException exceptionRule = ExpectedException.none();
+
+
 
 
 	@BeforeClass
@@ -93,6 +102,68 @@ public class PluginServiceTest {
 		assertThat(pluginService.isLoaded(pluginD.getId())).isTrue();
 		assertThat(pluginService.isLoaded(pluginE.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginF.getId())).isFalse();
+	}
+
+
+
+
+	@Test
+	public void testLoadPluginMissingDependency() {
+
+		final Plugin pluginB = buildPluginMock("b", Set.of("a"));
+		final PluginService pluginService = createPluginService(pluginB);
+
+		assertThat(pluginService.findById("a")).isNotPresent();
+		assertThat(pluginService.findById(pluginB.getId())).isPresent();
+		assertThat(pluginService.canLoadDirectly(pluginB.getId())).isFalse();
+
+		exceptionRule.expect(ValidatePresenceException.class);
+		pluginService.loadPluginWithDependencies(pluginB.getId());
+		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
+	}
+
+
+
+
+	@Test
+	public void testLoadPluginMissingDependencies() {
+
+		final Plugin pluginB = buildPluginMock("b", Set.of("a"));
+		final Plugin pluginC = buildPluginMock("c", Set.of("b"));
+		final PluginService pluginService = createPluginService(pluginB, pluginC);
+
+		assertThat(pluginService.findById("a")).isNotPresent();
+		assertThat(pluginService.findById(pluginB.getId())).isPresent();
+		assertThat(pluginService.findById(pluginC.getId())).isPresent();
+		assertThat(pluginService.canLoadDirectly(pluginB.getId())).isFalse();
+		assertThat(pluginService.canLoadDirectly(pluginC.getId())).isFalse();
+
+		exceptionRule.expect(ValidatePresenceException.class);
+		pluginService.loadPluginWithDependencies(pluginC.getId());
+		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
+		assertThat(pluginService.isLoaded(pluginC.getId())).isFalse();
+	}
+
+
+
+
+	@Test
+	public void testLoadAllPluginsMissingDependencies() {
+
+		final Plugin pluginB = buildPluginMock("b", Set.of("a"));
+		final Plugin pluginC = buildPluginMock("c", Set.of("b"));
+		final PluginService pluginService = createPluginService(pluginB, pluginC);
+
+		assertThat(pluginService.findById("a")).isNotPresent();
+		assertThat(pluginService.findById(pluginB.getId())).isPresent();
+		assertThat(pluginService.findById(pluginC.getId())).isPresent();
+		assertThat(pluginService.canLoadDirectly(pluginB.getId())).isFalse();
+		assertThat(pluginService.canLoadDirectly(pluginC.getId())).isFalse();
+
+		exceptionRule.expect(ValidatePresenceException.class);
+		pluginService.loadAllPlugins();
+		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
+		assertThat(pluginService.isLoaded(pluginC.getId())).isFalse();
 	}
 
 
