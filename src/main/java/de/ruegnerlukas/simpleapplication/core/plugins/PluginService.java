@@ -3,6 +3,24 @@ package de.ruegnerlukas.simpleapplication.core.plugins;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The plugin service is responsible for loading and unloading {@link Plugin}s.
+ * <p>
+ * A plugin can be registered and can have any amount of dependencies on other plugins or generic components.
+ * Registered plugins can be loaded if all their dependencies are currently loaded.
+ * Alternatively, a plugin can be loaded together with all its dependencies. Dependencies are loaded in the correct order.
+ * If a plugin can be loaded without having to load dependencies can be checked with {@link PluginService#canLoadDirectly}.
+ * <p>
+ * Components can be loaded and unloaded in the same way.
+ * However, components do not have any dependencies and are generally used by plugins to depend on.
+ * Components can be points in the application where certain plugins can not be loaded before
+ * (e.g. Plugin depends on a non-plugin-system to be loaded completely)
+ * <p>
+ * Plugins and components can be unloaded at any time.
+ * When something get unloaded, all plugins that depend on it will be unloaded too.
+ * If a plugin or component can be unloaded without
+ * having to unload other plugins can be checked with {@link PluginService#canUnloadSafely}.
+ */
 public interface PluginService {
 
 
