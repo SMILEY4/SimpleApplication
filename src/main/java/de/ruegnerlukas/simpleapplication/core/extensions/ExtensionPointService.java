@@ -1,7 +1,16 @@
 package de.ruegnerlukas.simpleapplication.core.extensions;
 
+
 import java.util.Optional;
 
+/**
+ * The extension point service manages {@link ExtensionPoint}s.
+ * <p>
+ * Any {@link de.ruegnerlukas.simpleapplication.core.plugins.Plugin} or system can provide extension points
+ * by registering them in this service.
+ * Registered extension points can then be requested by their specified id.
+ *
+ */
 public interface ExtensionPointService {
 
 

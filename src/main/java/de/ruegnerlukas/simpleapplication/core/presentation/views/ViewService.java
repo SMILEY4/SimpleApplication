@@ -5,6 +5,14 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This service is responsible for handling windows and javafx-stages in the application.
+ * <p>
+ * A {@link View} hold (besides other things) a root javafx-node.
+ * Registered views can be displayed in any window or as a popup in a new one.
+ * Each window has a {@link WindowHandle}, which can be used to identify a specific window
+ * and what view it currently displays.
+ */
 public interface ViewService {
 
 
