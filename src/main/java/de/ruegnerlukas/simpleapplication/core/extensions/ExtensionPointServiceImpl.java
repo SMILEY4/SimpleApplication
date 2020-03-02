@@ -42,9 +42,18 @@ public class ExtensionPointServiceImpl implements ExtensionPointService {
 
 
 	@Override
+	public void provide(final String id, final Class<?> type, final Object data) {
+		find(id).ifPresent(extensionPoint -> {
+			extensionPoint.provide(type, data);
+		});
+	}
+
+
+
+
+	@Override
 	public Optional<ExtensionPoint> find(final String id) {
-		final ExtensionPoint extensionPoint = extensionPoints.get(id);
-		return Optional.ofNullable(extensionPoint);
+		return Optional.ofNullable(extensionPoints.get(id));
 	}
 
 
@@ -52,8 +61,7 @@ public class ExtensionPointServiceImpl implements ExtensionPointService {
 
 	@Override
 	public ExtensionPoint findOrDummy(final String id) {
-		final Optional<ExtensionPoint> optional = find(id);
-		return optional.orElseGet(DummyExtensionPoint::new);
+		return find(id).orElseGet(DummyExtensionPoint::new);
 	}
 
 }

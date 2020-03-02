@@ -9,7 +9,6 @@ import java.util.Optional;
  * Any {@link de.ruegnerlukas.simpleapplication.core.plugins.Plugin} or system can provide extension points
  * by registering them in this service.
  * Registered extension points can then be requested by their specified id.
- *
  */
 public interface ExtensionPointService {
 
@@ -28,6 +27,15 @@ public interface ExtensionPointService {
 	 * @param id the id of the extension point to deregister
 	 */
 	void deregister(String id);
+
+	/**
+	 * Pass the given data to the extension point with the given id.
+	 *
+	 * @param id   the id of the extension point
+	 * @param type the type of the provided data
+	 * @param data the data to provide to the extension point
+	 */
+	void provide(String id, Class<?> type, Object data);
 
 	/**
 	 * Searches for an {@link ExtensionPoint} with the given id.
