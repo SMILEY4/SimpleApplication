@@ -4,6 +4,8 @@ import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSource;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 public class ExposedEvent {
@@ -58,6 +60,29 @@ public class ExposedEvent {
 	 */
 	public static <T> ExposedEvent global(final String name, final ListenableEventSource<T> eventSource) {
 		return new ExposedEvent(name, eventSource, UIExtensionScope.GLOBAL);
+	}
+
+
+
+
+	/**
+	 * Checks if the scope of this exposed event is at least the given scope / is relevant in the given scope.
+	 *
+	 * @param scope the given scope
+	 * @return whether the scope of this exposed event is at least the given scope
+	 */
+	public boolean isAtLeast(final UIExtensionScope scope) {
+		switch (scope) {
+			case INTERNAL:
+				return List.of(UIExtensionScope.INTERNAL, UIExtensionScope.LOCAL, UIExtensionScope.GLOBAL)
+						.contains(getScope());
+			case LOCAL:
+				return List.of(UIExtensionScope.LOCAL, UIExtensionScope.GLOBAL).contains(getScope());
+			case GLOBAL:
+				return getScope() == UIExtensionScope.GLOBAL;
+			default:
+				return false;
+		}
 	}
 
 

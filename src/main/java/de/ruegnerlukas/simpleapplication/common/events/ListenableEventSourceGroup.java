@@ -3,7 +3,9 @@ package de.ruegnerlukas.simpleapplication.common.events;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ListenableEventSourceGroup {
@@ -60,6 +62,13 @@ public class ListenableEventSourceGroup {
 	 */
 	public <T> ListenableEventSource<T> find(final String name) {
 		return (ListenableEventSource<T>) eventSources.get(name);
+	}
+
+	/**
+	 * @return a list with ids of all event sources of this group.
+	 */
+	public List<String> getIds() {
+		return new ArrayList<>(eventSources.keySet());
 	}
 
 }

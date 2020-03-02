@@ -3,7 +3,9 @@ package de.ruegnerlukas.simpleapplication.common.events;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TriggerableEventSourceGroup {
@@ -60,6 +62,16 @@ public class TriggerableEventSourceGroup {
 	 */
 	public <T> TriggerableEventSource<T> find(final String name) {
 		return (TriggerableEventSource<T>) eventSources.get(name);
+	}
+
+
+
+
+	/**
+	 * @return a list with ids of all event sources of this group.
+	 */
+	public List<String> getIds() {
+		return new ArrayList<>(eventSources.keySet());
 	}
 
 }
