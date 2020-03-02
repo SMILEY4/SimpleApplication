@@ -1,9 +1,13 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.module;
 
+import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSourceGroup;
+import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSource;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSourceGroup;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.presentation.utils.Anchors;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,11 +15,18 @@ import javafx.scene.layout.AnchorPane;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class Module extends AnchorPane {
 
+
+	/**
+	 * The provider for the event service.
+	 */
+	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
 
 	/**
 	 * The group for local events.
@@ -62,6 +73,9 @@ public class Module extends AnchorPane {
 
 		localEvents = buildLocalEventGroup(view, controller);
 		localCommands = buildLocalCommandGroup(view, controller);
+
+		publishGlobalEvents(view, controller);
+		publishGlobalCommands(view, controller);
 	}
 
 
@@ -113,14 +127,8 @@ public class Module extends AnchorPane {
 	 */
 	private ListenableEventSourceGroup buildInternalEventGroup(final ModuleView view) {
 		final ListenableEventSourceGroup group = new ListenableEventSourceGroup();
-		if (view.getExposedEvents() != null) {
-			for (ExposedEvent event : view.getExposedEvents()) {
-				final UIExtensionScope scope = event.getScope();
-				if (List.of(UIExtensionScope.INTERNAL, UIExtensionScope.LOCAL, UIExtensionScope.GLOBAL).contains(scope)) {
-					group.add(event.getName(), event.getEventSource());
-				}
-			}
-		}
+		Optional.ofNullable(view.getExposedEvents()).orElseGet(List::of)
+				.forEach(exposedEvent -> group.add(exposedEvent.getName(), exposedEvent.getEventSource()));
 		return group;
 	}
 
@@ -135,14 +143,8 @@ public class Module extends AnchorPane {
 	 */
 	private TriggerableEventSourceGroup buildInternalCommandGroup(final ModuleView view) {
 		final TriggerableEventSourceGroup group = new TriggerableEventSourceGroup();
-		if (view.getExposedCommands() != null) {
-			for (ExposedCommand command : view.getExposedCommands()) {
-				final UIExtensionScope scope = command.getScope();
-				if (List.of(UIExtensionScope.INTERNAL, UIExtensionScope.LOCAL, UIExtensionScope.GLOBAL).contains(scope)) {
-					group.add(command.getName(), command.getEventSource());
-				}
-			}
-		}
+		Optional.ofNullable(view.getExposedCommands()).orElseGet(List::of)
+				.forEach(exposedCommand -> group.add(exposedCommand.getName(), exposedCommand.getEventSource()));
 		return group;
 	}
 
@@ -158,22 +160,12 @@ public class Module extends AnchorPane {
 	 */
 	private ListenableEventSourceGroup buildLocalEventGroup(final ModuleView view, final ModuleController controller) {
 		final ListenableEventSourceGroup group = new ListenableEventSourceGroup();
-		if (view.getExposedEvents() != null) {
-			for (ExposedEvent event : view.getExposedEvents()) {
-				final UIExtensionScope scope = event.getScope();
-				if (List.of(UIExtensionScope.LOCAL, UIExtensionScope.GLOBAL).contains(scope)) {
-					group.add(event.getName(), event.getEventSource());
-				}
-			}
-		}
-		if (controller.getExposedEvents() != null) {
-			for (ExposedEvent event : controller.getExposedEvents()) {
-				final UIExtensionScope scope = event.getScope();
-				if (List.of(UIExtensionScope.LOCAL, UIExtensionScope.GLOBAL).contains(scope)) {
-					group.add(event.getName(), event.getEventSource());
-				}
-			}
-		}
+		final List<ExposedEvent> exposedEvents = new ArrayList<>();
+		exposedEvents.addAll(Optional.ofNullable(view.getExposedEvents()).orElseGet(List::of));
+		exposedEvents.addAll(Optional.ofNullable(controller.getExposedEvents()).orElseGet(List::of));
+		exposedEvents.stream()
+				.filter(exposedEvent -> exposedEvent.getScope().isAtLeast(UIExtensionScope.LOCAL))
+				.forEach(exposedEvent -> group.add(exposedEvent.getName(), exposedEvent.getEventSource()));
 		return group;
 	}
 
@@ -189,23 +181,58 @@ public class Module extends AnchorPane {
 	 */
 	private TriggerableEventSourceGroup buildLocalCommandGroup(final ModuleView view, final ModuleController controller) {
 		final TriggerableEventSourceGroup group = new TriggerableEventSourceGroup();
-		if (view.getExposedCommands() != null) {
-			for (ExposedCommand command : view.getExposedCommands()) {
-				final UIExtensionScope scope = command.getScope();
-				if (List.of(UIExtensionScope.LOCAL, UIExtensionScope.GLOBAL).contains(scope)) {
-					group.add(command.getName(), command.getEventSource());
-				}
-			}
-		}
-		if (controller.getExposedCommands() != null) {
-			for (ExposedCommand command : controller.getExposedCommands()) {
-				final UIExtensionScope scope = command.getScope();
-				if (List.of(UIExtensionScope.LOCAL, UIExtensionScope.GLOBAL).contains(scope)) {
-					group.add(command.getName(), command.getEventSource());
-				}
-			}
-		}
+		final List<ExposedCommand> exposedCommands = new ArrayList<>();
+		exposedCommands.addAll(Optional.ofNullable(view.getExposedCommands()).orElseGet(List::of));
+		exposedCommands.addAll(Optional.ofNullable(controller.getExposedCommands()).orElseGet(List::of));
+		exposedCommands.stream()
+				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.LOCAL))
+				.forEach(exposedCommand -> group.add(exposedCommand.getName(), exposedCommand.getEventSource()));
 		return group;
+	}
+
+
+
+
+	/**
+	 * Makes the global events available through the {@link EventService}.
+	 *
+	 * @param view       the view providing events
+	 * @param controller the controller providing events
+	 */
+	private void publishGlobalEvents(final ModuleView view, final ModuleController controller) {
+		final EventService eventService = eventServiceProvider.get();
+		final List<ExposedEvent> exposedEvents = new ArrayList<>();
+		exposedEvents.addAll(Optional.ofNullable(view.getExposedEvents()).orElseGet(List::of));
+		exposedEvents.addAll(Optional.ofNullable(controller.getExposedEvents()).orElseGet(List::of));
+		exposedEvents.stream()
+				.filter(exposedEvent -> exposedEvent.getScope().isAtLeast(UIExtensionScope.GLOBAL))
+				.forEach(exposedEvent -> exposedEvent.getEventSource().subscribe(event -> {
+					eventService.publish(exposedEvent.getName(), new EventPackage<>(event));
+				}));
+	}
+
+
+
+
+	/**
+	 * Makes the global commands available through the {@link EventService}.
+	 *
+	 * @param view       the view providing commands
+	 * @param controller the controller providing commands
+	 */
+	private void publishGlobalCommands(final ModuleView view, final ModuleController controller) {
+		final EventService eventService = eventServiceProvider.get();
+		final List<ExposedCommand> exposedCommands = new ArrayList<>();
+		exposedCommands.addAll(Optional.ofNullable(view.getExposedCommands()).orElseGet(List::of));
+		exposedCommands.addAll(Optional.ofNullable(controller.getExposedCommands()).orElseGet(List::of));
+		exposedCommands.stream()
+				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.GLOBAL))
+				.forEach(exposedCommand -> {
+					eventService.subscribe(exposedCommand.getName(), eventPackage -> {
+						final TriggerableEventSource eventSource = exposedCommand.getEventSource();
+						eventSource.trigger(eventPackage.getEvent());
+					});
+				});
 	}
 
 
