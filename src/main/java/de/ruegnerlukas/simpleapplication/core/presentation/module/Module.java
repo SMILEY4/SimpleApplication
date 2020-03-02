@@ -164,7 +164,7 @@ public class Module extends AnchorPane {
 		exposedEvents.addAll(Optional.ofNullable(view.getExposedEvents()).orElseGet(List::of));
 		exposedEvents.addAll(Optional.ofNullable(controller.getExposedEvents()).orElseGet(List::of));
 		exposedEvents.stream()
-				.filter(exposedEvent -> exposedEvent.isAtLeast(UIExtensionScope.LOCAL))
+				.filter(exposedEvent -> exposedEvent.getScope().isAtLeast(UIExtensionScope.LOCAL))
 				.forEach(exposedEvent -> group.add(exposedEvent.getName(), exposedEvent.getEventSource()));
 		return group;
 	}
@@ -185,7 +185,7 @@ public class Module extends AnchorPane {
 		exposedCommands.addAll(Optional.ofNullable(view.getExposedCommands()).orElseGet(List::of));
 		exposedCommands.addAll(Optional.ofNullable(controller.getExposedCommands()).orElseGet(List::of));
 		exposedCommands.stream()
-				.filter(exposedCommand -> exposedCommand.isAtLeast(UIExtensionScope.LOCAL))
+				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.LOCAL))
 				.forEach(exposedCommand -> group.add(exposedCommand.getName(), exposedCommand.getEventSource()));
 		return group;
 	}
@@ -205,7 +205,7 @@ public class Module extends AnchorPane {
 		exposedEvents.addAll(Optional.ofNullable(view.getExposedEvents()).orElseGet(List::of));
 		exposedEvents.addAll(Optional.ofNullable(controller.getExposedEvents()).orElseGet(List::of));
 		exposedEvents.stream()
-				.filter(exposedEvent -> exposedEvent.isAtLeast(UIExtensionScope.GLOBAL))
+				.filter(exposedEvent -> exposedEvent.getScope().isAtLeast(UIExtensionScope.GLOBAL))
 				.forEach(exposedEvent -> exposedEvent.getEventSource().subscribe(event -> {
 					eventService.publish(exposedEvent.getName(), new EventPackage<>(event));
 				}));
@@ -226,7 +226,7 @@ public class Module extends AnchorPane {
 		exposedCommands.addAll(Optional.ofNullable(view.getExposedCommands()).orElseGet(List::of));
 		exposedCommands.addAll(Optional.ofNullable(controller.getExposedCommands()).orElseGet(List::of));
 		exposedCommands.stream()
-				.filter(exposedCommand -> exposedCommand.isAtLeast(UIExtensionScope.GLOBAL))
+				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.GLOBAL))
 				.forEach(exposedCommand -> {
 					eventService.subscribe(exposedCommand.getName(), eventPackage -> {
 						final TriggerableEventSource eventSource = exposedCommand.getEventSource();
