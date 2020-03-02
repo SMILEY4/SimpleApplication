@@ -47,10 +47,11 @@
 ### Available Events
 
 - ##### ApplicationConstants.EVENT_APPLICATION_STARTED
-    
+  
     - fired after everything is done loading (core systems, all plugins, views, ...)
-- Arguments: empty
     
+- Arguments: empty
+  
 - ##### ApplicationConstants.EVENT_APPLICATION_STOPPING
     - fired when the application received the request to stop / exit
     - before unloading everything (plugins, ...)
@@ -72,3 +73,33 @@
 - ##### ApplicationConstants.EVENT_CLOSE_POPUP
     - fired after a new popup is closed
     - Arguments: ViewEvent with the window handle and the view id
+    
+- **ApplicationConstants.EVENT_PLUGIN_REGISTERED**
+
+    - fired after a new plugin was registered
+    - Arguments: the id of the registered plugin as a string
+
+- **ApplicationConstants.EVENT_PLUGIN_DEREGISTERED**
+
+    - fired after a plugin was deregistered
+    - Arguments: the id of the deregistered plugin as a string
+
+- **ApplicationConstants.EVENT_PLUGIN_LOADED**
+
+    - fired after a plugin was loaded
+    - Arguments: the id of the loaded plugin
+
+- **ApplicationConstants.EVENT_COMPONENT_LOADED**
+
+    - fired after a component was loaded
+    - Arguments: the id of the loaded component
+
+- **ApplicationConstants.EVENT_PLUGIN_UNLOADED**
+
+    - fired after a plugin was unloaded
+    - Arguments: the id of the unloaded plugin
+
+- **ApplicationConstants.EVENT_COMPONENT_UNLOADED**
+
+    - fired after a plugin was unloaded
+    - Arguments: the id of the unloaded component
