@@ -42,6 +42,20 @@ public class ExtensionPointsTest {
 
 
 	@Test
+	public void testProvideByService() {
+		final ExtensionPointService service = new ExtensionPointServiceImpl();
+		final EventListener<String> listener = (EventListener<String>) Mockito.mock(EventListener.class);
+		final ExtensionPoint extensionPoint = new ExtensionPoint("test.ep");
+		extensionPoint.addSupportedType(String.class, listener);
+		service.register(extensionPoint);
+		service.provide(extensionPoint.getId(), String.class, "Test String");
+		verify(listener).onEvent(eq("Test String"));
+	}
+
+
+
+
+	@Test
 	public void testDummyExtensionPoint() {
 
 		final ExtensionPointService service = new ExtensionPointServiceImpl();
