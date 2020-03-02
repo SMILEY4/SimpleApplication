@@ -8,7 +8,6 @@ public final class ApplicationConstants {
 	 */
 	public static final String EVENT_APPLICATION_STARTED = "core.application_started";
 
-
 	/**
 	 * The channel for the event triggered when the application is about to stop and close.
 	 */
@@ -64,7 +63,6 @@ public final class ApplicationConstants {
 	 * The id of the channel for events when a component (in the plugin-service) was unloaded.
 	 */
 	public static final String EVENT_COMPONENT_UNLOADED = "core.plugin.component_unloaded";
-
 
 	/**
 	 * The id of the view-system-component. While this component is loaded, the view service is initialized and running.
