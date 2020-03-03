@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -226,19 +225,10 @@ public class PluginServiceTest {
 	@Test
 	public void testLoadUnloadAll() {
 
-		final PluginService pluginService = new PluginServiceImpl();
+		final Plugin pluginA = buildPluginMock("test.plugin.a", Set.of());
+		final Plugin pluginB = buildPluginMock("test.plugin.b", Set.of());
 
-		final Plugin pluginA = Mockito.mock(Plugin.class);
-		when(pluginA.getId()).thenReturn("test.plugin.a");
-		when(pluginA.getDisplayName()).thenReturn("Test Plugin A");
-		when(pluginA.getVersion()).thenReturn("1.0");
-
-		final Plugin pluginB = Mockito.mock(Plugin.class);
-		when(pluginB.getId()).thenReturn("test.plugin.b");
-		when(pluginB.getDisplayName()).thenReturn("Test Plugin B");
-		when(pluginB.getVersion()).thenReturn("1.0");
-
-		pluginService.registerPlugins(List.of(pluginA, pluginB));
+		final PluginService pluginService = createPluginService(pluginA, pluginB);
 		assertThat(pluginService.isLoaded(pluginA.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
 
@@ -253,6 +243,27 @@ public class PluginServiceTest {
 		verify(pluginB).onUnload();
 		assertThat(pluginService.isLoaded(pluginA.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
+
+	}
+
+
+
+
+	@Test
+	public void testAutoloadPlugin() {
+
+		final String ID_COMPONENT = "test.component";
+
+		final Plugin plugin = buildPluginMock("test.plugin", Set.of(ID_COMPONENT));
+		when(plugin.isAutoload()).thenReturn(true);
+
+		final PluginService pluginService = createPluginService(plugin);
+		assertThat(pluginService.isLoaded(plugin.getId())).isFalse();
+		assertThat(pluginService.canLoadDirectly(plugin.getId())).isFalse();
+
+		pluginService.loadComponent(ID_COMPONENT);
+		verify(plugin, times(1)).onLoad();
+		assertThat(pluginService.isLoaded(plugin.getId())).isTrue();
 
 	}
 

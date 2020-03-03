@@ -42,7 +42,7 @@ public class TestApplication {
 
 
 		public UIPlugin() {
-			super("plugin.ui", "UI Plugin", "0.1");
+			super("plugin.ui", "UI Plugin", "0.1", false);
 		}
 
 
@@ -169,7 +169,7 @@ public class TestApplication {
 
 
 		public LoggingPlugin() {
-			super("plugin.logging", "Logging Plugin", "0.1");
+			super("plugin.logging", "Logging Plugin", "0.1", false);
 		}
 
 

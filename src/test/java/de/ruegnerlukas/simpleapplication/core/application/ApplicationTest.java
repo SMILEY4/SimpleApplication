@@ -230,7 +230,7 @@ public class ApplicationTest {
 
 
 		public TestPlugin(final String id, final String displayName, final String version) {
-			super(id, displayName, version);
+			super(id, displayName, version, false);
 		}
 
 

@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,13 @@ public class PluginServiceImpl implements PluginService {
 	/**
 	 * All currently registered plugins. The key is the id of the plugin.
 	 */
-	private Map<String, Plugin> registeredPlugins = new HashMap<>();
+	private final Map<String, Plugin> registeredPlugins = new HashMap<>();
+
+
+	/**
+	 * All plugins that are marked as autoload. Autoload-plugins get automatically loaded when all their dependencies are loaded.
+	 */
+	private final List<Plugin> autoloadPlugins = new ArrayList<>();
 
 
 
@@ -51,6 +58,9 @@ public class PluginServiceImpl implements PluginService {
 			log.warn("The plugin with the id {} is already registered and will not be registered again.", plugin.getId());
 		} else {
 			registeredPlugins.put(plugin.getId(), plugin);
+			if (plugin.isAutoload() && !plugin.getDependencyIds().isEmpty()) {
+				autoloadPlugins.add(plugin);
+			}
 			graph.insert(plugin.getId());
 			plugin.getDependencyIds().forEach(dependency -> {
 				if (!graph.exists(dependency)) {
@@ -92,6 +102,7 @@ public class PluginServiceImpl implements PluginService {
 			graph.setLoaded(id);
 			eventServiceProvider.get().publish(ApplicationConstants.EVENT_COMPONENT_LOADED, new EventPackage<>(id));
 			log.info("The component with the id {} was loaded.", id);
+			checkAutoloadPlugins();
 		}
 	}
 
@@ -109,6 +120,7 @@ public class PluginServiceImpl implements PluginService {
 			if (canLoadDirectly(plugin.getId())) {
 				forceLoadPlugin(plugin);
 				log.info("The plugin with the id {} was loaded.", plugin.getId());
+				checkAutoloadPlugins();
 			} else {
 				log.warn("The plugin with the id {} could not be loaded: missing dependencies.", plugin.getId());
 			}
@@ -250,9 +262,25 @@ public class PluginServiceImpl implements PluginService {
 
 
 
+	/**
+	 * Checks whether any plugins marked as autoload can be loaded.
+	 */
+	private void checkAutoloadPlugins() {
+		autoloadPlugins.stream()
+				.map(Plugin::getId)
+				.filter(this::canLoadDirectly)
+				.filter(this::isUnloaded)
+				.forEach(this::loadPlugin);
+	}
+
+
+
+
 	@Override
 	public void unloadAllPlugins() {
-		graph.getIds().stream().filter(id -> registeredPlugins.containsKey(id)).forEach(this::unloadPlugin);
+		graph.getIds().stream()
+				.filter(registeredPlugins::containsKey)
+				.forEach(this::unloadPlugin);
 	}
 
 
@@ -277,6 +305,14 @@ public class PluginServiceImpl implements PluginService {
 	@Override
 	public boolean isLoaded(final String id) {
 		return graph.isLoaded(id);
+	}
+
+
+
+
+	@Override
+	public boolean isUnloaded(final String id) {
+		return !isLoaded(id);
 	}
 
 
