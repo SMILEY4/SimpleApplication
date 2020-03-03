@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.core.plugins;
 
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
-import de.ruegnerlukas.simpleapplication.common.validation.ValidatePresenceException;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -108,24 +107,6 @@ public class PluginServiceTest {
 
 
 	@Test
-	public void testLoadPluginMissingDependency() {
-
-		final Plugin pluginB = buildPluginMock("b", Set.of("a"));
-		final PluginService pluginService = createPluginService(pluginB);
-
-		assertThat(pluginService.findById("a")).isNotPresent();
-		assertThat(pluginService.findById(pluginB.getId())).isPresent();
-		assertThat(pluginService.canLoadDirectly(pluginB.getId())).isFalse();
-
-		exceptionRule.expect(ValidatePresenceException.class);
-		pluginService.loadPluginWithDependencies(pluginB.getId());
-		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
-	}
-
-
-
-
-	@Test
 	public void testLoadPluginMissingDependencies() {
 
 		final Plugin pluginB = buildPluginMock("b", Set.of("a"));
@@ -138,7 +119,6 @@ public class PluginServiceTest {
 		assertThat(pluginService.canLoadDirectly(pluginB.getId())).isFalse();
 		assertThat(pluginService.canLoadDirectly(pluginC.getId())).isFalse();
 
-		exceptionRule.expect(ValidatePresenceException.class);
 		pluginService.loadPluginWithDependencies(pluginC.getId());
 		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginC.getId())).isFalse();
@@ -148,7 +128,7 @@ public class PluginServiceTest {
 
 
 	@Test
-	public void testLoadAllPluginsMissingDependencies() {
+	public void testLoadAllPluginsMissingPlugin() {
 
 		final Plugin pluginB = buildPluginMock("b", Set.of("a"));
 		final Plugin pluginC = buildPluginMock("c", Set.of("b"));
@@ -160,10 +140,29 @@ public class PluginServiceTest {
 		assertThat(pluginService.canLoadDirectly(pluginB.getId())).isFalse();
 		assertThat(pluginService.canLoadDirectly(pluginC.getId())).isFalse();
 
-		exceptionRule.expect(ValidatePresenceException.class);
 		pluginService.loadAllPlugins();
 		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginC.getId())).isFalse();
+	}
+
+
+
+
+	@Test
+	public void testLoadPluginWithMissingComponent() {
+
+		final String ID_COMPONENT = "test.component";
+		final Plugin plugin = buildPluginMock("test.plugin", Set.of(ID_COMPONENT));
+		final PluginService pluginService = createPluginService(plugin);
+
+		assertThat(pluginService.findById(plugin.getId())).isPresent();
+		assertThat(pluginService.isLoaded(plugin.getId())).isFalse();
+		assertThat(pluginService.isLoaded(ID_COMPONENT)).isFalse();
+
+		pluginService.loadPluginWithDependencies(plugin.getId());
+		assertThat(pluginService.isLoaded(plugin.getId())).isFalse();
+		assertThat(pluginService.isLoaded(ID_COMPONENT)).isFalse();
+
 	}
 
 
@@ -201,18 +200,6 @@ public class PluginServiceTest {
 		assertThat(pluginService.isLoaded(pluginD.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginE.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginF.getId())).isTrue();
-	}
-
-
-
-
-	private Plugin buildPluginMock(final String id, Set<String> dependencies) {
-		final Plugin plugin = Mockito.mock(Plugin.class);
-		when(plugin.getId()).thenReturn(id);
-		when(plugin.getDisplayName()).thenReturn(id);
-		when(plugin.getVersion()).thenReturn("testing");
-		when(plugin.getDependencyIds()).thenReturn(dependencies);
-		return plugin;
 	}
 
 
@@ -267,6 +254,18 @@ public class PluginServiceTest {
 		assertThat(pluginService.isLoaded(pluginA.getId())).isFalse();
 		assertThat(pluginService.isLoaded(pluginB.getId())).isFalse();
 
+	}
+
+
+
+
+	private Plugin buildPluginMock(final String id, Set<String> dependencies) {
+		final Plugin plugin = Mockito.mock(Plugin.class);
+		when(plugin.getId()).thenReturn(id);
+		when(plugin.getDisplayName()).thenReturn(id);
+		when(plugin.getVersion()).thenReturn("testing");
+		when(plugin.getDependencyIds()).thenReturn(dependencies);
+		return plugin;
 	}
 
 
