@@ -31,4 +31,17 @@ public interface ModuleController {
 		return Collections.emptyList();
 	}
 
+
+	/**
+	 * A {@link ModuleController} that does nothing
+	 */
+	class EmptyController implements ModuleController {
+
+
+		@Override
+		public void initialize(final ListenableEventSourceGroup events, final TriggerableEventSourceGroup commands) {
+		}
+
+	}
+
 }

@@ -29,4 +29,17 @@ public interface ModuleView {
 		return Collections.emptyList();
 	}
 
+
+	/**
+	 * A {@link ModuleView} that does nothing
+	 */
+	class EmptyView implements ModuleView {
+
+
+		@Override
+		public void initialize(final Pane root) {
+		}
+
+	}
+
 }
