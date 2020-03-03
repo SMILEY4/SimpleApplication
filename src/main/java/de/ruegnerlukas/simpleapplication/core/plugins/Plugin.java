@@ -32,6 +32,11 @@ public abstract class Plugin {
 	 */
 	private final Set<String> dependencyIds = new HashSet<>();
 
+	/**
+	 * Whether this plugin is marked as autoload. Autoload-plugins get automatically loaded when all their dependencies are loaded.
+	 */
+	private final boolean autoload;
+
 
 
 

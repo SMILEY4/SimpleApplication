@@ -127,6 +127,14 @@ public interface PluginService {
 	 */
 	boolean isLoaded(String id);
 
+	/**
+	 * Check if the plugin or dependency with the given id is not loaded.
+	 *
+	 * @param id the id of the plugin or component.
+	 * @return whether the id is unloaded
+	 */
+	boolean isUnloaded(String id);
+
 
 	/**
 	 * Finds the {@link Plugin} with the given id.
