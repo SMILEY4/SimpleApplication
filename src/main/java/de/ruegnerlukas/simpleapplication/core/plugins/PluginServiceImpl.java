@@ -134,21 +134,25 @@ public class PluginServiceImpl implements PluginService {
 
 	@Override
 	public void loadPluginWithDependencies(final String id) {
-		Validations.PRESENCE.isTrue(isRegistered(id)).exception("The plugin with the id {} is not registered.", id);
+		Validations.PRESENCE.isTrue(isRegistered(id)).exception("The plugin with the id '{}' is not registered.", id);
 		final Plugin plugin = registeredPlugins.get(id);
 		if (isLoaded(plugin.getId())) {
-			log.warn("The plugin with the id {} is already loaded and will not be loaded again.", plugin.getId());
+			log.warn("The plugin with the id '{}' is already loaded and will not be loaded again.", plugin.getId());
 		} else {
-			log.debug("Loading plugin (including dependencies) with the id {}.", plugin.getId());
+			log.debug("Loading plugin (including dependencies) with the id '{}'.", plugin.getId());
 			final List<String> dependencies = graph.getDependenciesIndirect(plugin.getId());
 			Collections.reverse(dependencies);
 			for (String dependency : dependencies) {
-				if (!isLoaded(dependency)) {
+				if (isRegistered(dependency) && !isLoaded(dependency)) {
 					loadPlugin(dependency);
 				}
 			}
-			forceLoadPlugin(plugin);
-			log.info("The plugin with the id {} was loaded.", plugin.getId());
+			if (canLoadDirectly(plugin.getId())) {
+				forceLoadPlugin(plugin);
+				log.info("The plugin with the id '{}' was loaded.", plugin.getId());
+			} else {
+				log.info("The plugin with the id '{}' could not be loaded.", plugin.getId());
+			}
 		}
 	}
 
