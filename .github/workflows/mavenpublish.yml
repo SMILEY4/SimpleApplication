@@ -21,13 +21,9 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 11.0.5
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
-
-    - name: Build with Maven
-      run: mvn -B package -Dtestfx.headless=true --file pom.xml
+        servers: '[{"id": "github", "username": "x-access-token", "password": "${GITHUB_TOKEN}"}]'
 
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
+      run: mvn deploy -Dtestfx.headless=true
       env:
         GITHUB_TOKEN: ${{ github.token }}
