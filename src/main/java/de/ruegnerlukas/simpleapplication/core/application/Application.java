@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.core.application;
 
 import de.ruegnerlukas.simpleapplication.common.callbacks.Callback;
 import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
@@ -81,6 +82,7 @@ public class Application {
 	private void onStart(final Stage stage) {
 		log.info("Application on start.");
 		setupProviderConfigurations();
+		registerPrimaryStageProvider(stage);
 		setupPlugins();
 		setupViews(stage);
 		log.info("Application started.");
@@ -98,6 +100,23 @@ public class Application {
 		coreProviderConfiguration.configure();
 		coreProviderConfiguration.getFactories().forEach(ProviderService::registerFactory);
 		configuration.getProviderFactories().forEach(ProviderService::registerFactory);
+	}
+
+
+
+
+	/**
+	 * Registers the factory for the provider of the primars javafx-stage.
+	 *
+	 * @param stage the primary stage
+	 */
+	private void registerPrimaryStageProvider(final Stage stage) {
+		ProviderService.registerFactory(new InstanceFactory<>(ApplicationConstants.PROVIDED_PRIMARY_STAGE) {
+			@Override
+			public Stage buildObject() {
+				return stage;
+			}
+		});
 	}
 
 
