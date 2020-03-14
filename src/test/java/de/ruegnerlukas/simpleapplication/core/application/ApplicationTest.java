@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.Stri
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
+import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
@@ -230,7 +231,7 @@ public class ApplicationTest {
 
 
 		public TestPlugin(final String id, final String displayName, final String version) {
-			super(id, displayName, version, false);
+			super(new PluginInformation(id, displayName, version, false));
 		}
 
 

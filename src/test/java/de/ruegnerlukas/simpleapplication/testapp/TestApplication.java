@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfigurati
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
+import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
@@ -42,7 +43,7 @@ public class TestApplication {
 
 
 		public UIPlugin() {
-			super("plugin.ui", "UI Plugin", "0.1", false);
+			super(new PluginInformation("plugin.ui", "UI Plugin", "0.1", false));
 		}
 
 
@@ -169,7 +170,7 @@ public class TestApplication {
 
 
 		public LoggingPlugin() {
-			super("plugin.logging", "Logging Plugin", "0.1", false);
+			super(new PluginInformation("plugin.logging", "Logging Plugin", "0.1", false));
 		}
 
 
