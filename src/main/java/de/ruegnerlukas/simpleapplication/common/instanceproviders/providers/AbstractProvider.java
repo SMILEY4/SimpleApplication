@@ -4,6 +4,8 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.RequestType;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+import java.util.Optional;
+
 public abstract class AbstractProvider<R, P> {
 
 
@@ -61,6 +63,16 @@ public abstract class AbstractProvider<R, P> {
 			}
 		}
 		return this.instance;
+	}
+
+
+
+
+	/**
+	 * @return an optional with the instance of the type T
+	 */
+	public Optional<P> getOptional() {
+		return Optional.ofNullable(get());
 	}
 
 
