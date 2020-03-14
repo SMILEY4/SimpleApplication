@@ -126,4 +126,36 @@ public class ExtensionPointsTest {
 		extensionPoint.provide(null, "Test");
 	}
 
+
+
+
+	@Test (expected = ValidateInputException.class)
+	public void testExtensionPointInvalidNullValue() {
+		final ExtensionPoint extensionPoint = new ExtensionPoint("test.ep");
+		extensionPoint.addSupportedType(String.class, (EventListener<String>) Mockito.mock(EventListener.class));
+
+		assertThat(extensionPoint.isSupported(String.class)).isTrue();
+		assertThat(extensionPoint.getSupportedTypes()).containsExactlyInAnyOrder(String.class);
+		assertThat(extensionPoint.allowsNull(String.class)).isFalse();
+
+		extensionPoint.provide(String.class, null);
+	}
+
+
+
+
+	@Test
+	public void testExtensionPointValidNullValue() {
+		final ExtensionPoint extensionPoint = new ExtensionPoint("test.ep");
+		final EventListener<String> listener = (EventListener<String>) Mockito.mock(EventListener.class);
+		extensionPoint.addSupportedTypeAllowNull(String.class, listener);
+
+		assertThat(extensionPoint.isSupported(String.class)).isTrue();
+		assertThat(extensionPoint.getSupportedTypes()).containsExactlyInAnyOrder(String.class);
+		assertThat(extensionPoint.allowsNull(String.class)).isTrue();
+
+		extensionPoint.provide(String.class, null);
+		verify(listener).onEvent(eq(null));
+	}
+
 }
