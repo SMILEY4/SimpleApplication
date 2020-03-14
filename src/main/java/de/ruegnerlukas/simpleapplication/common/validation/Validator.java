@@ -754,6 +754,25 @@ public class Validator {
 
 
 	/**
+	 * Checks if the given object can be cast to the given type.
+	 *
+	 * @param object    the object to examine
+	 * @param type      the type (may not be null)
+	 * @param allowNull whether the type can be null
+	 * @return the result of the validation
+	 */
+	public ValidationResult typeOf(final Object object, final Class<?> type, final boolean allowNull) {
+		if (allowNull) {
+			return typeOfAllowNull(object, type);
+		} else {
+			return typeOf(object, type);
+		}
+	}
+
+
+
+
+	/**
 	 * Checks if the given object can be cast to the given type and neither the object nor the type is null.
 	 *
 	 * @param object the object to examine
@@ -775,5 +794,31 @@ public class Validator {
 		return validated(!canBeCast);
 	}
 
+
+
+
+	/**
+	 * Checks if the given object can be cast to the given type or if the given object is null.
+	 *
+	 * @param object the object to examine or null
+	 * @param type   the type (may not be null)
+	 * @return the result of the validation
+	 */
+	public ValidationResult typeOfAllowNull(final Object object, final Class<?> type) {
+		boolean canBeCast;
+		if (type == null) {
+			canBeCast = false;
+		} else if (object == null) {
+			canBeCast = true;
+		} else {
+			try {
+				type.cast(object);
+				canBeCast = true;
+			} catch (ClassCastException ignored) {
+				canBeCast = false;
+			}
+		}
+		return validated(!canBeCast);
+	}
 
 }
