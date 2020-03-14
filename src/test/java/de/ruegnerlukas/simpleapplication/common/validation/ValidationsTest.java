@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -415,7 +416,61 @@ public class ValidationsTest {
 		assertFalse(Validations.STATE.typeOf(a1, A.class).failed());
 		assertTrue(Validations.STATE.typeOf(a, A1.class).failed());
 		assertTrue(Validations.STATE.typeOf(a1, A2.class).failed());
+		assertTrue(Validations.STATE.typeOf(null, A2.class).failed());
 
+	}
+
+
+
+
+	@Test
+	public void testTypeOfAllowNull() {
+		class A {
+
+
+		}
+
+		class A1 extends A {
+
+
+		}
+
+		class A2 extends A {
+
+
+		}
+
+		final Object a = new A();
+		final Object a1 = new A1();
+
+		assertTrue(Validations.STATE.typeOfAllowNull(a, A.class).successful());
+		assertTrue(Validations.STATE.typeOfAllowNull(a1, A.class).successful());
+		assertTrue(Validations.STATE.typeOfAllowNull(a, A1.class).failed());
+		assertTrue(Validations.STATE.typeOfAllowNull(a1, A2.class).failed());
+		assertTrue(Validations.STATE.typeOfAllowNull(null, A2.class).successful());
+
+	}
+
+
+
+
+	@Test
+	public void testIsPresent() {
+		final Optional<Object> optionalPresent = Optional.of(new Object());
+		final Optional<Object> optionalNull = Optional.empty();
+		assertTrue(Validations.STATE.isPresent(optionalPresent).successful());
+		assertTrue(Validations.STATE.isPresent(optionalNull).failed());
+	}
+
+
+
+
+	@Test
+	public void testIsNotPresent() {
+		final Optional<Object> optionalPresent = Optional.of(new Object());
+		final Optional<Object> optionalNull = Optional.empty();
+		assertTrue(Validations.STATE.isNotPresent(optionalPresent).failed());
+		assertTrue(Validations.STATE.isNotPresent(optionalNull).successful());
 	}
 
 

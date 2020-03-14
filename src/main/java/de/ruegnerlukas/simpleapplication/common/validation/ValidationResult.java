@@ -83,6 +83,16 @@ public class ValidationResult {
 
 
 	/**
+	 * @return whether the validation was successful
+	 */
+	public boolean successful() {
+		return !this.failed;
+	}
+
+
+
+
+	/**
 	 * @param callback the callback to execute. The parameter of the callback is a boolean indicating whether the validation failed.
 	 */
 	public ValidationResult then(final Callback<Boolean> callback) {
@@ -123,7 +133,7 @@ public class ValidationResult {
 	 * Logs a failed validation with the given error message (as a warning).
 	 *
 	 * @param errorMessage the error message
-	 * @param args          the arguments for the message
+	 * @param args         the arguments for the message
 	 */
 	public ValidationResult log(final String errorMessage, final Object... args) {
 		if (this.failed) {

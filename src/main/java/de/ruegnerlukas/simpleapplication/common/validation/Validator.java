@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Class for validating objects and values
@@ -820,5 +821,32 @@ public class Validator {
 		}
 		return validated(!canBeCast);
 	}
+
+
+
+
+	/**
+	 * Checks if the value of the given {@link Optional} is present (is not null).
+	 *
+	 * @param optional the object to examine
+	 * @return the result of the validation
+	 */
+	public ValidationResult isPresent(@SuppressWarnings ("OptionalUsedAsFieldOrParameterType") final Optional<?> optional) {
+		return validated(optional.isEmpty());
+	}
+
+
+
+
+	/**
+	 * Checks if the value of the given {@link Optional} is not present (is null).
+	 *
+	 * @param optional the object to examine
+	 * @return the result of the validation
+	 */
+	public ValidationResult isNotPresent(@SuppressWarnings ("OptionalUsedAsFieldOrParameterType") final Optional<?> optional) {
+		return validated(optional.isPresent());
+	}
+
 
 }

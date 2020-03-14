@@ -254,8 +254,7 @@ public class PluginServiceTest {
 
 		final String ID_COMPONENT = "test.component";
 
-		final Plugin plugin = buildPluginMock("test.plugin", Set.of(ID_COMPONENT));
-		when(plugin.isAutoload()).thenReturn(true);
+		final Plugin plugin = buildPluginMock("test.plugin", Set.of(ID_COMPONENT), true);
 
 		final PluginService pluginService = createPluginService(plugin);
 		assertThat(pluginService.isLoaded(plugin.getId())).isFalse();
@@ -271,11 +270,16 @@ public class PluginServiceTest {
 
 
 	private Plugin buildPluginMock(final String id, Set<String> dependencies) {
+		return buildPluginMock(id, dependencies, false);
+	}
+
+
+
+
+	private Plugin buildPluginMock(final String id, Set<String> dependencies, boolean autoload) {
 		final Plugin plugin = Mockito.mock(Plugin.class);
+		when(plugin.getInformation()).thenReturn(new PluginInformation(id, id, "testing", dependencies, autoload));
 		when(plugin.getId()).thenReturn(id);
-		when(plugin.getDisplayName()).thenReturn(id);
-		when(plugin.getVersion()).thenReturn("testing");
-		when(plugin.getDependencyIds()).thenReturn(dependencies);
 		return plugin;
 	}
 

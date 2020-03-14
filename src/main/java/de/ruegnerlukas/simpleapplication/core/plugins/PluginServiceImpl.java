@@ -58,11 +58,11 @@ public class PluginServiceImpl implements PluginService {
 			log.warn("The plugin with the id {} is already registered and will not be registered again.", plugin.getId());
 		} else {
 			registeredPlugins.put(plugin.getId(), plugin);
-			if (plugin.isAutoload() && !plugin.getDependencyIds().isEmpty()) {
+			if (plugin.getInformation().isAutoload() && !plugin.getInformation().getDependencyIds().isEmpty()) {
 				autoloadPlugins.add(plugin);
 			}
 			graph.insert(plugin.getId());
-			plugin.getDependencyIds().forEach(dependency -> {
+			plugin.getInformation().getDependencyIds().forEach(dependency -> {
 				if (!graph.exists(dependency)) {
 					graph.insert(dependency);
 				}
