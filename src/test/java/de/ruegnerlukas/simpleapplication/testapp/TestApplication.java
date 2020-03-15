@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
-import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
@@ -8,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.core.application.Application;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfiguration;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
@@ -180,18 +180,14 @@ public class TestApplication {
 		public void onLoad() {
 			log.info("LOGGING: onLoad {}.", getId());
 			final EventService eventService = new Provider<>(EventService.class).get();
-			eventService.subscribe(this::onEvent);
+			eventService.subscribe(this::onEvent); // TODO
 		}
 
 
 
 
-		private void onEvent(final EventPackage<Object> eventPackage) {
-			log.info("LOGGING: event: channel(s)='{}'; receivers='{}'; time='{}': '{}'",
-					String.join(", ", eventPackage.getChannels()),
-					eventPackage.getReceivers(),
-					eventPackage.getTimestamp(),
-					eventPackage.getEvent());
+		private void onEvent(final Publishable event) {
+			log.info("LOGGING: event in channel='{}'", event.getChannel());
 		}
 
 

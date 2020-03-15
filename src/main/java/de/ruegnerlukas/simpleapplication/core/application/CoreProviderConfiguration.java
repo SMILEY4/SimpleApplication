@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.core.application;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.ProviderConfiguration;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointService;
 import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
@@ -30,7 +31,7 @@ public class CoreProviderConfiguration extends ProviderConfiguration {
 		add(new InstanceFactory<>(EventService.class) {
 			@Override
 			public EventService buildObject() {
-				return new EventService();
+				return new EventServiceImpl();
 			}
 		});
 		add(new InstanceFactory<>(ExtensionPointService.class) {

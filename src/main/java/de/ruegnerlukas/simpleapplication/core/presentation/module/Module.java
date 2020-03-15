@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.module;
 
-import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSourceGroup;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSource;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSourceGroup;
@@ -206,9 +205,7 @@ public class Module extends AnchorPane {
 		exposedEvents.addAll(Optional.ofNullable(controller.getExposedEvents()).orElseGet(List::of));
 		exposedEvents.stream()
 				.filter(exposedEvent -> exposedEvent.getScope().isAtLeast(UIExtensionScope.GLOBAL))
-				.forEach(exposedEvent -> exposedEvent.getEventSource().subscribe(event -> {
-					eventService.publish(exposedEvent.getName(), new EventPackage<>(event));
-				}));
+				.forEach(exposedEvent -> exposedEvent.getEventSource().subscribe(eventService::publish));
 	}
 
 
@@ -227,12 +224,10 @@ public class Module extends AnchorPane {
 		exposedCommands.addAll(Optional.ofNullable(controller.getExposedCommands()).orElseGet(List::of));
 		exposedCommands.stream()
 				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.GLOBAL))
-				.forEach(exposedCommand -> {
-					eventService.subscribe(exposedCommand.getName(), eventPackage -> {
-						final TriggerableEventSource eventSource = exposedCommand.getEventSource();
-						eventSource.trigger(eventPackage.getEvent());
-					});
-				});
+				.forEach(exposedCommand -> eventService.subscribe(exposedCommand.getName(), publishable -> {
+					final TriggerableEventSource eventSource = exposedCommand.getEventSource();
+					eventSource.trigger(publishable);
+				}));
 	}
 
 

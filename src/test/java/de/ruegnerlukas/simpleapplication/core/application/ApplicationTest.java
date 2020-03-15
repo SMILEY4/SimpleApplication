@@ -2,12 +2,12 @@ package de.ruegnerlukas.simpleapplication.core.application;
 
 import de.ruegnerlukas.simpleapplication.common.callbacks.Callback;
 import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
-import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
-import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEvent;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
+import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
@@ -39,22 +39,17 @@ public class ApplicationTest {
 		application.setCoreProviderConfiguration(new TestCoreProviderConfig(eventService));
 
 		application.run();
-		final List<EventPackage<?>> eventsStart = eventService.getEventPackages();
+		final List<Publishable> eventsStart = eventService.getEventPackages();
 		assertThat(eventsStart.size()).isEqualTo(3);
-		assertThat(eventsStart.get(0).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED);
-		assertThat(eventsStart.get(0).getEvent() instanceof EmptyEvent).isTrue();
-		assertThat(eventsStart.get(1).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_COMPONENT_LOADED);
-		assertThat(eventsStart.get(1).getEvent()).isEqualTo(ApplicationConstants.COMPONENT_VIEW_SYSTEM);
-		assertThat(eventsStart.get(2).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_APPLICATION_STARTED);
-		assertThat(eventsStart.get(2).getEvent() instanceof EmptyEvent).isTrue();
+		assertThat(eventsStart.get(0).getChannel()).isEqualTo(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED);
+		assertThat(eventsStart.get(1).getChannel()).isEqualTo(ApplicationConstants.EVENT_COMPONENT_LOADED);
+		assertThat(eventsStart.get(2).getChannel()).isEqualTo(ApplicationConstants.EVENT_APPLICATION_STARTED);
 
 		starter.stop();
-		final List<EventPackage<?>> eventsStop = eventService.getEventPackages();
+		final List<Publishable> eventsStop = eventService.getEventPackages();
 		assertThat(eventsStop.size()).isEqualTo(2);
-		assertThat(eventsStop.get(0).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_COMPONENT_UNLOADED);
-		assertThat(eventsStop.get(0).getEvent()).isEqualTo(ApplicationConstants.COMPONENT_VIEW_SYSTEM);
-		assertThat(eventsStop.get(1).getChannels()).containsExactlyInAnyOrder(ApplicationConstants.EVENT_APPLICATION_STOPPING);
-		assertThat(eventsStop.get(1).getEvent() instanceof EmptyEvent).isTrue();
+		assertThat(eventsStop.get(0).getChannel()).isEqualTo(ApplicationConstants.EVENT_COMPONENT_UNLOADED);
+		assertThat(eventsStop.get(1).getChannel()).isEqualTo(ApplicationConstants.EVENT_APPLICATION_STOPPING);
 
 	}
 
@@ -188,27 +183,24 @@ public class ApplicationTest {
 
 
 	@Slf4j
-	private static class TestEventService extends EventService {
+	private static class TestEventService extends EventServiceImpl {
 
 
-		private final List<EventPackage<?>> eventPackages = new ArrayList<>();
+		private final List<Publishable> events = new ArrayList<>();
 
 
 
 
 		public TestEventService() {
-			this.subscribe(e -> {
-				log.debug("Captured event for test: ({}) - {}.", String.join(", ", e.getChannels()), e.getEvent());
-				eventPackages.add(e);
-			});
+			this.subscribe(events::add);
 		}
 
 
 
 
-		public List<EventPackage<?>> getEventPackages() {
-			final List<EventPackage<?>> resultList = new ArrayList<>(eventPackages);
-			eventPackages.clear();
+		public List<Publishable> getEventPackages() {
+			final List<Publishable> resultList = new ArrayList<>(events);
+			events.clear();
 			return resultList;
 		}
 

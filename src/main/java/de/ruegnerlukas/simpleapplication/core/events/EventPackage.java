@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.common.events;
+package de.ruegnerlukas.simpleapplication.core.events;
 
 import lombok.AccessLevel;
 import lombok.Getter;

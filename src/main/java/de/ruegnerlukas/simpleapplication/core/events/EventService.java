@@ -1,16 +1,41 @@
 package de.ruegnerlukas.simpleapplication.core.events;
 
-import de.ruegnerlukas.simpleapplication.common.events.EventBusImpl;
-import lombok.extern.slf4j.Slf4j;
 
-/**
- * Service to handle global events in the application.
- * Events can be published (as {@link de.ruegnerlukas.simpleapplication.common.events.EventPackage}s) in one or more channels.
- * Channels do not have to be created before usage.
- * EventListeners can subscribe to one or more channels and will receive all events published in the specified channels.
- */
-@Slf4j
-public class EventService extends EventBusImpl {
+import de.ruegnerlukas.simpleapplication.common.events.EventListener;
+
+public interface EventService {
+
+
+	/**
+	 * Subscribe the given listener to the given channels.
+	 *
+	 * @param channel  the name of the channel
+	 * @param listener the {@link EventListener}
+	 */
+	void subscribe(String channel, EventListener<Publishable> listener);
+
+	/**
+	 * Subscribe the given listener to all channels.
+	 *
+	 * @param listener the {@link EventListener}
+	 */
+	void subscribe(EventListener<Publishable> listener);
+
+	/**
+	 * Unsubscribe the given listener from the given channel.
+	 *
+	 * @param channel  the name of the channel
+	 * @param listener the {@link EventListener}
+	 */
+	void unsubscribe(String channel, EventListener<Publishable> listener);
+
+
+	/**
+	 * Publish the given {@link Publishable}
+	 *
+	 * @param publishable the object to publish
+	 */
+	void publish(Publishable publishable);
 
 
 }

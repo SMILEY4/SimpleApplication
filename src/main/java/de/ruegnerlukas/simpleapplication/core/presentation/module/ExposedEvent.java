@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.module;
 
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSource;
+import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,7 +18,7 @@ public class ExposedEvent {
 	/**
 	 * The event source of this event.
 	 */
-	private final ListenableEventSource<?> eventSource;
+	private final ListenableEventSource<Publishable> eventSource;
 
 	/**
 	 * The scope of this event.
@@ -32,7 +33,7 @@ public class ExposedEvent {
 	 * @param eventSource the event source of this event
 	 * @return a new {@link ExposedEvent} with the given name, source and {@link UIExtensionScope#INTERNAL} as its scope
 	 */
-	public static <T> ExposedEvent internal(final String name, final ListenableEventSource<T> eventSource) {
+	public static <T> ExposedEvent internal(final String name, final ListenableEventSource<Publishable> eventSource) {
 		return new ExposedEvent(name, eventSource, UIExtensionScope.INTERNAL);
 	}
 
@@ -44,7 +45,7 @@ public class ExposedEvent {
 	 * @param eventSource the event source of this event
 	 * @return a new {@link ExposedEvent} with the given name, source and {@link UIExtensionScope#LOCAL} as its scope
 	 */
-	public static <T> ExposedEvent local(final String name, final ListenableEventSource<T> eventSource) {
+	public static <T> ExposedEvent local(final String name, final ListenableEventSource<Publishable> eventSource) {
 		return new ExposedEvent(name, eventSource, UIExtensionScope.LOCAL);
 	}
 
@@ -56,7 +57,7 @@ public class ExposedEvent {
 	 * @param eventSource the event source of this event
 	 * @return a new {@link ExposedEvent} with the given name, source and {@link UIExtensionScope#GLOBAL} as its scope
 	 */
-	public static <T> ExposedEvent global(final String name, final ListenableEventSource<T> eventSource) {
+	public static <T> ExposedEvent global(final String name, final ListenableEventSource<Publishable> eventSource) {
 		return new ExposedEvent(name, eventSource, UIExtensionScope.GLOBAL);
 	}
 

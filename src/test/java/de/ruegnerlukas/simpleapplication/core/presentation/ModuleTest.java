@@ -1,16 +1,15 @@
 package de.ruegnerlukas.simpleapplication.core.presentation;
 
 import de.ruegnerlukas.simpleapplication.common.events.EventListener;
-import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
 import de.ruegnerlukas.simpleapplication.common.events.EventSource;
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSourceGroup;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSourceGroup;
-import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EventBusListener;
-import de.ruegnerlukas.simpleapplication.common.events.specializedevents.StringEvent;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
+import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.presentation.module.ExposedCommand;
 import de.ruegnerlukas.simpleapplication.core.presentation.module.ExposedEvent;
 import de.ruegnerlukas.simpleapplication.core.presentation.module.Module;
@@ -19,6 +18,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.module.ModuleView;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -44,18 +44,18 @@ public class ModuleTest extends ApplicationTest {
 
 	private final String EVENT_CONTROLLER_GLOBAL = "event.ctrl.global";
 
-	private EventSource<String> eventSourceViewGlobal;
+	private EventSource<Publishable> eventSourceViewGlobal;
 
-	private EventSource<String> eventSourceControllerGlobal;
+	private EventSource<Publishable> eventSourceControllerGlobal;
 
 
 	private final String COMMAND_VIEW_GLOBAL = "cmd.view.global";
 
 	private final String COMMAND_CONTROLLER_GLOBAL = "cmd.ctrl.global";
 
-	private EventSource<String> commandSourceViewGlobal;
+	private EventSource<Publishable> commandSourceViewGlobal;
 
-	private EventSource<String> commandSourceControllerGlobal;
+	private EventSource<Publishable> commandSourceControllerGlobal;
 
 
 
@@ -67,16 +67,16 @@ public class ModuleTest extends ApplicationTest {
 		ProviderService.registerFactory(new InstanceFactory<>(EventService.class) {
 			@Override
 			public EventService buildObject() {
-				return new EventService();
+				return new EventServiceImpl();
 			}
 		});
 
-		commandSourceViewGlobal = new StringEvent.StringEventSource();
+		commandSourceViewGlobal = new EventSource<>();
 		final ExposedCommand commandViewInternal = ExposedCommand.internal("cmd.view.internal", new EventSource<>());
 		final ExposedCommand commandViewLocal = ExposedCommand.local("cmd.view.local", new EventSource<>());
 		final ExposedCommand commandViewGlobal = ExposedCommand.global(COMMAND_VIEW_GLOBAL, commandSourceViewGlobal);
 
-		eventSourceViewGlobal = new StringEvent.StringEventSource();
+		eventSourceViewGlobal = new EventSource<>();
 		final ExposedEvent eventViewInternal = ExposedEvent.internal("event.view.internal", new EventSource<>());
 		final ExposedEvent eventViewLocal = ExposedEvent.local("event.view.local", new EventSource<>());
 		final ExposedEvent eventViewGlobal = ExposedEvent.global(EVENT_VIEW_GLOBAL, eventSourceViewGlobal);
@@ -85,12 +85,12 @@ public class ModuleTest extends ApplicationTest {
 		when(view.getExposedCommands()).thenReturn(List.of(commandViewInternal, commandViewLocal, commandViewGlobal));
 		when(view.getExposedEvents()).thenReturn(List.of(eventViewInternal, eventViewLocal, eventViewGlobal));
 
-		commandSourceControllerGlobal = new StringEvent.StringEventSource();
+		commandSourceControllerGlobal = new EventSource<>();
 		final ExposedCommand commandCtrlInternal = ExposedCommand.internal("cmd.ctrl.internal", new EventSource<>());
 		final ExposedCommand commandCtrlLocal = ExposedCommand.local("cmd.ctrl.local", new EventSource<>());
 		final ExposedCommand commandCtrlGlobal = ExposedCommand.global(COMMAND_CONTROLLER_GLOBAL, commandSourceControllerGlobal);
 
-		eventSourceControllerGlobal = new StringEvent.StringEventSource();
+		eventSourceControllerGlobal = new EventSource<>();
 		final ExposedEvent eventCtrlInternal = ExposedEvent.internal("event.ctrl.internal", new EventSource<>());
 		final ExposedEvent eventCtrlLocal = ExposedEvent.local("event.ctrl.local", new EventSource<>());
 		final ExposedEvent eventCtrlGlobal = ExposedEvent.global(EVENT_CONTROLLER_GLOBAL, eventSourceControllerGlobal);
@@ -159,17 +159,17 @@ public class ModuleTest extends ApplicationTest {
 
 		final EventService eventService = new Provider<>(EventService.class).get();
 
-		final EventBusListener<String> listener = Mockito.mock(EventBusListener.class);
+		final PublishableListener listener = Mockito.mock(PublishableListener.class);
 		eventService.subscribe(EVENT_VIEW_GLOBAL, listener);
 
-		eventSourceViewGlobal.trigger("Test String");
-		ArgumentCaptor<EventPackage<String>> captor = ArgumentCaptor.forClass(EventPackage.class);
+		eventSourceViewGlobal.trigger(new StringEvent(EVENT_VIEW_GLOBAL, "Test String"));
+		ArgumentCaptor<StringEvent> captor = ArgumentCaptor.forClass(StringEvent.class);
 		verify(listener).onEvent(captor.capture());
 
-		EventPackage<String> eventPackage = captor.getValue();
-		assertThat(eventPackage).isNotNull();
-		assertThat(eventPackage.getChannels()).containsExactlyInAnyOrder(EVENT_VIEW_GLOBAL);
-		assertThat(eventPackage.getEvent()).isEqualTo("Test String");
+		StringEvent publishable = captor.getValue();
+		assertThat(publishable).isNotNull();
+		assertThat(publishable.getChannel()).isEqualTo(EVENT_VIEW_GLOBAL);
+		assertThat(publishable.getValue()).isEqualTo("Test String");
 	}
 
 
@@ -180,17 +180,17 @@ public class ModuleTest extends ApplicationTest {
 
 		final EventService eventService = new Provider<>(EventService.class).get();
 
-		final EventBusListener<String> listener = Mockito.mock(EventBusListener.class);
+		final PublishableListener listener = Mockito.mock(PublishableListener.class);
 		eventService.subscribe(EVENT_CONTROLLER_GLOBAL, listener);
 
-		eventSourceControllerGlobal.trigger("Test String");
-		ArgumentCaptor<EventPackage<String>> captor = ArgumentCaptor.forClass(EventPackage.class);
+		eventSourceControllerGlobal.trigger(new StringEvent(EVENT_CONTROLLER_GLOBAL, "Test String"));
+		ArgumentCaptor<StringEvent> captor = ArgumentCaptor.forClass(StringEvent.class);
 		verify(listener).onEvent(captor.capture());
 
-		EventPackage<String> eventPackage = captor.getValue();
+		StringEvent eventPackage = captor.getValue();
 		assertThat(eventPackage).isNotNull();
-		assertThat(eventPackage.getChannels()).containsExactlyInAnyOrder(EVENT_CONTROLLER_GLOBAL);
-		assertThat(eventPackage.getEvent()).isEqualTo("Test String");
+		assertThat(eventPackage.getChannel()).isEqualTo(EVENT_CONTROLLER_GLOBAL);
+		assertThat(eventPackage.getValue()).isEqualTo("Test String");
 	}
 
 
@@ -201,14 +201,14 @@ public class ModuleTest extends ApplicationTest {
 
 		final EventService eventService = new Provider<>(EventService.class).get();
 
-		final EventListener<String> listener = Mockito.mock(EventListener.class);
+		final PublishableListener listener = Mockito.mock(PublishableListener.class);
 		commandSourceViewGlobal.subscribe(listener);
 
-		eventService.publish(COMMAND_VIEW_GLOBAL, new EventPackage<>("Test String"));
-		ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+		eventService.publish(new StringEvent(COMMAND_VIEW_GLOBAL, "Test String"));
+		ArgumentCaptor<StringEvent> captor = ArgumentCaptor.forClass(StringEvent.class);
 		verify(listener).onEvent(captor.capture());
 		assertThat(captor.getValue()).isNotNull();
-		assertThat(captor.getValue()).isEqualTo("Test String");
+		assertThat(captor.getValue().getValue()).isEqualTo("Test String");
 	}
 
 
@@ -219,14 +219,44 @@ public class ModuleTest extends ApplicationTest {
 
 		final EventService eventService = new Provider<>(EventService.class).get();
 
-		final EventListener<String> listener = Mockito.mock(EventListener.class);
+		final PublishableListener listener = Mockito.mock(PublishableListener.class);
 		commandSourceControllerGlobal.subscribe(listener);
 
-		eventService.publish(COMMAND_CONTROLLER_GLOBAL, new EventPackage<>("Test String"));
-		ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+		eventService.publish(new StringEvent(COMMAND_CONTROLLER_GLOBAL, "Test String"));
+		ArgumentCaptor<StringEvent> captor = ArgumentCaptor.forClass(StringEvent.class);
 		verify(listener).onEvent(captor.capture());
 		assertThat(captor.getValue()).isNotNull();
-		assertThat(captor.getValue()).isEqualTo("Test String");
+		assertThat(captor.getValue().getValue()).isEqualTo("Test String");
+	}
+
+
+
+
+	static class StringEvent extends Publishable {
+
+
+		@Getter
+		private final String value;
+
+
+
+
+		public StringEvent(final String channel, final String value) {
+			super(channel);
+			this.value = value;
+		}
+
+
+	}
+
+
+
+
+
+
+	abstract static class PublishableListener implements EventListener<Publishable> {
+
+
 	}
 
 }
