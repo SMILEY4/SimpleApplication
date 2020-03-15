@@ -20,12 +20,12 @@ jobs:
       with:
         java-version: 11.0.5
         server-id: github
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Build with Maven
       run: mvn -B package -Dtestfx.headless=true --file pom.xml
 
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn deploy -DskipTests
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run:
+        mvn deploy -DskipTests
