@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.core.events;
 
 
-import de.ruegnerlukas.simpleapplication.common.events.EventListener;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static de.ruegnerlukas.simpleapplication.common.events.specializedevents.PublishableEvent.PublishableEventListener;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,7 +18,7 @@ public class EventServiceTest {
 		final String CHANNEL = "test.channel";
 		final EventService eventService = new EventServiceImpl();
 
-		final EventServiceListener listener = Mockito.mock(EventServiceListener.class);
+		final PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
 		eventService.subscribe(CHANNEL, listener);
 
 		eventService.publish(publishable(CHANNEL));
@@ -35,14 +35,6 @@ public class EventServiceTest {
 	private Publishable publishable(final String channel) {
 		return new Publishable(channel) {
 		};
-	}
-
-
-
-
-	abstract class EventServiceListener implements EventListener<Publishable> {
-
-
 	}
 
 

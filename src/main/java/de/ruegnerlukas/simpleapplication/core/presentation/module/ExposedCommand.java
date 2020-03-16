@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.module;
 
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSource;
+import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,7 +18,7 @@ public class ExposedCommand {
 	/**
 	 * The event source of this command.
 	 */
-	private final TriggerableEventSource<?> eventSource;
+	private final TriggerableEventSource<Publishable> eventSource;
 
 	/**
 	 * The scope of this command.
@@ -32,7 +33,7 @@ public class ExposedCommand {
 	 * @param eventSource the event source of this command
 	 * @return a new {@link ExposedCommand} with the given name, source and {@link UIExtensionScope#INTERNAL} as its scope
 	 */
-	public static <T> ExposedCommand internal(final String name, final TriggerableEventSource<T> eventSource) {
+	public static ExposedCommand internal(final String name, final TriggerableEventSource<Publishable> eventSource) {
 		return new ExposedCommand(name, eventSource, UIExtensionScope.INTERNAL);
 	}
 
@@ -44,7 +45,7 @@ public class ExposedCommand {
 	 * @param eventSource the event source of this command
 	 * @return a new {@link ExposedCommand} with the given name, source and {@link UIExtensionScope#LOCAL} as its scope
 	 */
-	public static <T> ExposedCommand local(final String name, final TriggerableEventSource<T> eventSource) {
+	public static ExposedCommand local(final String name, final TriggerableEventSource<Publishable> eventSource) {
 		return new ExposedCommand(name, eventSource, UIExtensionScope.LOCAL);
 	}
 
@@ -56,7 +57,7 @@ public class ExposedCommand {
 	 * @param eventSource the event source of this command
 	 * @return a new {@link ExposedCommand} with the given name, source and {@link UIExtensionScope#GLOBAL} as its scope
 	 */
-	public static <T> ExposedCommand global(final String name, final TriggerableEventSource<T> eventSource) {
+	public static ExposedCommand global(final String name, final TriggerableEventSource<Publishable> eventSource) {
 		return new ExposedCommand(name, eventSource, UIExtensionScope.GLOBAL);
 	}
 

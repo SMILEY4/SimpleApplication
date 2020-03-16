@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Prov
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.presentation.utils.Anchors;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -225,7 +226,7 @@ public class Module extends AnchorPane {
 		exposedCommands.stream()
 				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.GLOBAL))
 				.forEach(exposedCommand -> eventService.subscribe(exposedCommand.getName(), publishable -> {
-					final TriggerableEventSource eventSource = exposedCommand.getEventSource();
+					final TriggerableEventSource<Publishable> eventSource = exposedCommand.getEventSource();
 					eventSource.trigger(publishable);
 				}));
 	}
