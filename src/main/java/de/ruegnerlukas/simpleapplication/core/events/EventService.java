@@ -7,7 +7,16 @@ public interface EventService {
 
 
 	/**
-	 * Subscribe the given listener to the given channels.
+	 * Subscribe the given listener to the given channels with the given priority.
+	 *
+	 * @param channel  the name of the channel
+	 * @param listener the {@link EventListener}
+	 * @param priority the priority of the given listener. Listeners with higher priority will get called first.
+	 */
+	void subscribe(String channel, int priority, EventListener<Publishable> listener);
+
+	/**
+	 * Subscribe the given listener to the given channels with the default priority of '0'.
 	 *
 	 * @param channel  the name of the channel
 	 * @param listener the {@link EventListener}
