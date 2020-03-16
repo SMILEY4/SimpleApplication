@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import static de.ruegnerlukas.simpleapplication.common.events.specializedevents.PublishableEvent.PublishableEventListener;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -54,6 +55,31 @@ public class EventServiceTest {
 		order.verify(listenerC).onEvent(any());
 		order.verify(listenerA).onEvent(any());
 		order.verify(listenerB).onEvent(any());
+	}
+
+
+
+
+	@Test
+	public void testCancelEvents() {
+
+		final String CHANNEL = "test.channel";
+		final EventService eventService = new EventServiceImpl();
+
+		final PublishableEventListener listenerA = Mockito.mock(PublishableEventListener.class);
+		final PublishableEventListener listenerB = Publishable::cancel;
+		final PublishableEventListener listenerC = Mockito.mock(PublishableEventListener.class);
+		final PublishableEventListener listenerD = Mockito.mock(PublishableEventListener.class);
+		eventService.subscribe(CHANNEL, 2, listenerA);
+		eventService.subscribe(CHANNEL, 1, listenerB);
+		eventService.subscribe(CHANNEL, 0, listenerC);
+		eventService.subscribe(listenerD);
+
+		eventService.publish(publishable(CHANNEL));
+
+		verify(listenerA, times(1)).onEvent(any());
+		verify(listenerC, never()).onEvent(any());
+		verify(listenerD, never()).onEvent(any());
 	}
 
 

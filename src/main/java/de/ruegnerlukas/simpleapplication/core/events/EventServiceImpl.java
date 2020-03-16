@@ -18,15 +18,15 @@ public class EventServiceImpl implements EventService {
 
 
 	/**
-	 * The map of subscribed listeners. Key is the name of the channel.
+	 * The map of subscribed listeners. Key is the name of the channel. The subscribers are ordered by priority desc.
 	 */
 	private final Map<String, List<Subscriber>> subscribers = new HashMap<>();
 
 
 	/**
-	 * The listeners subscribes to all channels
+	 * The listeners subscribes to all channels.
 	 */
-	private final Set<EventListener<Publishable>> anySubscribers = new HashSet<>();
+	private final Set<Subscriber> anySubscribers = new HashSet<>();
 
 
 
@@ -51,7 +51,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void subscribe(final EventListener<Publishable> listener) {
-		anySubscribers.add(listener);
+		anySubscribers.add(new Subscriber(listener, Integer.MIN_VALUE));
 	}
 
 
@@ -70,10 +70,15 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void publish(final Publishable publishable) {
-		subscribers.getOrDefault(publishable.getChannel(), Collections.emptyList()).forEach(subscriber -> {
+		final List<Subscriber> subscriberList = new ArrayList<>();
+		subscriberList.addAll(subscribers.getOrDefault(publishable.getChannel(), Collections.emptyList()));
+		subscriberList.addAll(anySubscribers);
+		for (Subscriber subscriber : subscriberList) {
 			subscriber.getListener().onEvent(publishable);
-		});
-		anySubscribers.forEach(listener -> listener.onEvent(publishable));
+			if (publishable.isCancelled()) {
+				break;
+			}
+		}
 	}
 
 

@@ -24,7 +24,7 @@ public interface EventService {
 	void subscribe(String channel, EventListener<Publishable> listener);
 
 	/**
-	 * Subscribe the given listener to all channels.
+	 * Subscribe the given listener to all channels. The listener will get called after all listeners subscribed to specific channels.
 	 *
 	 * @param listener the {@link EventListener}
 	 */
