@@ -1,26 +1,25 @@
 package de.ruegnerlukas.simpleapplication.core.events;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@NoArgsConstructor
 public abstract class Publishable {
 
 
 	/**
-	 * The channel in which to publish instances.
+	 * Metadata about this publishable.
 	 */
 	@Getter
-	@Setter
-	private String channel;
+	private final PublishableMeta metadata;
+
+
 
 
 	/**
-	 * Whether this publishable was cancelled
+	 * Empty constructor. The channel of this {@link Publishable} will be null.
 	 */
-	@Getter
-	private boolean cancelled = false;
+	public Publishable() {
+		this(null);
+	}
 
 
 
@@ -29,7 +28,30 @@ public abstract class Publishable {
 	 * @param channel the channel in which to publish instances.
 	 */
 	public Publishable(final String channel) {
-		this.channel = channel;
+		metadata = new PublishableMeta(this);
+		metadata.setChannel(channel);
+	}
+
+
+
+
+	/**
+	 * Sets the channel of this publishable.
+	 *
+	 * @param channel the (event-)channel
+	 */
+	public void setChannel(final String channel) {
+		metadata.setChannel(channel);
+	}
+
+
+
+
+	/**
+	 * @return the channel in which this publishable was published in.
+	 */
+	public String getChannel() {
+		return metadata.getChannel();
 	}
 
 
@@ -39,7 +61,17 @@ public abstract class Publishable {
 	 * Stops the propagation of this publishable.
 	 */
 	public void cancel() {
-		cancelled = true;
+		metadata.setCancelled(true);
+	}
+
+
+
+
+	/**
+	 * @return whether this publishable was cancelled.
+	 */
+	public boolean isCancelled() {
+		return metadata.isCancelled();
 	}
 
 }

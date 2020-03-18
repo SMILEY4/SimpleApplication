@@ -6,6 +6,7 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 import static de.ruegnerlukas.simpleapplication.common.events.specializedevents.PublishableEvent.PublishableEventListener;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
@@ -29,7 +30,55 @@ public class EventServiceTest {
 		eventService.publish(publishable(CHANNEL));
 
 		verify(listener, times(1)).onEvent(any());
+	}
 
+
+
+
+	@Test
+	public void testMetadataSimple() {
+
+		final String CHANNEL = "test.channel";
+		final EventService eventService = new EventServiceImpl();
+
+		eventService.subscribe(CHANNEL, Mockito.mock(PublishableEventListener.class));
+		eventService.subscribe(CHANNEL, Mockito.mock(PublishableEventListener.class));
+
+		final Publishable publishable = publishable(CHANNEL);
+
+		final long timeBefore = System.currentTimeMillis();
+		final PublishableMeta meta = eventService.publish(publishable);
+		final long timeAfter = System.currentTimeMillis();
+
+		assertThat(meta.getPublishable()).isEqualTo(publishable);
+		assertThat(meta.isPublished()).isTrue();
+		assertThat(meta.getChannel()).isEqualTo(CHANNEL);
+		assertThat(timeBefore <= meta.getTimestamp() && meta.getTimestamp() <= timeAfter).isTrue();
+		assertThat(meta.getNumListeners()).isEqualTo(2);
+		assertThat(meta.getNumReceivers()).isEqualTo(2);
+		assertThat(meta.isCancelled()).isFalse();
+	}
+
+
+
+
+	@Test
+	public void testMetadataCancelled() {
+
+		final String CHANNEL = "test.channel";
+		final EventService eventService = new EventServiceImpl();
+
+		eventService.subscribe(CHANNEL, Mockito.mock(PublishableEventListener.class));
+		eventService.subscribe(CHANNEL, Publishable::cancel);
+		eventService.subscribe(CHANNEL, Mockito.mock(PublishableEventListener.class));
+
+		final PublishableMeta meta = eventService.publish(publishable(CHANNEL));
+
+		assertThat(meta.isPublished()).isTrue();
+		assertThat(meta.getChannel()).isEqualTo(CHANNEL);
+		assertThat(meta.getNumListeners()).isEqualTo(3);
+		assertThat(meta.getNumReceivers()).isEqualTo(2);
+		assertThat(meta.isCancelled()).isTrue();
 	}
 
 

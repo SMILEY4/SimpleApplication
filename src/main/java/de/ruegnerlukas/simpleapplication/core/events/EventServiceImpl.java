@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -69,16 +70,24 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void publish(final Publishable publishable) {
+	public PublishableMeta publish(final Publishable publishable) {
 		final List<Subscriber> subscriberList = new ArrayList<>();
 		subscriberList.addAll(subscribers.getOrDefault(publishable.getChannel(), Collections.emptyList()));
 		subscriberList.addAll(anySubscribers);
+
+		publishable.getMetadata().setTimestamp(Instant.now().toEpochMilli());
+		publishable.getMetadata().setPublished(true);
+		publishable.getMetadata().setNumListeners(subscriberList.size());
+
 		for (Subscriber subscriber : subscriberList) {
 			subscriber.getListener().onEvent(publishable);
+			publishable.getMetadata().setNumReceivers(publishable.getMetadata().getNumReceivers() + 1);
 			if (publishable.isCancelled()) {
 				break;
 			}
 		}
+
+		return publishable.getMetadata();
 	}
 
 

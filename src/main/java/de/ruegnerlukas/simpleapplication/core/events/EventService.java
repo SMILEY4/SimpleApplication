@@ -43,8 +43,9 @@ public interface EventService {
 	 * Publish the given {@link Publishable}
 	 *
 	 * @param publishable the object to publish
+	 * @return the metadata about the published {@link Publishable}
 	 */
-	void publish(Publishable publishable);
+	PublishableMeta publish(Publishable publishable);
 
 
 }
