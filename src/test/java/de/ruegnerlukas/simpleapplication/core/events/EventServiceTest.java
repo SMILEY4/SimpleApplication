@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.events;
 
 
+import de.ruegnerlukas.simpleapplication.common.events.EventListener;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -85,7 +86,65 @@ public class EventServiceTest {
 
 
 	@Test
-	public void testPriority() {
+	public void testCustomEvent() {
+
+		final String CHANNEL = "test.channel";
+		final EventService eventService = new EventServiceImpl();
+
+		TestEventListener listener = Mockito.mock(TestEventListener.class);
+		eventService.subscribe(CHANNEL, listener);
+
+		PublishableMeta meta = eventService.publish(new TestEvent(CHANNEL));
+		verify(listener).onEvent(any());
+		assertThat(meta.getNumReceivers()).isEqualTo(1);
+		assertThat(meta.getNumListeners()).isEqualTo(1);
+	}
+
+
+
+
+	@Test
+	public void testCustomEventWrongType() {
+
+		final String CHANNEL = "test.channel";
+		final EventService eventService = new EventServiceImpl();
+
+		TestEventListener listener = Mockito.mock(TestEventListener.class);
+		eventService.subscribe(CHANNEL, listener);
+
+		PublishableMeta meta = eventService.publish(new TestCommand(CHANNEL));
+		verify(listener, times(0)).onEvent(any());
+		assertThat(meta.getNumReceivers()).isEqualTo(0);
+		assertThat(meta.getNumListeners()).isEqualTo(1);
+	}
+
+
+
+
+	@Test
+	public void testCustomEventGenericListener() {
+
+		final String CHANNEL = "test.channel";
+		final EventService eventService = new EventServiceImpl();
+
+		PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
+		eventService.subscribe(CHANNEL, listener);
+
+		PublishableMeta metaA = eventService.publish(new TestEvent(CHANNEL));
+		PublishableMeta metaB = eventService.publish(new TestCommand(CHANNEL));
+
+		verify(listener, times(2)).onEvent(any());
+		assertThat(metaA.getNumReceivers()).isEqualTo(1);
+		assertThat(metaA.getNumListeners()).isEqualTo(1);
+		assertThat(metaB.getNumReceivers()).isEqualTo(1);
+		assertThat(metaB.getNumListeners()).isEqualTo(1);
+	}
+
+
+
+
+	@Test
+	public void testListenerPriority() {
 
 		final String CHANNEL = "test.channel";
 		final EventService eventService = new EventServiceImpl();
@@ -137,6 +196,42 @@ public class EventServiceTest {
 	private Publishable publishable(final String channel) {
 		return new Publishable(channel) {
 		};
+	}
+
+
+
+
+	class TestEvent extends Publishable {
+
+
+		public TestEvent(String channel) {
+			super(channel);
+		}
+
+	}
+
+
+
+
+
+
+	class TestCommand extends Publishable {
+
+
+		public TestCommand(String channel) {
+			super(channel);
+		}
+
+	}
+
+
+
+
+
+
+	abstract class TestEventListener implements EventListener<TestEvent> {
+
+
 	}
 
 

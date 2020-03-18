@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.events.EventListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class EventServiceImpl implements EventService {
 
 
@@ -33,7 +35,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void subscribe(final String channel, final int priority, final EventListener<Publishable> listener) {
+	public void subscribe(final String channel, final int priority, final EventListener<? extends Publishable> listener) {
 		subscribers.computeIfAbsent(channel, c -> new ArrayList<>()).add(new Subscriber(listener, priority));
 		Collections.sort(subscribers.get(channel));
 	}
@@ -42,7 +44,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void subscribe(final String channel, final EventListener<Publishable> listener) {
+	public void subscribe(final String channel, final EventListener<? extends Publishable> listener) {
 		subscribers.computeIfAbsent(channel, c -> new ArrayList<>()).add(new Subscriber(listener, Subscriber.DEFAULT_PRIORITY));
 		Collections.sort(subscribers.get(channel));
 	}
@@ -51,7 +53,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void subscribe(final EventListener<Publishable> listener) {
+	public void subscribe(final EventListener<? extends Publishable> listener) {
 		anySubscribers.add(new Subscriber(listener, Integer.MIN_VALUE));
 	}
 
@@ -59,7 +61,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void unsubscribe(final String channel, final EventListener<Publishable> listener) {
+	public void unsubscribe(final String channel, final EventListener<? extends Publishable> listener) {
 		final List<Subscriber> subscriberList = subscribers.computeIfAbsent(channel, c -> new ArrayList<>());
 		subscriberList.removeAll(subscriberList.stream()
 				.filter(s -> s.getListener().equals(listener))
@@ -80,14 +82,36 @@ public class EventServiceImpl implements EventService {
 		publishable.getMetadata().setNumListeners(subscriberList.size());
 
 		for (Subscriber subscriber : subscriberList) {
-			subscriber.getListener().onEvent(publishable);
-			publishable.getMetadata().setNumReceivers(publishable.getMetadata().getNumReceivers() + 1);
+			if (sendToSubscriber(publishable, subscriber)) {
+				publishable.getMetadata().setNumReceivers(publishable.getMetadata().getNumReceivers() + 1);
+			}
 			if (publishable.isCancelled()) {
 				break;
 			}
 		}
 
 		return publishable.getMetadata();
+	}
+
+
+
+
+	/**
+	 * Send the given {@link Publishable} to the given {@link Subscriber} if possible.
+	 *
+	 * @param publishable the publishable to send to the given subscriber
+	 * @param subscriber  the subscriber to receive the given publishable
+	 * @return true, if the operation was successful and the publishable was received.
+	 */
+	private boolean sendToSubscriber(final Publishable publishable, final Subscriber subscriber) {
+		boolean successful = true;
+		try {
+			subscriber.getGenericListener().onEvent(publishable);
+		} catch (ClassCastException e) {
+			log.warn("Cannot cast event listener '{}' to type of received event '{}'", subscriber.getListener(), publishable);
+			successful = false;
+		}
+		return successful;
 	}
 
 
@@ -107,12 +131,22 @@ public class EventServiceImpl implements EventService {
 		/**
 		 * The listener.
 		 */
-		private EventListener<Publishable> listener;
+		private EventListener<? extends Publishable> listener;
 
 		/**
 		 * The priority of this subscriber.
 		 */
 		private int priority;
+
+
+
+
+		/**
+		 * @return a generic version of the event listener
+		 */
+		public EventListener<Publishable> getGenericListener() {
+			return (EventListener<Publishable>) listener;
+		}
 
 
 
