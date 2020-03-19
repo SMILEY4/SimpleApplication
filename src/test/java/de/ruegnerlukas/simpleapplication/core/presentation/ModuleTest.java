@@ -26,8 +26,8 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.common.events.specializedevents.PublishableEvent.PublishableEventListener;
-import static de.ruegnerlukas.simpleapplication.common.events.specializedevents.PublishableEvent.PublishableEventSource;
+import static de.ruegnerlukas.simpleapplication.core.events.PublishableEvent.PublishableEventListener;
+import static de.ruegnerlukas.simpleapplication.core.events.PublishableEvent.PublishableEventSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

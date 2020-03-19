@@ -1,12 +1,12 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
 import de.ruegnerlukas.simpleapplication.core.application.Application;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfiguration;
-import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
+import de.ruegnerlukas.simpleapplication.core.application.EventPresentationInitialized;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
@@ -53,7 +53,7 @@ public class TestApplication {
 		@Override
 		public void onLoad() {
 			final EventService eventService = new Provider<>(EventService.class).get();
-			eventService.subscribe(Channel.name(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED), e -> createViews());
+			eventService.subscribe(Channel.type(EventPresentationInitialized.class), e -> createViews());
 		}
 
 

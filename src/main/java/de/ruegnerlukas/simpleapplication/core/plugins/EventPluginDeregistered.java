@@ -1,12 +1,14 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
-import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.Getter;
 
+/**
+ * The event when a new plugin was deregistered.
+ */
 @Getter
-public class EventPluginDeregistered extends Publishable {
+public final class EventPluginDeregistered extends Publishable {
 
 
 	/**
@@ -21,7 +23,7 @@ public class EventPluginDeregistered extends Publishable {
 	 * @param pluginId the id of the de-registered plugin
 	 */
 	public EventPluginDeregistered(final String pluginId) {
-		super(Channel.name(ApplicationConstants.EVENT_PLUGIN_DEREGISTERED));
+		super(Channel.type(EventPluginDeregistered.class));
 		this.pluginId = pluginId;
 	}
 

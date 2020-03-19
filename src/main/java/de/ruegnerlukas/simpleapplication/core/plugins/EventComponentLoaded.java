@@ -1,13 +1,15 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
-import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.Getter;
 
 
+/**
+ * The event when a component (in the plugin-service) was loaded.
+ */
 @Getter
-public class EventComponentLoaded extends Publishable {
+public final class EventComponentLoaded extends Publishable {
 
 
 	/**
@@ -22,7 +24,7 @@ public class EventComponentLoaded extends Publishable {
 	 * @param componentId the id of the loaded component
 	 */
 	public EventComponentLoaded(final String componentId) {
-		super(Channel.name(ApplicationConstants.EVENT_COMPONENT_LOADED));
+		super(Channel.type(EventComponentLoaded.class));
 		this.componentId = componentId;
 	}
 

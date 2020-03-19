@@ -1,12 +1,14 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
-import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.Getter;
 
+/**
+ * The event when a new plugin was registered.
+ */
 @Getter
-public class EventPluginRegistered extends Publishable {
+public final  class EventPluginRegistered extends Publishable {
 
 
 	/**
@@ -21,7 +23,7 @@ public class EventPluginRegistered extends Publishable {
 	 * @param pluginId the id of the registered plugin
 	 */
 	public EventPluginRegistered(final String pluginId) {
-		super(Channel.name(ApplicationConstants.EVENT_PLUGIN_REGISTERED));
+		super(Channel.type(EventPluginRegistered.class));
 		this.pluginId = pluginId;
 	}
 

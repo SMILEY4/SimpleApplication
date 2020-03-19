@@ -1,14 +1,16 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
-import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.Builder;
 import lombok.Getter;
 
+/**
+ * The event when opening a new popup window.
+ */
 @Getter
 @Builder
-public class EventOpenPopup extends Publishable {
+public final class EventOpenPopup extends Publishable {
 
 
 	/**
@@ -29,7 +31,7 @@ public class EventOpenPopup extends Publishable {
 	 * @param windowHandle the relevant handle
 	 */
 	public EventOpenPopup(final String viewId, final WindowHandle windowHandle) {
-		super(Channel.name(ApplicationConstants.EVENT_OPEN_POPUP));
+		super(Channel.type(EventOpenPopup.class));
 		this.viewId = viewId;
 		this.windowHandle = windowHandle;
 	}

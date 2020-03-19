@@ -2,13 +2,15 @@ package de.ruegnerlukas.simpleapplication.core.application;
 
 import de.ruegnerlukas.simpleapplication.common.callbacks.Callback;
 import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.core.plugins.EventComponentLoaded;
+import de.ruegnerlukas.simpleapplication.core.plugins.EventComponentUnloaded;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
@@ -42,16 +44,15 @@ public class ApplicationTest {
 		application.run();
 		final List<Publishable> eventsStart = eventService.getEventPackages();
 		assertThat(eventsStart.size()).isEqualTo(3);
-		assertThat(eventsStart.get(0).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED));
-		assertThat(eventsStart.get(1).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_COMPONENT_LOADED));
-		assertThat(eventsStart.get(2).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_APPLICATION_STARTED));
+		assertThat(eventsStart.get(0).getChannel()).isEqualTo(Channel.type(EventPresentationInitialized.class));
+		assertThat(eventsStart.get(1).getChannel()).isEqualTo(Channel.type(EventComponentLoaded.class));
+		assertThat(eventsStart.get(2).getChannel()).isEqualTo(Channel.type(EventApplicationStarted.class));
 
 		starter.stop();
 		final List<Publishable> eventsStop = eventService.getEventPackages();
 		assertThat(eventsStop.size()).isEqualTo(2);
-		assertThat(eventsStop.get(0).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_COMPONENT_UNLOADED));
-		assertThat(eventsStop.get(1).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_APPLICATION_STOPPING));
-
+		assertThat(eventsStop.get(0).getChannel()).isEqualTo(Channel.type(EventComponentUnloaded.class));
+		assertThat(eventsStop.get(1).getChannel()).isEqualTo(Channel.type(EventApplicationStopping.class));
 	}
 
 

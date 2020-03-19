@@ -1,9 +1,8 @@
 package de.ruegnerlukas.simpleapplication.core.presentation;
 
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
-import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
@@ -104,8 +103,8 @@ public class ViewServiceTest extends ApplicationTest {
 			assertThat(handle.getHandleId()).isEqualTo(WindowHandle.ID_PRIMARY);
 			assertThat(handle.getViewId()).isEqualTo(view.getId());
 
-			assertEvent(ApplicationConstants.EVENT_SHOW_VIEW);
-			Optional<Publishable> eventOpen = getEventAny(ApplicationConstants.EVENT_SHOW_VIEW);
+			assertEvent(Channel.type(EventShowView.class));
+			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventShowView.class));
 			assertThat(eventOpen).isPresent();
 			eventOpen.ifPresent(publishable -> {
 				EventShowView event = (EventShowView) publishable;
@@ -139,8 +138,8 @@ public class ViewServiceTest extends ApplicationTest {
 			assertThat(handle.getHandleId()).isEqualTo(handlePrimary.getHandleId());
 			assertThat(handle.getViewId()).isEqualTo(view.getId());
 
-			assertEvent(ApplicationConstants.EVENT_SHOW_VIEW);
-			Optional<Publishable> eventOpen = getEventAny(ApplicationConstants.EVENT_SHOW_VIEW);
+			assertEvent(Channel.type(EventShowView.class));
+			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventShowView.class));
 			assertThat(eventOpen).isPresent();
 			eventOpen.ifPresent(publishable -> {
 				EventShowView event = (EventShowView) publishable;
@@ -170,8 +169,8 @@ public class ViewServiceTest extends ApplicationTest {
 			assertThat(viewService.getWindowHandles(view.getId())).hasSize(1);
 			assertThat(viewService.getWindowHandles(view.getId()).get(0).getHandleId()).isEqualTo(handle.getHandleId());
 
-			assertEvent(ApplicationConstants.EVENT_OPEN_POPUP);
-			Optional<Publishable> eventOpen = getEventAny(ApplicationConstants.EVENT_OPEN_POPUP);
+			assertEvent(Channel.type(EventOpenPopup.class));
+			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventOpenPopup.class));
 			assertThat(eventOpen).isPresent();
 			eventOpen.ifPresent(publishable -> {
 				EventOpenPopup event = (EventOpenPopup) publishable;
@@ -183,8 +182,8 @@ public class ViewServiceTest extends ApplicationTest {
 			viewService.closePopup(handle);
 			assertThat(viewService.getWindowHandles(view.getId())).hasSize(0);
 
-			assertEvent(ApplicationConstants.EVENT_CLOSE_POPUP);
-			Optional<Publishable> eventClose = getEventAny(ApplicationConstants.EVENT_CLOSE_POPUP);
+			assertEvent(Channel.type(EventClosePopup.class));
+			Optional<Publishable> eventClose = getEventAny(Channel.type(EventClosePopup.class));
 			assertThat(eventOpen).isPresent();
 			eventClose.ifPresent(publishable -> {
 				EventClosePopup event = (EventClosePopup) publishable;
@@ -234,7 +233,7 @@ public class ViewServiceTest extends ApplicationTest {
 
 
 
-	private void assertEvent(final String channel) {
+	private void assertEvent(final Channel channel) {
 		assertThat(getEventPackages(channel)).isNotEmpty();
 	}
 
@@ -248,18 +247,18 @@ public class ViewServiceTest extends ApplicationTest {
 
 
 
-	private List<Publishable> getEventPackages(final String channel) {
+	private List<Publishable> getEventPackages(final Channel channel) {
 		return events.stream()
-				.filter(e -> e.getChannel().equals(Channel.name(channel)))
+				.filter(e -> e.getChannel().equals(channel))
 				.collect(Collectors.toList());
 	}
 
 
 
 
-	private Optional<Publishable> getEventAny(final String channel) {
+	private Optional<Publishable> getEventAny(final Channel channel) {
 		return events.stream()
-				.filter(e -> e.getChannel().equals(Channel.name(channel)))
+				.filter(e -> e.getChannel().equals(channel))
 				.findAny();
 	}
 

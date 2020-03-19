@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.common.events.specializedevents;
+package de.ruegnerlukas.simpleapplication.core.events;
 
 import de.ruegnerlukas.simpleapplication.common.events.EventListener;
 import de.ruegnerlukas.simpleapplication.common.events.EventSource;
