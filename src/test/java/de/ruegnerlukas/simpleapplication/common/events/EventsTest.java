@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.events.specializedevents.StringE
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -105,27 +106,29 @@ public class EventsTest {
 
 		// create listenable group
 		final ListenableEventSourceGroup groupListenable = new ListenableEventSourceGroup();
-		groupListenable.add(SOURCE_NAME_A, sourceA);
-		groupListenable.add(SOURCE_NAME_B, sourceB);
+		groupListenable.add(Channel.name(SOURCE_NAME_A), sourceA);
+		groupListenable.add(Channel.name(SOURCE_NAME_B), sourceB);
 
 		// create triggerable group
 		final TriggerableEventSourceGroup groupTriggerable = new TriggerableEventSourceGroup();
-		groupTriggerable.add(SOURCE_NAME_A, sourceA);
-		groupTriggerable.add(SOURCE_NAME_B, sourceB);
+		groupTriggerable.add(Channel.name(SOURCE_NAME_A), sourceA);
+		groupTriggerable.add(Channel.name(SOURCE_NAME_B), sourceB);
 
 		// subscribe listener to sources (through group)
 		final StringEvent.StringEventListener listenerA = Mockito.mock(StringEvent.StringEventListener.class);
-		final ListenableEventSource<String> listenableA = groupListenable.find(SOURCE_NAME_A);
+		final ListenableEventSource<String> listenableA = groupListenable.find(Channel.name(SOURCE_NAME_A));
+		assertThat(listenableA).isNotNull();
 		listenableA.subscribe(listenerA);
 
 		final StringEvent.StringEventListener listenerB = Mockito.mock(StringEvent.StringEventListener.class);
-		final ListenableEventSource<String> listenableB = groupListenable.find(SOURCE_NAME_B);
+		final ListenableEventSource<String> listenableB = groupListenable.find(Channel.name(SOURCE_NAME_B));
+		assertThat(listenableB).isNotNull();
 		listenableB.subscribe(listenerB);
 
 		// trigger events (through group)
-		final TriggerableEventSource<String> triggerableA = groupTriggerable.find(SOURCE_NAME_A);
+		final TriggerableEventSource<String> triggerableA = groupTriggerable.find(Channel.name(SOURCE_NAME_A));
 		triggerableA.trigger(EVENT_A);
-		final TriggerableEventSource<String> triggerableB = groupTriggerable.find(SOURCE_NAME_B);
+		final TriggerableEventSource<String> triggerableB = groupTriggerable.find(Channel.name(SOURCE_NAME_B));
 		triggerableB.trigger(EVENT_B);
 
 		// verify

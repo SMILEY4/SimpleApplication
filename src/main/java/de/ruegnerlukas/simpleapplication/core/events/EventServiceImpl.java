@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.events;
 
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.events.EventListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +24,7 @@ public class EventServiceImpl implements EventService {
 	/**
 	 * The map of subscribed listeners. Key is the name of the channel. The subscribers are ordered by priority desc.
 	 */
-	private final Map<String, List<Subscriber>> subscribers = new HashMap<>();
+	private final Map<Channel, List<Subscriber>> subscribers = new HashMap<>();
 
 
 	/**
@@ -35,7 +36,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void subscribe(final String channel, final int priority, final EventListener<? extends Publishable> listener) {
+	public void subscribe(final Channel channel, final int priority, final EventListener<? extends Publishable> listener) {
 		subscribers.computeIfAbsent(channel, c -> new ArrayList<>()).add(new Subscriber(listener, priority));
 		Collections.sort(subscribers.get(channel));
 	}
@@ -44,9 +45,8 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void subscribe(final String channel, final EventListener<? extends Publishable> listener) {
-		subscribers.computeIfAbsent(channel, c -> new ArrayList<>()).add(new Subscriber(listener, Subscriber.DEFAULT_PRIORITY));
-		Collections.sort(subscribers.get(channel));
+	public void subscribe(final Channel channel, final EventListener<? extends Publishable> listener) {
+		subscribe(channel, Subscriber.DEFAULT_PRIORITY, listener);
 	}
 
 
@@ -61,7 +61,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void unsubscribe(final String channel, final EventListener<? extends Publishable> listener) {
+	public void unsubscribe(final Channel channel, final EventListener<? extends Publishable> listener) {
 		final List<Subscriber> subscriberList = subscribers.computeIfAbsent(channel, c -> new ArrayList<>());
 		subscriberList.removeAll(subscriberList.stream()
 				.filter(s -> s.getListener().equals(listener))

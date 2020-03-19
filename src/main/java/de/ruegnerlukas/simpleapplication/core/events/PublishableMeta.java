@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.events;
 
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,9 +20,9 @@ public class PublishableMeta {
 	private boolean published;
 
 	/**
-	 * The channel in which the {@link Publishable} was published in.
+	 * The channel in which the {@link Publishable} is published in.
 	 */
-	private String channel;
+	private Channel channel;
 
 	/**
 	 * The timestamp when the {@link Publishable} was published

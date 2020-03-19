@@ -12,9 +12,9 @@ public class ListenableEventSourceGroup {
 
 
 	/**
-	 * The map of {@link ListenableEventSource}s. Key is the name of the source in this group.
+	 * The map of {@link ListenableEventSource}s. Key is the channel of the source in this group.
 	 */
-	private final Map<String, ListenableEventSource<?>> eventSources = new HashMap<>();
+	private final Map<Channel, ListenableEventSource<?>> eventSources = new HashMap<>();
 
 
 
@@ -31,7 +31,7 @@ public class ListenableEventSourceGroup {
 	/**
 	 * @param eventSources a map of event sources
 	 */
-	public ListenableEventSourceGroup(final Map<String, ListenableEventSource<?>> eventSources) {
+	public ListenableEventSourceGroup(final Map<Channel, ListenableEventSource<?>> eventSources) {
 		eventSources.forEach(this::add);
 	}
 
@@ -39,35 +39,37 @@ public class ListenableEventSourceGroup {
 
 
 	/**
-	 * Add the event source with the given name
+	 * Add the event source with the given channel
 	 *
-	 * @param name        the name of the event source
+	 * @param channel     the channel of the event source
 	 * @param eventSource the event source
 	 */
-	public void add(final String name, final ListenableEventSource<?> eventSource) {
-		Validations.INPUT.notBlank(name).exception("The name must not be null.");
+	public void add(final Channel channel, final ListenableEventSource<?> eventSource) {
+		Validations.INPUT.notNull(channel).exception("The channel must not be null.");
 		Validations.INPUT.notNull(eventSource).exception("The event source must not be null.");
-		this.eventSources.put(name, eventSource);
+		this.eventSources.put(channel, eventSource);
 	}
 
 
 
 
 	/**
-	 * Finds the event source with the given name.
+	 * Finds the event source with the given channel.
 	 *
-	 * @param name the name of the requested event source
-	 * @param <T>  the generic type
+	 * @param channel the channel of the requested event source
 	 * @return the event source or null
 	 */
-	public <T> ListenableEventSource<T> find(final String name) {
-		return (ListenableEventSource<T>) eventSources.get(name);
+	public <T> ListenableEventSource<T> find(final Channel channel) {
+		return (ListenableEventSource<T>) eventSources.get(channel);
 	}
 
+
+
+
 	/**
-	 * @return a list with ids of all event sources of this group.
+	 * @return a list with the channels of all event sources of this group.
 	 */
-	public List<String> getIds() {
+	public List<Channel> getChannels() {
 		return new ArrayList<>(eventSources.keySet());
 	}
 

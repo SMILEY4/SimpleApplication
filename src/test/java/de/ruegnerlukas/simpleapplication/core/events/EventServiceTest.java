@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.events;
 
 
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.events.EventListener;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -24,10 +25,10 @@ public class EventServiceTest {
 		final EventService eventService = new EventServiceImpl();
 
 		final PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
-		eventService.subscribe(CHANNEL, listener);
+		eventService.subscribe(Channel.name(CHANNEL), listener);
 
 		eventService.publish(publishable(CHANNEL));
-		eventService.unsubscribe(CHANNEL, listener);
+		eventService.unsubscribe(Channel.name(CHANNEL), listener);
 		eventService.publish(publishable(CHANNEL));
 
 		verify(listener, times(1)).onEvent(any());
@@ -42,8 +43,8 @@ public class EventServiceTest {
 		final String CHANNEL = "test.channel";
 		final EventService eventService = new EventServiceImpl();
 
-		eventService.subscribe(CHANNEL, Mockito.mock(PublishableEventListener.class));
-		eventService.subscribe(CHANNEL, Mockito.mock(PublishableEventListener.class));
+		eventService.subscribe(Channel.name(CHANNEL), Mockito.mock(PublishableEventListener.class));
+		eventService.subscribe(Channel.name(CHANNEL), Mockito.mock(PublishableEventListener.class));
 
 		final Publishable publishable = publishable(CHANNEL);
 
@@ -53,7 +54,7 @@ public class EventServiceTest {
 
 		assertThat(meta.getPublishable()).isEqualTo(publishable);
 		assertThat(meta.isPublished()).isTrue();
-		assertThat(meta.getChannel()).isEqualTo(CHANNEL);
+		assertThat(meta.getChannel()).isEqualTo(Channel.name(CHANNEL));
 		assertThat(timeBefore <= meta.getTimestamp() && meta.getTimestamp() <= timeAfter).isTrue();
 		assertThat(meta.getNumListeners()).isEqualTo(2);
 		assertThat(meta.getNumReceivers()).isEqualTo(2);
@@ -69,14 +70,14 @@ public class EventServiceTest {
 		final String CHANNEL = "test.channel";
 		final EventService eventService = new EventServiceImpl();
 
-		eventService.subscribe(CHANNEL, Mockito.mock(PublishableEventListener.class));
-		eventService.subscribe(CHANNEL, Publishable::cancel);
-		eventService.subscribe(CHANNEL, Mockito.mock(PublishableEventListener.class));
+		eventService.subscribe(Channel.name(CHANNEL), Mockito.mock(PublishableEventListener.class));
+		eventService.subscribe(Channel.name(CHANNEL), Publishable::cancel);
+		eventService.subscribe(Channel.name(CHANNEL), Mockito.mock(PublishableEventListener.class));
 
 		final PublishableMeta meta = eventService.publish(publishable(CHANNEL));
 
 		assertThat(meta.isPublished()).isTrue();
-		assertThat(meta.getChannel()).isEqualTo(CHANNEL);
+		assertThat(meta.getChannel()).isEqualTo(Channel.name(CHANNEL));
 		assertThat(meta.getNumListeners()).isEqualTo(3);
 		assertThat(meta.getNumReceivers()).isEqualTo(2);
 		assertThat(meta.isCancelled()).isTrue();
@@ -92,7 +93,7 @@ public class EventServiceTest {
 		final EventService eventService = new EventServiceImpl();
 
 		TestEventListener listener = Mockito.mock(TestEventListener.class);
-		eventService.subscribe(CHANNEL, listener);
+		eventService.subscribe(Channel.name(CHANNEL), listener);
 
 		PublishableMeta meta = eventService.publish(new TestEvent(CHANNEL));
 		verify(listener).onEvent(any());
@@ -110,7 +111,7 @@ public class EventServiceTest {
 		final EventService eventService = new EventServiceImpl();
 
 		TestEventListener listener = Mockito.mock(TestEventListener.class);
-		eventService.subscribe(CHANNEL, listener);
+		eventService.subscribe(Channel.name(CHANNEL), listener);
 
 		PublishableMeta meta = eventService.publish(new TestCommand(CHANNEL));
 		verify(listener, times(0)).onEvent(any());
@@ -128,7 +129,7 @@ public class EventServiceTest {
 		final EventService eventService = new EventServiceImpl();
 
 		PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
-		eventService.subscribe(CHANNEL, listener);
+		eventService.subscribe(Channel.name(CHANNEL), listener);
 
 		PublishableMeta metaA = eventService.publish(new TestEvent(CHANNEL));
 		PublishableMeta metaB = eventService.publish(new TestCommand(CHANNEL));
@@ -153,9 +154,9 @@ public class EventServiceTest {
 		final PublishableEventListener listenerB = Mockito.mock(PublishableEventListener.class);
 		final PublishableEventListener listenerC = Mockito.mock(PublishableEventListener.class);
 
-		eventService.subscribe(CHANNEL, 1, listenerA);
-		eventService.subscribe(CHANNEL, listenerB); // expected priority: 0
-		eventService.subscribe(CHANNEL, 2, listenerC);
+		eventService.subscribe(Channel.name(CHANNEL), 1, listenerA);
+		eventService.subscribe(Channel.name(CHANNEL), listenerB); // expected priority: 0
+		eventService.subscribe(Channel.name(CHANNEL), 2, listenerC);
 
 		eventService.publish(publishable(CHANNEL));
 
@@ -178,9 +179,9 @@ public class EventServiceTest {
 		final PublishableEventListener listenerB = Publishable::cancel;
 		final PublishableEventListener listenerC = Mockito.mock(PublishableEventListener.class);
 		final PublishableEventListener listenerD = Mockito.mock(PublishableEventListener.class);
-		eventService.subscribe(CHANNEL, 2, listenerA);
-		eventService.subscribe(CHANNEL, 1, listenerB);
-		eventService.subscribe(CHANNEL, 0, listenerC);
+		eventService.subscribe(Channel.name(CHANNEL), 2, listenerA);
+		eventService.subscribe(Channel.name(CHANNEL), 1, listenerB);
+		eventService.subscribe(Channel.name(CHANNEL), 0, listenerC);
 		eventService.subscribe(listenerD);
 
 		eventService.publish(publishable(CHANNEL));
@@ -194,18 +195,18 @@ public class EventServiceTest {
 
 
 	private Publishable publishable(final String channel) {
-		return new Publishable(channel) {
+		return new Publishable(Channel.name(channel)) {
 		};
 	}
 
 
 
 
-	class TestEvent extends Publishable {
+	static class TestEvent extends Publishable {
 
 
 		public TestEvent(String channel) {
-			super(channel);
+			super(Channel.name(channel));
 		}
 
 	}
@@ -215,11 +216,11 @@ public class EventServiceTest {
 
 
 
-	class TestCommand extends Publishable {
+	static class TestCommand extends Publishable {
 
 
 		public TestCommand(String channel) {
-			super(channel);
+			super(Channel.name(channel));
 		}
 
 	}
@@ -229,7 +230,7 @@ public class EventServiceTest {
 
 
 
-	abstract class TestEventListener implements EventListener<TestEvent> {
+	abstract static class TestEventListener implements EventListener<TestEvent> {
 
 
 	}

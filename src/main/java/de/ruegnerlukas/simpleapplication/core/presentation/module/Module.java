@@ -128,7 +128,7 @@ public class Module extends AnchorPane {
 	private ListenableEventSourceGroup buildInternalEventGroup(final ModuleView view) {
 		final ListenableEventSourceGroup group = new ListenableEventSourceGroup();
 		Optional.ofNullable(view.getExposedEvents()).orElseGet(List::of)
-				.forEach(exposedEvent -> group.add(exposedEvent.getName(), exposedEvent.getEventSource()));
+				.forEach(exposedEvent -> group.add(exposedEvent.getChannel(), exposedEvent.getEventSource()));
 		return group;
 	}
 
@@ -144,7 +144,7 @@ public class Module extends AnchorPane {
 	private TriggerableEventSourceGroup buildInternalCommandGroup(final ModuleView view) {
 		final TriggerableEventSourceGroup group = new TriggerableEventSourceGroup();
 		Optional.ofNullable(view.getExposedCommands()).orElseGet(List::of)
-				.forEach(exposedCommand -> group.add(exposedCommand.getName(), exposedCommand.getEventSource()));
+				.forEach(exposedCommand -> group.add(exposedCommand.getChannel(), exposedCommand.getEventSource()));
 		return group;
 	}
 
@@ -165,7 +165,7 @@ public class Module extends AnchorPane {
 		exposedEvents.addAll(Optional.ofNullable(controller.getExposedEvents()).orElseGet(List::of));
 		exposedEvents.stream()
 				.filter(exposedEvent -> exposedEvent.getScope().isAtLeast(UIExtensionScope.LOCAL))
-				.forEach(exposedEvent -> group.add(exposedEvent.getName(), exposedEvent.getEventSource()));
+				.forEach(exposedEvent -> group.add(exposedEvent.getChannel(), exposedEvent.getEventSource()));
 		return group;
 	}
 
@@ -186,7 +186,7 @@ public class Module extends AnchorPane {
 		exposedCommands.addAll(Optional.ofNullable(controller.getExposedCommands()).orElseGet(List::of));
 		exposedCommands.stream()
 				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.LOCAL))
-				.forEach(exposedCommand -> group.add(exposedCommand.getName(), exposedCommand.getEventSource()));
+				.forEach(exposedCommand -> group.add(exposedCommand.getChannel(), exposedCommand.getEventSource()));
 		return group;
 	}
 
@@ -225,7 +225,7 @@ public class Module extends AnchorPane {
 		exposedCommands.addAll(Optional.ofNullable(controller.getExposedCommands()).orElseGet(List::of));
 		exposedCommands.stream()
 				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.GLOBAL))
-				.forEach(exposedCommand -> eventService.subscribe(exposedCommand.getName(), publishable -> {
+				.forEach(exposedCommand -> eventService.subscribe(exposedCommand.getChannel(), publishable -> {
 					final TriggerableEventSource<Publishable> eventSource = exposedCommand.getEventSource();
 					eventSource.trigger(publishable);
 				}));

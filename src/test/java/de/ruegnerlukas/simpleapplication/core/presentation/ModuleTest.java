@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSourceGro
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
@@ -72,29 +73,29 @@ public class ModuleTest extends ApplicationTest {
 			}
 		});
 
-		commandSourceViewGlobal = new PublishableEventSource(COMMAND_VIEW_GLOBAL);
-		final ExposedCommand commandViewInternal = ExposedCommand.internal("cmd.view.internal", new EventSource<>());
-		final ExposedCommand commandViewLocal = ExposedCommand.local("cmd.view.local", new EventSource<>());
-		final ExposedCommand commandViewGlobal = ExposedCommand.global(COMMAND_VIEW_GLOBAL, commandSourceViewGlobal);
+		commandSourceViewGlobal = new PublishableEventSource(Channel.name(COMMAND_VIEW_GLOBAL));
+		final ExposedCommand commandViewInternal = ExposedCommand.internal(Channel.name("cmd.view.internal"), new EventSource<>());
+		final ExposedCommand commandViewLocal = ExposedCommand.local(Channel.name("cmd.view.local"), new EventSource<>());
+		final ExposedCommand commandViewGlobal = ExposedCommand.global(Channel.name(COMMAND_VIEW_GLOBAL), commandSourceViewGlobal);
 
-		eventSourceViewGlobal = new PublishableEventSource(EVENT_VIEW_GLOBAL);
-		final ExposedEvent eventViewInternal = ExposedEvent.internal("event.view.internal", new EventSource<>());
-		final ExposedEvent eventViewLocal = ExposedEvent.local("event.view.local", new EventSource<>());
-		final ExposedEvent eventViewGlobal = ExposedEvent.global(EVENT_VIEW_GLOBAL, eventSourceViewGlobal);
+		eventSourceViewGlobal = new PublishableEventSource(Channel.name(EVENT_VIEW_GLOBAL));
+		final ExposedEvent eventViewInternal = ExposedEvent.internal(Channel.name("event.view.internal"), new EventSource<>());
+		final ExposedEvent eventViewLocal = ExposedEvent.local(Channel.name("event.view.local"), new EventSource<>());
+		final ExposedEvent eventViewGlobal = ExposedEvent.global(Channel.name(EVENT_VIEW_GLOBAL), eventSourceViewGlobal);
 
 		view = Mockito.mock(ModuleView.class);
 		when(view.getExposedCommands()).thenReturn(List.of(commandViewInternal, commandViewLocal, commandViewGlobal));
 		when(view.getExposedEvents()).thenReturn(List.of(eventViewInternal, eventViewLocal, eventViewGlobal));
 
-		commandSourceControllerGlobal = new PublishableEventSource(COMMAND_CONTROLLER_GLOBAL);
-		final ExposedCommand commandCtrlInternal = ExposedCommand.internal("cmd.ctrl.internal", new EventSource<>());
-		final ExposedCommand commandCtrlLocal = ExposedCommand.local("cmd.ctrl.local", new EventSource<>());
-		final ExposedCommand commandCtrlGlobal = ExposedCommand.global(COMMAND_CONTROLLER_GLOBAL, commandSourceControllerGlobal);
+		commandSourceControllerGlobal = new PublishableEventSource(Channel.name(COMMAND_CONTROLLER_GLOBAL));
+		final ExposedCommand commandCtrlInternal = ExposedCommand.internal(Channel.name("cmd.ctrl.internal"), new EventSource<>());
+		final ExposedCommand commandCtrlLocal = ExposedCommand.local(Channel.name("cmd.ctrl.local"), new EventSource<>());
+		final ExposedCommand commandCtrlGlobal = ExposedCommand.global(Channel.name(COMMAND_CONTROLLER_GLOBAL), commandSourceControllerGlobal);
 
-		eventSourceControllerGlobal = new PublishableEventSource(EVENT_CONTROLLER_GLOBAL);
-		final ExposedEvent eventCtrlInternal = ExposedEvent.internal("event.ctrl.internal", new EventSource<>());
-		final ExposedEvent eventCtrlLocal = ExposedEvent.local("event.ctrl.local", new EventSource<>());
-		final ExposedEvent eventCtrlGlobal = ExposedEvent.global(EVENT_CONTROLLER_GLOBAL, eventSourceControllerGlobal);
+		eventSourceControllerGlobal = new PublishableEventSource(Channel.name(EVENT_CONTROLLER_GLOBAL));
+		final ExposedEvent eventCtrlInternal = ExposedEvent.internal(Channel.name("event.ctrl.internal"), new EventSource<>());
+		final ExposedEvent eventCtrlLocal = ExposedEvent.local(Channel.name("event.ctrl.local"), new EventSource<>());
+		final ExposedEvent eventCtrlGlobal = ExposedEvent.global(Channel.name(EVENT_CONTROLLER_GLOBAL), eventSourceControllerGlobal);
 
 		controller = Mockito.mock(ModuleController.class);
 		when(controller.getExposedCommands()).thenReturn(List.of(commandCtrlInternal, commandCtrlLocal, commandCtrlGlobal));
@@ -119,15 +120,15 @@ public class ModuleTest extends ApplicationTest {
 
 		final ListenableEventSourceGroup eventGroup = eventCaptor.getValue();
 		assertThat(eventGroup).isNotNull();
-		assertThat(eventGroup.find("event.view.internal")).isNotNull();
-		assertThat(eventGroup.find("event.view.local")).isNotNull();
-		assertThat(eventGroup.find("event.view.global")).isNotNull();
+		assertThat(eventGroup.find(Channel.name("event.view.internal"))).isNotNull();
+		assertThat(eventGroup.find(Channel.name("event.view.local"))).isNotNull();
+		assertThat(eventGroup.find(Channel.name("event.view.global"))).isNotNull();
 
 		final TriggerableEventSourceGroup commandGroup = commandCaptor.getValue();
 		assertThat(commandGroup).isNotNull();
-		assertThat(commandGroup.find("cmd.view.internal")).isNotNull();
-		assertThat(commandGroup.find("cmd.view.local")).isNotNull();
-		assertThat(commandGroup.find("cmd.view.global")).isNotNull();
+		assertThat(commandGroup.find(Channel.name("cmd.view.internal"))).isNotNull();
+		assertThat(commandGroup.find(Channel.name("cmd.view.local"))).isNotNull();
+		assertThat(commandGroup.find(Channel.name("cmd.view.global"))).isNotNull();
 
 	}
 
@@ -139,17 +140,17 @@ public class ModuleTest extends ApplicationTest {
 
 		final ListenableEventSourceGroup eventGroup = module.getEvents();
 		assertThat(eventGroup).isNotNull();
-		assertThat(eventGroup.find("event.view.local")).isNotNull();
-		assertThat(eventGroup.find("event.view.global")).isNotNull();
-		assertThat(eventGroup.find("event.ctrl.local")).isNotNull();
-		assertThat(eventGroup.find("event.ctrl.global")).isNotNull();
+		assertThat(eventGroup.find(Channel.name("event.view.local"))).isNotNull();
+		assertThat(eventGroup.find(Channel.name("event.view.global"))).isNotNull();
+		assertThat(eventGroup.find(Channel.name("event.ctrl.local"))).isNotNull();
+		assertThat(eventGroup.find(Channel.name("event.ctrl.global"))).isNotNull();
 
 		final TriggerableEventSourceGroup commandGroup = module.getCommands();
 		assertThat(commandGroup).isNotNull();
-		assertThat(commandGroup.find("cmd.view.local")).isNotNull();
-		assertThat(commandGroup.find("cmd.view.global")).isNotNull();
-		assertThat(commandGroup.find("cmd.ctrl.local")).isNotNull();
-		assertThat(commandGroup.find("cmd.ctrl.global")).isNotNull();
+		assertThat(commandGroup.find(Channel.name("cmd.view.local"))).isNotNull();
+		assertThat(commandGroup.find(Channel.name("cmd.view.global"))).isNotNull();
+		assertThat(commandGroup.find(Channel.name("cmd.ctrl.local"))).isNotNull();
+		assertThat(commandGroup.find(Channel.name("cmd.ctrl.global"))).isNotNull();
 	}
 
 
@@ -161,7 +162,7 @@ public class ModuleTest extends ApplicationTest {
 		final EventService eventService = new Provider<>(EventService.class).get();
 
 		final PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
-		eventService.subscribe(EVENT_VIEW_GLOBAL, listener);
+		eventService.subscribe(Channel.name(EVENT_VIEW_GLOBAL), listener);
 
 		eventSourceViewGlobal.trigger(new StringEvent("Test String"));
 		ArgumentCaptor<StringEvent> captor = ArgumentCaptor.forClass(StringEvent.class);
@@ -169,7 +170,7 @@ public class ModuleTest extends ApplicationTest {
 
 		StringEvent publishable = captor.getValue();
 		assertThat(publishable).isNotNull();
-		assertThat(publishable.getChannel()).isEqualTo(EVENT_VIEW_GLOBAL);
+		assertThat(publishable.getChannel()).isEqualTo(Channel.name(EVENT_VIEW_GLOBAL));
 		assertThat(publishable.getValue()).isEqualTo("Test String");
 	}
 
@@ -182,7 +183,7 @@ public class ModuleTest extends ApplicationTest {
 		final EventService eventService = new Provider<>(EventService.class).get();
 
 		final PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
-		eventService.subscribe(EVENT_CONTROLLER_GLOBAL, listener);
+		eventService.subscribe(Channel.name(EVENT_CONTROLLER_GLOBAL), listener);
 
 		eventSourceControllerGlobal.trigger(new StringEvent("Test String"));
 		ArgumentCaptor<StringEvent> captor = ArgumentCaptor.forClass(StringEvent.class);
@@ -190,7 +191,7 @@ public class ModuleTest extends ApplicationTest {
 
 		StringEvent eventPackage = captor.getValue();
 		assertThat(eventPackage).isNotNull();
-		assertThat(eventPackage.getChannel()).isEqualTo(EVENT_CONTROLLER_GLOBAL);
+		assertThat(eventPackage.getChannel()).isEqualTo(Channel.name(EVENT_CONTROLLER_GLOBAL));
 		assertThat(eventPackage.getValue()).isEqualTo("Test String");
 	}
 
@@ -251,7 +252,7 @@ public class ModuleTest extends ApplicationTest {
 
 		public StringEvent(final String channel, final String value) {
 			this.value = value;
-			setChannel(channel);
+			setChannel(Channel.name(channel));
 		}
 
 	}

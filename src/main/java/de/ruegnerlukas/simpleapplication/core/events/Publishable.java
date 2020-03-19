@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.events;
 
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import lombok.Getter;
 
 public abstract class Publishable {
@@ -27,7 +28,7 @@ public abstract class Publishable {
 	/**
 	 * @param channel the channel in which to publish instances.
 	 */
-	public Publishable(final String channel) {
+	public Publishable(final Channel channel) {
 		metadata = new PublishableMeta(this);
 		metadata.setChannel(channel);
 	}
@@ -40,7 +41,7 @@ public abstract class Publishable {
 	 *
 	 * @param channel the (event-)channel
 	 */
-	public void setChannel(final String channel) {
+	public void setChannel(final Channel channel) {
 		metadata.setChannel(channel);
 	}
 
@@ -50,7 +51,7 @@ public abstract class Publishable {
 	/**
 	 * @return the channel in which this publishable was published in.
 	 */
-	public String getChannel() {
+	public Channel getChannel() {
 		return metadata.getChannel();
 	}
 

@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
@@ -41,15 +42,15 @@ public class ApplicationTest {
 		application.run();
 		final List<Publishable> eventsStart = eventService.getEventPackages();
 		assertThat(eventsStart.size()).isEqualTo(3);
-		assertThat(eventsStart.get(0).getChannel()).isEqualTo(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED);
-		assertThat(eventsStart.get(1).getChannel()).isEqualTo(ApplicationConstants.EVENT_COMPONENT_LOADED);
-		assertThat(eventsStart.get(2).getChannel()).isEqualTo(ApplicationConstants.EVENT_APPLICATION_STARTED);
+		assertThat(eventsStart.get(0).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED));
+		assertThat(eventsStart.get(1).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_COMPONENT_LOADED));
+		assertThat(eventsStart.get(2).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_APPLICATION_STARTED));
 
 		starter.stop();
 		final List<Publishable> eventsStop = eventService.getEventPackages();
 		assertThat(eventsStop.size()).isEqualTo(2);
-		assertThat(eventsStop.get(0).getChannel()).isEqualTo(ApplicationConstants.EVENT_COMPONENT_UNLOADED);
-		assertThat(eventsStop.get(1).getChannel()).isEqualTo(ApplicationConstants.EVENT_APPLICATION_STOPPING);
+		assertThat(eventsStop.get(0).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_COMPONENT_UNLOADED));
+		assertThat(eventsStop.get(1).getChannel()).isEqualTo(Channel.name(ApplicationConstants.EVENT_APPLICATION_STOPPING));
 
 	}
 

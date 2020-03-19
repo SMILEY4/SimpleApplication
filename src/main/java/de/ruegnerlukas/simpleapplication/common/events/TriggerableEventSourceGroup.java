@@ -12,9 +12,9 @@ public class TriggerableEventSourceGroup {
 
 
 	/**
-	 * The map of {@link TriggerableEventSource}s. Key is the name of the source in this group.
+	 * The map of {@link TriggerableEventSource}s. Key is the channel of the source in this group.
 	 */
-	private final Map<String, TriggerableEventSource<?>> eventSources = new HashMap<>();
+	private final Map<Channel, TriggerableEventSource<?>> eventSources = new HashMap<>();
 
 
 
@@ -31,7 +31,7 @@ public class TriggerableEventSourceGroup {
 	/**
 	 * @param eventSources a map of event sources
 	 */
-	public TriggerableEventSourceGroup(final Map<String, TriggerableEventSource<?>> eventSources) {
+	public TriggerableEventSourceGroup(final Map<Channel, TriggerableEventSource<?>> eventSources) {
 		eventSources.forEach(this::add);
 	}
 
@@ -41,13 +41,13 @@ public class TriggerableEventSourceGroup {
 	/**
 	 * Add the event source with the given name
 	 *
-	 * @param name        the name of the event source
+	 * @param channel     the channel of the event source
 	 * @param eventSource the event source
 	 */
-	public void add(final String name, final TriggerableEventSource<?> eventSource) {
-		Validations.INPUT.notBlank(name).exception("The name must not be null.");
+	public void add(final Channel channel, final TriggerableEventSource<?> eventSource) {
+		Validations.INPUT.notNull(channel).exception("The channel must not be null.");
 		Validations.INPUT.notNull(eventSource).exception("The event source must not be null.");
-		this.eventSources.put(name, eventSource);
+		this.eventSources.put(channel, eventSource);
 	}
 
 
@@ -56,21 +56,20 @@ public class TriggerableEventSourceGroup {
 	/**
 	 * Finds the event source with the given name.
 	 *
-	 * @param name the name of the requested event source
-	 * @param <T>  the generic type
+	 * @param channel the channel of the requested event source
 	 * @return the event source or null
 	 */
-	public <T> TriggerableEventSource<T> find(final String name) {
-		return (TriggerableEventSource<T>) eventSources.get(name);
+	public <T> TriggerableEventSource<T> find(final Channel channel) {
+		return (TriggerableEventSource<T>) eventSources.get(channel);
 	}
 
 
 
 
 	/**
-	 * @return a list with ids of all event sources of this group.
+	 * @return a list with the channel of all event sources of this group.
 	 */
-	public List<String> getIds() {
+	public List<Channel> getChannels() {
 		return new ArrayList<>(eventSources.keySet());
 	}
 

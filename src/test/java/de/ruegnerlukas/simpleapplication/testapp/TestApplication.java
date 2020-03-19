@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Stri
 import de.ruegnerlukas.simpleapplication.core.application.Application;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfiguration;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
@@ -52,7 +53,7 @@ public class TestApplication {
 		@Override
 		public void onLoad() {
 			final EventService eventService = new Provider<>(EventService.class).get();
-			eventService.subscribe(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED, e -> createViews());
+			eventService.subscribe(Channel.name(ApplicationConstants.EVENT_PRESENTATION_INITIALIZED), e -> createViews());
 		}
 
 

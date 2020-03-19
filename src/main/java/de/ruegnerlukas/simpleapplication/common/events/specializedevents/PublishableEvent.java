@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.common.events.specializedevents;
 import de.ruegnerlukas.simpleapplication.common.events.EventListener;
 import de.ruegnerlukas.simpleapplication.common.events.EventSource;
 import de.ruegnerlukas.simpleapplication.common.events.FixedEventSource;
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +17,9 @@ public class PublishableEvent {
 
 
 		/**
-		 * The channel of the event service to publish the {@link Publishable} in.
+		 * The {@link Channel} of the event service to publish the {@link Publishable} in.
 		 */
-		private final String channel;
+		private final Channel channel;
 
 
 

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.Getter;
 
@@ -21,7 +22,7 @@ public class EventComponentLoaded extends Publishable {
 	 * @param componentId the id of the loaded component
 	 */
 	public EventComponentLoaded(final String componentId) {
-		super(ApplicationConstants.EVENT_COMPONENT_LOADED);
+		super(Channel.name(ApplicationConstants.EVENT_COMPONENT_LOADED));
 		this.componentId = componentId;
 	}
 

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.Getter;
 
@@ -32,7 +33,7 @@ public class EventShowView extends Publishable {
 	 * @param windowHandle the relevant handle
 	 */
 	public EventShowView(final String prevViewId, final String viewId, final WindowHandle windowHandle) {
-		super(ApplicationConstants.EVENT_SHOW_VIEW);
+		super(Channel.name(ApplicationConstants.EVENT_SHOW_VIEW));
 		this.prevViewId = prevViewId;
 		this.viewId = viewId;
 		this.windowHandle = windowHandle;

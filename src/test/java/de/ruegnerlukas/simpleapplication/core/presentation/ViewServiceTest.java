@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.core.presentation;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
@@ -249,7 +250,7 @@ public class ViewServiceTest extends ApplicationTest {
 
 	private List<Publishable> getEventPackages(final String channel) {
 		return events.stream()
-				.filter(e -> e.getChannel().equals(channel))
+				.filter(e -> e.getChannel().equals(Channel.name(channel)))
 				.collect(Collectors.toList());
 	}
 
@@ -258,7 +259,7 @@ public class ViewServiceTest extends ApplicationTest {
 
 	private Optional<Publishable> getEventAny(final String channel) {
 		return events.stream()
-				.filter(e -> e.getChannel().equals(channel))
+				.filter(e -> e.getChannel().equals(Channel.name(channel)))
 				.findAny();
 	}
 
