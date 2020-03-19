@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.core.events;
 
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.events.EventListener;
 import de.ruegnerlukas.simpleapplication.common.events.EventSource;
 import de.ruegnerlukas.simpleapplication.common.events.FixedEventSource;
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class TriggerableEventSourceGroup {
 
@@ -57,6 +58,21 @@ public class TriggerableEventSourceGroup {
 	 * Finds the event source with the given name.
 	 *
 	 * @param channel the channel of the requested event source
+	 * @param <T>     the generic type of the event
+	 * @return the event source or null
+	 */
+	public <T> Optional<TriggerableEventSource<T>> findOptional(final Channel channel) {
+		return Optional.ofNullable(find(channel));
+	}
+
+
+
+
+	/**
+	 * Finds the event source with the given name.
+	 *
+	 * @param channel the channel of the requested event source
+	 * @param <T>     the generic type of the event
 	 * @return the event source or null
 	 */
 	public <T> TriggerableEventSource<T> find(final Channel channel) {

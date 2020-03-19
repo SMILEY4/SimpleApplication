@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class ListenableEventSourceGroup {
 
@@ -57,6 +58,21 @@ public class ListenableEventSourceGroup {
 	 * Finds the event source with the given channel.
 	 *
 	 * @param channel the channel of the requested event source
+	 * @param <T>     generic type of the event
+	 * @return the event source or null
+	 */
+	public <T> Optional<ListenableEventSource<T>> findOptional(final Channel channel) {
+		return Optional.ofNullable(find(channel));
+	}
+
+
+
+
+	/**
+	 * Finds the event source with the given channel.
+	 *
+	 * @param channel the channel of the requested event source
+	 * @param <T>     generic type of the event
 	 * @return the event source or null
 	 */
 	public <T> ListenableEventSource<T> find(final Channel channel) {
