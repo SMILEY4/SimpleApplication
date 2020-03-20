@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 public class Channel {
 
 
-	private enum ChannelType {
+	public enum ChannelType {
 		/**
 		 * Identified by a name.
 		 */
@@ -57,6 +58,7 @@ public class Channel {
 	 * @return the channel
 	 */
 	public static Channel name(final String name) {
+		Validations.INPUT.notBlank(name).exception("The name must not be null or empty.");
 		return new Channel(name, null, ChannelType.NAME);
 	}
 
@@ -70,6 +72,7 @@ public class Channel {
 	 * @return the channel
 	 */
 	public static Channel type(final Class<?> type) {
+		Validations.INPUT.notNull(type).exception("The type must not be null or empty.");
 		return new Channel(null, type, ChannelType.TYPE);
 
 	}
