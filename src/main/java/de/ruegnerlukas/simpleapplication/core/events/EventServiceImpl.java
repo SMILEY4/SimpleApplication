@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.core.events;
 
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.events.EventListener;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +38,8 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void subscribe(final Channel channel, final int priority, final EventListener<? extends Publishable> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener must not be null");
+		validateChannel(channel);
 		subscribers.computeIfAbsent(channel, c -> new ArrayList<>()).add(new Subscriber(listener, priority));
 		Collections.sort(subscribers.get(channel));
 	}
@@ -46,6 +49,8 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void subscribe(final Channel channel, final EventListener<? extends Publishable> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener must not be null");
+		validateChannel(channel);
 		subscribe(channel, Subscriber.DEFAULT_PRIORITY, listener);
 	}
 
@@ -54,6 +59,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void subscribe(final EventListener<? extends Publishable> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener must not be null");
 		anySubscribers.add(new Subscriber(listener, Integer.MIN_VALUE));
 	}
 
@@ -62,6 +68,8 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void unsubscribe(final Channel channel, final EventListener<? extends Publishable> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener must not be null");
+		validateChannel(channel);
 		final List<Subscriber> subscriberList = subscribers.computeIfAbsent(channel, c -> new ArrayList<>());
 		subscriberList.removeAll(subscriberList.stream()
 				.filter(s -> s.getListener().equals(listener))
@@ -73,6 +81,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void unsubscribe(final EventListener<? extends Publishable> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener must not be null");
 		subscribers.forEach((channel, subscribers) -> {
 			List<Subscriber> toRemove = new ArrayList<>();
 			subscribers.forEach(subscriber -> {
@@ -96,6 +105,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public PublishableMeta publish(final Publishable publishable) {
+		Validations.INPUT.notNull(publishable).exception("The publishable must not be null");
 		final List<Subscriber> subscriberList = new ArrayList<>();
 		subscriberList.addAll(subscribers.getOrDefault(publishable.getChannel(), Collections.emptyList()));
 		subscriberList.addAll(anySubscribers);
@@ -121,6 +131,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public PublishableMeta publishEmpty(final Channel channel) {
+		validateChannel(channel);
 		return publish(new EmptyPublishable(channel));
 	}
 
@@ -143,6 +154,23 @@ public class EventServiceImpl implements EventService {
 			successful = false;
 		}
 		return successful;
+	}
+
+
+
+
+	/**
+	 * Validates the given channel
+	 *
+	 * @param channel the {@link Channel} to validate.
+	 */
+	private void validateChannel(final Channel channel) {
+		Validations.INPUT.notNull(channel).exception("The channel must not be null");
+		if (channel.getChannelType() == Channel.ChannelType.NAME) {
+			Validations.INPUT.notBlank(channel.getName()).exception("The name of the channel must not be null or empty.");
+		} else {
+			Validations.INPUT.notNull(channel.getType()).exception("The type of the channel must not be null.");
+		}
 	}
 
 
