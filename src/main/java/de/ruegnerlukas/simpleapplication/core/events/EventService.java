@@ -40,6 +40,12 @@ public interface EventService {
 	 */
 	void unsubscribe(Channel channel, EventListener<? extends Publishable> listener);
 
+	/**
+	 * Unsubscribe the given listener from all subscribed channels.
+	 *
+	 * @param listener the {@link EventListener}
+	 */
+	void unsubscribe(EventListener<? extends Publishable> listener);
 
 	/**
 	 * Publish the given {@link Publishable}
@@ -49,5 +55,13 @@ public interface EventService {
 	 */
 	PublishableMeta publish(Publishable publishable);
 
+
+	/**
+	 * Publish an {@link EmptyPublishable} in the given channel.
+	 *
+	 * @param channel the channel to publish the empty publishable in.
+	 * @return the metadata about the published {@link Publishable}
+	 */
+	PublishableMeta publishEmpty(Channel channel);
 
 }

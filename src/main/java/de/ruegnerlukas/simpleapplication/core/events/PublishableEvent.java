@@ -23,6 +23,26 @@ public class PublishableEvent {
 
 
 
+		/**
+		 * @param channelName the name of the channel in which to publish the events in.
+		 */
+		public PublishableEventSource(final String channelName) {
+			this(Channel.name(channelName));
+		}
+
+
+
+
+		/**
+		 * @param channelType the type of the channel in which to publish the events in.
+		 */
+		public PublishableEventSource(final Class<?> channelType) {
+			this(Channel.type(channelType));
+		}
+
+
+
+
 		@Override
 		public void trigger(final Publishable event) {
 			event.setChannel(channel);

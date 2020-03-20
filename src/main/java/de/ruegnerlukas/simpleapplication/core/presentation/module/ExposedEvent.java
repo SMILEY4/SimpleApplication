@@ -34,7 +34,7 @@ public class ExposedEvent {
 	 * @param eventSource the event source of this event
 	 * @return a new {@link ExposedEvent} with the given name, source and {@link UIExtensionScope#INTERNAL} as its scope
 	 */
-	public static <T> ExposedEvent internal(final Channel channel, final ListenableEventSource<Publishable> eventSource) {
+	public static ExposedEvent internal(final Channel channel, final ListenableEventSource<Publishable> eventSource) {
 		return new ExposedEvent(channel, eventSource, UIExtensionScope.INTERNAL);
 	}
 
@@ -46,7 +46,7 @@ public class ExposedEvent {
 	 * @param eventSource the event source of this event
 	 * @return a new {@link ExposedEvent} with the given name, source and {@link UIExtensionScope#LOCAL} as its scope
 	 */
-	public static <T> ExposedEvent local(final Channel channel, final ListenableEventSource<Publishable> eventSource) {
+	public static ExposedEvent local(final Channel channel, final ListenableEventSource<Publishable> eventSource) {
 		return new ExposedEvent(channel, eventSource, UIExtensionScope.LOCAL);
 	}
 
@@ -58,7 +58,7 @@ public class ExposedEvent {
 	 * @param eventSource the event source of this event
 	 * @return a new {@link ExposedEvent} with the given name, source and {@link UIExtensionScope#GLOBAL} as its scope
 	 */
-	public static <T> ExposedEvent global(final Channel channel, final ListenableEventSource<Publishable> eventSource) {
+	public static ExposedEvent global(final Channel channel, final ListenableEventSource<Publishable> eventSource) {
 		return new ExposedEvent(channel, eventSource, UIExtensionScope.GLOBAL);
 	}
 

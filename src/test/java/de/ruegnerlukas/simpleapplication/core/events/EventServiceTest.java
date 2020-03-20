@@ -38,6 +38,43 @@ public class EventServiceTest {
 
 
 	@Test
+	public void testUnscubscribe() {
+
+		final EventService eventService = new EventServiceImpl();
+		final PublishableEventListener listenerA = Mockito.mock(PublishableEventListener.class);
+		final PublishableEventListener listenerB = Mockito.mock(PublishableEventListener.class);
+		final PublishableEventListener listenerC = Mockito.mock(PublishableEventListener.class);
+
+		/*
+		channel 1: a
+		channel 2: b
+		channel 3: b, c
+		      all: a
+		 */
+		eventService.subscribe(Channel.name("channel 1"), listenerA);
+		eventService.subscribe(Channel.name("channel 2"), listenerB);
+		eventService.subscribe(Channel.name("channel 3"), listenerB);
+		eventService.subscribe(Channel.name("channel 3"), listenerC);
+		eventService.subscribe(listenerA);
+
+		eventService.unsubscribe(listenerA);
+		eventService.unsubscribe(listenerB);
+		eventService.unsubscribe(listenerC);
+
+		eventService.publish(publishable("channel 1"));
+		eventService.publish(publishable("channel 2"));
+		eventService.publish(publishable("channel 3"));
+
+		verify(listenerA, never()).onEvent(any());
+		verify(listenerB, never()).onEvent(any());
+		verify(listenerC, never()).onEvent(any());
+
+	}
+
+
+
+
+	@Test
 	public void testMetadataSimple() {
 
 		final String CHANNEL = "test.channel";

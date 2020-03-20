@@ -3,6 +3,8 @@ package de.ruegnerlukas.simpleapplication.core.events;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import lombok.Getter;
 
+import java.util.Optional;
+
 public abstract class Publishable {
 
 
@@ -16,10 +18,30 @@ public abstract class Publishable {
 
 
 	/**
-	 * Empty constructor. The channel of this {@link Publishable} will be null.
+	 * Empty constructor. The {@link Channel} of this {@link Publishable} will be its type.
 	 */
 	public Publishable() {
-		this(null);
+		this((Channel) null);
+	}
+
+
+
+
+	/**
+	 * @param typeChannel the type of the {@link Channel} of this publishable.
+	 */
+	public Publishable(final Class<?> typeChannel) {
+		this(Channel.type(typeChannel));
+	}
+
+
+
+
+	/**
+	 * @param nameChannel the name of the {@link Channel} of this publishable.
+	 */
+	public Publishable(final String nameChannel) {
+		this(Channel.name(nameChannel));
 	}
 
 
@@ -30,7 +52,7 @@ public abstract class Publishable {
 	 */
 	public Publishable(final Channel channel) {
 		metadata = new PublishableMeta(this);
-		metadata.setChannel(channel);
+		metadata.setChannel(Optional.ofNullable(channel).orElse(Channel.type(this.getClass())));
 	}
 
 

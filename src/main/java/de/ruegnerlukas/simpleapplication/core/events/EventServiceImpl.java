@@ -72,6 +72,29 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
+	public void unsubscribe(final EventListener<? extends Publishable> listener) {
+		subscribers.forEach((channel, subscribers) -> {
+			List<Subscriber> toRemove = new ArrayList<>();
+			subscribers.forEach(subscriber -> {
+				if (subscriber.getListener() == listener) {
+					toRemove.add(subscriber);
+				}
+			});
+			subscribers.removeAll(toRemove);
+		});
+		List<Subscriber> anyToRemove = new ArrayList<>();
+		anySubscribers.forEach(subscriber -> {
+			if (subscriber.getListener() == listener) {
+				anyToRemove.add(subscriber);
+			}
+		});
+		anySubscribers.removeAll(anyToRemove);
+	}
+
+
+
+
+	@Override
 	public PublishableMeta publish(final Publishable publishable) {
 		final List<Subscriber> subscriberList = new ArrayList<>();
 		subscriberList.addAll(subscribers.getOrDefault(publishable.getChannel(), Collections.emptyList()));
@@ -91,6 +114,14 @@ public class EventServiceImpl implements EventService {
 		}
 
 		return publishable.getMetadata();
+	}
+
+
+
+
+	@Override
+	public PublishableMeta publishEmpty(final Channel channel) {
+		return publish(new EmptyPublishable(channel));
 	}
 
 

@@ -73,12 +73,12 @@ public class ModuleTest extends ApplicationTest {
 			}
 		});
 
-		commandSourceViewGlobal = new PublishableEventSource(Channel.name(COMMAND_VIEW_GLOBAL));
+		commandSourceViewGlobal = new PublishableEventSource(COMMAND_VIEW_GLOBAL);
 		final ExposedCommand commandViewInternal = ExposedCommand.internal(Channel.name("cmd.view.internal"), new EventSource<>());
 		final ExposedCommand commandViewLocal = ExposedCommand.local(Channel.name("cmd.view.local"), new EventSource<>());
 		final ExposedCommand commandViewGlobal = ExposedCommand.global(Channel.name(COMMAND_VIEW_GLOBAL), commandSourceViewGlobal);
 
-		eventSourceViewGlobal = new PublishableEventSource(Channel.name(EVENT_VIEW_GLOBAL));
+		eventSourceViewGlobal = new PublishableEventSource(EVENT_VIEW_GLOBAL);
 		final ExposedEvent eventViewInternal = ExposedEvent.internal(Channel.name("event.view.internal"), new EventSource<>());
 		final ExposedEvent eventViewLocal = ExposedEvent.local(Channel.name("event.view.local"), new EventSource<>());
 		final ExposedEvent eventViewGlobal = ExposedEvent.global(Channel.name(EVENT_VIEW_GLOBAL), eventSourceViewGlobal);
@@ -87,12 +87,12 @@ public class ModuleTest extends ApplicationTest {
 		when(view.getExposedCommands()).thenReturn(List.of(commandViewInternal, commandViewLocal, commandViewGlobal));
 		when(view.getExposedEvents()).thenReturn(List.of(eventViewInternal, eventViewLocal, eventViewGlobal));
 
-		commandSourceControllerGlobal = new PublishableEventSource(Channel.name(COMMAND_CONTROLLER_GLOBAL));
+		commandSourceControllerGlobal = new PublishableEventSource(COMMAND_CONTROLLER_GLOBAL);
 		final ExposedCommand commandCtrlInternal = ExposedCommand.internal(Channel.name("cmd.ctrl.internal"), new EventSource<>());
 		final ExposedCommand commandCtrlLocal = ExposedCommand.local(Channel.name("cmd.ctrl.local"), new EventSource<>());
 		final ExposedCommand commandCtrlGlobal = ExposedCommand.global(Channel.name(COMMAND_CONTROLLER_GLOBAL), commandSourceControllerGlobal);
 
-		eventSourceControllerGlobal = new PublishableEventSource(Channel.name(EVENT_CONTROLLER_GLOBAL));
+		eventSourceControllerGlobal = new PublishableEventSource(EVENT_CONTROLLER_GLOBAL);
 		final ExposedEvent eventCtrlInternal = ExposedEvent.internal(Channel.name("event.ctrl.internal"), new EventSource<>());
 		final ExposedEvent eventCtrlLocal = ExposedEvent.local(Channel.name("event.ctrl.local"), new EventSource<>());
 		final ExposedEvent eventCtrlGlobal = ExposedEvent.global(Channel.name(EVENT_CONTROLLER_GLOBAL), eventSourceControllerGlobal);
