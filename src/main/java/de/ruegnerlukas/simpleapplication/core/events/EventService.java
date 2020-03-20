@@ -48,6 +48,22 @@ public interface EventService {
 	void unsubscribe(EventListener<? extends Publishable> listener);
 
 	/**
+	 * Registers the given object.
+	 * All methods with the {@link Listener}-annotation can then be called with the appropriate {@link Publishable}
+	 *
+	 * @param object the object with methods annotated with {@link Listener}
+	 */
+	void register(Object object);
+
+	/**
+	 * Registers the given class.
+	 * All methods with the {@link Listener}-annotation can then be called with the appropriate {@link Publishable}
+	 *
+	 * @param c the class with static methods annotated with {@link Listener}
+	 */
+	void register(Class<?> c);
+
+	/**
 	 * Publish the given {@link Publishable}
 	 *
 	 * @param publishable the object to publish

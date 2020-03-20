@@ -8,8 +8,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -98,6 +102,74 @@ public class EventServiceImpl implements EventService {
 			}
 		});
 		anySubscribers.removeAll(anyToRemove);
+	}
+
+
+
+
+	@Override
+	public void register(final Object object) {
+		Validations.INPUT.notNull(object).exception("The object to register must not be null.");
+		Arrays.stream(object.getClass().getDeclaredMethods())
+				.filter(method -> !Modifier.isStatic(method.getModifiers()))
+				.filter(method -> method.isAnnotationPresent(Listener.class))
+				.filter(method -> method.getParameterCount() == 1)
+				.forEach(method -> registerAnnotatedMethod(method, object));
+	}
+
+
+
+
+	@Override
+	public void register(final Class<?> c) {
+		Validations.INPUT.notNull(c).exception("The class to register must not be null.");
+		Arrays.stream(c.getDeclaredMethods())
+				.filter(method -> Modifier.isStatic(method.getModifiers()))
+				.filter(method -> method.isAnnotationPresent(Listener.class))
+				.filter(method -> method.getParameterCount() == 1)
+				.forEach(this::registerAnnotatedStaticMethod);
+	}
+
+
+
+
+	/**
+	 * Register a listener for the given method (annotated with {@link Listener}) of the given object.
+	 *
+	 * @param method the method to handle {@link Publishable}s
+	 * @param object the instance
+	 */
+	private void registerAnnotatedMethod(final Method method, final Object object) {
+		final Listener annotation = method.getAnnotation(Listener.class);
+		Listener.Utils.toChannel(annotation).ifPresent(channel ->
+				subscribe(channel, annotation.priority(), publishable -> {
+					try {
+						method.invoke(object, publishable);
+					} catch (IllegalAccessException | InvocationTargetException e) {
+						log.warn("Could not invoke listener-method: {} of {}: {}.",
+								method.getName(), object.toString(), e);
+					}
+				}));
+	}
+
+
+
+
+	/**
+	 * Register a listener for the given static method (annotated with {@link Listener}).
+	 *
+	 * @param method the static method to handle {@link Publishable}s
+	 */
+	private void registerAnnotatedStaticMethod(final Method method) {
+		final Listener annotation = method.getAnnotation(Listener.class);
+		Listener.Utils.toChannel(annotation).ifPresent(channel ->
+				subscribe(channel, annotation.priority(), publishable -> {
+					try {
+						method.invoke(null, publishable);
+					} catch (IllegalAccessException | InvocationTargetException e) {
+						log.warn("Could not invoke static listener-method: {}: {}.", method.getName(), e);
+					}
+				}));
 	}
 
 
