@@ -1,14 +1,16 @@
 package de.ruegnerlukas.simpleapplication.core.presentation;
 
-import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
-import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEventPackage;
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
-import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
+import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.core.presentation.views.EventClosePopup;
+import de.ruegnerlukas.simpleapplication.core.presentation.views.EventOpenPopup;
+import de.ruegnerlukas.simpleapplication.core.presentation.views.EventShowView;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewEvent;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
@@ -21,6 +23,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -100,11 +103,16 @@ public class ViewServiceTest extends ApplicationTest {
 			assertThat(handle.getHandleId()).isEqualTo(WindowHandle.ID_PRIMARY);
 			assertThat(handle.getViewId()).isEqualTo(view.getId());
 
-			assertEvent(ApplicationConstants.EVENT_SHOW_VIEW);
-			ViewEvent eventOpen = getEventAny(ApplicationConstants.EVENT_SHOW_VIEW);
-			assertThat(eventOpen.getPrevViewId()).isEqualTo(STARTUP_VIEW_ID);
-			assertThat(eventOpen.getViewId()).isEqualTo(view.getId());
-			assertThat(eventOpen.getWindowHandle()).isEqualTo(handle);
+			assertEvent(Channel.type(EventShowView.class));
+			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventShowView.class));
+			assertThat(eventOpen).isPresent();
+			eventOpen.ifPresent(publishable -> {
+				EventShowView event = (EventShowView) publishable;
+				assertThat(event.getPrevViewId()).isEqualTo(STARTUP_VIEW_ID);
+				assertThat(event.getViewId()).isEqualTo(view.getId());
+				assertThat(event.getWindowHandle()).isEqualTo(handle);
+			});
+
 		});
 	}
 
@@ -130,11 +138,15 @@ public class ViewServiceTest extends ApplicationTest {
 			assertThat(handle.getHandleId()).isEqualTo(handlePrimary.getHandleId());
 			assertThat(handle.getViewId()).isEqualTo(view.getId());
 
-			assertEvent(ApplicationConstants.EVENT_SHOW_VIEW);
-			ViewEvent eventOpen = getEventAny(ApplicationConstants.EVENT_SHOW_VIEW);
-			assertThat(eventOpen.getPrevViewId()).isEqualTo(viewPrev.getId());
-			assertThat(eventOpen.getViewId()).isEqualTo(view.getId());
-			assertThat(eventOpen.getWindowHandle()).isEqualTo(handle);
+			assertEvent(Channel.type(EventShowView.class));
+			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventShowView.class));
+			assertThat(eventOpen).isPresent();
+			eventOpen.ifPresent(publishable -> {
+				EventShowView event = (EventShowView) publishable;
+				assertThat(event.getPrevViewId()).isEqualTo(viewPrev.getId());
+				assertThat(event.getViewId()).isEqualTo(view.getId());
+				assertThat(event.getWindowHandle()).isEqualTo(handle);
+			});
 		});
 	}
 
@@ -157,21 +169,27 @@ public class ViewServiceTest extends ApplicationTest {
 			assertThat(viewService.getWindowHandles(view.getId())).hasSize(1);
 			assertThat(viewService.getWindowHandles(view.getId()).get(0).getHandleId()).isEqualTo(handle.getHandleId());
 
-			assertEvent(ApplicationConstants.EVENT_OPEN_POPUP);
-			ViewEvent eventOpen = getEventAny(ApplicationConstants.EVENT_OPEN_POPUP);
-			assertThat(eventOpen.getPrevViewId()).isNull();
-			assertThat(eventOpen.getViewId()).isEqualTo(view.getId());
-			assertThat(eventOpen.getWindowHandle()).isEqualTo(handle);
+			assertEvent(Channel.type(EventOpenPopup.class));
+			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventOpenPopup.class));
+			assertThat(eventOpen).isPresent();
+			eventOpen.ifPresent(publishable -> {
+				EventOpenPopup event = (EventOpenPopup) publishable;
+				assertThat(event.getViewId()).isEqualTo(view.getId());
+				assertThat(event.getWindowHandle()).isEqualTo(handle);
+			});
 
 			// close popup
 			viewService.closePopup(handle);
 			assertThat(viewService.getWindowHandles(view.getId())).hasSize(0);
 
-			assertEvent(ApplicationConstants.EVENT_CLOSE_POPUP);
-			ViewEvent eventClose = getEventAny(ApplicationConstants.EVENT_CLOSE_POPUP);
-			assertThat(eventClose.getPrevViewId()).isEqualTo(view.getId());
-			assertThat(eventClose.getViewId()).isEqualTo(view.getId());
-			assertThat(eventClose.getWindowHandle()).isEqualTo(handle);
+			assertEvent(Channel.type(EventClosePopup.class));
+			Optional<Publishable> eventClose = getEventAny(Channel.type(EventClosePopup.class));
+			assertThat(eventOpen).isPresent();
+			eventClose.ifPresent(publishable -> {
+				EventClosePopup event = (EventClosePopup) publishable;
+				assertThat(event.getViewId()).isEqualTo(view.getId());
+				assertThat(event.getWindowHandle()).isEqualTo(handle);
+			});
 
 		});
 	}
@@ -201,21 +219,21 @@ public class ViewServiceTest extends ApplicationTest {
 
 
 
-	private List<EventPackage> eventPackages = new ArrayList<>();
+	private List<Publishable> events = new ArrayList<>();
 
 
 
 
 	private EventService eventService() {
-		final EventService eventService = new EventService();
-		eventService.subscribe(eventPackage -> eventPackages.add(eventPackage));
+		final EventService eventService = new EventServiceImpl();
+		eventService.subscribe(eventPackage -> events.add(eventPackage));
 		return eventService;
 	}
 
 
 
 
-	private void assertEvent(final String channel) {
+	private void assertEvent(final Channel channel) {
 		assertThat(getEventPackages(channel)).isNotEmpty();
 	}
 
@@ -223,25 +241,25 @@ public class ViewServiceTest extends ApplicationTest {
 
 
 	private void clearEvents() {
-		eventPackages.clear();
+		events.clear();
 	}
 
 
 
 
-	private List<EventPackage> getEventPackages(final String channel) {
-		return eventPackages.stream()
-				.filter(e -> List.of(e.getChannels()).contains(channel))
+	private List<Publishable> getEventPackages(final Channel channel) {
+		return events.stream()
+				.filter(e -> e.getChannel().equals(channel))
 				.collect(Collectors.toList());
 	}
 
 
 
 
-	private <T> T getEventAny(final String channel) {
-		return (T) eventPackages.stream()
-				.filter(e -> List.of(e.getChannels()).contains(channel))
-				.findAny().orElseGet(EmptyEventPackage::new).getEvent();
+	private Optional<Publishable> getEventAny(final Channel channel) {
+		return events.stream()
+				.filter(e -> e.getChannel().equals(channel))
+				.findAny();
 	}
 
 
