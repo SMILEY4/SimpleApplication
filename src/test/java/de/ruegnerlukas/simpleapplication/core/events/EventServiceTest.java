@@ -231,10 +231,157 @@ public class EventServiceTest {
 
 
 
+	@Test
+	public void testAnnotationByName() {
+		final String CHANNEL = "test.channel";
+		final EventService eventService = new EventServiceImpl();
+
+		AnnotatedClass annotatedClass = new AnnotatedClass();
+		eventService.register(annotatedClass);
+
+		Publishable publishable = publishable(CHANNEL);
+		eventService.publish(publishable);
+
+		assertThat(annotatedClass.callsByName).isEqualTo(1);
+		assertThat(annotatedClass.lastReceived).isEqualTo(publishable);
+	}
+
+
+
+
+	@Test
+	public void testAnnotationByType() {
+		final EventService eventService = new EventServiceImpl();
+
+		AnnotatedClass annotatedClass = new AnnotatedClass();
+		eventService.register(annotatedClass);
+
+		Publishable publishable = new TestEvent();
+		eventService.publish(publishable);
+
+		assertThat(annotatedClass.callsByType).isEqualTo(1);
+		assertThat(annotatedClass.lastReceived).isEqualTo(publishable);
+	}
+
+
+
+
+	@Test
+	public void testAnnotationPriorityLower() {
+		final EventService eventService = new EventServiceImpl();
+
+		AnnotatedClass annotatedClass = new AnnotatedClass();
+		eventService.register(annotatedClass);
+		eventService.subscribe(Channel.name("test.channel.priority"), 100, Publishable::cancel);
+
+		PublishableMeta meta = eventService.publish(publishable("test.channel.priority"));
+		assertThat(annotatedClass.callsByNameWithPriority).isEqualTo(0);
+		assertThat(meta.isCancelled());
+		assertThat(meta.getNumListeners()).isEqualTo(2);
+		assertThat(meta.getNumReceivers()).isEqualTo(1);
+	}
+
+
+
+
+	@Test
+	public void testAnnotationPriorityHigher() {
+		final EventService eventService = new EventServiceImpl();
+
+		AnnotatedClass annotatedClass = new AnnotatedClass();
+		eventService.register(annotatedClass);
+		eventService.subscribe(Channel.name("test.channel.priority"), 5, Publishable::cancel);
+
+		PublishableMeta meta = eventService.publish(publishable("test.channel.priority"));
+		assertThat(annotatedClass.callsByNameWithPriority).isEqualTo(1);
+		assertThat(meta.isCancelled());
+		assertThat(meta.getNumListeners()).isEqualTo(2);
+		assertThat(meta.getNumReceivers()).isEqualTo(2);
+
+	}
+
+
+
+
+	@Test
+	public void testAnnotationStaticMethod() {
+		final String CHANNEL = "test.channel.static";
+		final EventService eventService = new EventServiceImpl();
+
+		eventService.register(AnnotatedClass.class);
+
+		Publishable publishable = publishable(CHANNEL);
+		eventService.publish(publishable);
+
+		assertThat(AnnotatedClass.callsStaticMethod).isEqualTo(1);
+		assertThat(AnnotatedClass.lastReceivedStatic).isEqualTo(publishable);
+	}
+
+
+
+
 	private Publishable publishable(final String channel) {
 		return new Publishable(Channel.name(channel)) {
 		};
 	}
+
+
+
+
+	static class AnnotatedClass {
+
+
+		public int callsByName = 0;
+		public int callsByNameWithPriority = 0;
+		public int callsByType = 0;
+		public Publishable lastReceived = null;
+
+		public static int callsStaticMethod = 0;
+		public static Publishable lastReceivedStatic = null;
+
+
+
+
+		@Listener (name = "test.channel")
+		public void testMethodName(Publishable publishable) {
+			System.out.println("Received by name: " + publishable);
+			lastReceived = publishable;
+			callsByName++;
+		}
+
+
+
+
+		@Listener (name = "test.channel.priority", priority = 10)
+		public void testMethodNamePriority10(Publishable publishable) {
+			System.out.println("Received by name with priority: " + publishable);
+			lastReceived = publishable;
+			callsByNameWithPriority++;
+		}
+
+
+
+
+		@Listener (type = TestEvent.class)
+		public void testMethodType(Publishable publishable) {
+			System.out.println("Received by type: " + publishable);
+			lastReceived = publishable;
+			callsByType++;
+		}
+
+
+
+
+		@Listener (name = "test.channel.static")
+		public static void testStaticMethod(Publishable publishable) {
+			System.out.println("Received by name static: " + publishable);
+			lastReceivedStatic = publishable;
+			callsStaticMethod++;
+		}
+
+	}
+
+
 
 
 
@@ -244,6 +391,13 @@ public class EventServiceTest {
 
 		public TestEvent(String channel) {
 			super(Channel.name(channel));
+		}
+
+
+
+
+		public TestEvent() {
+			super(Channel.type(TestEvent.class));
 		}
 
 	}
