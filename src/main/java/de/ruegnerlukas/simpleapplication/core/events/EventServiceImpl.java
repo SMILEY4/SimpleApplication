@@ -41,7 +41,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void subscribe(final Channel channel, final int priority, final EventListener<? extends Publishable> listener) {
+	public synchronized void subscribe(final Channel channel, final int priority, final EventListener<? extends Publishable> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener must not be null");
 		validateChannel(channel);
 		subscribers.computeIfAbsent(channel, c -> new ArrayList<>()).add(new Subscriber(listener, priority));
@@ -52,7 +52,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void subscribe(final Channel channel, final EventListener<? extends Publishable> listener) {
+	public synchronized void subscribe(final Channel channel, final EventListener<? extends Publishable> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener must not be null");
 		validateChannel(channel);
 		subscribe(channel, Subscriber.DEFAULT_PRIORITY, listener);
@@ -62,7 +62,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void subscribe(final EventListener<? extends Publishable> listener) {
+	public synchronized void subscribe(final EventListener<? extends Publishable> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener must not be null");
 		anySubscribers.add(new Subscriber(listener, Integer.MIN_VALUE));
 	}
@@ -71,7 +71,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void unsubscribe(final Channel channel, final EventListener<? extends Publishable> listener) {
+	public synchronized void unsubscribe(final Channel channel, final EventListener<? extends Publishable> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener must not be null");
 		validateChannel(channel);
 		final List<Subscriber> subscriberList = subscribers.computeIfAbsent(channel, c -> new ArrayList<>());
@@ -84,7 +84,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void unsubscribe(final EventListener<? extends Publishable> listener) {
+	public synchronized void unsubscribe(final EventListener<? extends Publishable> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener must not be null");
 		subscribers.forEach((channel, subscribers) -> {
 			List<Subscriber> toRemove = new ArrayList<>();
@@ -108,7 +108,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void register(final Object object) {
+	public synchronized void register(final Object object) {
 		Validations.INPUT.notNull(object).exception("The object to register must not be null.");
 		Arrays.stream(object.getClass().getDeclaredMethods())
 				.filter(method -> !Modifier.isStatic(method.getModifiers()))
@@ -121,7 +121,7 @@ public class EventServiceImpl implements EventService {
 
 
 	@Override
-	public void register(final Class<?> c) {
+	public synchronized void register(final Class<?> c) {
 		Validations.INPUT.notNull(c).exception("The class to register must not be null.");
 		Arrays.stream(c.getDeclaredMethods())
 				.filter(method -> Modifier.isStatic(method.getModifiers()))
