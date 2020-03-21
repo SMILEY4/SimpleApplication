@@ -7,6 +7,10 @@ import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import static de.ruegnerlukas.simpleapplication.core.events.PublishableEvent.PublishableEventListener;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -315,6 +319,59 @@ public class EventServiceTest {
 
 		assertThat(AnnotatedClass.callsStaticMethod).isEqualTo(1);
 		assertThat(AnnotatedClass.lastReceivedStatic).isEqualTo(publishable);
+	}
+
+
+
+
+	@Test
+	public void testMultithreadedSubscribe() {
+
+		final String CHANNEL = "test.channel.static";
+		final EventService eventService = new EventServiceImpl();
+
+		List<PublishableEventListener> listeners = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			listeners.add(Mockito.mock(PublishableEventListener.class));
+		}
+
+		// subscribe async
+		listeners.parallelStream().forEach(listener ->
+				eventService.subscribe(Channel.name(CHANNEL), new Random().nextInt(100), listener));
+
+		PublishableMeta meta = eventService.publish(publishable(CHANNEL));
+		assertThat(meta.getNumReceivers()).isEqualTo(listeners.size());
+		assertThat(meta.getNumListeners()).isEqualTo(listeners.size());
+	}
+
+
+
+
+	@Test
+	public void testMultithreadedPublish() {
+
+		final String CHANNEL = "test.channel.static";
+		final EventService eventService = new EventServiceImpl();
+
+		List<PublishableEventListener> listeners = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
+			eventService.subscribe(Channel.name(CHANNEL), listeners.size() - i, listener);
+			listeners.add(listener);
+		}
+
+		List<Publishable> publishables = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			publishables.add(publishable(CHANNEL));
+		}
+
+		// publish async
+		publishables.parallelStream().forEach(publishable -> {
+			PublishableMeta meta = eventService.publish(publishable);
+			assertThat(meta.getNumListeners()).isEqualTo(listeners.size());
+			assertThat(meta.getNumReceivers()).isEqualTo(listeners.size());
+		});
+
 	}
 
 
