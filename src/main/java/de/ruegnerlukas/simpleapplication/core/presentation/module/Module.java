@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.module;
 
-import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
 import de.ruegnerlukas.simpleapplication.common.events.ListenableEventSourceGroup;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSource;
 import de.ruegnerlukas.simpleapplication.common.events.TriggerableEventSourceGroup;
@@ -8,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Prov
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.presentation.utils.Anchors;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -128,7 +128,7 @@ public class Module extends AnchorPane {
 	private ListenableEventSourceGroup buildInternalEventGroup(final ModuleView view) {
 		final ListenableEventSourceGroup group = new ListenableEventSourceGroup();
 		Optional.ofNullable(view.getExposedEvents()).orElseGet(List::of)
-				.forEach(exposedEvent -> group.add(exposedEvent.getName(), exposedEvent.getEventSource()));
+				.forEach(exposedEvent -> group.add(exposedEvent.getChannel(), exposedEvent.getEventSource()));
 		return group;
 	}
 
@@ -144,7 +144,7 @@ public class Module extends AnchorPane {
 	private TriggerableEventSourceGroup buildInternalCommandGroup(final ModuleView view) {
 		final TriggerableEventSourceGroup group = new TriggerableEventSourceGroup();
 		Optional.ofNullable(view.getExposedCommands()).orElseGet(List::of)
-				.forEach(exposedCommand -> group.add(exposedCommand.getName(), exposedCommand.getEventSource()));
+				.forEach(exposedCommand -> group.add(exposedCommand.getChannel(), exposedCommand.getEventSource()));
 		return group;
 	}
 
@@ -165,7 +165,7 @@ public class Module extends AnchorPane {
 		exposedEvents.addAll(Optional.ofNullable(controller.getExposedEvents()).orElseGet(List::of));
 		exposedEvents.stream()
 				.filter(exposedEvent -> exposedEvent.getScope().isAtLeast(UIExtensionScope.LOCAL))
-				.forEach(exposedEvent -> group.add(exposedEvent.getName(), exposedEvent.getEventSource()));
+				.forEach(exposedEvent -> group.add(exposedEvent.getChannel(), exposedEvent.getEventSource()));
 		return group;
 	}
 
@@ -186,7 +186,7 @@ public class Module extends AnchorPane {
 		exposedCommands.addAll(Optional.ofNullable(controller.getExposedCommands()).orElseGet(List::of));
 		exposedCommands.stream()
 				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.LOCAL))
-				.forEach(exposedCommand -> group.add(exposedCommand.getName(), exposedCommand.getEventSource()));
+				.forEach(exposedCommand -> group.add(exposedCommand.getChannel(), exposedCommand.getEventSource()));
 		return group;
 	}
 
@@ -206,9 +206,7 @@ public class Module extends AnchorPane {
 		exposedEvents.addAll(Optional.ofNullable(controller.getExposedEvents()).orElseGet(List::of));
 		exposedEvents.stream()
 				.filter(exposedEvent -> exposedEvent.getScope().isAtLeast(UIExtensionScope.GLOBAL))
-				.forEach(exposedEvent -> exposedEvent.getEventSource().subscribe(event -> {
-					eventService.publish(exposedEvent.getName(), new EventPackage<>(event));
-				}));
+				.forEach(exposedEvent -> exposedEvent.getEventSource().subscribe(eventService::publish));
 	}
 
 
@@ -227,12 +225,10 @@ public class Module extends AnchorPane {
 		exposedCommands.addAll(Optional.ofNullable(controller.getExposedCommands()).orElseGet(List::of));
 		exposedCommands.stream()
 				.filter(exposedCommand -> exposedCommand.getScope().isAtLeast(UIExtensionScope.GLOBAL))
-				.forEach(exposedCommand -> {
-					eventService.subscribe(exposedCommand.getName(), eventPackage -> {
-						final TriggerableEventSource eventSource = exposedCommand.getEventSource();
-						eventSource.trigger(eventPackage.getEvent());
-					});
-				});
+				.forEach(exposedCommand -> eventService.subscribe(exposedCommand.getChannel(), publishable -> {
+					final TriggerableEventSource<Publishable> eventSource = exposedCommand.getEventSource();
+					eventSource.trigger(publishable);
+				}));
 	}
 
 

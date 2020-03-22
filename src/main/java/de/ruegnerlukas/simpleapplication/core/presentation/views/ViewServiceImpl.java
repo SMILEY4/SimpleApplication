@@ -1,9 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
-import de.ruegnerlukas.simpleapplication.common.events.EventPackage;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -131,12 +129,7 @@ public class ViewServiceImpl implements ViewService {
 			stage.show();
 		}
 
-		eventServiceProvider.get().publish(ApplicationConstants.EVENT_SHOW_VIEW, new EventPackage<>(
-				ViewEvent.builder()
-						.prevViewId(prevView.equals(viewId) ? null : prevView)
-						.viewId(viewId)
-						.windowHandle(handle)
-						.build()));
+		eventServiceProvider.get().publish(new EventShowView(prevView.equals(viewId) ? null : prevView, viewId, handle));
 
 		return handle;
 	}
@@ -164,12 +157,7 @@ public class ViewServiceImpl implements ViewService {
 		final WindowHandle handle = new WindowHandle(createHandleId(), view, stage);
 		viewHandles.put(handle.getHandleId(), handle);
 
-		eventServiceProvider.get().publish(ApplicationConstants.EVENT_OPEN_POPUP, new EventPackage<>(
-				ViewEvent.builder()
-						.prevViewId(null)
-						.viewId(viewId)
-						.windowHandle(handle)
-						.build()));
+		eventServiceProvider.get().publish(new EventOpenPopup(viewId, handle));
 
 		if (config.isWait()) {
 			stage.showAndWait();
@@ -188,18 +176,10 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.notNull(handle).exception("The handle may not be null.");
 		Validations.INPUT.containsKey(viewHandles, handle.getHandleId())
 				.exception("The handle '{}' was not found.", handle.getHandleId());
-
 		handle.getStage().close();
 		handle.getStage().getScene().setRoot(new Pane());
 		viewHandles.remove(handle.getHandleId());
-
-		eventServiceProvider.get().publish(ApplicationConstants.EVENT_CLOSE_POPUP, new EventPackage<>(
-				ViewEvent.builder()
-						.prevViewId(handle.getView().getId())
-						.viewId(handle.getView().getId())
-						.windowHandle(handle)
-						.build()));
-
+		eventServiceProvider.get().publish(new EventClosePopup(handle.getView().getId(), handle));
 	}
 
 

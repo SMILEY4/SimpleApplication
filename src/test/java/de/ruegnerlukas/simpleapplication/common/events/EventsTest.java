@@ -1,10 +1,8 @@
 package de.ruegnerlukas.simpleapplication.common.events;
 
 import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEvent;
-import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EventBusListener;
 import de.ruegnerlukas.simpleapplication.common.events.specializedevents.StringEvent;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -108,99 +106,34 @@ public class EventsTest {
 
 		// create listenable group
 		final ListenableEventSourceGroup groupListenable = new ListenableEventSourceGroup();
-		groupListenable.add(SOURCE_NAME_A, sourceA);
-		groupListenable.add(SOURCE_NAME_B, sourceB);
+		groupListenable.add(Channel.name(SOURCE_NAME_A), sourceA);
+		groupListenable.add(Channel.name(SOURCE_NAME_B), sourceB);
 
 		// create triggerable group
 		final TriggerableEventSourceGroup groupTriggerable = new TriggerableEventSourceGroup();
-		groupTriggerable.add(SOURCE_NAME_A, sourceA);
-		groupTriggerable.add(SOURCE_NAME_B, sourceB);
+		groupTriggerable.add(Channel.name(SOURCE_NAME_A), sourceA);
+		groupTriggerable.add(Channel.name(SOURCE_NAME_B), sourceB);
 
 		// subscribe listener to sources (through group)
 		final StringEvent.StringEventListener listenerA = Mockito.mock(StringEvent.StringEventListener.class);
-		final ListenableEventSource<String> listenableA = groupListenable.find(SOURCE_NAME_A);
+		final ListenableEventSource<String> listenableA = groupListenable.find(Channel.name(SOURCE_NAME_A));
+		assertThat(listenableA).isNotNull();
 		listenableA.subscribe(listenerA);
 
 		final StringEvent.StringEventListener listenerB = Mockito.mock(StringEvent.StringEventListener.class);
-		final ListenableEventSource<String> listenableB = groupListenable.find(SOURCE_NAME_B);
+		final ListenableEventSource<String> listenableB = groupListenable.find(Channel.name(SOURCE_NAME_B));
+		assertThat(listenableB).isNotNull();
 		listenableB.subscribe(listenerB);
 
 		// trigger events (through group)
-		final TriggerableEventSource<String> triggerableA = groupTriggerable.find(SOURCE_NAME_A);
+		final TriggerableEventSource<String> triggerableA = groupTriggerable.find(Channel.name(SOURCE_NAME_A));
 		triggerableA.trigger(EVENT_A);
-		final TriggerableEventSource<String> triggerableB = groupTriggerable.find(SOURCE_NAME_B);
+		final TriggerableEventSource<String> triggerableB = groupTriggerable.find(Channel.name(SOURCE_NAME_B));
 		triggerableB.trigger(EVENT_B);
 
 		// verify
 		verify(listenerA).onEvent(eq(EVENT_A));
 		verify(listenerB).onEvent(eq(EVENT_B));
-	}
-
-
-
-
-	@Test
-	public void testSimpleEventBus() {
-
-		final String CHANNEL = "test_channel";
-		final String EVENT = "test event";
-
-		// create event bus
-		final EventBus bus = new EventBusImpl();
-
-		// subscribe listener to channel
-		final EventBusListener<String> listener = Mockito.mock(EventBusListener.class);
-		bus.subscribe(CHANNEL, listener);
-		assertThat(bus.getSubscriberCount(CHANNEL)).isEqualTo(1);
-
-		// publish event on channel
-		bus.publish(CHANNEL, new EventPackage<>(EVENT));
-
-		// verify
-		ArgumentCaptor<EventPackage<String>> argument = ArgumentCaptor.forClass(EventPackage.class);
-		verify(listener).onEvent(argument.capture());
-		assertThat(argument.getValue()).isNotNull();
-		assertThat(argument.getValue().getChannels()).containsExactlyInAnyOrder(CHANNEL);
-		assertThat(argument.getValue().getReceivers()).isEqualTo(1);
-		assertThat(argument.getValue().getEvent()).isEqualTo(EVENT);
-	}
-
-
-	@Test
-	public void testEventBusAnySubscribers() {
-
-		final String CHANNEL = "test_channel";
-		final String EVENT = "test event";
-
-		// create event bus
-		final EventBus bus = new EventBusImpl();
-
-		// subscribe listener to channel
-		final EventBusListener<String> listener = Mockito.mock(EventBusListener.class);
-		final EventBusListener<String> listenerAny = Mockito.mock(EventBusListener.class);
-
-		bus.subscribe(CHANNEL, listener);
-		bus.subscribe(listenerAny);
-		assertThat(bus.getSubscriberCount(CHANNEL)).isEqualTo(2);
-
-		// publish event on channel
-		bus.publish(CHANNEL, new EventPackage<>(EVENT));
-
-		// verify
-		ArgumentCaptor<EventPackage<String>> argument = ArgumentCaptor.forClass(EventPackage.class);
-		verify(listener).onEvent(argument.capture());
-		assertThat(argument.getValue()).isNotNull();
-		assertThat(argument.getValue().getChannels()).containsExactlyInAnyOrder(CHANNEL);
-		assertThat(argument.getValue().getReceivers()).isEqualTo(2);
-		assertThat(argument.getValue().getEvent()).isEqualTo(EVENT);
-
-		ArgumentCaptor<EventPackage<String>> argumentAny = ArgumentCaptor.forClass(EventPackage.class);
-		verify(listener).onEvent(argumentAny.capture());
-		assertThat(argumentAny.getValue()).isNotNull();
-		assertThat(argumentAny.getValue().getChannels()).containsExactlyInAnyOrder(CHANNEL);
-		assertThat(argumentAny.getValue().getReceivers()).isEqualTo(2);
-		assertThat(argumentAny.getValue().getEvent()).isEqualTo(EVENT);
-
 	}
 
 

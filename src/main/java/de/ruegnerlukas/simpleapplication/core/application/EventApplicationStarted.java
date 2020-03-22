@@ -1,0 +1,19 @@
+package de.ruegnerlukas.simpleapplication.core.application;
+
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
+import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+
+/**
+ * The event triggered when the application is fully started.
+ */
+public final class EventApplicationStarted extends Publishable {
+
+
+	/**
+	 * The default constructor.
+	 */
+	public EventApplicationStarted() {
+		super(Channel.type(EventApplicationStarted.class));
+	}
+
+}

@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.core.plugins;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class PluginServiceTest {
 		ProviderService.registerFactory(new InstanceFactory<>(EventService.class) {
 			@Override
 			public EventService buildObject() {
-				return new EventService();
+				return new EventServiceImpl();
 			}
 		});
 	}
