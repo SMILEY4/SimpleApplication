@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
-import de.ruegnerlukas.simpleapplication.core.presentation.utils.Anchors;
+import de.ruegnerlukas.simpleapplication.core.presentation.Anchors;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
