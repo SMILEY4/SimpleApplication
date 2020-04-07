@@ -19,7 +19,8 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.core.events;
 	exports de.ruegnerlukas.simpleapplication.core.extensions;
 	exports de.ruegnerlukas.simpleapplication.core.plugins;
+	exports de.ruegnerlukas.simpleapplication.core.presentation;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.module;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.views;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.utils;
+	exports de.ruegnerlukas.simpleapplication.core.presentation.style;
 }
