@@ -54,7 +54,7 @@ public class StringStyle extends Style {
 
 
 	@Override
-	public void applyToOnly(final Node target) {
+	public void applyExclusive(final Node target) {
 		target.setStyle(getAsSingleString());
 	}
 
