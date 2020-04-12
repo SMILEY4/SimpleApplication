@@ -56,7 +56,7 @@ public class StyleTest extends ApplicationTest {
 		final Style styleA = StringStyle.fromString("-fx-background-color: red", "-fx-border-color: red");
 		final Style styleB = StringStyle.fromString("-fx-background-color: blue", "-fx-border-color: blue");
 		styleA.applyTo(node);
-		styleB.applyToOnly(node);
+		styleB.applyExclusive(node);
 		assertThat(node.getStyle().replace(" ", "")).isEqualTo("-fx-background-color:blue;-fx-border-color:blue;");
 	}
 
@@ -82,7 +82,7 @@ public class StyleTest extends ApplicationTest {
 	@Test
 	public void testResourceStyleApply() {
 		final Parent node = new Button();
-		final Style style = StringStyle.fromFile(Resource.external("test.css"));
+		final Style style = StringStyle.fromResource(Resource.external("test.css"));
 		style.applyTo(node);
 		assertThat(node.getStylesheets()).hasSize(1);
 		assertThat(node.getStylesheets()).containsExactlyInAnyOrder("file:test.css");
@@ -94,8 +94,8 @@ public class StyleTest extends ApplicationTest {
 	@Test
 	public void testResourceStyleApplyMultiple() {
 		final Parent node = new Button();
-		final Style styleA = StringStyle.fromFile(Resource.external("testA.css"));
-		final Style styleB = StringStyle.fromFile(Resource.external("testB.css"));
+		final Style styleA = StringStyle.fromResource(Resource.external("testA.css"));
+		final Style styleB = StringStyle.fromResource(Resource.external("testB.css"));
 		styleA.applyTo(node);
 		styleB.applyTo(node);
 		assertThat(node.getStylesheets()).hasSize(2);
@@ -108,10 +108,10 @@ public class StyleTest extends ApplicationTest {
 	@Test
 	public void testResourceStyleApplyOnly() {
 		final Parent node = new Button();
-		final Style styleA = StringStyle.fromFile(Resource.external("testA.css"));
-		final Style styleB = StringStyle.fromFile(Resource.external("testB.css"));
+		final Style styleA = StringStyle.fromResource(Resource.external("testA.css"));
+		final Style styleB = StringStyle.fromResource(Resource.external("testB.css"));
 		styleA.applyTo(node);
-		styleB.applyToOnly(node);
+		styleB.applyExclusive(node);
 		assertThat(node.getStylesheets()).hasSize(1);
 		assertThat(node.getStylesheets()).containsExactlyInAnyOrder("file:testB.css");
 	}
@@ -122,9 +122,9 @@ public class StyleTest extends ApplicationTest {
 	@Test
 	public void testResourceStyleRemove() {
 		final Parent node = new Button();
-		final Style styleA = StringStyle.fromFile(Resource.external("testA.css"));
-		final Style styleB = StringStyle.fromFile(Resource.external("testB.css"));
-		final Style styleC = StringStyle.fromFile(Resource.external("testC.css"));
+		final Style styleA = StringStyle.fromResource(Resource.external("testA.css"));
+		final Style styleB = StringStyle.fromResource(Resource.external("testB.css"));
+		final Style styleC = StringStyle.fromResource(Resource.external("testC.css"));
 		styleA.applyTo(node);
 		styleB.applyTo(node);
 		styleC.applyTo(node);

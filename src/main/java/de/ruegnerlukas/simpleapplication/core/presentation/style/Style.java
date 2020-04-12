@@ -7,12 +7,12 @@ public abstract class Style {
 
 
 	/**
-	 * Creates a new {@link Style} handle from the given stylesheet
+	 * Creates a new {@link Style} from the given stylesheet
 	 *
 	 * @param resource the {@link Resource} pointing to a stylesheet
 	 * @return the created style
 	 */
-	public static Style fromFile(final Resource resource) {
+	public static Style fromResource(final Resource resource) {
 		return new ResourceStyle(resource);
 	}
 
@@ -20,7 +20,7 @@ public abstract class Style {
 
 
 	/**
-	 * Creates a new {@link Style} handle from the given string.
+	 * Creates a new {@link Style} from the given string.
 	 *
 	 * @param string the css as string. Either separated by a ';' or as multiple strings.
 	 * @return the created style
@@ -41,11 +41,11 @@ public abstract class Style {
 
 
 	/**
-	 * Applies this style to the given node and removes other styles.
+	 * Applies this style to the given node and removes other previously applied styles.
 	 *
 	 * @param target the {@link Node}
 	 */
-	public abstract void applyToOnly(Node target);
+	public abstract void applyExclusive(Node target);
 
 
 	/**

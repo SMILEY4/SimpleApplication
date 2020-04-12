@@ -54,7 +54,7 @@ public class ResourceStyle extends Style {
 
 
 	@Override
-	public void applyToOnly(final Node target) {
+	public void applyExclusive(final Node target) {
 		validateIsParent(target);
 		((Parent) target).getStylesheets().clear();
 		applyTo(target);
