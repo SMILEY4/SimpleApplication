@@ -5,6 +5,7 @@ import javafx.scene.Node;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface StyleService {
 
@@ -45,6 +46,15 @@ public interface StyleService {
 	 */
 	void deregisterStyle(String name);
 
+	/**
+	 * Sets whether the style with the given name is a root-style.
+	 * Root styles will be applied to all scenes by the {@link de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService}.
+	 *
+	 * @param name        the name of the style
+	 * @param isRootStyle whether the style is a root-style
+	 */
+	void setRootStyle(String name, boolean isRootStyle);
+
 
 	/**
 	 * Applies the style registered with the given name to the given target.
@@ -63,6 +73,21 @@ public interface StyleService {
 	 */
 	void applyStylesTo(List<String> names, Node target);
 
+
+	/**
+	 * Applies the styles registered with the given names to the given target.
+	 *
+	 * @param names  the names of the {@link Style}s
+	 * @param target the target {@link Node}
+	 */
+	void applyStylesTo(Set<String> names, Node target);
+
+	/**
+	 * Applies the styles marked as root-styles to the given target.
+	 *
+	 * @param target the target {@link Node}
+	 */
+	void applyRootStylesTo(Node target);
 
 	/**
 	 * Applies the style registered with the given name to the given target node and removes all other previously applied styles.
@@ -132,5 +157,12 @@ public interface StyleService {
 	 * @return all {@link Node}s the given style was applied to.
 	 */
 	List<Node> getTargets(String style);
+
+	/**
+	 * Root styles will be applied to all scenes by the {@link de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService}.
+	 *
+	 * @return the names of the styles marked as root styles.
+	 */
+	List<String> getRootStyles();
 
 }

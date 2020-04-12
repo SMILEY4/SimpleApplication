@@ -1,8 +1,12 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
+import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.EventRootStyleMark;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -25,6 +29,11 @@ public class ViewServiceImpl implements ViewService {
 	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
 
 	/**
+	 * The provider for the style service.
+	 */
+	private final Provider<StyleService> styleServiceProvider = new Provider<>(StyleService.class);
+
+	/**
 	 * The primary stage of the (javafx-) application
 	 */
 	private Stage primaryStage = null;
@@ -37,7 +46,7 @@ public class ViewServiceImpl implements ViewService {
 	/**
 	 * All window handles of the currently visible windows and views.
 	 */
-	private final Map<String, WindowHandle> viewHandles = new HashMap<>();
+	private final Map<String, WindowHandle> windowHandles = new HashMap<>();
 
 
 
@@ -47,19 +56,52 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.notNull(stage).exception("The stage can not be null.");
 		Validations.STATE.isNull(primaryStage).exception("The view service was already initialized.");
 
+		listenRootStyles();
+
 		View startupView = view;
 		if (startupView == null) {
 			startupView = new EmptyView();
 		}
 		registerView(startupView);
-
-		this.primaryStage = stage;
-		this.primaryStage.setScene(
-				new Scene(startupView.getNode(), startupView.getSize().getWidth(), startupView.getSize().getHeight()));
-		this.primaryStage.setTitle(startupView.getTitle());
+		setupPrimaryStage(stage, startupView);
 		if (showViewAtStartup) {
 			showView(view.getId());
 		}
+	}
+
+
+
+
+	/**
+	 * Setup listeners to listen for changes of root-styles.
+	 */
+	private void listenRootStyles() {
+		eventServiceProvider.get().subscribe(Channel.type(EventRootStyleMark.class), publishable -> {
+			final EventRootStyleMark event = (EventRootStyleMark) publishable;
+			if (event.isRootStyle()) {
+				windowHandles.values().forEach(handle -> {
+					final Parent root = handle.getStage().getScene().getRoot();
+					styleServiceProvider.get().applyStyleTo(event.getStyle(), root);
+				});
+			}
+		});
+	}
+
+
+
+
+	/**
+	 * Setup primary stage with the given view
+	 *
+	 * @param stage the primary stage passed to this view service
+	 * @param view  the view to (possibly) show at startup
+	 */
+	private void setupPrimaryStage(final Stage stage, final View view) {
+		final Scene scene = new Scene(view.getNode(), view.getSize().getWidth(), view.getSize().getHeight());
+		primaryStage = stage;
+		primaryStage.setScene(scene);
+		primaryStage.setTitle(view.getTitle());
+		styleServiceProvider.get().applyStylesTo(styleServiceProvider.get().getRootStyles(), scene.getRoot());
 	}
 
 
@@ -102,7 +144,7 @@ public class ViewServiceImpl implements ViewService {
 		WindowHandle handle = getPrimaryWindowHandle();
 		if (handle == null) {
 			handle = new WindowHandle(WindowHandle.ID_PRIMARY, views.get(viewId), primaryStage);
-			viewHandles.put(handle.getHandleId(), handle);
+			windowHandles.put(handle.getHandleId(), handle);
 		}
 		return showView(viewId, handle);
 	}
@@ -124,6 +166,11 @@ public class ViewServiceImpl implements ViewService {
 		scene.setRoot(view.getNode());
 		setStageSize(stage, view);
 		stage.setTitle(view.getTitle());
+
+		final StyleService styleService = styleServiceProvider.get();
+		styleService.disconnectNode(views.get(prevView).getNode());
+		styleService.applyStylesTo(styleService.getRootStyles(), view.getNode());
+		styleService.applyStylesTo(view.getStyles(), view.getNode());
 
 		if (!stage.isShowing()) {
 			stage.show();
@@ -155,7 +202,11 @@ public class ViewServiceImpl implements ViewService {
 		setStageSize(stage, view);
 		stage.setScene(scene);
 		final WindowHandle handle = new WindowHandle(createHandleId(), view, stage);
-		viewHandles.put(handle.getHandleId(), handle);
+		windowHandles.put(handle.getHandleId(), handle);
+
+		final StyleService styleService = styleServiceProvider.get();
+		styleService.applyStylesTo(styleService.getRootStyles(), view.getNode());
+		styleService.applyStylesTo(view.getStyles(), view.getNode());
 
 		eventServiceProvider.get().publish(new EventOpenPopup(viewId, handle));
 
@@ -174,11 +225,12 @@ public class ViewServiceImpl implements ViewService {
 	@Override
 	public void closePopup(final WindowHandle handle) {
 		Validations.INPUT.notNull(handle).exception("The handle may not be null.");
-		Validations.INPUT.containsKey(viewHandles, handle.getHandleId())
+		Validations.INPUT.containsKey(windowHandles, handle.getHandleId())
 				.exception("The handle '{}' was not found.", handle.getHandleId());
 		handle.getStage().close();
 		handle.getStage().getScene().setRoot(new Pane());
-		viewHandles.remove(handle.getHandleId());
+		windowHandles.remove(handle.getHandleId());
+		styleServiceProvider.get().disconnectNode(handle.getView().getNode());
 		eventServiceProvider.get().publish(new EventClosePopup(handle.getView().getId(), handle));
 	}
 
@@ -187,7 +239,7 @@ public class ViewServiceImpl implements ViewService {
 
 	@Override
 	public List<WindowHandle> getWindowHandles(final String viewId) {
-		return viewHandles
+		return windowHandles
 				.values()
 				.stream()
 				.filter(handle -> handle.getView().getId().equals(viewId))
@@ -202,7 +254,7 @@ public class ViewServiceImpl implements ViewService {
 	 */
 	@Override
 	public WindowHandle getPrimaryWindowHandle() {
-		return viewHandles.get(WindowHandle.ID_PRIMARY);
+		return windowHandles.get(WindowHandle.ID_PRIMARY);
 	}
 
 

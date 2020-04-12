@@ -1,20 +1,29 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.style;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import javafx.scene.Node;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class StyleServiceImpl implements StyleService {
 
+
+	/**
+	 * The provider for the event service.
+	 */
+	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
 
 	/**
 	 * All registered {@link Style}s. The name of the registered style is the key.
@@ -25,6 +34,12 @@ public class StyleServiceImpl implements StyleService {
 	 * All nodes and their applied styles.
 	 */
 	private Map<Node, List<Style>> targets = new HashMap<>();
+
+	/**
+	 * All styles marked as root styles.
+	 * Root styles will be applied to all scenes by the {@link de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService}.
+	 */
+	private Set<String> rootStyles = new HashSet<>();
 
 
 
@@ -65,6 +80,7 @@ public class StyleServiceImpl implements StyleService {
 		} else {
 			styles.put(name, style);
 		}
+		eventServiceProvider.get().publish(new EventStyleRegistered(name));
 	}
 
 
@@ -80,14 +96,35 @@ public class StyleServiceImpl implements StyleService {
 
 
 	@Override
+	public void setRootStyle(final String name, final boolean isRootStyle) {
+		Validations.INPUT.notBlank(name).exception("The name can not be null or empty.");
+		findStyle(name).ifPresent(style -> {
+			boolean changed;
+			if (isRootStyle) {
+				changed = rootStyles.add(name);
+			} else {
+				changed = rootStyles.remove(name);
+			}
+			if (changed) {
+				eventServiceProvider.get().publish(new EventRootStyleMark(name, isRootStyle));
+			}
+		});
+	}
+
+
+
+
+	@Override
 	public void applyStyleTo(final String name, final Node target) {
 		Validations.INPUT.notBlank(name).exception("The name can not be null or empty.");
 		Validations.INPUT.notNull(target).exception("The target node can not be null.");
-		final Optional<Style> styleOptional = findStyle(name);
-		styleOptional.ifPresentOrElse(style -> {
-			style.applyTo(target);
-			targets.computeIfAbsent(target, k -> new ArrayList<>()).add(style);
-		}, () -> log.warn("The style '{}' does not exist and will not be applied to the given target.", name));
+		if (!getAppliedStyleNames(target).contains(name)) {
+			final Optional<Style> styleOptional = findStyle(name);
+			styleOptional.ifPresentOrElse(style -> {
+				style.applyTo(target);
+				targets.computeIfAbsent(target, k -> new ArrayList<>()).add(style);
+			}, () -> log.warn("The style '{}' does not exist and will not be applied to the given target.", name));
+		}
 	}
 
 
@@ -104,14 +141,35 @@ public class StyleServiceImpl implements StyleService {
 
 
 	@Override
+	public void applyStylesTo(final Set<String> names, final Node target) {
+		Validations.INPUT.notNull(names).exception("The names can not be null.");
+		Validations.INPUT.notNull(target).exception("The target node can not be null.");
+		names.forEach(name -> applyStyleTo(name, target));
+	}
+
+
+
+
+	@Override
+	public void applyRootStylesTo(final Node target) {
+		Validations.INPUT.notNull(target).exception("The target node can not be null.");
+		applyStylesTo(getRootStyles(), target);
+	}
+
+
+
+
+	@Override
 	public void applyStyleToExclusive(final String name, final Node target) {
 		Validations.INPUT.notBlank(name).exception("The name can not be null or empty.");
 		Validations.INPUT.notNull(target).exception("The target node can not be null.");
-		final Optional<Style> styleOptional = findStyle(name);
-		styleOptional.ifPresentOrElse(style -> {
-			style.applyExclusive(target);
-			targets.put(target, new ArrayList<>(List.of(style)));
-		}, () -> log.warn("The style '{}' does not exist and will not be applied to the given target.", name));
+		if (!getAppliedStyleNames(target).contains(name)) {
+			final Optional<Style> styleOptional = findStyle(name);
+			styleOptional.ifPresentOrElse(style -> {
+				style.applyExclusive(target);
+				targets.put(target, new ArrayList<>(List.of(style)));
+			}, () -> log.warn("The style '{}' does not exist and will not be applied to the given target.", name));
+		}
 	}
 
 
@@ -214,6 +272,14 @@ public class StyleServiceImpl implements StyleService {
 			}
 		}));
 		return nodes;
+	}
+
+
+
+
+	@Override
+	public List<String> getRootStyles() {
+		return new ArrayList<>(rootStyles);
 	}
 
 

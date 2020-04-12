@@ -115,6 +115,20 @@ public class StyleServiceTest extends ApplicationTest {
 	}
 
 
+	@Test
+	public void testApplyStyleTwice() {
+
+		final String STYLE = "testStyle";
+		final StyleService service = new StyleServiceImpl();
+		service.createFromString(STYLE, "-fx-background-color: red", "-fx-border-color: red");
+
+		final Node target = new Button();
+		service.applyStyleTo(STYLE, target);
+		service.applyStyleTo(STYLE, target);
+		assertThat(target.getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;-fx-border-color:red;");
+		assertThat(service.getAppliedStyleNames(target)).containsExactlyInAnyOrder(STYLE);
+		assertThat(service.getTargets(STYLE)).containsExactlyInAnyOrder(target);
+	}
 
 
 	@Test
@@ -199,6 +213,27 @@ public class StyleServiceTest extends ApplicationTest {
 		assertThat(service.getAppliedStyleNames(target)).isEmpty();
 		assertThat(service.getTargets(STYLE_A)).isEmpty();
 		assertThat(service.getTargets(STYLE_B)).isEmpty();
+	}
+
+
+	@Test
+	public void testRootStyles() {
+
+		final String STYLE_A = "testStyleA";
+		final String STYLE_B = "testStyleB";
+
+		final StyleService service = new StyleServiceImpl();
+		service.createFromString(STYLE_A, "-fx-background-color: red", "-fx-border-color: red");
+		service.createFromString(STYLE_B, "-fx-background-color: blue", "-fx-border-color: blue");
+
+		assertThat(service.getRootStyles()).isEmpty();
+
+		service.setRootStyle(STYLE_A, true);
+		service.setRootStyle(STYLE_B, true);
+		assertThat(service.getRootStyles()).containsExactlyInAnyOrder(STYLE_A, STYLE_B);
+
+		service.setRootStyle(STYLE_B, false);
+		assertThat(service.getRootStyles()).containsExactlyInAnyOrder(STYLE_A);
 	}
 
 

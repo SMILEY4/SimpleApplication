@@ -3,6 +3,8 @@ package de.ruegnerlukas.simpleapplication.core.presentation.views;
 import javafx.geometry.Dimension2D;
 import javafx.scene.layout.AnchorPane;
 
+import java.util.Set;
+
 public class EmptyView extends View {
 
 
@@ -33,7 +35,7 @@ public class EmptyView extends View {
 	 * A empty/dummy view with title, size and no content.
 	 */
 	public EmptyView() {
-		super(ID, new Dimension2D(WIDTH, HEIGHT), DEFAULT_SIZE_MIN, DEFAULT_SIZE_MAX, TITLE, new AnchorPane());
+		super(ID, new Dimension2D(WIDTH, HEIGHT), DEFAULT_SIZE_MIN, DEFAULT_SIZE_MAX, TITLE, new AnchorPane(), Set.of());
 	}
 
 }

@@ -5,6 +5,9 @@ import javafx.scene.Parent;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Builder
 public class View {
@@ -52,6 +55,11 @@ public class View {
 	 */
 	private final Parent node;
 
+	/**
+	 * The styles automatically applied to this view.
+	 */
+	private final Set<String> styles;
+
 
 
 
@@ -62,7 +70,7 @@ public class View {
 	 */
 	public static class ViewBuilder {
 
-		// Necessary so the lombok builder includes minSize and maxSize but also uses the default values if not specified.
+		// Necessary so the lombok builder includes minSize, maxSize and styles but also uses the default values if not specified.
 
 		/**
 		 * The min size initialized with the default value.
@@ -74,6 +82,10 @@ public class View {
 		 */
 		private Dimension2D maxSize = DEFAULT_SIZE_MAX;
 
+		/**
+		 * The default styles automatically applied to the view.
+		 */
+		private Set<String> styles = new HashSet<>();
 	}
 
 }
