@@ -43,7 +43,6 @@ public class InstanceProviderTest {
 
 	@Before
 	public void setup() {
-		System.out.println("Setup");
 		ProviderService.cleanup();
 
 		ProviderService.registerFactory(new InstanceFactory<>(User.class, ObjectType.NON_SINGLETON) {
