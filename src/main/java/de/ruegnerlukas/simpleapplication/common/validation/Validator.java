@@ -849,4 +849,23 @@ public class Validator {
 	}
 
 
+
+
+	/**
+	 * Checks if all given validations are successful.
+	 *
+	 * @param validations the results of the validations to check
+	 * @return the result of the validation
+	 */
+	public ValidationResult allSuccessful(final ValidationResult... validations) {
+		boolean allSuccessful = true;
+		for (ValidationResult result : validations) {
+			if (result.failed()) {
+				allSuccessful = false;
+				break;
+			}
+		}
+		return validated(!allSuccessful);
+	}
+
 }

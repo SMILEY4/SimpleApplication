@@ -477,6 +477,28 @@ public class ValidationsTest {
 
 
 	@Test
+	public void testAllSuccessful() {
+		final ValidationResult resultSuccessful = Validations.INPUT.allSuccessful(
+				Validations.INPUT.isTrue(true),
+				Validations.INPUT.isTrue(true),
+				Validations.INPUT.isTrue(true),
+				Validations.INPUT.isTrue(true)
+		);
+		assertTrue(resultSuccessful.successful());
+
+		final ValidationResult resultFailed = Validations.INPUT.allSuccessful(
+				Validations.INPUT.isTrue(true),
+				Validations.INPUT.isTrue(true),
+				Validations.INPUT.isTrue(false),
+				Validations.INPUT.isTrue(true)
+		);
+		assertTrue(resultFailed.failed());
+	}
+
+
+
+
+	@Test
 	public void testResultFailed() {
 		assertTrue(Validations.STATE.fail().failed());
 		assertFalse(Validations.STATE.succeed().failed());
