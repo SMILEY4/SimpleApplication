@@ -167,6 +167,7 @@ public class StyleServiceImpl implements StyleService {
 			final Optional<Style> styleOptional = findStyle(name);
 			styleOptional.ifPresentOrElse(style -> {
 				style.applyExclusive(target);
+				applyRootStylesTo(target);
 				targets.put(target, new ArrayList<>(List.of(style)));
 			}, () -> log.warn("The style '{}' does not exist and will not be applied to the given target.", name));
 		}
