@@ -57,6 +57,7 @@ public class ResourceStyle extends Style {
 	public void applyExclusive(final Node target) {
 		validateIsParent(target);
 		((Parent) target).getStylesheets().clear();
+		target.setStyle("");
 		applyTo(target);
 	}
 

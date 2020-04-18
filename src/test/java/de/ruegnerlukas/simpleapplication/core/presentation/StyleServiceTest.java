@@ -1,5 +1,9 @@
 package de.ruegnerlukas.simpleapplication.core.presentation;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
+import de.ruegnerlukas.simpleapplication.core.events.EventService;
+import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StringStyle;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.Style;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
@@ -21,6 +25,14 @@ public class StyleServiceTest extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) {
+
+		ProviderService.registerFactory(new InstanceFactory<>(EventService.class) {
+			@Override
+			public EventService buildObject() {
+				return new EventServiceImpl();
+			}
+		});
+
 		stage.setScene(new Scene(new Pane(), 100, 100));
 		stage.show();
 	}
@@ -171,6 +183,28 @@ public class StyleServiceTest extends ApplicationTest {
 		assertThat(service.getTargets(STYLE_B)).containsExactlyInAnyOrder(target);
 	}
 
+
+	@Test
+	public void testApplyStyleExclusiveWithRootStyles() {
+
+		final String STYLE_A = "testStyleA";
+		final String STYLE_B = "testStyleB";
+		final String STYLE_ROOT = "testStyleRoot";
+
+		final StyleService service = new StyleServiceImpl();
+		service.createFromString(STYLE_A, "-fx-background-color: red", "-fx-border-color: red");
+		service.createFromString(STYLE_B, "-fx-background-color: blue", "-fx-border-color: blue");
+		service.createFromString(STYLE_ROOT, "-fx-background-color: white", "-fx-border-color: white");
+		service.setRootStyle(STYLE_ROOT, true);
+
+		final Node target = new Button();
+		service.applyStyleTo(STYLE_A, target);
+		service.applyStyleToExclusive(STYLE_B, target);
+		assertThat(target.getStyle().replace(" ", "")).isEqualTo("-fx-background-color:blue;-fx-border-color:blue;-fx-background-color:white;-fx-border-color:white;");
+		assertThat(service.getAppliedStyleNames(target)).containsExactlyInAnyOrder(STYLE_B);
+		assertThat(service.getTargets(STYLE_A)).isEmpty();
+		assertThat(service.getTargets(STYLE_B)).containsExactlyInAnyOrder(target);
+	}
 
 
 

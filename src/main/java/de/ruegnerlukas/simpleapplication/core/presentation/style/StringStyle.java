@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.core.presentation.style;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,6 +57,9 @@ public class StringStyle extends Style {
 	@Override
 	public void applyExclusive(final Node target) {
 		target.setStyle(getAsSingleString());
+		if (target instanceof Parent) {
+			((Parent) target).getStylesheets().clear();
+		}
 	}
 
 
