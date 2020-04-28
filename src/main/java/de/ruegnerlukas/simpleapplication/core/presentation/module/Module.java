@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.presentation.Anchors;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +29,11 @@ public class Module extends AnchorPane {
 	 * The provider for the event service.
 	 */
 	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
+
+	/**
+	 * The provider for the style service.
+	 */
+	private final Provider<StyleService> styleServiceProvider = new Provider<>(StyleService.class);
 
 	/**
 	 * The group for local events.
@@ -76,6 +83,41 @@ public class Module extends AnchorPane {
 
 		publishGlobalEvents(view, controller);
 		publishGlobalCommands(view, controller);
+	}
+
+
+
+
+	/**
+	 * Adds the given style classes this this module
+	 *
+	 * @param styleClasses the style classes for this module
+	 * @return this module
+	 */
+	public Module withStyleClasses(final String... styleClasses) {
+		Validations.INPUT.notNull(styleClasses).exception("The style classes may not be empty or null.");
+		Arrays.stream(styleClasses).forEach(styleClass -> {
+			Validations.INPUT.notEmpty(styleClass).exception("A style class may not be null or empty.");
+			Validations.INPUT.isFalse(styleClass.startsWith(".")).exception("A style class may not start with a '.'.");
+			Validations.INPUT.isFalse(styleClass.contains(" ")).exception("A style class may not contain an empty space.");
+		});
+		this.getStyleClass().addAll(styleClasses);
+		return this;
+	}
+
+
+
+
+	/**
+	 * Adds the given style(s) to this module.
+	 *
+	 * @param styles the names of the styles to apply
+	 * @return this module
+	 */
+	public Module withStyles(final String... styles) {
+		Validations.INPUT.notNull(styles).exception("The styles may not be empty or null.");
+		styleServiceProvider.get().applyStylesTo(List.of(styles), this);
+		return this;
 	}
 
 
