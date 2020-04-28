@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
+import javafx.scene.Parent;
 import javafx.stage.Stage;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -57,5 +58,16 @@ public class WindowHandle {
 	public String getViewId() {
 		return view.getId();
 	}
+
+
+
+
+	/**
+	 * @return the root node of this window.
+	 */
+	public Parent getRootNode() {
+		return stage.getScene().getRoot();
+	}
+
 
 }

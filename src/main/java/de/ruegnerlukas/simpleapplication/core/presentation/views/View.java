@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
 import javafx.geometry.Dimension2D;
-import javafx.scene.Parent;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -51,9 +50,9 @@ public class View {
 	private final String title;
 
 	/**
-	 * The root node of this view.
+	 * The factory for the root node of this view.
 	 */
-	private final Parent node;
+	private final ViewNodeFactory nodeFactory;
 
 	/**
 	 * The styles automatically applied to this view.
@@ -86,6 +85,7 @@ public class View {
 		 * The default styles automatically applied to the view.
 		 */
 		private Set<String> styles = new HashSet<>();
+
 	}
 
 }
