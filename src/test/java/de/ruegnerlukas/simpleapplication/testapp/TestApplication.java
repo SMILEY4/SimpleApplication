@@ -85,7 +85,7 @@ public class TestApplication {
 					.size(new Dimension2D(300, 100))
 					.maxSize(new Dimension2D(300, 300))
 					.title(applicationName + " - View A")
-					.node(buttonA)
+					.nodeFactory(() -> buttonA)
 					.build();
 
 			// VIEW B
@@ -99,7 +99,7 @@ public class TestApplication {
 					.id(ID_B)
 					.size(new Dimension2D(200, 500))
 					.title(applicationName + " - View B")
-					.node(buttonB)
+					.nodeFactory(() -> buttonB)
 					.build();
 
 
@@ -121,7 +121,7 @@ public class TestApplication {
 					.id(ID_B_POPUP)
 					.size(new Dimension2D(300, 200))
 					.title(applicationName + " - View B Confirm")
-					.node(buttonBConfirm)
+					.nodeFactory(() -> buttonBConfirm)
 					.build();
 
 
@@ -137,7 +137,7 @@ public class TestApplication {
 					.id(ID_B_WARN)
 					.size(new Dimension2D(200, 300))
 					.title(applicationName + " - View B LAST WARNING")
-					.node(buttonBWarn)
+					.nodeFactory(() -> buttonBWarn)
 					.build();
 
 
