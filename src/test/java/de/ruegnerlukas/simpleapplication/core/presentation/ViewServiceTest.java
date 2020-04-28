@@ -112,9 +112,7 @@ public class ViewServiceTest extends ApplicationTest {
 			viewService.registerView(view);
 			assertThat(viewService.findView(view.getId())).isPresent();
 			final WindowHandle handle = viewService.showView(view.getId());
-			assertThat(handle).isNotNull();
-			assertThat(handle.getHandleId()).isEqualTo(WindowHandle.ID_PRIMARY);
-			assertThat(handle.getViewId()).isEqualTo(view.getId());
+			assertWindowHandle(handle, view);
 
 			assertEvent(Channel.type(EventShowView.class));
 			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventShowView.class));
@@ -147,9 +145,7 @@ public class ViewServiceTest extends ApplicationTest {
 
 			final WindowHandle handlePrimary = viewService.getPrimaryWindowHandle();
 			final WindowHandle handle = viewService.showView(view.getId(), handlePrimary);
-			assertThat(handle).isNotNull();
-			assertThat(handle.getHandleId()).isEqualTo(handlePrimary.getHandleId());
-			assertThat(handle.getViewId()).isEqualTo(view.getId());
+			assertWindowHandle(handle, handlePrimary.getHandleId(), view);
 
 			assertEvent(Channel.type(EventShowView.class));
 			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventShowView.class));
@@ -203,6 +199,31 @@ public class ViewServiceTest extends ApplicationTest {
 				assertThat(event.getViewId()).isEqualTo(view.getId());
 				assertThat(event.getWindowHandle()).isEqualTo(handle);
 			});
+		});
+	}
+
+
+
+
+	@Test
+	public void testPupupsSameView() {
+		Platform.runLater(() -> {
+
+			final View view = view("test.view.popup");
+			viewService.registerView(view);
+			assertThat(viewService.findView(view.getId())).isPresent();
+
+			// open popup A
+			final PopupConfiguration popupConfigurationA = popupConfig(viewService.getPrimaryWindowHandle());
+			final WindowHandle handleA = viewService.popupView(view.getId(), popupConfigurationA);
+
+			// open popup B
+			final PopupConfiguration popupConfigurationB = popupConfig(viewService.getPrimaryWindowHandle());
+			final WindowHandle handleB = viewService.popupView(view.getId(), popupConfigurationB);
+
+			assertEvent(Channel.type(EventOpenPopup.class));
+			List<Publishable> events = getEventPackages(Channel.type(EventOpenPopup.class));
+			assertThat(events).hasSize(2);
 
 		});
 	}
@@ -281,6 +302,36 @@ public class ViewServiceTest extends ApplicationTest {
 			assertThat(styleService.getAppliedStyleNames(viewA.getNode())).isEmpty();
 			assertThat(styleService.getAppliedStyleNames(viewB.getNode())).containsExactlyInAnyOrder("style.a", "style.b");
 		});
+	}
+
+
+
+
+	private void assertWindowHandle(final WindowHandle handle, final View expectedView) {
+		assertWindowHandle(handle, expectedView.getId());
+	}
+
+
+
+
+	private void assertWindowHandle(final WindowHandle handle, final String expectedViewId) {
+		assertWindowHandle(handle, WindowHandle.ID_PRIMARY, expectedViewId);
+	}
+
+
+
+
+	private void assertWindowHandle(final WindowHandle handle, final String expectedHandleId, final View expectedView) {
+		assertWindowHandle(handle, expectedHandleId, expectedView.getId());
+	}
+
+
+
+
+	private void assertWindowHandle(final WindowHandle handle, final String expectedHandleId, final String expectedViewId) {
+		assertThat(handle).isNotNull();
+		assertThat(handle.getHandleId()).isEqualTo(expectedHandleId);
+		assertThat(handle.getViewId()).isEqualTo(expectedViewId);
 	}
 
 
