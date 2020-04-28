@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.module;
 
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +13,7 @@ public interface ModuleView {
 	 *
 	 * @param root the root-pane of the module. This pane may already contain ui elements if the module was loaded with an fxml.
 	 */
-	void initialize(Pane root);
+	void initialize(AnchorPane root);
 
 	/**
 	 * @return a list of events (each with a unique name a its {@link UIExtensionScope}) exposed by this view
@@ -37,7 +37,7 @@ public interface ModuleView {
 
 
 		@Override
-		public void initialize(final Pane root) {
+		public void initialize(final AnchorPane root) {
 		}
 
 	}

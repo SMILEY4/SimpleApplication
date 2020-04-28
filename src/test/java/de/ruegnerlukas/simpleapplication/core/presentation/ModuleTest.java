@@ -17,7 +17,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.module.ModuleView;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleServiceImpl;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.junit.Test;
@@ -124,7 +124,7 @@ public class ModuleTest extends ApplicationTest {
 	@Test
 	public void testInternalModuleStructure() {
 
-		verify(view).initialize(any(Pane.class));
+		verify(view).initialize(any(AnchorPane.class));
 
 		final ArgumentCaptor<ListenableEventSourceGroup> eventCaptor = ArgumentCaptor.forClass(ListenableEventSourceGroup.class);
 		final ArgumentCaptor<TriggerableEventSourceGroup> commandCaptor = ArgumentCaptor.forClass(TriggerableEventSourceGroup.class);
