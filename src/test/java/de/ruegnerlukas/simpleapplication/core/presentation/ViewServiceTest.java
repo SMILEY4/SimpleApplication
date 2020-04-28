@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.core.presentation;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
@@ -376,6 +377,7 @@ public class ViewServiceTest extends ApplicationTest {
 				.size(new Dimension2D(100, 10))
 				.title(id)
 				.nodeFactory(Pane::new)
+				.icon(Resource.internal("testResources/icon.png"))
 				.build();
 	}
 

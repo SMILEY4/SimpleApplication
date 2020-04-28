@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import javafx.geometry.Dimension2D;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,6 +59,11 @@ public class View {
 	 * The styles automatically applied to this view.
 	 */
 	private final Set<String> styles;
+
+	/**
+	 * The icon of the stage or null to use the default icon.
+	 */
+	private final Resource icon;
 
 
 
