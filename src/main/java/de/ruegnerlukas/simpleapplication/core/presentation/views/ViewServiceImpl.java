@@ -2,16 +2,20 @@ package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.EventRootStyleMark;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -169,6 +173,7 @@ public class ViewServiceImpl implements ViewService {
 		scene.setRoot(viewNode);
 		setStageSize(stage, view);
 		stage.setTitle(view.getTitle());
+		setIcon(stage, view.getIcon());
 
 		final StyleService styleService = styleServiceProvider.get();
 		styleService.disconnectNode(prevViewNode);
@@ -205,6 +210,7 @@ public class ViewServiceImpl implements ViewService {
 		stage.setTitle(view.getTitle());
 		setStageSize(stage, view);
 		stage.setScene(scene);
+		setIcon(stage, view.getIcon());
 		final WindowHandle handle = new WindowHandle(createHandleId(), view, stage);
 		windowHandles.put(handle.getHandleId(), handle);
 
@@ -260,6 +266,30 @@ public class ViewServiceImpl implements ViewService {
 	@Override
 	public WindowHandle getPrimaryWindowHandle() {
 		return windowHandles.get(WindowHandle.ID_PRIMARY);
+	}
+
+
+
+
+	/**
+	 * Sets the icon of the given stage. If the icon is null, the icon will not be set.
+	 *
+	 * @param stage the stage
+	 * @param icon  the new icon
+	 */
+	private void setIcon(final Stage stage, final Resource icon) {
+		if (icon != null) {
+			if (icon.isInternal()) {
+				InputStream inputStream = icon.asInputStream();
+				Validations.STATE.notNull(inputStream)
+						.exception("The internal icon resource does not exist '{}'.", icon.getPath())
+						.onSuccess(() -> stage.getIcons().setAll(new Image(inputStream)));
+			} else {
+				Validations.STATE.exists(new File(icon.getPath()))
+						.exception("The external icon resource does not exist '{}'.", icon.getPath())
+						.onSuccess(() -> stage.getIcons().setAll(new Image("file:" + icon.getPath())));
+			}
+		}
 	}
 
 

@@ -35,7 +35,7 @@ public class EmptyView extends View {
 	 * A empty/dummy view with title, size and no content.
 	 */
 	public EmptyView() {
-		super(ID, new Dimension2D(WIDTH, HEIGHT), DEFAULT_SIZE_MIN, DEFAULT_SIZE_MAX, TITLE, AnchorPane::new, Set.of());
+		super(ID, new Dimension2D(WIDTH, HEIGHT), DEFAULT_SIZE_MIN, DEFAULT_SIZE_MAX, TITLE, AnchorPane::new, Set.of(), null);
 	}
 
 }
