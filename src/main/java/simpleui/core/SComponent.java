@@ -5,8 +5,10 @@ import javafx.scene.Node;
 public abstract class SComponent extends SElement {
 
 
-	public SComponent() {
+	@Override
+	public Node getFxNode() {
 		build();
+		return getChildren().get(0).getFxNode();
 	}
 
 
@@ -20,9 +22,15 @@ public abstract class SComponent extends SElement {
 
 
 
-	@Override
-	public Node getFxNode() {
-		return getChildren().get(0).getFxNode();
+	public void triggerReRender() {
+		getParent().onChildRerenderRequest();
+	}
+
+
+
+
+	public void onChildRerenderRequest() {
+		// TODO ?
 	}
 
 

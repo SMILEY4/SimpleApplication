@@ -11,6 +11,11 @@ import java.util.stream.Collectors;
 public class SContainer extends SElement {
 
 
+	VBox box = new VBox();
+
+
+
+
 	public SContainer(SElement... elements) {
 		super(elements);
 	}
@@ -26,10 +31,18 @@ public class SContainer extends SElement {
 
 
 	@Override
+	public void onChildRerenderRequest() {
+		box.getChildren().setAll(
+				getChildren().stream().map(SElement::getFxNode).collect(Collectors.toList()));
+	}
+
+
+
+
+	@Override
 	public Node getFxNode() {
-		VBox box = new VBox();
 		box.setPadding(new Insets(0, 0, 0, 20));
-		box.getChildren().addAll(
+		box.getChildren().setAll(
 				getChildren().stream().map(SElement::getFxNode).collect(Collectors.toList()));
 		return box;
 	}

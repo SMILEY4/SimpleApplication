@@ -40,6 +40,13 @@ public class SButton extends SElement {
 
 
 
+	@Override
+	public void onChildRerenderRequest() {
+	}
+
+
+
+
 	public interface Listener {
 
 

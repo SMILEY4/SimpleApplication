@@ -6,10 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import simpleui.core.SComponent;
 import simpleui.core.SElement;
-import simpleui.core.prebuild.SButton;
-import simpleui.core.prebuild.SContainer;
 
 public class SUITest extends Application {
 
@@ -34,39 +31,5 @@ public class SUITest extends Application {
 		stage.show();
 	}
 
-
-
-
-	static class TestComponentA extends SComponent {
-
-
-		@Override
-		public SElement render() {
-			return new SContainer(
-					new SButton("Button A-1"),
-					new TestComponentB(),
-					new SButton("Button A-2")
-			);
-		}
-
-	}
-
-
-
-
-
-
-	static class TestComponentB extends SComponent {
-
-
-		@Override
-		public SElement render() {
-			return new SContainer(
-					new SButton("Button B-1"),
-					new SButton("Button B-2")
-			);
-		}
-
-	}
 
 }

@@ -42,7 +42,14 @@ public abstract class SElement {
 	}
 
 
+
+
 	public abstract Node getFxNode();
+
+
+	public abstract void onChildRerenderRequest();
+
+
 
 
 	public void print(int level) {
