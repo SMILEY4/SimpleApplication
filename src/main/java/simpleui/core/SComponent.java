@@ -1,41 +1,19 @@
 package simpleui.core;
 
-import javafx.scene.Node;
+import lombok.Getter;
+import lombok.Setter;
 
 public abstract class SComponent extends SElement {
 
 
-	@Override
-	public Node getFxNode() {
-		build();
-		return getChildren().get(0).getFxNode();
-	}
-
-
-
-
-	private void build() {
-		this.getChildren().add(render());
-		this.getChildren().forEach(child -> child.setParent(this));
-	}
-
-
-
-
-	public void triggerReRender() {
-		getParent().onChildRerenderRequest();
-	}
-
-
-
-
-	public void onChildRerenderRequest() {
-		// TODO ?
-	}
+	@Getter
+	@Setter
+	private SElement subElement;
 
 
 
 
 	public abstract SElement render();
+
 
 }

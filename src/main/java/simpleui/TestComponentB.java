@@ -1,9 +1,10 @@
 package simpleui;
 
 import simpleui.core.SComponent;
+import simpleui.core.SComponentMaster;
 import simpleui.core.SElement;
-import simpleui.core.prebuild.SButton;
-import simpleui.core.prebuild.SContainer;
+import simpleui.core.prebuilt.SBox;
+import simpleui.core.prebuilt.SButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,30 +12,36 @@ import java.util.List;
 public class TestComponentB extends SComponent {
 
 
-	private int buttonCount = 2;
+	private int counter = 2;
+
+
+
+
+	public TestComponentB() {
+		System.out.println("construct component b");
+	}
 
 
 
 
 	@Override
 	public SElement render() {
-		return new SContainer(buildButtons());
+		final List<SElement> buttons = new ArrayList<>();
+		for (int i = 0; i < counter; i++) {
+			buttons.add(new SButton("B-" + (i + 1)));
+		}
+		return new SBox(
+				new SButton("Add (" + counter + ")", this::onAdd),
+				new SBox(buttons)
+		);
 	}
 
 
 
 
-	private List<SElement> buildButtons() {
-		List<SElement> buttons = new ArrayList<>();
-		for (int i = 0; i < this.buttonCount; i++) {
-			buttons.add(new SButton("Button B-" + i));
-		}
-		buttons.add(new SButton("Add B", () -> {
-			System.out.println("on button B");
-			this.buttonCount++;
-			triggerReRender();
-		}));
-		return buttons;
+	private void onAdd() {
+		counter++;
+		SComponentMaster.instance.reRender(this);
 	}
 
 }

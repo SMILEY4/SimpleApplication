@@ -2,11 +2,10 @@ package simpleui;
 
 
 import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import simpleui.core.SElement;
+import simpleui.core.SComponentMaster;
 
 public class SUITest extends Application {
 
@@ -21,11 +20,12 @@ public class SUITest extends Application {
 	@Override
 	public void start(final Stage stage) {
 
-		SElement element = new TestComponentA();
-		element.print(0);
+		Scene scene = new Scene(new Pane(), 500, 400);
 
-		Node rootNode = element.getFxNode();
-		Scene scene = new Scene((Parent) rootNode, 500, 400);
+		TestComponentA component = new TestComponentA();
+
+		SComponentMaster.instance.initialize(component, scene);
+		SComponentMaster.instance.update();
 
 		stage.setScene(scene);
 		stage.show();
