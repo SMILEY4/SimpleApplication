@@ -1,6 +1,6 @@
 package simpleui;
 
-import simpleui.core.SComponent;
+import simpleui.core.prebuilt.SComponent;
 import simpleui.core.SElement;
 import simpleui.core.prebuilt.SBox;
 import simpleui.core.prebuilt.SButton;

@@ -1,6 +1,6 @@
 package simpleui;
 
-import simpleui.core.SComponent;
+import simpleui.core.prebuilt.SComponent;
 import simpleui.core.SComponentMaster;
 import simpleui.core.SElement;
 import simpleui.core.prebuilt.SBox;
@@ -13,13 +13,6 @@ public class TestComponentB extends SComponent {
 
 
 	private int counter = 2;
-
-
-
-
-	public TestComponentB() {
-		System.out.println("construct component b");
-	}
 
 
 

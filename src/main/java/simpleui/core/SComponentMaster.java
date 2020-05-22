@@ -3,9 +3,7 @@ package simpleui.core;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import simpleui.core.systems.ElementTreeBuilder;
-import simpleui.core.systems.ElementTreePrinter;
-import simpleui.core.systems.FxNodeTreeBuilder;
+import simpleui.core.prebuilt.SComponent;
 
 public class SComponentMaster {
 
@@ -16,9 +14,6 @@ public class SComponentMaster {
 	private static Scene scene;
 	private static SElement rootElement;
 
-	private static ElementTreeBuilder treeBuilder = new ElementTreeBuilder();
-	private static FxNodeTreeBuilder fxNodeTreeBuilder = new FxNodeTreeBuilder();
-	private static ElementTreePrinter treePrinter = new ElementTreePrinter();
 
 
 
@@ -32,8 +27,8 @@ public class SComponentMaster {
 
 
 	public void update() {
-		treeBuilder.build(rootElement);
-		Node root = fxNodeTreeBuilder.build(rootElement);
+		rootElement.buildTree();
+		Node root = rootElement.buildFXNode();
 		scene.setRoot((Parent) root);
 	}
 
@@ -42,14 +37,25 @@ public class SComponentMaster {
 
 	public void reRender(SComponent triggerComponent) {
 
+		rootElement.print();
+
+		SElement subtreeBefore = triggerComponent.getSubElement();
+
 		SElement renderedElement = triggerComponent.render();
 		triggerComponent.setSubElement(renderedElement);
 
-		// TODO: diff current and rendered subtree and only rerender whats really necessary
+		diff(subtreeBefore, renderedElement);
 
-		Node root = fxNodeTreeBuilder.build(rootElement);
+		Node root = rootElement.buildFXNode();
 		scene.setRoot((Parent) root);
 	}
 
+
+
+
+	private void diff(SElement a, SElement b) {
+		a.print();
+		b.print();
+	}
 
 }
