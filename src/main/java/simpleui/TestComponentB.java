@@ -1,40 +1,21 @@
 package simpleui;
 
-import simpleui.core.prebuilt.SComponent;
-import simpleui.core.SComponentMaster;
-import simpleui.core.SElement;
-import simpleui.core.prebuilt.SBox;
-import simpleui.core.prebuilt.SButton;
+import simpleui.core.factories.SComponent;
+import simpleui.core.factories.SNodeFactory;
+import simpleui.core.state.State;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.IntStream;
 
 public class TestComponentB extends SComponent {
 
 
-	private int counter = 2;
-
-
-
-
 	@Override
-	public SElement render() {
-		final List<SElement> buttons = new ArrayList<>();
-		for (int i = 0; i < counter; i++) {
-			buttons.add(new SButton("B-" + (i + 1)));
-		}
-		return new SBox(
-				new SButton("Add (" + counter + ")", this::onAdd),
-				new SBox(buttons)
+	public SNodeFactory render(final State state) {
+		TestState testState = (TestState) state;
+		return SNodeFactory.box(
+				IntStream.range(0, testState.btnCountB)
+						.mapToObj(i -> SNodeFactory.button(testState.prefixB+i))
 		);
-	}
-
-
-
-
-	private void onAdd() {
-		counter++;
-		SComponentMaster.instance.reRender(this);
 	}
 
 }

@@ -1,30 +1,42 @@
 package simpleui;
 
-import simpleui.core.prebuilt.SComponent;
-import simpleui.core.SElement;
-import simpleui.core.prebuilt.SBox;
-import simpleui.core.prebuilt.SButton;
+import simpleui.core.factories.SComponent;
+import simpleui.core.factories.SNodeFactory;
+import simpleui.core.state.State;
+import simpleui.core.state.StateManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestComponentA extends SComponent {
 
 
 	@Override
-	public SElement render() {
-		return new SBox(
+	public SNodeFactory render(final State state) {
+		TestState testState = (TestState) state;
 
-				new SButton("A-1"),
+		List<SNodeFactory> nodes = new ArrayList<>();
+		nodes.add(SNodeFactory.button("Add", this::onAdd));
+		for (int i = 0; i < testState.btnCountA; i++) {
+			nodes.add(SNodeFactory.button(testState.prefixA + i));
+		}
+		nodes.add(new TestComponentB());
 
-				new SBox(
-						new SButton("A-2.1"),
-						new SButton("A-2.2")
-				),
-
-				new SButton("A-3"),
-
-				new TestComponentB(),
-
-				new SButton("A-4")
+		return SNodeFactory.box(
+				nodes
 		);
+	}
+
+
+
+
+	private void onAdd() {
+		StateManager.modifyState(state -> {
+			TestState testState = (TestState) state;
+			testState.btnCountA = testState.btnCountA + 1;
+			testState.btnCountB = testState.btnCountB + 2;
+			testState.prefixB = "B-na" + (testState.btnCountA + 1) + "-";
+		});
 	}
 
 }
