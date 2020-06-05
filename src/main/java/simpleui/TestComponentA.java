@@ -2,11 +2,14 @@ package simpleui;
 
 import simpleui.core.factories.SComponent;
 import simpleui.core.factories.SNodeFactory;
+import simpleui.core.properties.Properties;
 import simpleui.core.state.State;
 import simpleui.core.state.StateManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static simpleui.core.factories.SNodeFactory.button;
 
 public class TestComponentA extends SComponent {
 
@@ -16,14 +19,24 @@ public class TestComponentA extends SComponent {
 		TestState testState = (TestState) state;
 
 		List<SNodeFactory> nodes = new ArrayList<>();
-		nodes.add(SNodeFactory.button("Add", this::onAdd));
+		nodes.add(button(
+				Properties.buttonText("Add"),
+				Properties.actionListener(this::onAdd)
+		));
 		for (int i = 0; i < testState.btnCountA; i++) {
-			nodes.add(SNodeFactory.button(testState.prefixA + i));
+			nodes.add(button(
+					Properties.buttonText(testState.prefixA + i)
+			));
 		}
 		nodes.add(new TestComponentB());
 
+//		return SNodeFactory.box(
+//				nodes
+//		);
+
+
 		return SNodeFactory.box(
-				nodes
+				Properties.items(nodes)
 		);
 	}
 
@@ -32,7 +45,7 @@ public class TestComponentA extends SComponent {
 
 	private void onAdd() {
 		StateManager.modifyState(state -> {
-			TestState testState = (TestState) state;
+			final TestState testState = (TestState) state;
 			testState.btnCountA = testState.btnCountA + 1;
 			testState.btnCountB = testState.btnCountB + 2;
 			testState.prefixB = "B-na" + (testState.btnCountA + 1) + "-";

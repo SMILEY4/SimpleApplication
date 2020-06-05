@@ -2,28 +2,17 @@ package simpleui.core.nodes;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import simpleui.core.properties.ActionListenerProperty;
+import simpleui.core.properties.ButtonTextProperty;
+import simpleui.core.properties.Property;
+
+import java.util.Optional;
 
 public class SButton extends SNode {
 
 
-	private String text;
-
-
-	private ButtonListener listener;
-
-
-
-
-	public SButton(String text) {
-		this.text = text;
-	}
-
-
-
-
-	public SButton(String text, ButtonListener listener) {
-		this.text = text;
-		this.listener = listener;
+	public SButton(final Property... properties) {
+		super(properties);
 	}
 
 
@@ -31,10 +20,8 @@ public class SButton extends SNode {
 
 	@Override
 	public Node buildFxNode() {
-		Button button = new Button(text);
-		if (listener != null) {
-			button.setOnAction(e -> listener.onAction());
-		}
+		Button button = new Button(getText());
+		getActionListener().ifPresent(listener -> button.setOnAction(e -> listener.onAction()));
 		return button;
 	}
 
@@ -42,27 +29,82 @@ public class SButton extends SNode {
 
 
 	@Override
-	public boolean mutate(final SNode other) {
-		if (other instanceof SButton) {
-			final SButton btnOther = (SButton) other;
-			if (!this.text.equals(btnOther.text)) {
-				System.out.println("mutate button - text: " + this.text + " -> " + btnOther.text);
-				patchText(btnOther.text);
-			}
-			return false;
-		} else {
-			System.out.println("mutate button - rebuild");
-			return true;
+	protected MutationResult mutateUpdateProperty(final Class<? extends Property> propKey,
+												  final Property propThis, final Property propOther) {
+		if (propKey == ButtonTextProperty.class) {
+			getFXButton().setText(((ButtonTextProperty) propOther).getText());
 		}
+		if (propKey == ActionListenerProperty.class) {
+			getFXButton().setOnAction(event -> ((ActionListenerProperty) propOther).getListener().onAction());
+		}
+		return MutationResult.MUTATED;
 	}
 
 
 
 
-	private void patchText(String newText) {
-		this.text = newText;
-		if (getLinkedFxNode() != null) {
-			((Button) getLinkedFxNode()).setText(newText);
+	@Override
+	protected MutationResult mutateRemoveProperty(final Class<? extends Property> propKey, final Property propThis) {
+		if (propKey == ButtonTextProperty.class) {
+			getFXButton().setText("");
+		}
+		if (propKey == ActionListenerProperty.class) {
+			getFXButton().setOnAction(null);
+		}
+		return MutationResult.MUTATED;
+	}
+
+
+
+
+	@Override
+	protected MutationResult mutateAddProperty(final Class<? extends Property> propKey, final Property propOther) {
+		if (propKey == ButtonTextProperty.class) {
+			getFXButton().setText(((ButtonTextProperty) propOther).getText());
+		}
+		if (propKey == ActionListenerProperty.class) {
+			getFXButton().setOnAction(event -> ((ActionListenerProperty) propOther).getListener().onAction());
+		}
+		return MutationResult.MUTATED;
+	}
+
+
+
+
+	private Button getFXButton() {
+		return (Button) this.getLinkedFxNode();
+	}
+
+
+
+
+	private ButtonTextProperty getTextProperty() {
+		return this.getProperty(ButtonTextProperty.class);
+	}
+
+
+
+
+	private String getText() {
+		return Optional.ofNullable(getTextProperty().getText()).orElse("");
+	}
+
+
+
+
+	private ActionListenerProperty getActionListenerProperty() {
+		return this.getProperty(ActionListenerProperty.class);
+	}
+
+
+
+
+	private Optional<ActionListenerProperty.ActionListener> getActionListener() {
+		final ActionListenerProperty prop = getActionListenerProperty();
+		if (prop != null) {
+			return Optional.ofNullable(prop.getListener());
+		} else {
+			return Optional.empty();
 		}
 	}
 
@@ -75,20 +117,11 @@ public class SButton extends SNode {
 				+ getClass().getSimpleName()
 				+ " #" + Integer.toHexString(hashCode())
 				+ " {"
-				+ "text:" + text
+				+ "text:" + getText() + ","
+				+ "hasListener: " + getActionListener().isPresent()
 				+ "}"
 				+ (getLinkedFxNode() != null ? " (fx)" : "")
 		);
-	}
-
-
-
-
-	public interface ButtonListener {
-
-
-		void onAction();
-
 	}
 
 }
