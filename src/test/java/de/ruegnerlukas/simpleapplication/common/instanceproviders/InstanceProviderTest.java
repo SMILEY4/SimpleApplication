@@ -43,6 +43,7 @@ public class InstanceProviderTest {
 
 	@Before
 	public void setup() {
+		ProviderService.cleanup();
 
 		ProviderService.registerFactory(new InstanceFactory<>(User.class, ObjectType.NON_SINGLETON) {
 			@Override
@@ -130,6 +131,18 @@ public class InstanceProviderTest {
 
 
 
+	@Test
+	public void testOverride() {
+		final String TEST_FACTORY = "TestFactory";
+		ProviderService.registerFactory(new StringFactory(TEST_FACTORY, "a"));
+		assertThat(new Provider<String>(TEST_FACTORY).get()).isEqualTo("a");
+		ProviderService.registerFactory(new StringFactory(TEST_FACTORY, "b"));
+		assertThat(new Provider<String>(TEST_FACTORY).get()).isEqualTo("b");
+	}
+
+
+
+
 	@Test (expected = ValidateStateException.class)
 	public void testNotExistent() {
 		final Object object = new Provider<>(Object.class).get();
@@ -185,11 +198,13 @@ public class InstanceProviderTest {
 
 
 
+
 	@Test
 	public void testStringProvider() {
 		final String str = new StringProvider("string").get();
 		assertThat(str).isEqualTo("The Test String");
 	}
+
 
 
 

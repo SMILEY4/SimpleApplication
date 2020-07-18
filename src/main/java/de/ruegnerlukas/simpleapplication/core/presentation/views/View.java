@@ -1,9 +1,12 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import javafx.geometry.Dimension2D;
-import javafx.scene.Parent;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Builder
@@ -48,9 +51,19 @@ public class View {
 	private final String title;
 
 	/**
-	 * The root node of this view.
+	 * The factory for the root node of this view.
 	 */
-	private final Parent node;
+	private final ViewNodeFactory nodeFactory;
+
+	/**
+	 * The styles automatically applied to this view.
+	 */
+	private final Set<String> styles;
+
+	/**
+	 * The icon of the stage or null to use the default icon.
+	 */
+	private final Resource icon;
 
 
 
@@ -62,7 +75,7 @@ public class View {
 	 */
 	public static class ViewBuilder {
 
-		// Necessary so the lombok builder includes minSize and maxSize but also uses the default values if not specified.
+		// Necessary so the lombok builder includes minSize, maxSize and styles but also uses the default values if not specified.
 
 		/**
 		 * The min size initialized with the default value.
@@ -73,6 +86,11 @@ public class View {
 		 * The max size initialized with the default value
 		 */
 		private Dimension2D maxSize = DEFAULT_SIZE_MAX;
+
+		/**
+		 * The default styles automatically applied to the view.
+		 */
+		private Set<String> styles = new HashSet<>();
 
 	}
 

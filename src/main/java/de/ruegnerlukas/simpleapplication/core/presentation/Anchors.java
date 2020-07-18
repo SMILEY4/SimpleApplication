@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.core.presentation.utils;
+package de.ruegnerlukas.simpleapplication.core.presentation;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import javafx.scene.Node;

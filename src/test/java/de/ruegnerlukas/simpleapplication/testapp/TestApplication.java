@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.application.Application;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfiguration;
 import de.ruegnerlukas.simpleapplication.core.application.EventPresentationInitialized;
@@ -85,7 +86,8 @@ public class TestApplication {
 					.size(new Dimension2D(300, 100))
 					.maxSize(new Dimension2D(300, 300))
 					.title(applicationName + " - View A")
-					.node(buttonA)
+					.nodeFactory(() -> buttonA)
+					.icon(Resource.internal("testResources/icon.png"))
 					.build();
 
 			// VIEW B
@@ -99,7 +101,8 @@ public class TestApplication {
 					.id(ID_B)
 					.size(new Dimension2D(200, 500))
 					.title(applicationName + " - View B")
-					.node(buttonB)
+					.nodeFactory(() -> buttonB)
+					.icon(Resource.internal("testResources/icon.png"))
 					.build();
 
 
@@ -121,7 +124,8 @@ public class TestApplication {
 					.id(ID_B_POPUP)
 					.size(new Dimension2D(300, 200))
 					.title(applicationName + " - View B Confirm")
-					.node(buttonBConfirm)
+					.nodeFactory(() -> buttonBConfirm)
+					.icon(Resource.internal("testResources/icon.png"))
 					.build();
 
 
@@ -137,7 +141,8 @@ public class TestApplication {
 					.id(ID_B_WARN)
 					.size(new Dimension2D(200, 300))
 					.title(applicationName + " - View B LAST WARNING")
-					.node(buttonBWarn)
+					.nodeFactory(() -> buttonBWarn)
+					.icon(Resource.internal("testResources/icon.png"))
 					.build();
 
 

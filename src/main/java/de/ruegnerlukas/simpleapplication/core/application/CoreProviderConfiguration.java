@@ -8,6 +8,8 @@ import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointService;
 import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginServiceImpl;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 
@@ -38,6 +40,12 @@ public class CoreProviderConfiguration extends ProviderConfiguration {
 			@Override
 			public ExtensionPointService buildObject() {
 				return new ExtensionPointServiceImpl();
+			}
+		});
+		add(new InstanceFactory<>(StyleService.class) {
+			@Override
+			public StyleService buildObject() {
+				return new StyleServiceImpl();
 			}
 		});
 	}

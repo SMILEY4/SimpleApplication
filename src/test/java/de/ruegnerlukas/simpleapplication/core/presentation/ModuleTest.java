@@ -14,13 +14,14 @@ import de.ruegnerlukas.simpleapplication.core.presentation.module.ExposedEvent;
 import de.ruegnerlukas.simpleapplication.core.presentation.module.Module;
 import de.ruegnerlukas.simpleapplication.core.presentation.module.ModuleController;
 import de.ruegnerlukas.simpleapplication.core.presentation.module.ModuleView;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleServiceImpl;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.List;
@@ -29,11 +30,16 @@ import static de.ruegnerlukas.simpleapplication.core.events.PublishableEvent.Pub
 import static de.ruegnerlukas.simpleapplication.core.events.PublishableEvent.PublishableEventSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ModuleTest extends ApplicationTest {
 
+
+	private Stage stage;
 
 	private Module module;
 
@@ -63,12 +69,19 @@ public class ModuleTest extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) {
+		this.stage = stage;
 
 		ProviderService.cleanup();
 		ProviderService.registerFactory(new InstanceFactory<>(EventService.class) {
 			@Override
 			public EventService buildObject() {
 				return new EventServiceImpl();
+			}
+		});
+		ProviderService.registerFactory(new InstanceFactory<>(StyleService.class) {
+			@Override
+			public StyleService buildObject() {
+				return spy(new StyleServiceImpl());
 			}
 		});
 
@@ -82,7 +95,7 @@ public class ModuleTest extends ApplicationTest {
 		final ExposedEvent eventViewLocal = ExposedEvent.local(new PublishableEventSource("event.view.local"));
 		final ExposedEvent eventViewGlobal = ExposedEvent.global(eventSourceViewGlobal);
 
-		view = Mockito.mock(ModuleView.class);
+		view = mock(ModuleView.class);
 		when(view.getExposedCommands()).thenReturn(List.of(commandViewInternal, commandViewLocal, commandViewGlobal));
 		when(view.getExposedEvents()).thenReturn(List.of(eventViewInternal, eventViewLocal, eventViewGlobal));
 
@@ -96,7 +109,7 @@ public class ModuleTest extends ApplicationTest {
 		final ExposedEvent eventCtrlLocal = ExposedEvent.local(new PublishableEventSource("event.ctrl.local"));
 		final ExposedEvent eventCtrlGlobal = ExposedEvent.global(eventSourceControllerGlobal);
 
-		controller = Mockito.mock(ModuleController.class);
+		controller = mock(ModuleController.class);
 		when(controller.getExposedCommands()).thenReturn(List.of(commandCtrlInternal, commandCtrlLocal, commandCtrlGlobal));
 		when(controller.getExposedEvents()).thenReturn(List.of(eventCtrlInternal, eventCtrlLocal, eventCtrlGlobal));
 
@@ -111,7 +124,7 @@ public class ModuleTest extends ApplicationTest {
 	@Test
 	public void testInternalModuleStructure() {
 
-		verify(view).initialize(any(Pane.class));
+		verify(view).initialize(any(AnchorPane.class));
 
 		final ArgumentCaptor<ListenableEventSourceGroup> eventCaptor = ArgumentCaptor.forClass(ListenableEventSourceGroup.class);
 		final ArgumentCaptor<TriggerableEventSourceGroup> commandCaptor = ArgumentCaptor.forClass(TriggerableEventSourceGroup.class);
@@ -160,7 +173,7 @@ public class ModuleTest extends ApplicationTest {
 
 		final EventService eventService = new Provider<>(EventService.class).get();
 
-		final PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
+		final PublishableEventListener listener = mock(PublishableEventListener.class);
 		eventService.subscribe(Channel.name(EVENT_VIEW_GLOBAL), listener);
 
 		eventSourceViewGlobal.trigger(new StringEvent("Test String"));
@@ -181,7 +194,7 @@ public class ModuleTest extends ApplicationTest {
 
 		final EventService eventService = new Provider<>(EventService.class).get();
 
-		final PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
+		final PublishableEventListener listener = mock(PublishableEventListener.class);
 		eventService.subscribe(Channel.name(EVENT_CONTROLLER_GLOBAL), listener);
 
 		eventSourceControllerGlobal.trigger(new StringEvent("Test String"));
@@ -202,7 +215,7 @@ public class ModuleTest extends ApplicationTest {
 
 		final EventService eventService = new Provider<>(EventService.class).get();
 
-		final PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
+		final PublishableEventListener listener = mock(PublishableEventListener.class);
 		commandSourceViewGlobal.subscribe(listener);
 
 		eventService.publish(new StringEvent(COMMAND_VIEW_GLOBAL, "Test String"));
@@ -220,7 +233,7 @@ public class ModuleTest extends ApplicationTest {
 
 		final EventService eventService = new Provider<>(EventService.class).get();
 
-		final PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
+		final PublishableEventListener listener = mock(PublishableEventListener.class);
 		commandSourceControllerGlobal.subscribe(listener);
 
 		eventService.publish(new StringEvent(COMMAND_CONTROLLER_GLOBAL, "Test String"));
@@ -228,6 +241,25 @@ public class ModuleTest extends ApplicationTest {
 		verify(listener).onEvent(captor.capture());
 		assertThat(captor.getValue()).isNotNull();
 		assertThat(captor.getValue().getValue()).isEqualTo("Test String");
+	}
+
+
+
+
+	@Test
+	public void testModuleStyling() {
+
+		StyleService styleService = new Provider<>(StyleService.class).get();
+		styleService.createFromString("test-style-a", "-fx-background.color: red");
+		styleService.createFromString("test-style-b", "-fx-background.color: blue");
+
+		final Module module = new Module(new ModuleView.EmptyView(), new ModuleController.EmptyController())
+				.withStyles("test-style-a", "test-style-b")
+				.withStyleClasses("style-class");
+
+		assertThat(module.getStyleClass()).contains("style-class");
+		verify(styleService).applyStyleTo(eq("test-style-a"), eq(module));
+		verify(styleService).applyStyleTo(eq("test-style-b"), eq(module));
 	}
 
 

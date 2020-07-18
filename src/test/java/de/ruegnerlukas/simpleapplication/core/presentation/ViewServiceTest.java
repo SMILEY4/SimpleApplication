@@ -3,9 +3,12 @@ package de.ruegnerlukas.simpleapplication.core.presentation;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.EventClosePopup;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.EventOpenPopup;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.EventShowView;
@@ -24,6 +27,7 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +41,8 @@ public class ViewServiceTest extends ApplicationTest {
 
 	private EventService eventService;
 
+	private StyleService styleService;
+
 
 
 
@@ -44,11 +50,19 @@ public class ViewServiceTest extends ApplicationTest {
 	public void start(Stage stage) {
 
 		eventService = eventService();
+		styleService = styleService();
+
 		ProviderService.cleanup();
 		ProviderService.registerFactory(new InstanceFactory<>(EventService.class) {
 			@Override
 			public EventService buildObject() {
 				return eventService;
+			}
+		});
+		ProviderService.registerFactory(new InstanceFactory<>(StyleService.class) {
+			@Override
+			public StyleService buildObject() {
+				return styleService;
 			}
 		});
 
@@ -99,9 +113,7 @@ public class ViewServiceTest extends ApplicationTest {
 			viewService.registerView(view);
 			assertThat(viewService.findView(view.getId())).isPresent();
 			final WindowHandle handle = viewService.showView(view.getId());
-			assertThat(handle).isNotNull();
-			assertThat(handle.getHandleId()).isEqualTo(WindowHandle.ID_PRIMARY);
-			assertThat(handle.getViewId()).isEqualTo(view.getId());
+			assertWindowHandle(handle, view);
 
 			assertEvent(Channel.type(EventShowView.class));
 			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventShowView.class));
@@ -134,9 +146,7 @@ public class ViewServiceTest extends ApplicationTest {
 
 			final WindowHandle handlePrimary = viewService.getPrimaryWindowHandle();
 			final WindowHandle handle = viewService.showView(view.getId(), handlePrimary);
-			assertThat(handle).isNotNull();
-			assertThat(handle.getHandleId()).isEqualTo(handlePrimary.getHandleId());
-			assertThat(handle.getViewId()).isEqualTo(view.getId());
+			assertWindowHandle(handle, handlePrimary.getHandleId(), view);
 
 			assertEvent(Channel.type(EventShowView.class));
 			Optional<Publishable> eventOpen = getEventAny(Channel.type(EventShowView.class));
@@ -184,14 +194,168 @@ public class ViewServiceTest extends ApplicationTest {
 
 			assertEvent(Channel.type(EventClosePopup.class));
 			Optional<Publishable> eventClose = getEventAny(Channel.type(EventClosePopup.class));
-			assertThat(eventOpen).isPresent();
+			assertThat(eventClose).isPresent();
 			eventClose.ifPresent(publishable -> {
 				EventClosePopup event = (EventClosePopup) publishable;
 				assertThat(event.getViewId()).isEqualTo(view.getId());
 				assertThat(event.getWindowHandle()).isEqualTo(handle);
 			});
+		});
+	}
+
+
+
+
+	@Test
+	public void testPupupsSameView() {
+		Platform.runLater(() -> {
+
+			final View view = view("test.view.popup");
+			viewService.registerView(view);
+			assertThat(viewService.findView(view.getId())).isPresent();
+
+			// open popups
+			final PopupConfiguration popupConfigurationA = popupConfig(viewService.getPrimaryWindowHandle());
+			final WindowHandle handleA = viewService.popupView(view.getId(), popupConfigurationA);
+
+			final PopupConfiguration popupConfigurationB = popupConfig(viewService.getPrimaryWindowHandle());
+			final WindowHandle handleB = viewService.popupView(view.getId(), popupConfigurationB);
+
+			assertEvent(Channel.type(EventOpenPopup.class));
+			List<Publishable> eventsOpen = getEventPackages(Channel.type(EventOpenPopup.class));
+			assertThat(eventsOpen).hasSize(2);
+
+			Optional<Publishable> eventOpenA = eventsOpen.stream().filter(event -> ((EventOpenPopup) event).getWindowHandle() == handleA).findAny();
+			assertThat(eventOpenA).isPresent();
+			eventOpenA.ifPresent(publishable -> {
+				EventOpenPopup event = (EventOpenPopup) publishable;
+				assertThat(event.getViewId()).isEqualTo(view.getId());
+				assertThat(event.getWindowHandle()).isEqualTo(handleA);
+			});
+
+			Optional<Publishable> eventOpenB = eventsOpen.stream().filter(event -> ((EventOpenPopup) event).getWindowHandle() == handleB).findAny();
+			assertThat(eventOpenB).isPresent();
+			eventOpenB.ifPresent(publishable -> {
+				EventOpenPopup event = (EventOpenPopup) publishable;
+				assertThat(event.getViewId()).isEqualTo(view.getId());
+				assertThat(event.getWindowHandle()).isEqualTo(handleB);
+			});
+
+			// clear events
+			clearEvents();
+
+			// close pupups
+			viewService.closePopup(handleA);
+			viewService.closePopup(handleB);
+			assertThat(viewService.getWindowHandles(view.getId())).hasSize(0);
+
+			assertEvent(Channel.type(EventClosePopup.class));
+			List<Publishable> eventsClose = getEventPackages(Channel.type(EventClosePopup.class));
+			assertThat(eventsClose).hasSize(2);
+
+			Optional<Publishable> eventCloseA = eventsClose.stream().filter(event -> ((EventClosePopup) event).getWindowHandle() == handleA).findAny();
+			assertThat(eventCloseA).isPresent();
+			eventCloseA.ifPresent(publishable -> {
+				EventClosePopup event = (EventClosePopup) publishable;
+				assertThat(event.getViewId()).isEqualTo(view.getId());
+				assertThat(event.getWindowHandle()).isEqualTo(handleA);
+			});
+
+			Optional<Publishable> eventCloseB = eventsClose.stream().filter(event -> ((EventClosePopup) event).getWindowHandle() == handleB).findAny();
+			assertThat(eventCloseB).isPresent();
+			eventCloseB.ifPresent(publishable -> {
+				EventClosePopup event = (EventClosePopup) publishable;
+				assertThat(event.getViewId()).isEqualTo(view.getId());
+				assertThat(event.getWindowHandle()).isEqualTo(handleB);
+			});
 
 		});
+	}
+
+
+
+
+	@Test
+	public void testStyles() {
+		Platform.runLater(() -> {
+
+			styleService.createFromString("style.a", "-fx-background-color: red");
+			styleService.createFromString("style.b", "-fx-background-color: blue");
+
+			final View viewA = view("test.view.styles.a", "style.a");
+			final View viewB = view("test.view.styles.b", "style.b");
+			viewService.registerView(viewA);
+			viewService.registerView(viewB);
+
+			final WindowHandle windowHandleA = viewService.showView(viewA.getId());
+			assertThat(windowHandleA.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleA.getRootNode())).containsExactlyInAnyOrder("style.a");
+
+			final WindowHandle windowHandleB = viewService.showView(viewB.getId());
+			assertThat(windowHandleB.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:blue;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleB.getRootNode())).containsExactlyInAnyOrder("style.b");
+
+		});
+	}
+
+
+
+
+	@Test
+	public void testRootStyles() {
+		Platform.runLater(() -> {
+
+			styleService.createFromString("style.a", "-fx-background-color: red");
+			styleService.createFromString("style.b", "-fx-background-color: blue");
+			styleService.setRootStyle("style.a", true);
+
+			final View viewA = view("test.view.styles.a");
+			final View viewB = view("test.view.styles.b");
+			viewService.registerView(viewA);
+			viewService.registerView(viewB);
+
+			final WindowHandle windowHandleA = viewService.showView(viewA.getId());
+			assertThat(windowHandleA.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleA.getRootNode())).containsExactlyInAnyOrder("style.a");
+
+			final WindowHandle windowHandleB = viewService.showView(viewB.getId());
+			assertThat(windowHandleB.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleB.getRootNode())).containsExactlyInAnyOrder("style.a");
+
+			styleService.setRootStyle("style.b", true);
+			assertThat(windowHandleB.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;-fx-background-color:blue;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleB.getRootNode())).containsExactlyInAnyOrder("style.a", "style.b");
+		});
+	}
+
+
+
+
+	private void assertWindowHandle(final WindowHandle handle, final View expectedView) {
+		assertWindowHandle(handle, expectedView.getId());
+	}
+
+
+
+
+	private void assertWindowHandle(final WindowHandle handle, final String expectedViewId) {
+		assertWindowHandle(handle, WindowHandle.ID_PRIMARY, expectedViewId);
+	}
+
+
+
+
+	private void assertWindowHandle(final WindowHandle handle, final String expectedHandleId, final View expectedView) {
+		assertWindowHandle(handle, expectedHandleId, expectedView.getId());
+	}
+
+
+
+
+	private void assertWindowHandle(final WindowHandle handle, final String expectedHandleId, final String expectedViewId) {
+		assertThat(handle).isNotNull();
+		assertThat(handle.getHandleId()).isEqualTo(expectedHandleId);
+		assertThat(handle.getViewId()).isEqualTo(expectedViewId);
 	}
 
 
@@ -212,7 +376,21 @@ public class ViewServiceTest extends ApplicationTest {
 				.id(id)
 				.size(new Dimension2D(100, 10))
 				.title(id)
-				.node(new Pane())
+				.nodeFactory(Pane::new)
+				.icon(Resource.internal("testResources/icon.png"))
+				.build();
+	}
+
+
+
+
+	private View view(final String id, String... styles) {
+		return View.builder()
+				.id(id)
+				.size(new Dimension2D(100, 10))
+				.title(id)
+				.nodeFactory(Pane::new)
+				.styles(Set.of(styles))
 				.build();
 	}
 
@@ -228,6 +406,13 @@ public class ViewServiceTest extends ApplicationTest {
 		final EventService eventService = new EventServiceImpl();
 		eventService.subscribe(eventPackage -> events.add(eventPackage));
 		return eventService;
+	}
+
+
+
+
+	private StyleService styleService() {
+		return new StyleServiceImpl();
 	}
 
 
