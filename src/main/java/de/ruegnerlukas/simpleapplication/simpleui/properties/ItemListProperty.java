@@ -17,12 +17,18 @@ import java.util.stream.Stream;
 public class ItemListProperty extends Property {
 
 
+	/**
+	 * The factories for creating the items/nodes.
+	 */
 	@Getter
 	private final List<NodeFactory> factories;
 
 
 
 
+	/**
+	 * @param items the factories for creating the items/nodes.
+	 */
 	public ItemListProperty(final NodeFactory... items) {
 		super(ItemListProperty.class);
 		this.factories = List.of(items);
@@ -31,6 +37,9 @@ public class ItemListProperty extends Property {
 
 
 
+	/**
+	 * @param items the factories for creating the items/nodes.
+	 */
 	public ItemListProperty(final Collection<NodeFactory> items) {
 		super(ItemListProperty.class);
 		this.factories = List.copyOf(items);
@@ -39,6 +48,9 @@ public class ItemListProperty extends Property {
 
 
 
+	/**
+	 * @param items the factories for creating the items/nodes.
+	 */
 	public ItemListProperty(final Stream<NodeFactory> items) {
 		super(ItemListProperty.class);
 		this.factories = List.copyOf(items.collect(Collectors.toList()));
@@ -47,6 +59,9 @@ public class ItemListProperty extends Property {
 
 
 
+	/**
+	 * @param factory the factory for creating factories for creating the items/nodes.
+	 */
 	public ItemListProperty(final ItemListProperty.ItemListFactory factory) {
 		super(ItemListProperty.class);
 		this.factories = factory.build();
@@ -76,7 +91,8 @@ public class ItemListProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final ItemListProperty property, final Pane fxNode) {
+		public void build(final SceneContext context, final SNode node, final ItemListProperty property,
+						  final Pane fxNode) {
 			List<Node> childFxNodes = node.getChildren().stream()
 					.map(child -> context.getFxNodeBuilder().build(child))
 					.collect(Collectors.toList());
@@ -93,6 +109,11 @@ public class ItemListProperty extends Property {
 	public interface ItemListFactory {
 
 
+		/**
+		 * Build a list of node factories
+		 *
+		 * @return the list of node factories
+		 */
 		List<NodeFactory> build();
 
 	}

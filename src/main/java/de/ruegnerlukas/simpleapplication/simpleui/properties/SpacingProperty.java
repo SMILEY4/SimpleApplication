@@ -4,7 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -12,13 +12,19 @@ import lombok.Getter;
 public class SpacingProperty extends Property {
 
 
+	/**
+	 * The spacing value between the elements.
+	 */
 	@Getter
 	private final double spacing;
 
 
 
 
-	public SpacingProperty(double spacing) {
+	/**
+	 * @param spacing the spacing value between the elements.
+	 */
+	public SpacingProperty(final double spacing) {
 		super(SpacingProperty.class);
 		this.spacing = spacing;
 	}
@@ -28,7 +34,7 @@ public class SpacingProperty extends Property {
 
 	@Override
 	protected boolean isPropertyEqual(final Property other) {
-		return spacing == other.getAs(SpacingProperty.class).getSpacing();
+		return spacing == ((SpacingProperty) other).getSpacing();
 	}
 
 
@@ -46,7 +52,8 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final SpacingProperty property, final VBox fxNode) {
+		public void build(final SceneContext context, final SNode node, final SpacingProperty property,
+						  final VBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 		}
 
@@ -54,18 +61,20 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final SpacingProperty property, final SNode node, final VBox fxNode) {
+		public MutationResult update(final SceneContext context, final SpacingProperty property,
+									 final SNode node, final VBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final SpacingProperty property, final SNode node, final VBox fxNode) {
+		public MutationResult remove(final SceneContext context, final SpacingProperty property,
+									 final SNode node, final VBox fxNode) {
 			fxNode.setSpacing(0);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}
@@ -79,7 +88,8 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final SpacingProperty property, final HBox fxNode) {
+		public void build(final SceneContext context, final SNode node, final SpacingProperty property,
+						  final HBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 		}
 
@@ -87,18 +97,20 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final SpacingProperty property, final SNode node, final HBox fxNode) {
+		public MutationResult update(final SceneContext context, final SpacingProperty property,
+									 final SNode node, final HBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final SpacingProperty property, final SNode node, final HBox fxNode) {
+		public MutationResult remove(final SceneContext context, final SpacingProperty property,
+									 final SNode node, final HBox fxNode) {
 			fxNode.setSpacing(0);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}

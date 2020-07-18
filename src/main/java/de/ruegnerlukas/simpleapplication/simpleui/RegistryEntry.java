@@ -18,18 +18,36 @@ import java.util.Set;
 public class RegistryEntry {
 
 
+	/**
+	 * The type of the node of this entry.
+	 */
 	private final Class<?> nodeType;
 
+	/**
+	 * The primary builder (of the fx-node) for the node type of this entry.
+	 */
 	private final BaseFxNodeBuilder<? extends Node> baseFxNodeBuilder;
 
-	private final Map<Class<? extends Property>, PropFxNodeBuilder<? extends Property, ? extends Node>> propFxNodeBuilders = new HashMap<>();
+	/**
+	 * The node builder for the node type and a property type of this entry.
+	 */
+	private final Map<Class<? extends Property>, PropFxNodeBuilder<? extends Property, ? extends Node>> propFxNodeBuilders
+			= new HashMap<>();
 
-	private final Map<Class<? extends Property>, PropFxNodeUpdater<? extends Property, ? extends Node>> propFxNodeUpdaters = new HashMap<>();
+	/**
+	 * The node updater for the node type and a property type of this entry.
+	 */
+	private final Map<Class<? extends Property>, PropFxNodeUpdater<? extends Property, ? extends Node>> propFxNodeUpdaters
+			= new HashMap<>();
 
 
 
 
-	public RegistryEntry(final Class<?> nodeType, BaseFxNodeBuilder<? extends Node> baseFxNodeBuilder) {
+	/**
+	 * @param nodeType          the type of the node
+	 * @param baseFxNodeBuilder the primary builder (of the fx-node) for the node type of this entry.
+	 */
+	public RegistryEntry(final Class<?> nodeType, final BaseFxNodeBuilder<? extends Node> baseFxNodeBuilder) {
 		this.nodeType = nodeType;
 		this.baseFxNodeBuilder = baseFxNodeBuilder;
 		this.propFxNodeBuilders.put(IdProperty.class, new NoOpUpdatingBuilder());
@@ -39,6 +57,9 @@ public class RegistryEntry {
 
 
 
+	/**
+	 * @return a set of all property types that have at least a builder registered at this entry.
+	 */
 	public Set<Class<? extends Property>> getProperties() {
 		Set<Class<? extends Property>> properties = new HashSet<>(propFxNodeBuilders.keySet());
 		properties.addAll(propFxNodeBuilders.keySet());

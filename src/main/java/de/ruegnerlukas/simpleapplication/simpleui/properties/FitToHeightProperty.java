@@ -4,20 +4,27 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
 
 public class FitToHeightProperty extends Property {
 
 
+	/**
+	 * Whether the element should fit the height of its parent element.
+	 */
 	@Getter
 	private final boolean fitToHeight;
 
 
 
 
-	public FitToHeightProperty(boolean fitToHeight) {
+	/**
+	 * @param fitToHeight whether the element should fit the height of its parent element.
+	 */
+	public FitToHeightProperty(final boolean fitToHeight) {
 		super(FitToHeightProperty.class);
 		this.fitToHeight = fitToHeight;
 	}
@@ -41,20 +48,12 @@ public class FitToHeightProperty extends Property {
 
 
 
-	public static boolean fitToHeight(SNode node) {
-		return node.getPropertySafe(FitToHeightProperty.class)
-				.map(FitToHeightProperty::isFitToHeight)
-				.orElse(false);
-	}
-
-
-
-
 	public static class FitToHeightUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, ScrollPane> {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final FitToHeightProperty property, final ScrollPane fxNode) {
+		public void build(final SceneContext context, final SNode node, final FitToHeightProperty property,
+						  final ScrollPane fxNode) {
 			fxNode.setFitToHeight(property.isFitToHeight());
 		}
 
@@ -62,18 +61,20 @@ public class FitToHeightProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final FitToHeightProperty property, final SNode node, final ScrollPane fxNode) {
+		public MutationResult update(final SceneContext context, final FitToHeightProperty property,
+									 final SNode node, final ScrollPane fxNode) {
 			fxNode.setFitToHeight(property.isFitToHeight());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final FitToHeightProperty property, final SNode node, final ScrollPane fxNode) {
+		public MutationResult remove(final SceneContext context, final FitToHeightProperty property,
+									 final SNode node, final ScrollPane fxNode) {
 			fxNode.setFitToHeight(false);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}

@@ -13,6 +13,12 @@ import java.util.List;
 public class ChildItem extends SNode {
 
 
+	/**
+	 * @param nodeType      the more specific node type of this child item
+	 * @param propertyList  the properties
+	 * @param state         the state
+	 * @param childListener the child listener
+	 */
 	public ChildItem(final Class<?> nodeType, final List<Property> propertyList, final State state, final ChildListener childListener) {
 		super(nodeType, propertyList, state, childListener);
 	}

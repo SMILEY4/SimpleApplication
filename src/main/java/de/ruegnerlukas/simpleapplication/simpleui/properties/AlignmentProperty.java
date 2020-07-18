@@ -4,21 +4,27 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+
 public class AlignmentProperty extends Property {
 
 
+	/**
+	 * The alignment.
+	 */
 	@Getter
 	private final Pos alignment;
 
 
 
 
-
+	/**
+	 * @param alignment the alignment
+	 */
 	public AlignmentProperty(final Pos alignment) {
 		super(AlignmentProperty.class);
 		this.alignment = alignment;
@@ -47,7 +53,8 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final AlignmentProperty property, final VBox fxNode) {
+		public void build(final SceneContext context, final SNode node, final AlignmentProperty property,
+						  final VBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 		}
 
@@ -55,18 +62,20 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final AlignmentProperty property, final SNode node, final VBox fxNode) {
+		public MutationResult update(final SceneContext context, final AlignmentProperty property,
+									 final SNode node, final VBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final AlignmentProperty property, final SNode node, final VBox fxNode) {
+		public MutationResult remove(final SceneContext context, final AlignmentProperty property,
+									 final SNode node, final VBox fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}

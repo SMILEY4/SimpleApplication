@@ -4,21 +4,28 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+
 public class FitToWidthProperty extends Property {
 
 
+	/**
+	 * Whether the element should fit the width of its parent element.
+	 */
 	@Getter
 	private final boolean fitToWidth;
 
 
 
 
-	public FitToWidthProperty(boolean fitToWidth) {
+	/**
+	 * @param fitToWidth whether the element should fit the width of its parent element.
+	 */
+	public FitToWidthProperty(final boolean fitToWidth) {
 		super(FitToWidthProperty.class);
 		this.fitToWidth = fitToWidth;
 	}
@@ -42,20 +49,12 @@ public class FitToWidthProperty extends Property {
 
 
 
-	public static boolean fitToWidth(SNode node) {
-		return node.getPropertySafe(FitToWidthProperty.class)
-				.map(FitToWidthProperty::isFitToWidth)
-				.orElse(false);
-	}
-
-
-
-
 	public static class ScrollPaneFitToWidthUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToWidthProperty, ScrollPane> {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final FitToWidthProperty property, final ScrollPane fxNode) {
+		public void build(final SceneContext context, final SNode node, final FitToWidthProperty property,
+						  final ScrollPane fxNode) {
 			fxNode.setFitToWidth(property.isFitToWidth());
 		}
 
@@ -63,28 +62,35 @@ public class FitToWidthProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final FitToWidthProperty property, final SNode node, final ScrollPane fxNode) {
+		public MutationResult update(final SceneContext context, final FitToWidthProperty property,
+									 final SNode node, final ScrollPane fxNode) {
 			fxNode.setFitToWidth(property.isFitToWidth());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final FitToWidthProperty property, final SNode node, final ScrollPane fxNode) {
+		public MutationResult remove(final SceneContext context, final FitToWidthProperty property,
+									 final SNode node, final ScrollPane fxNode) {
 			fxNode.setFitToWidth(false);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}
+
+
+
+
 
 
 	public static class VBoxFitToWidthUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToWidthProperty, VBox> {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final FitToWidthProperty property, final VBox fxNode) {
+		public void build(final SceneContext context, final SNode node, final FitToWidthProperty property,
+						  final VBox fxNode) {
 			fxNode.setFillWidth(property.isFitToWidth());
 		}
 
@@ -92,18 +98,20 @@ public class FitToWidthProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final FitToWidthProperty property, final SNode node, final VBox fxNode) {
+		public MutationResult update(final SceneContext context, final FitToWidthProperty property, final SNode node,
+									 final VBox fxNode) {
 			fxNode.setFillWidth(property.isFitToWidth());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final FitToWidthProperty property, final SNode node, final VBox fxNode) {
+		public MutationResult remove(final SceneContext context, final FitToWidthProperty property, final SNode node,
+									 final VBox fxNode) {
 			fxNode.setFillWidth(false);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}

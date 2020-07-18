@@ -9,11 +9,17 @@ import java.util.List;
 public class InjectionPoint extends ItemListProperty {
 
 
+	/**
+	 * The id of this injection point.
+	 */
 	private final String injectionPointId;
 
 
 
 
+	/**
+	 * @param injectionPointId the id of this injection point.
+	 */
 	public InjectionPoint(final String injectionPointId) {
 		this.injectionPointId = injectionPointId;
 	}

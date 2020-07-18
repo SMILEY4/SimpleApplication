@@ -4,7 +4,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
@@ -12,18 +11,41 @@ import lombok.Getter;
 import java.util.Objects;
 import java.util.Optional;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+
 @Getter
 public class AnchorProperty extends Property {
 
 
+	/**
+	 * The value for the top anchor or null.
+	 */
 	private final Number top;
+
+	/**
+	 * The value for the bottom anchor or null.
+	 */
 	private final Number bottom;
+
+	/**
+	 * The value for the left anchor or null.
+	 */
 	private final Number left;
+
+	/**
+	 * The value for the right anchor or null.
+	 */
 	private final Number right;
 
 
 
 
+	/**
+	 * @param top    the value for the top anchor or null.
+	 * @param bottom the value for the bottom anchor or null.
+	 * @param left   the value for the left anchor or null.
+	 * @param right  the value for the right anchor or null.
+	 */
 	public AnchorProperty(final Number top, final Number bottom, final Number left, final Number right) {
 		super(AnchorProperty.class);
 		this.top = top;
@@ -49,7 +71,7 @@ public class AnchorProperty extends Property {
 
 	@Override
 	public String printValue() {
-		return "t="+getTop() + " b="+getBottom() + " l="+getLeft() + " r="+getRight();
+		return "t=" + getTop() + " b=" + getBottom() + " l=" + getLeft() + " r=" + getRight();
 	}
 
 
@@ -59,7 +81,31 @@ public class AnchorProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final AnchorProperty property, final Node fxNode) {
+		public void build(final SceneContext context, final SNode node, final AnchorProperty property,
+						  final Node fxNode) {
+			setAnchors(property, fxNode);
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final SceneContext context, final AnchorProperty property,
+									 final SNode node, final Node fxNode) {
+			setAnchors(property, fxNode);
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		/**
+		 * Sets the anchor values of the given property for the given fx node
+		 *
+		 * @param property the anchor property
+		 * @param fxNode   the fx node
+		 */
+		private void setAnchors(final AnchorProperty property, final Node fxNode) {
 			AnchorPane.setTopAnchor(fxNode, Optional.ofNullable(property.getTop()).map(Number::doubleValue).orElse(null));
 			AnchorPane.setBottomAnchor(fxNode, Optional.ofNullable(property.getBottom()).map(Number::doubleValue).orElse(null));
 			AnchorPane.setLeftAnchor(fxNode, Optional.ofNullable(property.getLeft()).map(Number::doubleValue).orElse(null));
@@ -70,24 +116,13 @@ public class AnchorProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final AnchorProperty property, final SNode node, final Node fxNode) {
-			AnchorPane.setTopAnchor(fxNode, Optional.ofNullable(property.getTop()).map(Number::doubleValue).orElse(null));
-			AnchorPane.setBottomAnchor(fxNode, Optional.ofNullable(property.getBottom()).map(Number::doubleValue).orElse(null));
-			AnchorPane.setLeftAnchor(fxNode, Optional.ofNullable(property.getLeft()).map(Number::doubleValue).orElse(null));
-			AnchorPane.setRightAnchor(fxNode, Optional.ofNullable(property.getRight()).map(Number::doubleValue).orElse(null));
-			return BaseNodeMutator.MutationResult.MUTATED;
-		}
-
-
-
-
-		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final AnchorProperty property, final SNode node, final Node fxNode) {
+		public MutationResult remove(final SceneContext context, final AnchorProperty property,
+									 final SNode node, final Node fxNode) {
 			AnchorPane.setTopAnchor(fxNode, null);
 			AnchorPane.setBottomAnchor(fxNode, null);
 			AnchorPane.setLeftAnchor(fxNode, null);
 			AnchorPane.setRightAnchor(fxNode, null);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}

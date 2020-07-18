@@ -16,31 +16,61 @@ import java.util.Optional;
 public class SNode {
 
 
+	/**
+	 * The type of this node.
+	 */
 	private final Class<?> nodeType;
 
 
+	/**
+	 * The properties of this node.
+	 */
 	private final Map<Class<? extends Property>, Property> properties = new HashMap<>();
 
+	/**
+	 * The child nodes of this node.
+	 */
 	@Getter
-	public final List<SNode> children;
+	private final List<SNode> children;
 
-	@Setter
-	private javafx.scene.Node fxNode;
-
+	/**
+	 * The listener for changes to child nodes (if required).
+	 */
 	@Getter
 	private ChildListener childListener;
 
 
+	/**
+	 * The fx-node attached to this node (or null).
+	 */
+	@Setter
+	private javafx.scene.Node fxNode;
 
 
+
+
+	/**
+	 * @param nodeType      the type of this node.
+	 * @param propertyList  the properties of this node.
+	 * @param state         the current state
+	 * @param childListener the listener for changes to child nodes (if required).
+	 */
 	public SNode(final Class<?> nodeType, final List<Property> propertyList, final State state, final ChildListener childListener) {
 		this.nodeType = nodeType;
 		propertyList.forEach(property -> properties.put(property.getKey(), property));
-		this.children= childNodesFromProperties(state);
+		this.children = childNodesFromProperties(state);
 		this.childListener = childListener;
 	}
 
 
+
+
+	/**
+	 * Create the child nodes from the properties of this node and the given state.
+	 *
+	 * @param state the current state
+	 * @return the list of child nodes.
+	 */
 	private List<SNode> childNodesFromProperties(final State state) {
 		final List<SNode> children = new ArrayList<>();
 		getPropertySafe(ItemListProperty.class).ifPresent(itemListProp -> itemListProp.getFactories().forEach(factory -> {
@@ -53,6 +83,10 @@ public class SNode {
 
 
 
+
+	/**
+	 * Inform the listener (if possible) of any changes to the child nodes.
+	 */
 	public void triggerChildListChange() {
 		if (childListener != null && getFxNode() != null) {
 			childListener.onChange(this);
@@ -62,17 +96,31 @@ public class SNode {
 
 
 
-	public <T> Optional<T> getPropertySafe(Class<T> key) {
-		return Optional.ofNullable(getProperty(key));
+	/**
+	 * Get the property with the given type.
+	 *
+	 * @param type the type of the requested property
+	 * @param <T>  the generic type
+	 * @return the requested property
+	 */
+	public <T> Optional<T> getPropertySafe(final Class<T> type) {
+		return Optional.ofNullable(getProperty(type));
 	}
 
 
 
 
-	public <T> T getProperty(Class<T> key) {
-		Property property = getProperties().get(key);
+	/**
+	 * Get the property with the given type or null.
+	 *
+	 * @param type the type of the requested property
+	 * @param <T>  the generic type
+	 * @return the requested property or null
+	 */
+	public <T> T getProperty(final Class<T> type) {
+		Property property = getProperties().get(type);
 		if (property != null) {
-			return property.getAs(key);
+			return (T) property;
 		} else {
 			return null;
 		}
@@ -81,8 +129,14 @@ public class SNode {
 
 
 
-	public boolean hasProperty(Class<? extends Property> key) {
-		return getProperties().containsKey(key);
+	/**
+	 * Check whether this node has a property of the given type.
+	 *
+	 * @param type the type of the property
+	 * @return whether this node has a property of the given type.
+	 */
+	public boolean hasProperty(final Class<? extends Property> type) {
+		return getProperties().containsKey(type);
 	}
 
 
@@ -91,6 +145,11 @@ public class SNode {
 	public interface ChildListener {
 
 
+		/**
+		 * The child nodes of the given parent node have changed.
+		 *
+		 * @param parent the parent node of the changed child nodes
+		 */
 		void onChange(SNode parent);
 
 	}

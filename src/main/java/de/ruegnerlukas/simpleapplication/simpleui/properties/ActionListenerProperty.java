@@ -4,21 +4,26 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
 import javafx.scene.control.ButtonBase;
 import lombok.Getter;
 
-import java.util.Optional;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
 
 public class ActionListenerProperty extends Property {
 
 
+	/**
+	 * The listener
+	 */
 	@Getter
 	private final ActionListener listener;
 
 
 
 
+	/**
+	 * @param listener the listener to use
+	 */
 	public ActionListenerProperty(final ActionListener listener) {
 		super(ActionListenerProperty.class);
 		this.listener = listener;
@@ -43,17 +48,12 @@ public class ActionListenerProperty extends Property {
 
 
 
-	public static Optional<ActionListener> getActionListener(SNode node) {
-		return node.getPropertySafe(ActionListenerProperty.class)
-				.map(ActionListenerProperty::getListener);
-	}
-
-
-
-
 	public interface ActionListener {
 
 
+		/**
+		 * Called on an action.
+		 */
 		void onAction();
 
 	}
@@ -67,7 +67,8 @@ public class ActionListenerProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final ActionListenerProperty property, final ButtonBase fxNode) {
+		public void build(final SceneContext context, final SNode node, final ActionListenerProperty property,
+						  final ButtonBase fxNode) {
 			fxNode.setOnAction(event -> property.getListener().onAction());
 		}
 
@@ -75,18 +76,20 @@ public class ActionListenerProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final ActionListenerProperty property, final SNode node, final ButtonBase fxNode) {
+		public MutationResult update(final SceneContext context, final ActionListenerProperty property,
+									 final SNode node, final ButtonBase fxNode) {
 			fxNode.setOnAction(event -> property.getListener().onAction());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final ActionListenerProperty property, final SNode node, final ButtonBase fxNode) {
+		public MutationResult remove(final SceneContext context, final ActionListenerProperty property,
+									 final SNode node, final ButtonBase fxNode) {
 			fxNode.setOnAction(null);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}

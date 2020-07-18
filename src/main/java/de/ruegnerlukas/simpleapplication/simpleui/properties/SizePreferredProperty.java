@@ -4,22 +4,33 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
-import java.util.Optional;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
 
 @Getter
 public class SizePreferredProperty extends Property {
 
 
+	/**
+	 * The preferred width.
+	 */
 	private final Double width;
+
+
+	/**
+	 * The preferred height.
+	 */
 	private final Double height;
 
 
 
 
+	/**
+	 * @param width  the preferred width.
+	 * @param height the preferred height.
+	 */
 	public SizePreferredProperty(final Double width, final Double height) {
 		super(SizePreferredProperty.class);
 		this.width = width;
@@ -32,7 +43,8 @@ public class SizePreferredProperty extends Property {
 	@Override
 	protected boolean isPropertyEqual(final Property other) {
 		final SizePreferredProperty sizeOther = (SizePreferredProperty) other;
-		return SizeProperty.isEqual(this.getWidth(), sizeOther.getWidth()) && SizeProperty.isEqual(this.getHeight(), sizeOther.getHeight());
+		return SizeProperty.isEqual(this.getWidth(), sizeOther.getWidth())
+				&& SizeProperty.isEqual(this.getHeight(), sizeOther.getHeight());
 	}
 
 
@@ -46,41 +58,12 @@ public class SizePreferredProperty extends Property {
 
 
 
-	public static Optional<Double> getPreferredWidth(SNode node) {
-		Double width = node.getPropertySafe(SizePreferredProperty.class)
-				.map(SizePreferredProperty::getWidth)
-				.orElse(null);
-		if (width == null) {
-			width = node.getPropertySafe(SizeProperty.class)
-					.map(SizeProperty::getPreferredWidth)
-					.orElse(null);
-		}
-		return Optional.ofNullable(width);
-	}
-
-
-
-
-	public static Optional<Double> getPreferredHeight(SNode node) {
-		Double height = node.getPropertySafe(SizePreferredProperty.class)
-				.map(SizePreferredProperty::getHeight)
-				.orElse(null);
-		if (height == null) {
-			height = node.getPropertySafe(SizeProperty.class)
-					.map(SizeProperty::getPreferredHeight)
-					.orElse(null);
-		}
-		return Optional.ofNullable(height);
-	}
-
-
-
-
 	public static class SizePreferredUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizePreferredProperty, Region> {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final SizePreferredProperty property, final Region fxNode) {
+		public void build(final SceneContext context, final SNode node, final SizePreferredProperty property,
+						  final Region fxNode) {
 			fxNode.setPrefSize(property.getWidth(), property.getHeight());
 		}
 
@@ -88,22 +71,24 @@ public class SizePreferredProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final SizePreferredProperty property, final SNode node, final Region fxNode) {
+		public MutationResult update(final SceneContext context, final SizePreferredProperty property,
+									 final SNode node, final Region fxNode) {
 			fxNode.setPrefSize(property.getWidth(), property.getHeight());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final SizePreferredProperty property, final SNode node, final Region fxNode) {
+		public MutationResult remove(final SceneContext context, final SizePreferredProperty property,
+									 final SNode node, final Region fxNode) {
 			if (node.hasProperty(SizeProperty.class)) {
 				SizeProperty sizeProp = node.getProperty(SizeProperty.class);
 				fxNode.setPrefSize(sizeProp.getPreferredWidth(), sizeProp.getPreferredHeight());
-				return BaseNodeMutator.MutationResult.MUTATED;
+				return MutationResult.MUTATED;
 			} else {
-				return BaseNodeMutator.MutationResult.REBUILD;
+				return MutationResult.REBUILD;
 			}
 		}
 

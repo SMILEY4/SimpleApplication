@@ -4,26 +4,57 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
 import javafx.scene.layout.Region;
 import lombok.Getter;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
 
 @Getter
 public class SizeProperty extends Property {
 
 
+	/**
+	 * The minimum width.
+	 */
 	private final Double minWidth;
+
+
+	/**
+	 * The minimum height.
+	 */
 	private final Double minHeight;
 
+	/**
+	 * The preferred width.
+	 */
 	private final Double preferredWidth;
+
+	/**
+	 * The preferred height.
+	 */
 	private final Double preferredHeight;
 
+	/**
+	 * The maximum width.
+	 */
 	private final Double maxWidth;
+
+	/**
+	 * The maximum height.
+	 */
 	private final Double maxHeight;
 
 
 
 
+	/**
+	 * @param minWidth        the minimum width.
+	 * @param minHeight       the minimum height.
+	 * @param preferredWidth  the preferred width.
+	 * @param preferredHeight the preferred height.
+	 * @param maxWidth        the maximum width.
+	 * @param maxHeight       the maximum height.
+	 */
 	public SizeProperty(final Double minWidth, final Double minHeight,
 						final Double preferredWidth, final Double preferredHeight,
 						final Double maxWidth, final Double maxHeight) {
@@ -64,7 +95,14 @@ public class SizeProperty extends Property {
 
 
 
-	protected static boolean isEqual(Double a, Double b) {
+	/**
+	 * Safe check to see if the two given values are equal.
+	 *
+	 * @param a the first number or null
+	 * @param b the second number or null
+	 * @return whether the two numbers are equal.
+	 */
+	protected static boolean isEqual(final Double a, final Double b) {
 		if (a == null && b == null) {
 			return true;
 		} else {
@@ -87,7 +125,8 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final SizeProperty property, final Region fxNode) {
+		public void build(final SceneContext context, final SNode node, final SizeProperty property,
+						  final Region fxNode) {
 			setSize(node, property, fxNode);
 		}
 
@@ -95,14 +134,23 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final SizeProperty property, final SNode node, final Region fxNode) {
+		public MutationResult update(final SceneContext context, final SizeProperty property,
+									 final SNode node, final Region fxNode) {
 			setSize(node, property, fxNode);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
+		/**
+		 * Sets the size of the given fx node.
+		 * SizeMinProperty, SizePreferredProperty, SizeMaxProperty have higher priority, if the given node has these too.
+		 *
+		 * @param node     the simpleui-node
+		 * @param property the property
+		 * @param fxNode   the fx region
+		 */
 		private void setSize(final SNode node, final SizeProperty property, final Region fxNode) {
 			if (!node.hasProperty(SizeMinProperty.class)) {
 				fxNode.setMinSize(property.getMinWidth(), property.getMinHeight());
@@ -119,18 +167,19 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final SizeProperty property, final SNode node, final Region fxNode) {
+		public MutationResult remove(final SceneContext context, final SizeProperty property,
+									 final SNode node, final Region fxNode) {
 			if (!node.hasProperty(SizeMinProperty.class)) {
 				fxNode.setMinSize(0, 0);
 			}
 			if (!node.hasProperty(SizePreferredProperty.class)) {
 				fxNode.setPrefSize(property.getPreferredWidth(), property.getPreferredHeight());
-				return BaseNodeMutator.MutationResult.REBUILD;
+				return MutationResult.REBUILD;
 			}
 			if (!node.hasProperty(SizeMaxProperty.class)) {
 				fxNode.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 			}
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}

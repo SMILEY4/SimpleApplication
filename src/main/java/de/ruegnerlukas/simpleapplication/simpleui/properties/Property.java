@@ -8,11 +8,21 @@ import lombok.Getter;
 public abstract class Property {
 
 
+	/**
+	 * The key or type of this property.
+	 */
 	private final Class<? extends Property> key;
 
 
 
 
+	/**
+	 * Check if this property is equal to the given property based in its type and
+	 * the {@link Property#isPropertyEqual(Property)} implementation.
+	 *
+	 * @param other the other property
+	 * @return whether the properties are equal
+	 */
 	public boolean isEqual(final Property other) {
 		if (other == null || other.getKey() != this.getKey()) {
 			return false;
@@ -24,25 +34,18 @@ public abstract class Property {
 
 
 
+	/**
+	 * Check whether the given property of the same type is equal to this property.
+	 *
+	 * @param other the other property. Never null and always of the same type.
+	 * @return whether the properties are equal
+	 */
 	protected abstract boolean isPropertyEqual(Property other);
 
 
-
-
-	public <T> T getAs(Class<T> propKey) {
-		return (T) this;
-	}
-
-
-
-
-	public <T> T getAs() {
-		return (T) this;
-	}
-
-
-
-
+	/**
+	 * @return the value(s) of this property as a readable string.
+	 */
 	public abstract String printValue();
 
 }

@@ -12,12 +12,18 @@ import lombok.Getter;
 public class ItemProperty extends Property {
 
 
+	/**
+	 * The factory for creating the item/node.
+	 */
 	@Getter
 	private final NodeFactory factory;
 
 
 
 
+	/**
+	 * @param item the factory for creating the item/node.
+	 */
 	public ItemProperty(final NodeFactory item) {
 		super(ItemProperty.class);
 		this.factory = item;
@@ -47,7 +53,8 @@ public class ItemProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final ItemProperty property, final ScrollPane fxNode) {
+		public void build(final SceneContext context, final SNode node, final ItemProperty property,
+						  final ScrollPane fxNode) {
 			Node childNode = null;
 			if (!node.getChildren().isEmpty()) {
 				childNode = context.getFxNodeBuilder().build(node.getChildren().get(0));

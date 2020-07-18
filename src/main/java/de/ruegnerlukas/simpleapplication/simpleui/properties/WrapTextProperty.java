@@ -3,20 +3,27 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
 import javafx.scene.control.Labeled;
 import lombok.Getter;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
 
 public class WrapTextProperty extends Property {
 
 
+	/**
+	 * Whether the text content should wrap.
+	 */
 	@Getter
 	private final boolean wrap;
 
 
 
 
-	public WrapTextProperty(boolean wrap) {
+	/**
+	 * @param wrap whether the text content should wrap.
+	 */
+	public WrapTextProperty(final boolean wrap) {
 		super(WrapTextProperty.class);
 		this.wrap = wrap;
 	}
@@ -40,20 +47,12 @@ public class WrapTextProperty extends Property {
 
 
 
-	public static boolean isWrapEnabled(SNode node) {
-		return node.getPropertySafe(WrapTextProperty.class)
-				.map(WrapTextProperty::isWrap)
-				.orElse(false);
-	}
-
-
-
-
 	public static class WrapTextUpdatingBuilder implements PropFxNodeUpdatingBuilder<WrapTextProperty, Labeled> {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final WrapTextProperty property, final Labeled fxNode) {
+		public void build(final SceneContext context, final SNode node, final WrapTextProperty property,
+						  final Labeled fxNode) {
 			fxNode.setWrapText(property.isWrap());
 		}
 
@@ -61,18 +60,20 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final WrapTextProperty property, final SNode node, final Labeled fxNode) {
+		public MutationResult update(final SceneContext context, final WrapTextProperty property,
+									 final SNode node, final Labeled fxNode) {
 			fxNode.setWrapText(property.isWrap());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final WrapTextProperty property, final SNode node, final Labeled fxNode) {
+		public MutationResult remove(final SceneContext context, final WrapTextProperty property,
+									 final SNode node, final Labeled fxNode) {
 			fxNode.setWrapText(false);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 	}

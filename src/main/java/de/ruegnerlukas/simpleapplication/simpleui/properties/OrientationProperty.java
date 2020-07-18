@@ -4,20 +4,27 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.SNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import lombok.Getter;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+
 public class OrientationProperty extends Property {
 
 
+	/**
+	 * The orientation value
+	 */
 	@Getter
 	private final Orientation orientation;
 
 
 
 
+	/**
+	 * @param orientation the orientation value
+	 */
 	public OrientationProperty(final Orientation orientation) {
 		super(OrientationProperty.class);
 		this.orientation = orientation;
@@ -46,7 +53,8 @@ public class OrientationProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final OrientationProperty property, final Separator fxNode) {
+		public void build(final SceneContext context, final SNode node, final OrientationProperty property,
+						  final Separator fxNode) {
 			fxNode.setOrientation(property.getOrientation());
 		}
 
@@ -54,18 +62,20 @@ public class OrientationProperty extends Property {
 
 
 		@Override
-		public BaseNodeMutator.MutationResult update(final SceneContext context, final OrientationProperty property, final SNode node, final Separator fxNode) {
+		public MutationResult update(final SceneContext context, final OrientationProperty property,
+									 final SNode node, final Separator fxNode) {
 			fxNode.setOrientation(property.getOrientation());
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public BaseNodeMutator.MutationResult remove(final SceneContext context, final OrientationProperty property, final SNode node, final Separator fxNode) {
+		public MutationResult remove(final SceneContext context, final OrientationProperty property,
+									 final SNode node, final Separator fxNode) {
 			fxNode.setOrientation(Orientation.HORIZONTAL);
-			return BaseNodeMutator.MutationResult.MUTATED;
+			return MutationResult.MUTATED;
 		}
 
 
