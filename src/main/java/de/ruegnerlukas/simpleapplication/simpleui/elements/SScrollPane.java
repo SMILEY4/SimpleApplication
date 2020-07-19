@@ -9,7 +9,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToWidthProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
@@ -48,6 +47,7 @@ public final class SScrollPane {
 
 
 
+
 	/**
 	 * Handle a change in the child nodes of the given scroll-pane node.
 	 *
@@ -55,8 +55,13 @@ public final class SScrollPane {
 	 */
 	private static void handleChildrenChange(final SNode node) {
 		final ScrollPane scrollPane = (ScrollPane) node.getFxNode();
-		scrollPane.setContent(node.getChildren().get(0).getFxNode());
+		if (node.getChildren().isEmpty()) {
+			scrollPane.setContent(null);
+		} else {
+			scrollPane.setContent(node.getChildren().get(0).getFxNode());
+		}
 	}
+
 
 
 
@@ -72,7 +77,6 @@ public final class SScrollPane {
 				new SizePreferredProperty.SizePreferredUpdatingBuilder());
 		registry.registerProperty(SScrollPane.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
 		registry.registerProperty(SScrollPane.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
-		registry.registerProperty(SScrollPane.class, ItemListProperty.class, new ItemListProperty.ItemListBuilder());
 		registry.registerProperty(SScrollPane.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
 		registry.registerProperty(SScrollPane.class, FitToWidthProperty.class,
 				new FitToWidthProperty.ScrollPaneFitToWidthUpdatingBuilder());
