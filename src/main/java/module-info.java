@@ -1,4 +1,5 @@
 open module SimpleApplication {
+
 	requires transitive javafx.controls;
 	requires transitive javafx.fxml;
 	requires transitive org.slf4j;
@@ -15,6 +16,7 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.providers;
 	exports de.ruegnerlukas.simpleapplication.common.resources;
 	exports de.ruegnerlukas.simpleapplication.common.validation;
+
 	exports de.ruegnerlukas.simpleapplication.core.application;
 	exports de.ruegnerlukas.simpleapplication.core.events;
 	exports de.ruegnerlukas.simpleapplication.core.extensions;
@@ -23,4 +25,12 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.core.presentation.module;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.views;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.style;
+
+	exports de.ruegnerlukas.simpleapplication.simpleui;
+	exports de.ruegnerlukas.simpleapplication.simpleui.builders;
+	exports de.ruegnerlukas.simpleapplication.simpleui.elements;
+	exports de.ruegnerlukas.simpleapplication.simpleui.elements.injection;
+	exports de.ruegnerlukas.simpleapplication.simpleui.mutation;
+	exports de.ruegnerlukas.simpleapplication.simpleui.properties;
+
 }
