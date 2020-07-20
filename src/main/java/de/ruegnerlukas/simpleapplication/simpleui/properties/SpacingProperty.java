@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
 import javafx.scene.layout.HBox;
@@ -52,7 +52,7 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final SpacingProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final SpacingProperty property,
 						  final VBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 		}
@@ -61,8 +61,8 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final SceneContext context, final SpacingProperty property,
-									 final SNode node, final VBox fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SpacingProperty property,
+									 final SUINode node, final VBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 			return MutationResult.MUTATED;
 		}
@@ -71,8 +71,8 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final SceneContext context, final SpacingProperty property,
-									 final SNode node, final VBox fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SpacingProperty property,
+									 final SUINode node, final VBox fxNode) {
 			fxNode.setSpacing(0);
 			return MutationResult.MUTATED;
 		}
@@ -88,7 +88,7 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final SpacingProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final SpacingProperty property,
 						  final HBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 		}
@@ -97,8 +97,8 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final SceneContext context, final SpacingProperty property,
-									 final SNode node, final HBox fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SpacingProperty property,
+									 final SUINode node, final HBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 			return MutationResult.MUTATED;
 		}
@@ -107,8 +107,8 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final SceneContext context, final SpacingProperty property,
-									 final SNode node, final HBox fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SpacingProperty property,
+									 final SUINode node, final HBox fxNode) {
 			fxNode.setSpacing(0);
 			return MutationResult.MUTATED;
 		}

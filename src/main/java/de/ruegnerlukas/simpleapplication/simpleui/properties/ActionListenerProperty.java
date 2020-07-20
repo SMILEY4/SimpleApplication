@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.control.ButtonBase;
 import lombok.Getter;
@@ -67,7 +67,7 @@ public class ActionListenerProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final ActionListenerProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ActionListenerProperty property,
 						  final ButtonBase fxNode) {
 			fxNode.setOnAction(event -> property.getListener().onAction());
 		}
@@ -76,8 +76,8 @@ public class ActionListenerProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final SceneContext context, final ActionListenerProperty property,
-									 final SNode node, final ButtonBase fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ActionListenerProperty property,
+									 final SUINode node, final ButtonBase fxNode) {
 			fxNode.setOnAction(event -> property.getListener().onAction());
 			return MutationResult.MUTATED;
 		}
@@ -86,8 +86,8 @@ public class ActionListenerProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final SceneContext context, final ActionListenerProperty property,
-									 final SNode node, final ButtonBase fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ActionListenerProperty property,
+									 final SUINode node, final ButtonBase fxNode) {
 			fxNode.setOnAction(null);
 			return MutationResult.MUTATED;
 		}

@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.PropertyTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -14,23 +14,23 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ComponentTest extends ApplicationTest {
+public class SUIComponentTest extends ApplicationTest {
 
 
 	@Override
 	public void start(Stage stage) {
-		SimpleUIRegistry.initialize();
+		SUIRegistry.initialize();
 	}
 
 
 
 
-	private static class TestComponent extends Component<TestState> {
+	private static class TestSUIComponent extends SUIComponent<TestState> {
 
 
 		@Override
 		public NodeFactory render(final TestState state) {
-			return SButton.button(
+			return SUIButton.button(
 					Properties.id("myButton"),
 					Properties.textContent("My Button")
 			);
@@ -46,24 +46,24 @@ public class ComponentTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						new TestComponent()
+						new TestSUIComponent()
 				)
 		);
 
-		final SNode node = vbox.create(state);
+		final SUINode node = vbox.create(state);
 
-		TestUtils.assertNode(node, SVBox.class);
+		TestUtils.assertNode(node, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(node, "myVBox");
 
-		final List<SNode> children = node.getChildren();
+		final List<SUINode> children = node.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SNode childButton = children.get(0);
+		final SUINode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "myButton");
 		PropertyTestUtils.assertTextContentProperty(childButton, "My Button");
 

@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
@@ -52,7 +52,7 @@ public class FitToHeightProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final FitToHeightProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final FitToHeightProperty property,
 						  final ScrollPane fxNode) {
 			fxNode.setFitToHeight(property.isFitToHeight());
 		}
@@ -61,8 +61,8 @@ public class FitToHeightProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final SceneContext context, final FitToHeightProperty property,
-									 final SNode node, final ScrollPane fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final FitToHeightProperty property,
+									 final SUINode node, final ScrollPane fxNode) {
 			fxNode.setFitToHeight(property.isFitToHeight());
 			return MutationResult.MUTATED;
 		}
@@ -71,8 +71,8 @@ public class FitToHeightProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final SceneContext context, final FitToHeightProperty property,
-									 final SNode node, final ScrollPane fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final FitToHeightProperty property,
+									 final SUINode node, final ScrollPane fxNode) {
 			fxNode.setFitToHeight(false);
 			return MutationResult.MUTATED;
 		}

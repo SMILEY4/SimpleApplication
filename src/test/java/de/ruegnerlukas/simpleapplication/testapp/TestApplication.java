@@ -90,6 +90,7 @@ public class TestApplication {
 					.icon(Resource.internal("testResources/icon.png"))
 					.build();
 
+
 			// VIEW B
 
 			final Button buttonB = new Button("Switch B -> A");

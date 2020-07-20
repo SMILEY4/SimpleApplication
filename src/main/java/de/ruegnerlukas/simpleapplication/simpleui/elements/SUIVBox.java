@@ -1,9 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
@@ -17,17 +16,18 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SpacingProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
 
-public final class SVBox {
+public final class SUIVBox {
 
 
 	/**
 	 * Hidden constructor for utility classes.
 	 */
-	private SVBox() {
+	private SUIVBox() {
 		// do nothing
 	}
 
@@ -41,8 +41,8 @@ public final class SVBox {
 	 * @return the factory for a vbox node
 	 */
 	public static NodeFactory vbox(final Property... properties) {
-		Properties.checkIllegal(SVBox.class, SimpleUIRegistry.get().getEntry(SVBox.class).getProperties(), properties);
-		return state -> new SNode(SVBox.class, List.of(properties), state, SVBox::handleChildrenChange);
+		Properties.checkIllegal(SUIVBox.class, SUIRegistry.get().getEntry(SUIVBox.class).getProperties(), properties);
+		return state -> new SUINode(SUIVBox.class, List.of(properties), state, SUIVBox::handleChildrenChange);
 	}
 
 
@@ -53,7 +53,7 @@ public final class SVBox {
 	 *
 	 * @param node the vbox node
 	 */
-	private static void handleChildrenChange(final SNode node) {
+	private static void handleChildrenChange(final SUINode node) {
 		final VBox vbox = (VBox) node.getFxNode();
 		vbox.getChildren().clear();
 		node.getChildren().forEach(child -> {
@@ -68,18 +68,18 @@ public final class SVBox {
 	 *
 	 * @param registry the registry
 	 */
-	public static void register(final SimpleUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SVBox.class, new SVBox.VBoxNodeBuilder());
-		registry.registerProperty(SVBox.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
-		registry.registerProperty(SVBox.class, SizePreferredProperty.class,
+	public static void register(final SUIRegistry registry) {
+		registry.registerBaseFxNodeBuilder(SUIVBox.class, new SUIVBox.VBoxNodeBuilder());
+		registry.registerProperty(SUIVBox.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
+		registry.registerProperty(SUIVBox.class, SizePreferredProperty.class,
 				new SizePreferredProperty.SizePreferredUpdatingBuilder());
-		registry.registerProperty(SVBox.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
-		registry.registerProperty(SVBox.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
-		registry.registerProperty(SVBox.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
-		registry.registerProperty(SVBox.class, ItemListProperty.class, new ItemListProperty.ItemListBuilder());
-		registry.registerProperty(SVBox.class, SpacingProperty.class, new SpacingProperty.VBoxSpacingUpdatingBuilder());
-		registry.registerProperty(SVBox.class, AlignmentProperty.class, new AlignmentProperty.VBoxAlignmentUpdatingBuilder());
-		registry.registerProperty(SVBox.class, FitToWidthProperty.class, new FitToWidthProperty.VBoxFitToWidthUpdatingBuilder());
+		registry.registerProperty(SUIVBox.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
+		registry.registerProperty(SUIVBox.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
+		registry.registerProperty(SUIVBox.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
+		registry.registerProperty(SUIVBox.class, ItemListProperty.class, new ItemListProperty.ItemListBuilder());
+		registry.registerProperty(SUIVBox.class, SpacingProperty.class, new SpacingProperty.VBoxSpacingUpdatingBuilder());
+		registry.registerProperty(SUIVBox.class, AlignmentProperty.class, new AlignmentProperty.VBoxAlignmentUpdatingBuilder());
+		registry.registerProperty(SUIVBox.class, FitToWidthProperty.class, new FitToWidthProperty.VBoxFitToWidthUpdatingBuilder());
 	}
 
 
@@ -89,7 +89,7 @@ public final class SVBox {
 
 
 		@Override
-		public VBox build(final SceneContext context, final SNode node) {
+		public VBox build(final MasterNodeHandlers nodeHandlers, final SUINode node) {
 			return new VBox();
 		}
 

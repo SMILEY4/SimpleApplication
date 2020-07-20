@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.elements.injection;
+package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;

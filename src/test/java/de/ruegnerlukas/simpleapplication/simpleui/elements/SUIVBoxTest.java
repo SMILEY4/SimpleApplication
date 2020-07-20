@@ -3,12 +3,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.PropertyTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -19,12 +20,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SVBoxTest extends ApplicationTest {
+public class SUIVBoxTest extends ApplicationTest {
 
 
 	@Override
 	public void start(Stage stage) {
-		SimpleUIRegistry.initialize();
+		SUIRegistry.initialize();
 	}
 
 
@@ -35,7 +36,7 @@ public class SVBoxTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -46,22 +47,22 @@ public class SVBoxTest extends ApplicationTest {
 				Properties.fitToWidth(true),
 				Properties.alignment(Pos.CENTER),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Child Button 1")
 						),
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Child Button 2")
 						)
 				)
 		);
 
-		final SNode node = vbox.create(state);
+		final SUINode node = vbox.create(state);
 		assertThat(node.getProperties().keySet())
-				.containsExactlyInAnyOrderElementsOf(SimpleUIRegistry.get().getEntry(SVBox.class).getProperties());
+				.containsExactlyInAnyOrderElementsOf(SUIRegistry.get().getEntry(SUIVBox.class).getProperties());
 
-		TestUtils.assertNode(node, SVBox.class);
+		TestUtils.assertNode(node, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(node, "myVBox");
 		PropertyTestUtils.assertSizeMinProperty(node, 1.0, 2.0);
 		PropertyTestUtils.assertSizePreferredProperty(node, 3.0, 4.0);
@@ -72,17 +73,17 @@ public class SVBoxTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToWidthProperty(node, true);
 		PropertyTestUtils.assertAlignment(node, Pos.CENTER);
 
-		final List<SNode> children = node.getChildren();
+		final List<SUINode> children = node.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
 
-		final SNode child1Button = children.get(0);
+		final SUINode child1Button = children.get(0);
 		PropertyTestUtils.assertIdProperty(child1Button, "btn1");
 		PropertyTestUtils.assertTextContentProperty(child1Button, "Child Button 1");
 
 
-		final SNode child2Button = children.get(1);
+		final SUINode child2Button = children.get(1);
 		PropertyTestUtils.assertIdProperty(child2Button, "btn2");
 		PropertyTestUtils.assertTextContentProperty(child2Button, "Child Button 2");
 
@@ -96,7 +97,7 @@ public class SVBoxTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -107,14 +108,14 @@ public class SVBoxTest extends ApplicationTest {
 				Properties.fitToWidth(true),
 				Properties.alignment(Pos.CENTER),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn"),
 								Properties.textContent("Child Button 1")
 						)
 				)
 		);
 
-		NodeFactory vboxTarget = SVBox.vbox(
+		NodeFactory vboxTarget = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(33.0, 44.0),
@@ -125,21 +126,21 @@ public class SVBoxTest extends ApplicationTest {
 				Properties.fitToWidth(false),
 				Properties.alignment(Pos.TOP_RIGHT),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn"),
 								Properties.textContent("New Button")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, vbox, null);
-		SNode original = context.getRootNode();
-		SNode target = vboxTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, vbox);
+		SUINode original = context.getRootNode();
+		SUINode target = vboxTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SVBox.class);
+		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 		PropertyTestUtils.assertSizeMinProperty(mutatedNode, 1.0, 2.0);
 		PropertyTestUtils.assertSizePreferredProperty(mutatedNode, 33.0, 44.0);
@@ -150,12 +151,12 @@ public class SVBoxTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToWidthProperty(mutatedNode, false);
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SNode childButton = children.get(0);
+		final SUINode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "btn");
 		PropertyTestUtils.assertTextContentProperty(childButton, "New Button");
 	}
@@ -168,50 +169,50 @@ public class SVBoxTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						)
 				)
 		);
 
-		NodeFactory vboxTarget = SVBox.vbox(
+		NodeFactory vboxTarget = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						),
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, vbox, null);
-		SNode original = context.getRootNode();
-		SNode target = vboxTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, vbox);
+		SUINode original = context.getRootNode();
+		SUINode target = vboxTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SVBox.class);
+		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
 
-		final SNode child1Button = children.get(0);
+		final SUINode child1Button = children.get(0);
 		PropertyTestUtils.assertIdProperty(child1Button, "btn1");
 		PropertyTestUtils.assertTextContentProperty(child1Button, "Button 1");
 
-		final SNode child2Button = children.get(1);
+		final SUINode child2Button = children.get(1);
 		PropertyTestUtils.assertIdProperty(child2Button, "btn2");
 		PropertyTestUtils.assertTextContentProperty(child2Button, "Button 2");
 	}
@@ -224,36 +225,36 @@ public class SVBoxTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox")
 		);
 
-		NodeFactory vboxTarget = SVBox.vbox(
+		NodeFactory vboxTarget = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn"),
 								Properties.textContent("Button")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, vbox, null);
-		SNode original = context.getRootNode();
-		SNode target = vboxTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, vbox);
+		SUINode original = context.getRootNode();
+		SUINode target = vboxTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SVBox.class);
+		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SNode child1Button = children.get(0);
+		final SUINode child1Button = children.get(0);
 		PropertyTestUtils.assertIdProperty(child1Button, "btn");
 		PropertyTestUtils.assertTextContentProperty(child1Button, "Button");
 	}
@@ -266,37 +267,37 @@ public class SVBoxTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						),
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						)
 				)
 		);
 
-		NodeFactory vboxTarget = SVBox.vbox(
+		NodeFactory vboxTarget = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
 				)
 		);
 
-		SceneContext context = new SceneContext(state, vbox, null);
-		SNode original = context.getRootNode();
-		SNode target = vboxTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, vbox);
+		SUINode original = context.getRootNode();
+		SUINode target = vboxTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SVBox.class);
+		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(0);
 
@@ -310,46 +311,46 @@ public class SVBoxTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						),
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						)
 				)
 		);
 
-		NodeFactory vboxTarget = SVBox.vbox(
+		NodeFactory vboxTarget = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, vbox, null);
-		SNode original = context.getRootNode();
-		SNode target = vboxTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, vbox);
+		SUINode original = context.getRootNode();
+		SUINode target = vboxTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SVBox.class);
+		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SNode childButton = children.get(0);
+		final SUINode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "btn2");
 		PropertyTestUtils.assertTextContentProperty(childButton, "Button 2");
 	}
@@ -362,46 +363,46 @@ public class SVBoxTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						),
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						)
 				)
 		);
 
-		NodeFactory vboxTarget = SVBox.vbox(
+		NodeFactory vboxTarget = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, vbox, null);
-		SNode original = context.getRootNode();
-		SNode target = vboxTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, vbox);
+		SUINode original = context.getRootNode();
+		SUINode target = vboxTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SVBox.class);
+		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SNode childButton = children.get(0);
+		final SUINode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "btn1");
 		PropertyTestUtils.assertTextContentProperty(childButton, "Button 1");
 	}
@@ -414,54 +415,54 @@ public class SVBoxTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						),
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						)
 				)
 		);
 
-		NodeFactory vboxTarget = SVBox.vbox(
+		NodeFactory vboxTarget = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						),
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, vbox, null);
-		SNode original = context.getRootNode();
-		SNode target = vboxTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, vbox);
+		SUINode original = context.getRootNode();
+		SUINode target = vboxTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SVBox.class);
+		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
 
-		final SNode child1Button = children.get(0);
+		final SUINode child1Button = children.get(0);
 		PropertyTestUtils.assertIdProperty(child1Button, "btn2");
 		PropertyTestUtils.assertTextContentProperty(child1Button, "Button 2");
 
-		final SNode child2Button = children.get(1);
+		final SUINode child2Button = children.get(1);
 		PropertyTestUtils.assertIdProperty(child2Button, "btn1");
 		PropertyTestUtils.assertTextContentProperty(child2Button, "Button 1");
 	}
@@ -474,7 +475,7 @@ public class SVBoxTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SVBox.vbox(
+		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -485,19 +486,19 @@ public class SVBoxTest extends ApplicationTest {
 				Properties.fitToWidth(true),
 				Properties.alignment(Pos.CENTER),
 				Properties.items(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						),
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, vbox, null);
-		SNode node = context.getRootNode();
+		SUISceneContext context = new SUISceneContextImpl(state, vbox);
+		SUINode node = context.getRootNode();
 
 		FxTestUtils.assertVBox((VBox) node.getFxNode(), FxTestUtils.VBoxInfo.builder()
 				.minWidth(1.0).minHeight(2.0)

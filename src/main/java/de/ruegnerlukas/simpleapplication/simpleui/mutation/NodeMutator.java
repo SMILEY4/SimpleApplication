@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.Node;
 
 import java.util.Collections;
@@ -21,11 +21,11 @@ public class NodeMutator implements BaseNodeMutator {
 
 
 	@Override
-	public MutationResult mutateNode(final SNode original, final SNode target, final SceneContext context) {
-		if (mutateProperties(context, original, target) == REBUILD) {
+	public MutationResult mutateNode(final SUINode original, final SUINode target, final MasterNodeHandlers nodeHandlers) {
+		if (mutateProperties(nodeHandlers, original, target) == REBUILD) {
 			return REBUILD;
 		}
-		if (mutateChildren(context, original, target) == REBUILD) {
+		if (mutateChildren(nodeHandlers, original, target) == REBUILD) {
 			return REBUILD;
 		}
 		return MUTATED;
@@ -39,10 +39,11 @@ public class NodeMutator implements BaseNodeMutator {
 	 * Ignores {@link ItemListProperty} and {@link ItemProperty}. These have to be handled separately.
 	 * See {@link NodeMutator#mutateChildren}.
 	 *
-	 * @param original the original node
-	 * @param target   the target node to match
+	 * @param nodeHandlers the primary node handlers
+	 * @param original     the original node
+	 * @param target       the target node to match
 	 */
-	private MutationResult mutateProperties(final SceneContext context, final SNode original, final SNode target) {
+	private MutationResult mutateProperties(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
 
 		final Set<Class<? extends Property>> commonProperties = new HashSet<>();
 		commonProperties.addAll(original.getProperties().keySet());
@@ -64,12 +65,12 @@ public class NodeMutator implements BaseNodeMutator {
 				return REBUILD;
 			} else {
 				if (isRemoved(propOriginal, propTarget)) {
-					if (updater.remove(context, propOriginal, original, original.getFxNode()) == REBUILD) {
+					if (updater.remove(nodeHandlers, propOriginal, original, original.getFxNode()) == REBUILD) {
 						return REBUILD;
 					}
 				}
 				if (isAdded(propOriginal, propTarget) || isUpdated(propOriginal, propTarget)) {
-					if (updater.update(context, propTarget, original, original.getFxNode()) == REBUILD) {
+					if (updater.update(nodeHandlers, propTarget, original, original.getFxNode()) == REBUILD) {
 						return REBUILD;
 					}
 				}
@@ -88,19 +89,20 @@ public class NodeMutator implements BaseNodeMutator {
 	 * Tries to mutate the children ({@link ItemListProperty} and {@link ItemProperty})
 	 * of the given original node to match the given target node.
 	 *
-	 * @param original the original node
-	 * @param target   the target node to match
+	 * @param nodeHandlers the primary node handlers
+	 * @param original     the original node
+	 * @param target       the target node to match
 	 */
-	private MutationResult mutateChildren(final SceneContext context, final SNode original, final SNode target) {
+	private MutationResult mutateChildren(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
 
 		// TODO: optimize: make use of id property
 		boolean childrenChanged = false;
 		for (int i = 0; i < Math.max(original.getChildren().size(), target.getChildren().size()); i++) {
-			final SNode childOriginal = original.getChildren().size() <= i ? null : original.getChildren().get(i);
-			final SNode childTarget = target.getChildren().size() <= i ? null : target.getChildren().get(i);
+			final SUINode childOriginal = original.getChildren().size() <= i ? null : original.getChildren().get(i);
+			final SUINode childTarget = target.getChildren().size() <= i ? null : target.getChildren().get(i);
 
 			if (childOriginal != null && childTarget != null) {
-				SNode childMutated = context.getMutator().mutate(childOriginal, childTarget);
+				SUINode childMutated = nodeHandlers.getMutator().mutate(childOriginal, childTarget);
 				original.getChildren().set(i, childMutated);
 				childrenChanged = true;
 			}
@@ -110,7 +112,7 @@ public class NodeMutator implements BaseNodeMutator {
 				childrenChanged = true;
 			}
 			if (childOriginal == null && childTarget != null) {
-				context.getFxNodeBuilder().build(childTarget);
+				nodeHandlers.getFxNodeBuilder().build(childTarget);
 				if (i < original.getChildren().size()) {
 					original.getChildren().set(i, childTarget);
 				} else {
@@ -137,7 +139,7 @@ public class NodeMutator implements BaseNodeMutator {
 	 * @return the {@link PropFxNodeUpdater} for the given property and given node type
 	 */
 	private PropFxNodeUpdater<Property, Node> getPropNodeUpdater(final Class<?> nodeType, final Class<? extends Property> propType) {
-		return (PropFxNodeUpdater<Property, Node>) SimpleUIRegistry.get()
+		return (PropFxNodeUpdater<Property, Node>) SUIRegistry.get()
 				.getEntry(nodeType)
 				.getPropFxNodeUpdaters().get(propType);
 	}

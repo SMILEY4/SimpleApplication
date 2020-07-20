@@ -11,9 +11,9 @@ public final class Resource {
 
 
 	/**
-	 * The seperator for file paths.
+	 * The separator for file paths.
 	 */
-	private static final String PATH_SEPERATOR_TOKEN = "/";
+	private static final String PATH_SEPARATOR_TOKEN = "/";
 
 	/**
 	 * The path to the resource.
@@ -62,8 +62,8 @@ public final class Resource {
 	 * @return the create resource
 	 */
 	public static Resource externalRelative(final String path) {
-		final String rootDirectory = getRootDirectory().getPath().replaceAll("\\\\", PATH_SEPERATOR_TOKEN);
-		return Resource.external(rootDirectory + PATH_SEPERATOR_TOKEN + path);
+		final String rootDirectory = getRootDirectory().getPath().replaceAll("\\\\", PATH_SEPARATOR_TOKEN);
+		return Resource.external(rootDirectory + PATH_SEPARATOR_TOKEN + path);
 	}
 
 

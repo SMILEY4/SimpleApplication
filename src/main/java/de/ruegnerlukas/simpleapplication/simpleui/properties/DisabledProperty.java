@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.Node;
 import lombok.Getter;
@@ -52,7 +52,7 @@ public class DisabledProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final DisabledProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final DisabledProperty property,
 						  final Node fxNode) {
 			fxNode.setDisable(property.isDisabled());
 		}
@@ -61,8 +61,8 @@ public class DisabledProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final SceneContext context, final DisabledProperty property,
-									 final SNode node, final Node fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final DisabledProperty property,
+									 final SUINode node, final Node fxNode) {
 			fxNode.setDisable(property.isDisabled());
 			return MutationResult.MUTATED;
 		}
@@ -71,8 +71,8 @@ public class DisabledProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final SceneContext context, final DisabledProperty property,
-									 final SNode node, final Node fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final DisabledProperty property,
+									 final SUINode node, final Node fxNode) {
 			fxNode.setDisable(false);
 			return MutationResult.MUTATED;
 		}

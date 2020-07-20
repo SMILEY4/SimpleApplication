@@ -1,9 +1,10 @@
-package de.ruegnerlukas.simpleapplication.simpleui;
+package de.ruegnerlukas.simpleapplication.simpleui.utils;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 
-public final class SNodeTreePrinter {
+public final class SUINodeTreePrinter {
 
 
 	/**
@@ -17,7 +18,7 @@ public final class SNodeTreePrinter {
 	/**
 	 * Hidden constructor for utility class.
 	 */
-	private SNodeTreePrinter() {
+	private SUINodeTreePrinter() {
 		// do nothing
 	}
 
@@ -29,7 +30,7 @@ public final class SNodeTreePrinter {
 	 *
 	 * @param root the root node
 	 */
-	public static void print(final SNode root) {
+	public static void print(final SUINode root) {
 		print(root, 0);
 	}
 
@@ -42,7 +43,7 @@ public final class SNodeTreePrinter {
 	 * @param node  the root node
 	 * @param level the current depth in the tree
 	 */
-	private static void print(final SNode node, final int level) {
+	private static void print(final SUINode node, final int level) {
 		final String baseIdent = IDENT.repeat(level);
 		System.out.println(baseIdent + node.getNodeType().getSimpleName() + ":");
 		if (!node.getProperties().isEmpty()) {
@@ -53,7 +54,7 @@ public final class SNodeTreePrinter {
 		}
 		if (!node.getChildren().isEmpty()) {
 			System.out.println(baseIdent + IDENT + "children:");
-			for (SNode child : node.getChildren()) {
+			for (SUINode child : node.getChildren()) {
 				print(child, level + 2);
 			}
 		}

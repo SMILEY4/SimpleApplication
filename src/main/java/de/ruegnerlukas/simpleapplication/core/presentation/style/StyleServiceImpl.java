@@ -46,8 +46,8 @@ public class StyleServiceImpl implements StyleService {
 
 	@Override
 	public Style createFromResource(final String name, final Resource resource) {
-		Validations.INPUT.notBlank(name).exception("The name can not be null or empty.");
 		Validations.INPUT.notNull(resource).exception("The resource can not be null.");
+		Validations.INPUT.notBlank(name).exception("The name can not be null or empty.");
 		final Style style = Style.fromResource(resource);
 		registerStyle(style, name);
 		return style;

@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.layout.Region;
 import lombok.Getter;
@@ -62,7 +62,7 @@ public class SizePreferredProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final SizePreferredProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final SizePreferredProperty property,
 						  final Region fxNode) {
 			fxNode.setPrefSize(property.getWidth(), property.getHeight());
 		}
@@ -71,8 +71,8 @@ public class SizePreferredProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final SceneContext context, final SizePreferredProperty property,
-									 final SNode node, final Region fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SizePreferredProperty property,
+									 final SUINode node, final Region fxNode) {
 			fxNode.setPrefSize(property.getWidth(), property.getHeight());
 			return MutationResult.MUTATED;
 		}
@@ -81,8 +81,8 @@ public class SizePreferredProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final SceneContext context, final SizePreferredProperty property,
-									 final SNode node, final Region fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SizePreferredProperty property,
+									 final SUINode node, final Region fxNode) {
 			if (node.hasProperty(SizeProperty.class)) {
 				SizeProperty sizeProp = node.getProperty(SizeProperty.class);
 				fxNode.setPrefSize(sizeProp.getPreferredWidth(), sizeProp.getPreferredHeight());

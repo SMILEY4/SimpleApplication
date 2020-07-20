@@ -1,28 +1,31 @@
-package de.ruegnerlukas.simpleapplication.simpleui;
+package de.ruegnerlukas.simpleapplication.simpleui.registry;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SAnchorPane;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SScrollPane;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SSeparator;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIScrollPane;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUISeparator;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class SimpleUIRegistry {
+public class SUIRegistry {
 
 
 	/**
 	 * The singleton instance of the registry.
 	 */
-	private static SimpleUIRegistry instance;
+	private static SUIRegistry instance;
 
 
 
@@ -31,7 +34,7 @@ public class SimpleUIRegistry {
 	 * initializes the singleton instance of this registry.
 	 */
 	public static void initialize() {
-		instance = new SimpleUIRegistry();
+		instance = new SUIRegistry();
 	}
 
 
@@ -40,7 +43,7 @@ public class SimpleUIRegistry {
 	/**
 	 * @return the singleton instance of this registry.
 	 */
-	public static SimpleUIRegistry get() {
+	public static SUIRegistry get() {
 		return instance;
 	}
 
@@ -53,17 +56,23 @@ public class SimpleUIRegistry {
 	private final Map<Class<?>, RegistryEntry> entries = new HashMap<>();
 
 
+	/**
+	 * The list of registered factories ready to be injected at defined points.
+	 */
+	private final Map<String, List<NodeFactory>> injectedFactories = new HashMap<>();
+
+
 
 
 	/**
 	 * Default constructor. Registers the pre-build nodes.
 	 */
-	public SimpleUIRegistry() {
-		SButton.register(this);
-		SAnchorPane.register(this);
-		SScrollPane.register(this);
-		SVBox.register(this);
-		SSeparator.register(this);
+	public SUIRegistry() {
+		SUIButton.register(this);
+		SUIAnchorPane.register(this);
+		SUIScrollPane.register(this);
+		SUIVBox.register(this);
+		SUISeparator.register(this);
 	}
 
 
@@ -148,6 +157,31 @@ public class SimpleUIRegistry {
 	 */
 	public RegistryEntry getEntry(final Class<?> nodeType) {
 		return entries.get(nodeType);
+	}
+
+
+
+
+	/**
+	 * Register the given node factory at an injection point with the given id.
+	 *
+	 * @param injectionPointId the id of the injection point
+	 * @param factory          the node factory to inject
+	 */
+	public void inject(final String injectionPointId, final NodeFactory factory) {
+		List<NodeFactory> factories = injectedFactories.computeIfAbsent(injectionPointId, k -> new ArrayList<>());
+		factories.add(factory);
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the id of the injection point
+	 * @return the factories registered to be injection into the point with the given id
+	 */
+	public List<NodeFactory> get(final String injectionPointId) {
+		return injectedFactories.getOrDefault(injectionPointId, List.of());
 	}
 
 

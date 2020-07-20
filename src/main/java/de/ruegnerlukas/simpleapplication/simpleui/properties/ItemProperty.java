@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeBuilder;
 import javafx.scene.Node;
@@ -53,11 +53,11 @@ public class ItemProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final ItemProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ItemProperty property,
 						  final ScrollPane fxNode) {
 			Node childNode = null;
 			if (!node.getChildren().isEmpty()) {
-				childNode = context.getFxNodeBuilder().build(node.getChildren().get(0));
+				childNode = nodeHandlers.getFxNodeBuilder().build(node.getChildren().get(0));
 			}
 			fxNode.setContent(childNode);
 		}

@@ -2,12 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.PropertyTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -15,12 +16,12 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SButtonTest extends ApplicationTest {
+public class SUIButtonTest extends ApplicationTest {
 
 
 	@Override
 	public void start(Stage stage) {
-		SimpleUIRegistry.initialize();
+		SUIRegistry.initialize();
 	}
 
 
@@ -31,7 +32,7 @@ public class SButtonTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory button = SButton.button(
+		NodeFactory button = SUIButton.button(
 				Properties.id("myButton"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -44,11 +45,11 @@ public class SButtonTest extends ApplicationTest {
 				})
 		);
 
-		SNode node = button.create(state);
+		SUINode node = button.create(state);
 		assertThat(node.getProperties().keySet())
-				.containsExactlyInAnyOrderElementsOf(SimpleUIRegistry.get().getEntry(SButton.class).getProperties());
+				.containsExactlyInAnyOrderElementsOf(SUIRegistry.get().getEntry(SUIButton.class).getProperties());
 
-		TestUtils.assertNode(node, SButton.class);
+		TestUtils.assertNode(node, SUIButton.class);
 		PropertyTestUtils.assertIdProperty(node, "myButton");
 		PropertyTestUtils.assertSizeMinProperty(node, 1.0, 2.0);
 		PropertyTestUtils.assertSizePreferredProperty(node, 3.0, 4.0);
@@ -66,7 +67,7 @@ public class SButtonTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory button = SButton.button(
+		NodeFactory button = SUIButton.button(
 				Properties.id("myButton"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -79,7 +80,7 @@ public class SButtonTest extends ApplicationTest {
 				})
 		);
 
-		NodeFactory buttonTarget = SButton.button(
+		NodeFactory buttonTarget = SUIButton.button(
 				Properties.id("myButton"),
 				Properties.minSize(1000.0, 2000.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -92,14 +93,14 @@ public class SButtonTest extends ApplicationTest {
 				})
 		);
 
-		SceneContext context = new SceneContext(state, button, null);
-		SNode original = context.getRootNode();
-		SNode target = buttonTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, button);
+		SUINode original = context.getRootNode();
+		SUINode target = buttonTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SButton.class);
+		TestUtils.assertNode(mutatedNode, SUIButton.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myButton");
 		PropertyTestUtils.assertSizeMinProperty(mutatedNode, 1000.0, 2000.0);
 		PropertyTestUtils.assertSizePreferredProperty(mutatedNode, 3.0, 4.0);
@@ -119,7 +120,7 @@ public class SButtonTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory button = SButton.button(
+		NodeFactory button = SUIButton.button(
 				Properties.id("myButton"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -132,8 +133,8 @@ public class SButtonTest extends ApplicationTest {
 				})
 		);
 
-		SceneContext context = new SceneContext(state, button, null);
-		SNode node = context.getRootNode();
+		SUISceneContext context = new SUISceneContextImpl(state, button);
+		SUINode node = context.getRootNode();
 
 		FxTestUtils.assertButton((Button) node.getFxNode(), FxTestUtils.ButtonInfo.builder()
 				.minWidth(1.0).minHeight(2.0)

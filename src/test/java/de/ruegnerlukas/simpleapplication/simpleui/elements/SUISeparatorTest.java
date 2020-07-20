@@ -2,12 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.PropertyTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import javafx.stage.Stage;
@@ -16,12 +17,12 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SSeparatorTest extends ApplicationTest {
+public class SUISeparatorTest extends ApplicationTest {
 
 
 	@Override
 	public void start(Stage stage) {
-		SimpleUIRegistry.initialize();
+		SUIRegistry.initialize();
 	}
 
 
@@ -32,7 +33,7 @@ public class SSeparatorTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory separator = SSeparator.separator(
+		NodeFactory separator = SUISeparator.separator(
 				Properties.id("mySeparator"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -42,11 +43,11 @@ public class SSeparatorTest extends ApplicationTest {
 				Properties.orientation(Orientation.HORIZONTAL)
 		);
 
-		SNode node = separator.create(state);
+		SUINode node = separator.create(state);
 		assertThat(node.getProperties().keySet())
-				.containsExactlyInAnyOrderElementsOf(SimpleUIRegistry.get().getEntry(SSeparator.class).getProperties());
+				.containsExactlyInAnyOrderElementsOf(SUIRegistry.get().getEntry(SUISeparator.class).getProperties());
 
-		TestUtils.assertNode(node, SSeparator.class);
+		TestUtils.assertNode(node, SUISeparator.class);
 		PropertyTestUtils.assertIdProperty(node, "mySeparator");
 		PropertyTestUtils.assertSizeMinProperty(node, 1.0, 2.0);
 		PropertyTestUtils.assertSizePreferredProperty(node, 3.0, 4.0);
@@ -64,7 +65,7 @@ public class SSeparatorTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory separator = SSeparator.separator(
+		NodeFactory separator = SUISeparator.separator(
 				Properties.id("mySeparator"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -74,7 +75,7 @@ public class SSeparatorTest extends ApplicationTest {
 				Properties.orientation(Orientation.HORIZONTAL)
 		);
 
-		NodeFactory separatorTarget = SSeparator.separator(
+		NodeFactory separatorTarget = SUISeparator.separator(
 				Properties.id("mySeparator"),
 				Properties.minSize(123.0, 234.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -84,14 +85,14 @@ public class SSeparatorTest extends ApplicationTest {
 				Properties.orientation(Orientation.VERTICAL)
 		);
 
-		SceneContext context = new SceneContext(state, separator, null);
-		SNode original = context.getRootNode();
-		SNode target = separatorTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, separator);
+		SUINode original = context.getRootNode();
+		SUINode target = separatorTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SSeparator.class);
+		TestUtils.assertNode(mutatedNode, SUISeparator.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "mySeparator");
 		PropertyTestUtils.assertSizeMinProperty(mutatedNode, 123.0, 234.0);
 		PropertyTestUtils.assertSizePreferredProperty(mutatedNode, 3.0, 4.0);
@@ -109,7 +110,7 @@ public class SSeparatorTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory separator = SSeparator.separator(
+		NodeFactory separator = SUISeparator.separator(
 				Properties.id("mySeparator"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -119,8 +120,8 @@ public class SSeparatorTest extends ApplicationTest {
 				Properties.orientation(Orientation.HORIZONTAL)
 		);
 
-		SceneContext context = new SceneContext(state, separator, null);
-		SNode node = context.getRootNode();
+		SUISceneContext context = new SUISceneContextImpl(state, separator);
+		SUINode node = context.getRootNode();
 
 		FxTestUtils.assertSeparator((Separator) node.getFxNode(), FxTestUtils.SeparatorInfo.builder()
 				.minWidth(1.0).minHeight(2.0)
