@@ -12,20 +12,32 @@ import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
+import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIViewNodeFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
+import de.ruegnerlukas.simpleapplication.simpleui.SUIStateImpl;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Dimension2D;
-import javafx.scene.control.Button;
 import javafx.stage.StageStyle;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.buttonListener;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
 
 @Slf4j
 public class TestApplication {
 
 
 	public static void main(String[] args) {
+		SUIRegistry.initialize();
 		final ApplicationConfiguration configuration = new ApplicationConfiguration();
 		configuration.getPlugins().add(new LoggingPlugin());
 		configuration.getPlugins().add(new UIPlugin());
@@ -60,6 +72,18 @@ public class TestApplication {
 
 
 
+		private static class UIState extends SUIStateImpl {
+
+
+			@Getter
+			@Setter
+			private int counter = 1;
+
+		}
+
+
+
+
 		private void createViews() {
 			log.info("{} creating views.", this.getId());
 
@@ -71,6 +95,8 @@ public class TestApplication {
 			final String ID_B_POPUP = "plugin.ui.bpopup";
 			final String ID_B_WARN = "plugin.ui.bwarn";
 
+			final UIState state = new UIState();
+
 			/*
 			Shows the views in the following order:
 			ID_A -> ID_B -> (popup: ID_B_POPUP -> ID_B_WARN) -> ID_A
@@ -78,74 +104,87 @@ public class TestApplication {
 
 			// VIEW A
 
-			final Button buttonA = new Button("Switch A -> B");
-			buttonA.setOnAction(e -> viewService.showView(ID_B));
-
 			final View viewA = View.builder()
 					.id(ID_A)
 					.size(new Dimension2D(300, 100))
 					.maxSize(new Dimension2D(300, 300))
 					.title(applicationName + " - View A")
-					.nodeFactory(() -> buttonA)
 					.icon(Resource.internal("testResources/icon.png"))
+					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(state,
+							new SUIComponent<UIState>() {
+								@Override
+								public NodeFactory render(final UIState state) {
+									return button(
+											textContent("Switch A -> B (" + state.getCounter() + ")"),
+											buttonListener(() -> {
+												state.update(s -> {
+													UIState uis = (UIState) s;
+													uis.setCounter(uis.getCounter() + 1);
+												});
+												viewService.showView(ID_B);
+											})
+									);
+								}
+							}
+					)))
 					.build();
 
 
 			// VIEW B
 
-			final Button buttonB = new Button("Switch B -> A");
-			buttonB.setOnAction(e -> {
-				viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build());
-			});
-
 			final View viewB = View.builder()
 					.id(ID_B)
 					.size(new Dimension2D(200, 500))
 					.title(applicationName + " - View B")
-					.nodeFactory(() -> buttonB)
 					.icon(Resource.internal("testResources/icon.png"))
+					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(
+							button(
+									textContent("Switch B -> A"),
+									buttonListener(() -> viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build()))
+							)
+					)))
 					.build();
 
 
-			viewService.registerView(viewA);
-			viewService.registerView(viewB);
-			viewService.showView(viewA.getId());
-
-
 			// VIEW B CONFIRM
-
-			final Button buttonBConfirm = new Button("Confirm switch");
-			buttonBConfirm.setOnAction(e -> {
-				final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_POPUP).get(0);
-				viewService.showView(ID_B_WARN, handlePopup);
-			});
-
 
 			final View viewBPopup = View.builder()
 					.id(ID_B_POPUP)
 					.size(new Dimension2D(300, 200))
 					.title(applicationName + " - View B Confirm")
-					.nodeFactory(() -> buttonBConfirm)
 					.icon(Resource.internal("testResources/icon.png"))
+					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(
+							button(
+									textContent("Confirm switch"),
+									buttonListener(() -> {
+										final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_POPUP).get(0);
+										viewService.showView(ID_B_WARN, handlePopup);
+									})
+							)
+					)))
 					.build();
-
-
-			final Button buttonBWarn = new Button("You sure ?");
-			buttonBWarn.setOnAction(e -> {
-				final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_WARN).get(0);
-				viewService.closePopup(handlePopup);
-				viewService.showView(ID_A);
-			});
-
 
 			final View viewBWarn = View.builder()
 					.id(ID_B_WARN)
 					.size(new Dimension2D(200, 300))
 					.title(applicationName + " - View B LAST WARNING")
-					.nodeFactory(() -> buttonBWarn)
 					.icon(Resource.internal("testResources/icon.png"))
+					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(state,
+							new SUIComponent<UIState>() {
+								@Override
+								public NodeFactory render(final UIState state) {
+									return button(
+											textContent("You sure ? (" + state.getCounter() + " -> " + (state.getCounter()+1) + ")"),
+											buttonListener(() -> {
+												final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_WARN).get(0);
+												viewService.closePopup(handlePopup);
+												viewService.showView(ID_A);
+											})
+									);
+								}
+							}
+					)))
 					.build();
-
 
 			viewService.registerView(viewA);
 			viewService.registerView(viewB);

@@ -10,6 +10,7 @@ import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 @Slf4j
 public class Application {
@@ -66,6 +67,7 @@ public class Application {
 	 */
 	public void run() {
 		log.info("Running application.");
+		SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
 		final Callback<Stage> startCallback = this::onStart;
 		final EmptyCallback stopCallback = this::onStop;
 		jfxStarter.start(startCallback, stopCallback);

@@ -13,12 +13,14 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SUISeparator;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class SUIRegistry {
 
 
@@ -41,9 +43,12 @@ public class SUIRegistry {
 
 
 	/**
-	 * @return the singleton instance of this registry.
+	 * @return the singleton instance of this registry after initialisation.
 	 */
 	public static SUIRegistry get() {
+		if (instance == null) {
+			log.warn("SUIRegistry not initialized. Returning null.");
+		}
 		return instance;
 	}
 

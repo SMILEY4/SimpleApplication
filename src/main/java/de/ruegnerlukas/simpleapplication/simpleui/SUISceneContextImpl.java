@@ -42,6 +42,20 @@ public class SUISceneContextImpl implements SUISceneContext {
 
 
 	/**
+	 * Creates a new scene context with the given root node factory and a basic empty state.
+	 *
+	 * @param nodeFactory the node factory for the root node of this context.
+	 */
+	public SUISceneContextImpl(final NodeFactory nodeFactory) {
+		this(new SUIStateImpl(), nodeFactory);
+	}
+
+
+
+
+	/**
+	 * Creates a new scene context with the given state and root node factory.
+	 *
 	 * @param state       the state of this context
 	 * @param nodeFactory the node factory for the root node of this context.
 	 */
@@ -49,6 +63,7 @@ public class SUISceneContextImpl implements SUISceneContext {
 		Validations.INPUT.notNull(state).exception("The state can not be null.");
 		Validations.INPUT.notNull(nodeFactory).exception("The node factory can not be null.");
 		this.state = state;
+		this.state.linkToContext(this);
 		this.nodeFactory = nodeFactory;
 		MasterFxNodeBuilder masterFxNodeBuilder = new MasterFxNodeBuilder(this);
 		MasterNodeMutator masterNodeMutator = new MasterNodeMutator(masterFxNodeBuilder, this);
