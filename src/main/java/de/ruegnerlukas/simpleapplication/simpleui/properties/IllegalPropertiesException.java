@@ -1,7 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,7 +9,7 @@ public class IllegalPropertiesException extends RuntimeException {
 	/**
 	 * Indicates that a property/properties was/were added to an element that does not accept the given property/properties.
 	 *
-	 * @param nodeType   the type of the {@link SUINode}
+	 * @param nodeType   the type of the {@link de.ruegnerlukas.simpleapplication.simpleui.SUINode}
 	 * @param properties the list of illegal properties
 	 */
 	public IllegalPropertiesException(final Class<?> nodeType, final List<Property> properties) {

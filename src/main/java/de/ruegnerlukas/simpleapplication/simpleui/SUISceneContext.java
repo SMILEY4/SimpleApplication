@@ -1,7 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.MasterNodeMutator;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.SUIStateListener;
 import javafx.scene.Node;
 
@@ -26,7 +24,9 @@ public interface SUISceneContext {
 	SUIState getState();
 
 	/**
-	 * @return the primary node handlers (like {@link MasterFxNodeBuilder}, {@link MasterNodeMutator})
+	 * @return the primary node handlers
+	 * (like {@link de.ruegnerlukas.simpleapplication.simpleui.builders.MasterFxNodeBuilder},
+	 * {@link de.ruegnerlukas.simpleapplication.simpleui.mutation.MasterNodeMutator})
 	 */
 	MasterNodeHandlers getMasterNodeHandlers();
 
