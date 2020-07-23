@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-import de.ruegnerlukas.simpleapplication.simpleui.utils.SUIStateListener;
 import javafx.scene.Node;
 
 public interface SUISceneContext {
@@ -30,26 +29,5 @@ public interface SUISceneContext {
 	 */
 	MasterNodeHandlers getMasterNodeHandlers();
 
-	/**
-	 * Applies the given state update to the state of this context.
-	 * Modifies the state and updates the node tree.
-	 *
-	 * @param update the state update to process.
-	 */
-	void applyStateUpdate(SUIStateUpdate update);
-
-	/**
-	 * Adds the given listener to this context. The listener will listen to the state of this context.
-	 *
-	 * @param listener the listener to add
-	 */
-	void addStateListener(SUIStateListener listener);
-
-	/**
-	 * Removes the given listener from this context.
-	 *
-	 * @param listener the listener to remove
-	 */
-	void removeStateListener(SUIStateListener listener);
 
 }

@@ -22,8 +22,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUIStateImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import javafx.application.Platform;
 import javafx.geometry.Dimension2D;
 import javafx.stage.StageStyle;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -72,12 +74,30 @@ public class TestApplication {
 
 
 
+		@Getter
+		@Setter
 		private static class UIState extends SUIStateImpl {
 
 
-			@Getter
-			@Setter
-			private int counter = 1;
+			private int cycleCount = 1;
+
+			private int globalCount = 1;
+
+
+		}
+
+
+
+
+
+
+		@Getter
+		@Setter
+		@AllArgsConstructor
+		private static class ChangeCycleCountEvent extends Publishable {
+
+
+			public int cycleCount;
 
 		}
 
@@ -95,12 +115,31 @@ public class TestApplication {
 			final String ID_B_POPUP = "plugin.ui.bpopup";
 			final String ID_B_WARN = "plugin.ui.bwarn";
 
+			final EventService eventService = new Provider<>(EventService.class).get();
+
 			final UIState state = new UIState();
 
 			/*
 			Shows the views in the following order:
 			ID_A -> ID_B -> (popup: ID_B_POPUP -> ID_B_WARN) -> ID_A
 			 */
+
+			new Thread(() -> {
+				while (true) {
+					try {
+						Thread.sleep(1000 * 5);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					Platform.runLater(() -> { // TODO: make state.update thread-safe and maybe run on javafx-thread by default ?
+						state.update(s -> {
+							UIState uis = (UIState) s;
+							uis.setGlobalCount(uis.getGlobalCount() + 1);
+						});
+					});
+				}
+			}).start();
+
 
 			// VIEW A
 
@@ -115,20 +154,24 @@ public class TestApplication {
 								@Override
 								public NodeFactory render(final UIState state) {
 									return button(
-											textContent("Switch A -> B (" + state.getCounter() + ")"),
-											buttonListener(() -> {
-												state.update(s -> {
-													UIState uis = (UIState) s;
-													uis.setCounter(uis.getCounter() + 1);
-												});
-												viewService.showView(ID_B);
-											})
+											textContent(state.getGlobalCount() + ":   Switch A -> B (" + state.getCycleCount() + ")"),
+											buttonListener(() -> eventService.publish(new ChangeCycleCountEvent(state.getCycleCount() + 1)))
 									);
 								}
 							}
 					)))
 					.build();
 
+			eventService.subscribe(Channel.type(ChangeCycleCountEvent.class), publishable -> {
+				final ChangeCycleCountEvent event = (ChangeCycleCountEvent) publishable;
+				Platform.runLater(() -> {
+					state.update(s -> {
+						UIState uis = (UIState) s;
+						uis.setCycleCount(event.cycleCount);
+					});
+					viewService.showView(ID_B);
+				});
+			});
 
 			// VIEW B
 
@@ -138,8 +181,8 @@ public class TestApplication {
 					.title(applicationName + " - View B")
 					.icon(Resource.internal("testResources/icon.png"))
 					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(
-							button(
-									textContent("Switch B -> A"),
+							button( // TODO when using state here -> dont get updated -> maybe wrap root node in root component by default
+									textContent(state.getGlobalCount() + ":   Switch B -> A"),
 									buttonListener(() -> viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build()))
 							)
 					)))
@@ -155,7 +198,7 @@ public class TestApplication {
 					.icon(Resource.internal("testResources/icon.png"))
 					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(
 							button(
-									textContent("Confirm switch"),
+									textContent(state.getGlobalCount() + ":   Confirm switch"),
 									buttonListener(() -> {
 										final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_POPUP).get(0);
 										viewService.showView(ID_B_WARN, handlePopup);
@@ -174,7 +217,7 @@ public class TestApplication {
 								@Override
 								public NodeFactory render(final UIState state) {
 									return button(
-											textContent("You sure ? (" + state.getCounter() + " -> " + (state.getCounter()+1) + ")"),
+											textContent(state.getGlobalCount() + ":   You sure ? (" + " -> " + state.getCycleCount() + ")"),
 											buttonListener(() -> {
 												final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_WARN).get(0);
 												viewService.closePopup(handlePopup);

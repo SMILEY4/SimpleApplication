@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.utils;
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextListener;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIStateUpdate;
 
@@ -20,21 +20,24 @@ public interface SUIStateListener {
 	/**
 	 * Called after the state has been updated by the given state update
 	 *
-	 * @param updatedState the state after the given update was applied
-	 * @param update       the state update that modified the given state
+	 * @param state  the state after the given update was applied
+	 * @param update the state update that modified the given state
 	 */
-	void stateUpdated(SUIState updatedState, SUIStateUpdate update);
+	void stateUpdated(SUIState state, SUIStateUpdate update);
+
+	/**
+	 * Adds the given listener to this context. Any listener is only added once to this context.
+	 *
+	 * @param listener the listener to add
+	 */
+	void addListener(SUISceneContextListener listener);
 
 
 	/**
-	 * Called when a {@link SUIStateUpdate} was applied and resulted in rebuilding the root node,
-	 * thus creating a new node as the root.
+	 * Removes the given listener from this context.
 	 *
-	 * @param prevRootNode the root node before the update
-	 * @param newRootNode  the root node after the update
+	 * @param listener the listener to remove
 	 */
-	default void createdNewRootNode(SUINode prevRootNode, SUINode newRootNode) {
-		// do nothing by default
-	}
+	void removeListener(SUISceneContextListener listener);
 
 }

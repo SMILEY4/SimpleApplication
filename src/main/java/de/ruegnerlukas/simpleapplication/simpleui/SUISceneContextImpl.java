@@ -10,13 +10,8 @@ import javafx.scene.Node;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SUISceneContextImpl implements SUISceneContext {
+public class SUISceneContextImpl implements SUISceneContext, SUIStateListener {
 
-
-	/**
-	 * Listeners listening to the state of this context.
-	 */
-	private List<SUIStateListener> stateListeners = new ArrayList<>();
 
 	/**
 	 * The node factory for the root node of this context.
@@ -37,6 +32,11 @@ public class SUISceneContextImpl implements SUISceneContext {
 	 * The root node of this context.
 	 */
 	private SUINode rootNode;
+
+	/**
+	 * The listeners listening to this context.
+	 */
+	private List<SUISceneContextListener> listeners = new ArrayList<>();
 
 
 
@@ -63,7 +63,7 @@ public class SUISceneContextImpl implements SUISceneContext {
 		Validations.INPUT.notNull(state).exception("The state can not be null.");
 		Validations.INPUT.notNull(nodeFactory).exception("The node factory can not be null.");
 		this.state = state;
-		this.state.linkToContext(this);
+		this.state.addStateListener(this);
 		this.nodeFactory = nodeFactory;
 		MasterFxNodeBuilder masterFxNodeBuilder = new MasterFxNodeBuilder(this);
 		MasterNodeMutator masterNodeMutator = new MasterNodeMutator(masterFxNodeBuilder, this);
@@ -110,28 +110,12 @@ public class SUISceneContextImpl implements SUISceneContext {
 
 
 	@Override
-	public void applyStateUpdate(final SUIStateUpdate update) {
-		Validations.INPUT.notNull(update).exception("The state update must not be null.");
-		stateListeners.forEach(listener -> listener.beforeUpdate(getState(), update));
-		processStateUpdate(update);
-		stateListeners.forEach(listener -> listener.stateUpdated(getState(), update));
-	}
-
-
-
-
-	/**
-	 * Executes the given update and mutates/rebuilds the root node.
-	 *
-	 * @param update the state update to process
-	 */
-	private void processStateUpdate(final SUIStateUpdate update) {
-		update.doUpdate(state);
+	public void stateUpdated(final SUIState state, final SUIStateUpdate update) {
 		final SUINode prevRootNode = rootNode;
 		final SUINode target = nodeFactory.create(getState());
 		rootNode = masterNodeHandlers.getMutator().mutate(rootNode, target);
 		if (prevRootNode != rootNode) {
-			stateListeners.forEach(listener -> listener.createdNewRootNode(prevRootNode, rootNode));
+			listeners.forEach(listener -> listener.onNewSUIRootNode(prevRootNode, rootNode));
 		}
 	}
 
@@ -139,17 +123,19 @@ public class SUISceneContextImpl implements SUISceneContext {
 
 
 	@Override
-	public void addStateListener(final SUIStateListener listener) {
-		Validations.INPUT.notNull(listener).exception("The listener must not be null.");
-		stateListeners.add(listener);
+	public void addListener(final SUISceneContextListener listener) {
+		Validations.INPUT.notNull(listener).exception("The context listener to add may not be null.");
+		if (!listeners.contains(listener)) {
+			listeners.add(listener);
+		}
 	}
 
 
 
 
 	@Override
-	public void removeStateListener(final SUIStateListener listener) {
-		stateListeners.remove(listener);
+	public void removeListener(final SUISceneContextListener listener) {
+		listeners.remove(listener);
 	}
 
 }

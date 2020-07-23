@@ -1,15 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
+import de.ruegnerlukas.simpleapplication.simpleui.utils.SUIStateListener;
+
 public interface SUIState {
 
-
-	/**
-	 * Links this state to the given context.
-	 * A state can only be linked to a context once.
-	 *
-	 * @param context the context to link to
-	 */
-	void linkToContext(SUISceneContext context);
 
 	/**
 	 * Modifies this state via the given update.
@@ -18,5 +12,20 @@ public interface SUIState {
 	 * @param update the state update
 	 */
 	void update(SUIStateUpdate update);
+
+
+	/**
+	 * Adds the given listener to this state. Any listener is only added once to this state.
+	 *
+	 * @param listener the listener to add
+	 */
+	void addStateListener(SUIStateListener listener);
+
+	/**
+	 * Removes the given listener from this state.
+	 *
+	 * @param listener the listener to remove
+	 */
+	void removeStateListener(SUIStateListener listener);
 
 }
