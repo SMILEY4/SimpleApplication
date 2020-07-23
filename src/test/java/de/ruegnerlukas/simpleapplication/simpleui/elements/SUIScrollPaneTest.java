@@ -2,12 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.PropertyTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -17,12 +18,12 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SScrollPaneTest extends ApplicationTest {
+public class SUIScrollPaneTest extends ApplicationTest {
 
 
 	@Override
 	public void start(Stage stage) {
-		SimpleUIRegistry.initialize();
+		SUIRegistry.initialize();
 	}
 
 
@@ -33,7 +34,7 @@ public class SScrollPaneTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory scrollPane = SScrollPane.scrollPane(
+		NodeFactory scrollPane = SUIScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -44,18 +45,18 @@ public class SScrollPaneTest extends ApplicationTest {
 				Properties.fitToHeight(),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
 				Properties.item(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn"),
 								Properties.textContent("Scroll Content")
 						)
 				)
 		);
 
-		final SNode node = scrollPane.create(state);
+		final SUINode node = scrollPane.create(state);
 		assertThat(node.getProperties().keySet())
-				.containsExactlyInAnyOrderElementsOf(SimpleUIRegistry.get().getEntry(SScrollPane.class).getProperties());
+				.containsExactlyInAnyOrderElementsOf(SUIRegistry.get().getEntry(SUIScrollPane.class).getProperties());
 
-		TestUtils.assertNode(node, SScrollPane.class);
+		TestUtils.assertNode(node, SUIScrollPane.class);
 		PropertyTestUtils.assertIdProperty(node, "myScrollPane");
 		PropertyTestUtils.assertSizeMinProperty(node, 1.0, 2.0);
 		PropertyTestUtils.assertSizePreferredProperty(node, 3.0, 4.0);
@@ -66,12 +67,12 @@ public class SScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToHeightProperty(node, true);
 		PropertyTestUtils.assertShowScrollBarProperty(node, ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS);
 
-		final List<SNode> children = node.getChildren();
+		final List<SUINode> children = node.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SNode childButton = children.get(0);
+		final SUINode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "btn");
 		PropertyTestUtils.assertTextContentProperty(childButton, "Scroll Content");
 	}
@@ -84,7 +85,7 @@ public class SScrollPaneTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory scrollPane = SScrollPane.scrollPane(
+		NodeFactory scrollPane = SUIScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -95,14 +96,14 @@ public class SScrollPaneTest extends ApplicationTest {
 				Properties.fitToHeight(),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
 				Properties.item(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn"),
 								Properties.textContent("Scroll Content")
 						)
 				)
 		);
 
-		NodeFactory scrollPaneTarget = SScrollPane.scrollPane(
+		NodeFactory scrollPaneTarget = SUIScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -113,21 +114,21 @@ public class SScrollPaneTest extends ApplicationTest {
 				Properties.fitToHeight(false),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED),
 				Properties.item(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn"),
 								Properties.textContent("New Scroll Content")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, scrollPane, null);
-		SNode original = context.getRootNode();
-		SNode target = scrollPaneTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, scrollPane);
+		SUINode original = context.getRootNode();
+		SUINode target = scrollPaneTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SScrollPane.class);
+		TestUtils.assertNode(mutatedNode, SUIScrollPane.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myScrollPane");
 		PropertyTestUtils.assertSizeMinProperty(mutatedNode, 1.0, 2.0);
 		PropertyTestUtils.assertSizePreferredProperty(mutatedNode, 3.0, 4.0);
@@ -138,12 +139,12 @@ public class SScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToHeightProperty(mutatedNode, false);
 		PropertyTestUtils.assertShowScrollBarProperty(mutatedNode, ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SNode childButton = children.get(0);
+		final SUINode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "btn");
 		PropertyTestUtils.assertTextContentProperty(childButton, "New Scroll Content");
 
@@ -157,7 +158,7 @@ public class SScrollPaneTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory scrollPane = SScrollPane.scrollPane(
+		NodeFactory scrollPane = SUIScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -168,14 +169,14 @@ public class SScrollPaneTest extends ApplicationTest {
 				Properties.fitToHeight(),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
 				Properties.item(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn"),
 								Properties.textContent("Scroll Content")
 						)
 				)
 		);
 
-		NodeFactory scrollPaneTarget = SScrollPane.scrollPane(
+		NodeFactory scrollPaneTarget = SUIScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -187,14 +188,14 @@ public class SScrollPaneTest extends ApplicationTest {
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED)
 		);
 
-		SceneContext context = new SceneContext(state, scrollPane, null);
-		SNode original = context.getRootNode();
-		SNode target = scrollPaneTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, scrollPane);
+		SUINode original = context.getRootNode();
+		SUINode target = scrollPaneTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SScrollPane.class);
+		TestUtils.assertNode(mutatedNode, SUIScrollPane.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myScrollPane");
 		PropertyTestUtils.assertSizeMinProperty(mutatedNode, 1.0, 2.0);
 		PropertyTestUtils.assertSizePreferredProperty(mutatedNode, 3.0, 4.0);
@@ -205,7 +206,7 @@ public class SScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToHeightProperty(mutatedNode, false);
 		PropertyTestUtils.assertShowScrollBarProperty(mutatedNode, ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(0);
 
@@ -218,7 +219,7 @@ public class SScrollPaneTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory scrollPane = SScrollPane.scrollPane(
+		NodeFactory scrollPane = SUIScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -230,7 +231,7 @@ public class SScrollPaneTest extends ApplicationTest {
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS)
 		);
 
-		NodeFactory scrollPaneTarget = SScrollPane.scrollPane(
+		NodeFactory scrollPaneTarget = SUIScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -241,21 +242,21 @@ public class SScrollPaneTest extends ApplicationTest {
 				Properties.fitToHeight(false),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED),
 				Properties.item(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn"),
 								Properties.textContent("Scroll Content")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, scrollPane, null);
-		SNode original = context.getRootNode();
-		SNode target = scrollPaneTarget.create(state);
+		SUISceneContext context = new SUISceneContextImpl(state, scrollPane);
+		SUINode original = context.getRootNode();
+		SUINode target = scrollPaneTarget.create(state);
 
-		SNode mutatedNode = context.getMutator().mutate(original, target);
+		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
-		TestUtils.assertNode(mutatedNode, SScrollPane.class);
+		TestUtils.assertNode(mutatedNode, SUIScrollPane.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myScrollPane");
 		PropertyTestUtils.assertSizeMinProperty(mutatedNode, 1.0, 2.0);
 		PropertyTestUtils.assertSizePreferredProperty(mutatedNode, 3.0, 4.0);
@@ -266,12 +267,12 @@ public class SScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToHeightProperty(mutatedNode, false);
 		PropertyTestUtils.assertShowScrollBarProperty(mutatedNode, ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-		final List<SNode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SNode childButton = children.get(0);
+		final SUINode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "btn");
 		PropertyTestUtils.assertTextContentProperty(childButton, "Scroll Content");
 	}
@@ -282,7 +283,7 @@ public class SScrollPaneTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory scrollPane = SScrollPane.scrollPane(
+		NodeFactory scrollPane = SUIScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
 				Properties.minSize(1.0, 2.0),
 				Properties.preferredSize(3.0, 4.0),
@@ -293,15 +294,15 @@ public class SScrollPaneTest extends ApplicationTest {
 				Properties.fitToHeight(),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
 				Properties.item(
-						SButton.button(
+						SUIButton.button(
 								Properties.id("btn"),
 								Properties.textContent("Scroll Content")
 						)
 				)
 		);
 
-		SceneContext context = new SceneContext(state, scrollPane, null);
-		SNode node = context.getRootNode();
+		SUISceneContext context = new SUISceneContextImpl(state, scrollPane);
+		SUINode node = context.getRootNode();
 
 		FxTestUtils.assertScrollPane((ScrollPane) node.getFxNode(), FxTestUtils.ScrollPaneInfo.builder()
 				.minWidth(1.0).minHeight(2.0)

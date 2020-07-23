@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestUtils {
 
-	public static void assertNode(SNode node, Class<?> nodeType) {
+	public static void assertNode(SUINode node, Class<?> nodeType) {
 		assertThat(node).isNotNull();
 		assertThat(node.getNodeType()).isEqualTo(nodeType);
 	}

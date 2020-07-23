@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 
 public interface BaseNodeMutator {
 
@@ -29,12 +29,12 @@ public interface BaseNodeMutator {
 	 * The properties and fx-node of the original node will be changed to match the given target node.
 	 * If this is not possible, {@link MutationResult#REBUILD} will be returned.
 	 *
-	 * @param original the original node. If possible, the fx-node of this node will be modified.
-	 * @param target   the target node with the target properties
-	 * @param context  the context
+	 * @param original     the original node. If possible, the fx-node of this node will be modified.
+	 * @param target       the target node with the target properties
+	 * @param nodeHandlers the primary node handlers
 	 * @return whether the node was mutated or has to be rebuild completely
 	 */
-	MutationResult mutateNode(SNode original, SNode target, SceneContext context);
+	MutationResult mutateNode(SUINode original, SUINode target, MasterNodeHandlers nodeHandlers);
 
 
 }

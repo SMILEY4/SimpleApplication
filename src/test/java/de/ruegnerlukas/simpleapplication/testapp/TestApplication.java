@@ -12,20 +12,34 @@ import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
+import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIViewNodeFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
+import de.ruegnerlukas.simpleapplication.simpleui.SUIStateImpl;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import javafx.application.Platform;
 import javafx.geometry.Dimension2D;
-import javafx.scene.control.Button;
 import javafx.stage.StageStyle;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.buttonListener;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
 
 @Slf4j
 public class TestApplication {
 
 
 	public static void main(String[] args) {
+		SUIRegistry.initialize();
 		final ApplicationConfiguration configuration = new ApplicationConfiguration();
 		configuration.getPlugins().add(new LoggingPlugin());
 		configuration.getPlugins().add(new UIPlugin());
@@ -60,6 +74,36 @@ public class TestApplication {
 
 
 
+		@Getter
+		@Setter
+		private static class UIState extends SUIStateImpl {
+
+
+			private int cycleCount = 1;
+
+			private int globalCount = 1;
+
+
+		}
+
+
+
+
+
+
+		@Getter
+		@Setter
+		@AllArgsConstructor
+		private static class ChangeCycleCountEvent extends Publishable {
+
+
+			public int cycleCount;
+
+		}
+
+
+
+
 		private void createViews() {
 			log.info("{} creating views.", this.getId());
 
@@ -71,80 +115,119 @@ public class TestApplication {
 			final String ID_B_POPUP = "plugin.ui.bpopup";
 			final String ID_B_WARN = "plugin.ui.bwarn";
 
+			final EventService eventService = new Provider<>(EventService.class).get();
+
+			final UIState state = new UIState();
+
 			/*
 			Shows the views in the following order:
 			ID_A -> ID_B -> (popup: ID_B_POPUP -> ID_B_WARN) -> ID_A
 			 */
 
-			// VIEW A
+			new Thread(() -> {
+				while (true) {
+					try {
+						Thread.sleep(1000 * 5);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					Platform.runLater(() -> { // TODO: make state.update thread-safe and maybe run on javafx-thread by default ?
+						state.update(s -> {
+							UIState uis = (UIState) s;
+							uis.setGlobalCount(uis.getGlobalCount() + 1);
+						});
+					});
+				}
+			}).start();
 
-			final Button buttonA = new Button("Switch A -> B");
-			buttonA.setOnAction(e -> viewService.showView(ID_B));
+
+			// VIEW A
 
 			final View viewA = View.builder()
 					.id(ID_A)
 					.size(new Dimension2D(300, 100))
 					.maxSize(new Dimension2D(300, 300))
 					.title(applicationName + " - View A")
-					.nodeFactory(() -> buttonA)
 					.icon(Resource.internal("testResources/icon.png"))
+					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(state,
+							new SUIComponent<UIState>() {
+								@Override
+								public NodeFactory render(final UIState state) {
+									return button(
+											textContent(state.getGlobalCount() + ":   Switch A -> B (" + state.getCycleCount() + ")"),
+											buttonListener(() -> eventService.publish(new ChangeCycleCountEvent(state.getCycleCount() + 1)))
+									);
+								}
+							}
+					)))
 					.build();
 
-			// VIEW B
-
-			final Button buttonB = new Button("Switch B -> A");
-			buttonB.setOnAction(e -> {
-				viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build());
+			eventService.subscribe(Channel.type(ChangeCycleCountEvent.class), publishable -> {
+				final ChangeCycleCountEvent event = (ChangeCycleCountEvent) publishable;
+				Platform.runLater(() -> {
+					state.update(s -> {
+						UIState uis = (UIState) s;
+						uis.setCycleCount(event.cycleCount);
+					});
+					viewService.showView(ID_B);
+				});
 			});
+
+			// VIEW B
 
 			final View viewB = View.builder()
 					.id(ID_B)
 					.size(new Dimension2D(200, 500))
 					.title(applicationName + " - View B")
-					.nodeFactory(() -> buttonB)
 					.icon(Resource.internal("testResources/icon.png"))
+					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(
+							button( // TODO when using state here -> dont get updated -> maybe wrap root node in root component by default
+									textContent(state.getGlobalCount() + ":   Switch B -> A"),
+									buttonListener(() -> viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build()))
+							)
+					)))
 					.build();
 
 
-			viewService.registerView(viewA);
-			viewService.registerView(viewB);
-			viewService.showView(viewA.getId());
-
-
 			// VIEW B CONFIRM
-
-			final Button buttonBConfirm = new Button("Confirm switch");
-			buttonBConfirm.setOnAction(e -> {
-				final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_POPUP).get(0);
-				viewService.showView(ID_B_WARN, handlePopup);
-			});
-
 
 			final View viewBPopup = View.builder()
 					.id(ID_B_POPUP)
 					.size(new Dimension2D(300, 200))
 					.title(applicationName + " - View B Confirm")
-					.nodeFactory(() -> buttonBConfirm)
 					.icon(Resource.internal("testResources/icon.png"))
+					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(
+							button(
+									textContent(state.getGlobalCount() + ":   Confirm switch"),
+									buttonListener(() -> {
+										final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_POPUP).get(0);
+										viewService.showView(ID_B_WARN, handlePopup);
+									})
+							)
+					)))
 					.build();
-
-
-			final Button buttonBWarn = new Button("You sure ?");
-			buttonBWarn.setOnAction(e -> {
-				final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_WARN).get(0);
-				viewService.closePopup(handlePopup);
-				viewService.showView(ID_A);
-			});
-
 
 			final View viewBWarn = View.builder()
 					.id(ID_B_WARN)
 					.size(new Dimension2D(200, 300))
 					.title(applicationName + " - View B LAST WARNING")
-					.nodeFactory(() -> buttonBWarn)
 					.icon(Resource.internal("testResources/icon.png"))
+					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(state,
+							new SUIComponent<UIState>() {
+								@Override
+								public NodeFactory render(final UIState state) {
+									return button(
+											textContent(state.getGlobalCount() + ":   You sure ? (" + " -> " + state.getCycleCount() + ")"),
+											buttonListener(() -> {
+												final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_WARN).get(0);
+												viewService.closePopup(handlePopup);
+												viewService.showView(ID_A);
+											})
+									);
+								}
+							}
+					)))
 					.build();
-
 
 			viewService.registerView(viewA);
 			viewService.registerView(viewB);

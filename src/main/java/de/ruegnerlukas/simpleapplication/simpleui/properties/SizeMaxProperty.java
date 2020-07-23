@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.layout.Region;
 import lombok.Getter;
@@ -62,7 +62,7 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final SizeMaxProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final SizeMaxProperty property,
 						  final Region fxNode) {
 			fxNode.setMaxSize(property.getWidth(), property.getHeight());
 		}
@@ -71,8 +71,8 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final SceneContext context, final SizeMaxProperty property,
-									 final SNode node, final Region fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SizeMaxProperty property,
+									 final SUINode node, final Region fxNode) {
 			fxNode.setMaxSize(property.getWidth(), property.getHeight());
 			return MutationResult.MUTATED;
 		}
@@ -81,8 +81,8 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final SceneContext context, final SizeMaxProperty property,
-									 final SNode node, final Region fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SizeMaxProperty property,
+									 final SUINode node, final Region fxNode) {
 			if (node.hasProperty(SizeProperty.class)) {
 				SizeProperty sizeProp = node.getProperty(SizeProperty.class);
 				fxNode.setMaxSize(sizeProp.getMaxWidth(), sizeProp.getMaxHeight());

@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.layout.Region;
 import lombok.Getter;
@@ -125,7 +125,7 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final SizeProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final SizeProperty property,
 						  final Region fxNode) {
 			setSize(node, property, fxNode);
 		}
@@ -134,8 +134,8 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final SceneContext context, final SizeProperty property,
-									 final SNode node, final Region fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SizeProperty property,
+									 final SUINode node, final Region fxNode) {
 			setSize(node, property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -151,7 +151,7 @@ public class SizeProperty extends Property {
 		 * @param property the property
 		 * @param fxNode   the fx region
 		 */
-		private void setSize(final SNode node, final SizeProperty property, final Region fxNode) {
+		private void setSize(final SUINode node, final SizeProperty property, final Region fxNode) {
 			if (!node.hasProperty(SizeMinProperty.class)) {
 				fxNode.setMinSize(property.getMinWidth(), property.getMinHeight());
 			}
@@ -167,8 +167,8 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final SceneContext context, final SizeProperty property,
-									 final SNode node, final Region fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SizeProperty property,
+									 final SUINode node, final Region fxNode) {
 			if (!node.hasProperty(SizeMinProperty.class)) {
 				fxNode.setMinSize(0, 0);
 			}

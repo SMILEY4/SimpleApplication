@@ -1,10 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.builders;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.RegistryEntry;
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.RegistryEntry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.Node;
 
 public class MasterFxNodeBuilder {
@@ -13,7 +14,7 @@ public class MasterFxNodeBuilder {
 	/**
 	 * The scene context.
 	 */
-	private final SceneContext context;
+	private final SUISceneContext context;
 
 
 
@@ -21,7 +22,7 @@ public class MasterFxNodeBuilder {
 	/**
 	 * @param context the scene context
 	 */
-	public MasterFxNodeBuilder(final SceneContext context) {
+	public MasterFxNodeBuilder(final SUISceneContext context) {
 		this.context = context;
 	}
 
@@ -34,8 +35,8 @@ public class MasterFxNodeBuilder {
 	 * @param node the node to build the fx-node for
 	 * @return the created fx-node
 	 */
-	public Node build(final SNode node) {
-		return this.build(node, this.context);
+	public Node build(final SUINode node) {
+		return this.build(node, this.context.getMasterNodeHandlers());
 	}
 
 
@@ -44,16 +45,16 @@ public class MasterFxNodeBuilder {
 	/**
 	 * Builds the fx-node of the given node and links it to this node.
 	 *
-	 * @param node    the node to build the fx-node for
-	 * @param context the scene context
+	 * @param node         the node to build the fx-node for
+	 * @param nodeHandlers the primary node handlers
 	 * @return the created fx-node
 	 */
-	public Node build(final SNode node, final SceneContext context) {
-		final RegistryEntry registryEntry = SimpleUIRegistry.get().getEntry(node.getNodeType());
-		final Node fxNode = registryEntry.getBaseFxNodeBuilder().build(context, node);
+	public Node build(final SUINode node, final MasterNodeHandlers nodeHandlers) {
+		final RegistryEntry registryEntry = SUIRegistry.get().getEntry(node.getNodeType());
+		final Node fxNode = registryEntry.getBaseFxNodeBuilder().build(nodeHandlers, node);
 		node.getProperties().forEach((propType, property) -> {
 			PropFxNodeBuilder propBuilder = registryEntry.getPropFxNodeBuilders().get(propType);
-			propBuilder.build(context, node, property, fxNode);
+			propBuilder.build(nodeHandlers, node, property, fxNode);
 		});
 		node.setFxNode(fxNode);
 		return fxNode;

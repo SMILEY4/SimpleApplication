@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Getter
-public class SNode {
+public class SUINode {
 
 
 	/**
@@ -31,7 +31,7 @@ public class SNode {
 	 * The child nodes of this node.
 	 */
 	@Getter
-	private final List<SNode> children;
+	private final List<SUINode> children;
 
 	/**
 	 * The listener for changes to child nodes (if required).
@@ -55,7 +55,8 @@ public class SNode {
 	 * @param state         the current state
 	 * @param childListener the listener for changes to child nodes (if required).
 	 */
-	public SNode(final Class<?> nodeType, final List<Property> propertyList, final State state, final ChildListener childListener) {
+	public SUINode(final Class<?> nodeType, final List<Property> propertyList,
+				   final SUIState state, final ChildListener childListener) {
 		this.nodeType = nodeType;
 		propertyList.forEach(property -> properties.put(property.getKey(), property));
 		this.children = childNodesFromProperties(state);
@@ -71,10 +72,10 @@ public class SNode {
 	 * @param state the current state
 	 * @return the list of child nodes.
 	 */
-	private List<SNode> childNodesFromProperties(final State state) {
-		final List<SNode> children = new ArrayList<>();
+	private List<SUINode> childNodesFromProperties(final SUIState state) {
+		final List<SUINode> children = new ArrayList<>();
 		getPropertySafe(ItemListProperty.class).ifPresent(itemListProp -> itemListProp.getFactories().forEach(factory -> {
-			final SNode child = factory.create(state);
+			final SUINode child = factory.create(state);
 			children.add(child);
 		}));
 		getPropertySafe(ItemProperty.class).ifPresent(itemProp -> children.add(itemProp.getFactory().create(state)));
@@ -150,7 +151,7 @@ public class SNode {
 		 *
 		 * @param parent the parent node of the changed child nodes
 		 */
-		void onChange(SNode parent);
+		void onChange(SUINode parent);
 
 	}
 

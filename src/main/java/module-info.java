@@ -6,6 +6,7 @@ open module SimpleApplication {
 	requires transitive com.fasterxml.jackson.core;
 	requires transitive com.fasterxml.jackson.databind;
 	requires transitive com.fasterxml.jackson.annotation;
+	requires sysout.over.slf4j;
 	requires static lombok;
 
 	exports de.ruegnerlukas.simpleapplication.common.callbacks;
@@ -25,12 +26,14 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.core.presentation.module;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.views;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.style;
+	exports de.ruegnerlukas.simpleapplication.core.presentation.simpleui;
 
 	exports de.ruegnerlukas.simpleapplication.simpleui;
 	exports de.ruegnerlukas.simpleapplication.simpleui.builders;
 	exports de.ruegnerlukas.simpleapplication.simpleui.elements;
-	exports de.ruegnerlukas.simpleapplication.simpleui.elements.injection;
 	exports de.ruegnerlukas.simpleapplication.simpleui.mutation;
 	exports de.ruegnerlukas.simpleapplication.simpleui.properties;
+	exports de.ruegnerlukas.simpleapplication.simpleui.registry;
+	exports de.ruegnerlukas.simpleapplication.simpleui.utils;
 
 }

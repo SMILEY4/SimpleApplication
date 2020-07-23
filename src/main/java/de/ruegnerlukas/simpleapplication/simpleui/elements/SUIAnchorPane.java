@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
-import de.ruegnerlukas.simpleapplication.simpleui.State;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
@@ -17,19 +16,20 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public final class SAnchorPane {
+public final class SUIAnchorPane {
 
 
 	/**
 	 * Hidden constructor for utility classes.
 	 */
-	private SAnchorPane() {
+	private SUIAnchorPane() {
 		// do nothing
 	}
 
@@ -43,8 +43,8 @@ public final class SAnchorPane {
 	 * @return the factory for an anchor-pane node
 	 */
 	public static NodeFactory anchorPane(final Property... properties) {
-		Properties.checkIllegal(SAnchorPane.class, SimpleUIRegistry.get().getEntry(SAnchorPane.class).getProperties(), properties);
-		return state -> new SNode(SAnchorPane.class, List.of(properties), state, SAnchorPane::handleChildrenChange);
+		Properties.checkIllegal(SUIAnchorPane.class, SUIRegistry.get().getEntry(SUIAnchorPane.class).getProperties(), properties);
+		return state -> new SUINode(SUIAnchorPane.class, List.of(properties), state, SUIAnchorPane::handleChildrenChange);
 	}
 
 
@@ -55,7 +55,7 @@ public final class SAnchorPane {
 	 *
 	 * @param node the anchor-pane node
 	 */
-	private static void handleChildrenChange(final SNode node) {
+	private static void handleChildrenChange(final SUINode node) {
 		final AnchorPane anchorPane = (AnchorPane) node.getFxNode();
 		anchorPane.getChildren().clear();
 		node.getChildren().forEach(child -> {
@@ -71,15 +71,15 @@ public final class SAnchorPane {
 	 *
 	 * @param registry the registry
 	 */
-	public static void register(final SimpleUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SAnchorPane.class, new AnchorPaneNodeBuilder());
-		registry.registerProperty(SAnchorPane.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
-		registry.registerProperty(SAnchorPane.class, SizePreferredProperty.class,
+	public static void register(final SUIRegistry registry) {
+		registry.registerBaseFxNodeBuilder(SUIAnchorPane.class, new AnchorPaneNodeBuilder());
+		registry.registerProperty(SUIAnchorPane.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
+		registry.registerProperty(SUIAnchorPane.class, SizePreferredProperty.class,
 				new SizePreferredProperty.SizePreferredUpdatingBuilder());
-		registry.registerProperty(SAnchorPane.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
-		registry.registerProperty(SAnchorPane.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
-		registry.registerProperty(SAnchorPane.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
-		registry.registerProperty(SAnchorPane.class, ItemListProperty.class, new ItemListProperty.ItemListBuilder());
+		registry.registerProperty(SUIAnchorPane.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
+		registry.registerProperty(SUIAnchorPane.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
+		registry.registerProperty(SUIAnchorPane.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
+		registry.registerProperty(SUIAnchorPane.class, ItemListProperty.class, new ItemListProperty.ItemListBuilder());
 
 		registry.registerBaseFxNodeBuilder(AnchorPaneChildItem.class, new ChildItem.ChildItemNodeBuilder());
 		registry.registerProperty(AnchorPaneChildItem.class, ItemListProperty.class, new NoOpUpdatingBuilder());
@@ -93,7 +93,7 @@ public final class SAnchorPane {
 
 
 		@Override
-		public AnchorPane build(final SceneContext context, final SNode node) {
+		public AnchorPane build(final MasterNodeHandlers nodeHandlers, final SUINode node) {
 			return new AnchorPane();
 		}
 
@@ -125,7 +125,7 @@ public final class SAnchorPane {
 		 * @param properties the properties
 		 * @param state      the state
 		 */
-		public AnchorPaneChildItem(final List<Property> properties, final State state) {
+		public AnchorPaneChildItem(final List<Property> properties, final SUIState state) {
 			super(AnchorPaneChildItem.class, properties, state, null);
 		}
 

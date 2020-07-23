@@ -1,9 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SimpleUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
@@ -17,17 +16,18 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.control.ScrollPane;
 
 import java.util.List;
 
-public final class SScrollPane {
+public final class SUIScrollPane {
 
 
 	/**
 	 * Hidden constructor for utility classes
 	 */
-	private SScrollPane() {
+	private SUIScrollPane() {
 		// do nothing
 	}
 
@@ -41,8 +41,8 @@ public final class SScrollPane {
 	 * @return the factory for an scroll-pane node
 	 */
 	public static NodeFactory scrollPane(final Property... properties) {
-		Properties.checkIllegal(SScrollPane.class, SimpleUIRegistry.get().getEntry(SScrollPane.class).getProperties(), properties);
-		return state -> new SNode(SScrollPane.class, List.of(properties), state, SScrollPane::handleChildrenChange);
+		Properties.checkIllegal(SUIScrollPane.class, SUIRegistry.get().getEntry(SUIScrollPane.class).getProperties(), properties);
+		return state -> new SUINode(SUIScrollPane.class, List.of(properties), state, SUIScrollPane::handleChildrenChange);
 	}
 
 
@@ -53,7 +53,7 @@ public final class SScrollPane {
 	 *
 	 * @param node the scroll-pane node
 	 */
-	private static void handleChildrenChange(final SNode node) {
+	private static void handleChildrenChange(final SUINode node) {
 		final ScrollPane scrollPane = (ScrollPane) node.getFxNode();
 		if (node.getChildren().isEmpty()) {
 			scrollPane.setContent(null);
@@ -70,21 +70,21 @@ public final class SScrollPane {
 	 *
 	 * @param registry the registry
 	 */
-	public static void register(final SimpleUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SScrollPane.class, new SScrollPane.ScrollPaneNodeBuilder());
-		registry.registerProperty(SScrollPane.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
-		registry.registerProperty(SScrollPane.class, SizePreferredProperty.class,
+	public static void register(final SUIRegistry registry) {
+		registry.registerBaseFxNodeBuilder(SUIScrollPane.class, new SUIScrollPane.ScrollPaneNodeBuilder());
+		registry.registerProperty(SUIScrollPane.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
+		registry.registerProperty(SUIScrollPane.class, SizePreferredProperty.class,
 				new SizePreferredProperty.SizePreferredUpdatingBuilder());
-		registry.registerProperty(SScrollPane.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
-		registry.registerProperty(SScrollPane.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
-		registry.registerProperty(SScrollPane.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
-		registry.registerProperty(SScrollPane.class, FitToWidthProperty.class,
+		registry.registerProperty(SUIScrollPane.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
+		registry.registerProperty(SUIScrollPane.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
+		registry.registerProperty(SUIScrollPane.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
+		registry.registerProperty(SUIScrollPane.class, FitToWidthProperty.class,
 				new FitToWidthProperty.ScrollPaneFitToWidthUpdatingBuilder());
-		registry.registerProperty(SScrollPane.class, FitToHeightProperty.class,
+		registry.registerProperty(SUIScrollPane.class, FitToHeightProperty.class,
 				new FitToHeightProperty.FitToHeightUpdatingBuilder());
-		registry.registerProperty(SScrollPane.class, ShowScrollbarsProperty.class,
+		registry.registerProperty(SUIScrollPane.class, ShowScrollbarsProperty.class,
 				new ShowScrollbarsProperty.ShowScrollbarUpdatingBuilder());
-		registry.registerProperty(SScrollPane.class, ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder());
+		registry.registerProperty(SUIScrollPane.class, ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder());
 	}
 
 
@@ -94,7 +94,7 @@ public final class SScrollPane {
 
 
 		@Override
-		public ScrollPane build(final SceneContext context, final SNode node) {
+		public ScrollPane build(final MasterNodeHandlers nodeHandlers, final SUINode node) {
 			return new ScrollPane();
 		}
 

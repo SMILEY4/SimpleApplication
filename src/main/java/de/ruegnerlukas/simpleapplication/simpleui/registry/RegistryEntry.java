@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui;
+package de.ruegnerlukas.simpleapplication.simpleui.registry;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;

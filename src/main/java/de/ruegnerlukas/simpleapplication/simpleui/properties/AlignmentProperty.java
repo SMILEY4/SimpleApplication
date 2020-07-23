@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
@@ -53,7 +53,7 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final SceneContext context, final SNode node, final AlignmentProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final AlignmentProperty property,
 						  final VBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 		}
@@ -62,8 +62,8 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final SceneContext context, final AlignmentProperty property,
-									 final SNode node, final VBox fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
+									 final SUINode node, final VBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 			return MutationResult.MUTATED;
 		}
@@ -72,8 +72,8 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final SceneContext context, final AlignmentProperty property,
-									 final SNode node, final VBox fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
+									 final SUINode node, final VBox fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
 			return MutationResult.MUTATED;
 		}
