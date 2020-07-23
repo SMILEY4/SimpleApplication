@@ -34,15 +34,49 @@ public class SUIState {
 
 	/**
 	 * Modifies this state via the given update.
+	 * The update will always be executed on the main javafx-thread (via {@link javafx.application.Platform#runLater(Runnable)}).
+	 *
+	 * @param update the update to apply to this state
+	 * @param silent true, to not notify listeners and this not modifying the interface.
+	 */
+	public synchronized void update(final boolean silent, final SUIStateUpdate update) {
+		Validations.INPUT.notNull(update).exception("The state update may not be null.");
+		Platform.runLater(() -> updateUnsafe(silent, update));
+	}
+
+
+
+
+	/**
+	 * Modifies this state via the given update.
 	 * The update will be executed on the current thread and can cause problems with javafx if not handled otherwise.
 	 *
 	 * @param update the update to apply to this state
 	 */
 	public synchronized void updateUnsafe(final SUIStateUpdate update) {
 		Validations.INPUT.notNull(update).exception("The state update may not be null.");
-		listeners.forEach(listener -> listener.beforeUpdate(this, update));
+		updateUnsafe(false, update);
+	}
+
+
+
+
+	/**
+	 * Modifies this state via the given update.
+	 * The update will be executed on the current thread and can cause problems with javafx if not handled otherwise.
+	 *
+	 * @param update the update to apply to this state
+	 * @param silent true, to not notify listeners and this not modifying the interface.
+	 */
+	public synchronized void updateUnsafe(final boolean silent, final SUIStateUpdate update) {
+		Validations.INPUT.notNull(update).exception("The state update may not be null.");
+		if (!silent) {
+			listeners.forEach(listener -> listener.beforeUpdate(this, update));
+		}
 		update.doUpdate(this);
-		listeners.forEach(listener -> listener.stateUpdated(this, update));
+		if (!silent) {
+			listeners.forEach(listener -> listener.stateUpdated(this, update));
+		}
 	}
 
 

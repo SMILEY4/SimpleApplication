@@ -111,6 +111,7 @@ public class SUISceneContextImpl implements SUISceneContext, SUIStateListener {
 
 	@Override
 	public void stateUpdated(final SUIState state, final SUIStateUpdate update) {
+		System.out.println("STATE UPDATED " + Integer.toHexString(update.hashCode()));
 		final SUINode prevRootNode = rootNode;
 		final SUINode target = nodeFactory.create(getState());
 		rootNode = masterNodeHandlers.getMutator().mutate(rootNode, target);
