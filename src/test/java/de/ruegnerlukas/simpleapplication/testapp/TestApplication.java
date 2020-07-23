@@ -18,7 +18,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
-import de.ruegnerlukas.simpleapplication.simpleui.SUIStateImpl;
+import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
@@ -76,7 +76,7 @@ public class TestApplication {
 
 		@Getter
 		@Setter
-		private static class UIState extends SUIStateImpl {
+		private static class TestUIState extends SUIState {
 
 
 			private int cycleCount = 1;
@@ -117,7 +117,7 @@ public class TestApplication {
 
 			final EventService eventService = new Provider<>(EventService.class).get();
 
-			final UIState state = new UIState();
+			final TestUIState state = new TestUIState();
 
 			/*
 			Shows the views in the following order:
@@ -133,7 +133,7 @@ public class TestApplication {
 					}
 					Platform.runLater(() -> { // TODO: make state.update thread-safe and maybe run on javafx-thread by default ?
 						state.update(s -> {
-							UIState uis = (UIState) s;
+							TestUIState uis = (TestUIState) s;
 							uis.setGlobalCount(uis.getGlobalCount() + 1);
 						});
 					});
@@ -150,9 +150,9 @@ public class TestApplication {
 					.title(applicationName + " - View A")
 					.icon(Resource.internal("testResources/icon.png"))
 					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(state,
-							new SUIComponent<UIState>() {
+							new SUIComponent<TestUIState>() {
 								@Override
-								public NodeFactory render(final UIState state) {
+								public NodeFactory render(final TestUIState state) {
 									return button(
 											textContent(state.getGlobalCount() + ":   Switch A -> B (" + state.getCycleCount() + ")"),
 											buttonListener(() -> eventService.publish(new ChangeCycleCountEvent(state.getCycleCount() + 1)))
@@ -166,7 +166,7 @@ public class TestApplication {
 				final ChangeCycleCountEvent event = (ChangeCycleCountEvent) publishable;
 				Platform.runLater(() -> {
 					state.update(s -> {
-						UIState uis = (UIState) s;
+						TestUIState uis = (TestUIState) s;
 						uis.setCycleCount(event.cycleCount);
 					});
 					viewService.showView(ID_B);
@@ -213,9 +213,9 @@ public class TestApplication {
 					.title(applicationName + " - View B LAST WARNING")
 					.icon(Resource.internal("testResources/icon.png"))
 					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(state,
-							new SUIComponent<UIState>() {
+							new SUIComponent<TestUIState>() {
 								@Override
-								public NodeFactory render(final UIState state) {
+								public NodeFactory render(final TestUIState state) {
 									return button(
 											textContent(state.getGlobalCount() + ":   You sure ? (" + " -> " + state.getCycleCount() + ")"),
 											buttonListener(() -> {

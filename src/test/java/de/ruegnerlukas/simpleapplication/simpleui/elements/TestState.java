@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUIStateImpl;
+import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 
-public class TestState extends SUIStateImpl {
+public class TestState extends SUIState {
 
 
 }

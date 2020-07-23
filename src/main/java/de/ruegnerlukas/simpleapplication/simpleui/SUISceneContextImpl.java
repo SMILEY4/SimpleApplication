@@ -47,7 +47,7 @@ public class SUISceneContextImpl implements SUISceneContext, SUIStateListener {
 	 * @param nodeFactory the node factory for the root node of this context.
 	 */
 	public SUISceneContextImpl(final NodeFactory nodeFactory) {
-		this(new SUIStateImpl(), nodeFactory);
+		this(new SUIState(), nodeFactory);
 	}
 
 
