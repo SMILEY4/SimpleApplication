@@ -22,7 +22,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
-import javafx.application.Platform;
 import javafx.geometry.Dimension2D;
 import javafx.stage.StageStyle;
 import lombok.AllArgsConstructor;
@@ -124,19 +123,19 @@ public class TestApplication {
 			ID_A -> ID_B -> (popup: ID_B_POPUP -> ID_B_WARN) -> ID_A
 			 */
 
-			new Thread(() -> {
-				while (true) {
-					try {
-						Thread.sleep(1000 * 5);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					state.update(s -> {
-						TestUIState uis = (TestUIState) s;
-						uis.setGlobalCount(uis.getGlobalCount() + 1);
-					});
-				}
-			}).start();
+//			new Thread(() -> {
+//				while (true) {
+//					try {
+//						Thread.sleep(1000 * 5);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//					state.update(s -> {
+//						TestUIState uis = (TestUIState) s;
+//						uis.setGlobalCount(uis.getGlobalCount() + 1);
+//					});
+//				}
+//			}).start();
 
 
 			// VIEW A
@@ -162,13 +161,11 @@ public class TestApplication {
 
 			eventService.subscribe(Channel.type(ChangeCycleCountEvent.class), publishable -> {
 				final ChangeCycleCountEvent event = (ChangeCycleCountEvent) publishable;
-				Platform.runLater(() -> {
-					state.update(s -> {
-						TestUIState uis = (TestUIState) s;
-						uis.setCycleCount(event.cycleCount);
-					});
-					viewService.showView(ID_B);
+				state.update(true, s -> {
+					TestUIState uis = (TestUIState) s;
+					uis.setCycleCount(event.cycleCount);
 				});
+				viewService.showView(ID_B);
 			});
 
 			// VIEW B
