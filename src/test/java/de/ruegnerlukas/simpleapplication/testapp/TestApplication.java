@@ -131,11 +131,9 @@ public class TestApplication {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					Platform.runLater(() -> { // TODO: make state.update thread-safe and maybe run on javafx-thread by default ?
-						state.update(s -> {
-							TestUIState uis = (TestUIState) s;
-							uis.setGlobalCount(uis.getGlobalCount() + 1);
-						});
+					state.update(s -> {
+						TestUIState uis = (TestUIState) s;
+						uis.setGlobalCount(uis.getGlobalCount() + 1);
 					});
 				}
 			}).start();
