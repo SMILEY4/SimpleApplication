@@ -17,7 +17,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfigurat
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
+import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Dimension2D;
@@ -144,7 +144,7 @@ public class TestApplication {
 					.maxSize(new Dimension2D(300, 300))
 					.title(applicationName + " - View A")
 					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(testUIState, TestUIState.class, state ->
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
 							button(
 									textContent(state.getGlobalCount() + ":   Switch A -> B (" + state.getCycleCount() + ")"),
 									buttonListener(() -> eventService.publish(new ChangeCycleCountEvent(state.getCycleCount() + 1)))
@@ -168,7 +168,7 @@ public class TestApplication {
 					.size(new Dimension2D(200, 500))
 					.title(applicationName + " - View B")
 					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(testUIState, TestUIState.class, state ->
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
 							button(
 									textContent(testUIState.getGlobalCount() + ":   Switch B -> A"),
 									buttonListener(() -> viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build()))
@@ -184,7 +184,7 @@ public class TestApplication {
 					.size(new Dimension2D(300, 200))
 					.title(applicationName + " - View B Confirm")
 					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(testUIState, TestUIState.class, state ->
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
 							button(
 									textContent(testUIState.getGlobalCount() + ":   Confirm switch"),
 									buttonListener(() -> {
@@ -200,7 +200,7 @@ public class TestApplication {
 					.size(new Dimension2D(200, 300))
 					.title(applicationName + " - View B LAST WARNING")
 					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(testUIState, TestUIState.class, state ->
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
 							button(
 									textContent(state.getGlobalCount() + ":   You sure ? (" + " -> " + state.getCycleCount() + ")"),
 									buttonListener(() -> {

@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.core.presentation.simpleui;
 
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandleData;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import javafx.scene.Parent;
 import lombok.Getter;
 
@@ -42,7 +41,7 @@ public class SUIWindowHandleData implements WindowHandleData {
 	@Override
 	public void dispose() {
 		// TODO maybe remove interface of scene context
-		sceneContext.getState().removeStateListener((SUISceneContextImpl) sceneContext);
+		sceneContext.getState().removeStateListener((SUISceneContext) sceneContext);
 	}
 
 }

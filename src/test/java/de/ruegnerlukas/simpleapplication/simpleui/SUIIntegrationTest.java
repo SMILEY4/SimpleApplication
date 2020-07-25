@@ -34,7 +34,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 
 		final AtomicInteger buttonPressCounter = new AtomicInteger(0);
 
-		final SUISceneContext context = new SUISceneContextImpl(
+		final SUISceneContext context = new SUISceneContext(
 				button(
 						textContent("Some Button"),
 						wrapText(),
@@ -63,7 +63,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 		// setup
 		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
-		final SUISceneContext context = new SUISceneContextImpl(testState,
+		final SUISceneContext context = new SUISceneContext(testState,
 				new SUIComponent<TestState>(state -> button(
 						textContent("counter = " + testState.counter),
 						buttonListener(() -> state.update(s -> ((TestState) s).increment()))
@@ -92,7 +92,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 		// setup
 		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
-		final SUISceneContext context = new SUISceneContextImpl(testState,
+		final SUISceneContext context = new SUISceneContext(testState,
 				new SUIComponent<TestState>(state -> button(
 						textContent("counter = " + testState.counter),
 						buttonListener(() -> state.update(true, s -> {

@@ -5,7 +5,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -145,7 +144,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, anchorPane);
+		SUISceneContext context = new SUISceneContext(state, anchorPane);
 		SUINode original = context.getRootNode();
 		SUINode target = anchorPaneTarget.create(state);
 
@@ -213,7 +212,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, anchorPane);
+		SUISceneContext context = new SUISceneContext(state, anchorPane);
 		SUINode original = context.getRootNode();
 		SUINode target = anchorPaneTarget.create(state);
 
@@ -256,7 +255,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, anchorPane);
+		SUISceneContext context = new SUISceneContext(state, anchorPane);
 		SUINode original = context.getRootNode();
 		SUINode target = anchorPaneTarget.create(state);
 
@@ -303,7 +302,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, anchorPane);
+		SUISceneContext context = new SUISceneContext(state, anchorPane);
 		SUINode original = context.getRootNode();
 		SUINode target = anchorPaneTarget.create(state);
 
@@ -354,7 +353,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, anchorPane);
+		SUISceneContext context = new SUISceneContext(state, anchorPane);
 		SUINode original = context.getRootNode();
 		SUINode target = anchorPaneTarget.create(state);
 
@@ -407,7 +406,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, anchorPane);
+		SUISceneContext context = new SUISceneContext(state, anchorPane);
 		SUINode original = context.getRootNode();
 		SUINode target = anchorPaneTarget.create(state);
 
@@ -466,7 +465,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, anchorPane);
+		SUISceneContext context = new SUISceneContext(state, anchorPane);
 		SUINode original = context.getRootNode();
 		SUINode target = anchorPaneTarget.create(state);
 
@@ -535,7 +534,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, anchorPane);
+		SUISceneContext context = new SUISceneContext(state, anchorPane);
 		SUINode node = context.getRootNode();
 
 		FxTestUtils.assertAnchorPane((AnchorPane) node.getFxNode(), FxTestUtils.AnchorPaneInfo.builder()
