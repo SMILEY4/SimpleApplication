@@ -66,7 +66,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final SUISceneContext context = new SUISceneContext(testState,
 				new SUIComponent<TestState>(state -> button(
 						textContent("counter = " + testState.counter),
-						buttonListener(() -> state.update(s -> ((TestState) s).increment()))
+						buttonListener(() -> state.update(TestState.class, TestState::increment))
 				))
 		);
 		testState.addStateListener((state, update) -> phaser.arrive());
@@ -95,8 +95,8 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final SUISceneContext context = new SUISceneContext(testState,
 				new SUIComponent<TestState>(state -> button(
 						textContent("counter = " + testState.counter),
-						buttonListener(() -> state.update(true, s -> {
-							((TestState) s).increment();
+						buttonListener(() -> state.update(TestState.class, true, s -> {
+							s.increment();
 							phaser.arrive();
 						}))
 				))

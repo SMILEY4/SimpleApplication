@@ -124,13 +124,12 @@ public class TestApplication {
 			new Thread(() -> {
 				while (true) {
 					try {
-						Thread.sleep(1000 * 1);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					testUIState.update(s -> {
-						TestUIState uis = (TestUIState) s;
-						uis.setGlobalCount(uis.getGlobalCount() + 1);
+					testUIState.update(TestUIState.class, state -> {
+						state.setGlobalCount(state.getGlobalCount() + 1);
 					});
 				}
 			}).start();
@@ -154,9 +153,8 @@ public class TestApplication {
 
 			eventService.subscribe(Channel.type(ChangeCycleCountEvent.class), publishable -> {
 				final ChangeCycleCountEvent event = (ChangeCycleCountEvent) publishable;
-				testUIState.update(true, s -> {
-					TestUIState uis = (TestUIState) s;
-					uis.setCycleCount(event.cycleCount);
+				testUIState.update(TestUIState.class, true, state -> {
+					state.setCycleCount(event.cycleCount);
 				});
 				viewService.showView(ID_B);
 			});
