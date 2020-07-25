@@ -328,8 +328,10 @@ public class ViewServiceImpl implements ViewService {
 	 * @param view  the view
 	 */
 	private void setStageSize(final Stage stage, final View view) {
-		stage.setWidth(view.getSize().getWidth());
-		stage.setHeight(view.getSize().getHeight());
+		if (view.getSize() != null) {
+			stage.setWidth(view.getSize().getWidth());
+			stage.setHeight(view.getSize().getHeight());
+		}
 		stage.setMinWidth(view.getMinSize().getWidth());
 		stage.setMinHeight(view.getMinSize().getHeight());
 		stage.setMaxWidth(view.getMaxSize().getWidth());

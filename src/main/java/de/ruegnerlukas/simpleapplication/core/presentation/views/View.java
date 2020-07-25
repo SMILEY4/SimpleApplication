@@ -32,6 +32,7 @@ public class View {
 
 	/**
 	 * The size of this view in pixels.
+	 * If set to 'null', the size of the window will not be changed when switching views.
 	 */
 	private final Dimension2D size;
 
