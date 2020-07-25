@@ -202,6 +202,7 @@ public class ViewServiceImpl implements ViewService {
 		final Parent viewNode = view.getNodeFactory().buildNode();
 		final Scene scene = new Scene(viewNode, view.getSize().getWidth(), view.getSize().getHeight());
 		scene.setRoot(viewNode);
+
 		final Stage stage = new Stage();
 		stage.initModality(config.getModality());
 		stage.initOwner(config.getParent() == null ? getPrimaryWindowHandle().getStage() : config.getParent().getStage());
@@ -211,6 +212,7 @@ public class ViewServiceImpl implements ViewService {
 		setStageSize(stage, view);
 		stage.setScene(scene);
 		setIcon(stage, view.getIcon());
+
 		final WindowHandle handle = new WindowHandle(createHandleId(), view, stage);
 		windowHandles.put(handle.getHandleId(), handle);
 
@@ -260,12 +262,18 @@ public class ViewServiceImpl implements ViewService {
 
 
 
-	/**
-	 * @return the handle of the primary window
-	 */
 	@Override
 	public WindowHandle getPrimaryWindowHandle() {
 		return windowHandles.get(WindowHandle.ID_PRIMARY);
+	}
+
+
+
+
+	@Override
+	public boolean isWindowHandleActive(final WindowHandle handle) {
+		Validations.INPUT.notNull(handle).exception("The handle to check may not be null.");
+		return windowHandles.containsKey(handle.getHandleId());
 	}
 
 

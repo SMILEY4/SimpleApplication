@@ -1,12 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.FxTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.PropertyTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
-import de.ruegnerlukas.simpleapplication.simpleui.TestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
@@ -34,7 +34,7 @@ public class SUIVBoxTest extends ApplicationTest {
 	@Test
 	public void testVBoxSNode() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
@@ -95,7 +95,7 @@ public class SUIVBoxTest extends ApplicationTest {
 	@Test
 	public void testMutate() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
@@ -167,7 +167,7 @@ public class SUIVBoxTest extends ApplicationTest {
 	@Test
 	public void testMutateAddChild() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
@@ -223,7 +223,7 @@ public class SUIVBoxTest extends ApplicationTest {
 	@Test
 	public void testMutateCreateChild() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox")
@@ -265,7 +265,7 @@ public class SUIVBoxTest extends ApplicationTest {
 	@Test
 	public void testMutateClearChildren() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
@@ -309,7 +309,7 @@ public class SUIVBoxTest extends ApplicationTest {
 	@Test
 	public void testMutateRemoveChild1() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
@@ -361,7 +361,7 @@ public class SUIVBoxTest extends ApplicationTest {
 	@Test
 	public void testMutateRemoveChild2() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
@@ -413,7 +413,7 @@ public class SUIVBoxTest extends ApplicationTest {
 	@Test
 	public void testMutateSwitchChildren() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),
@@ -473,7 +473,7 @@ public class SUIVBoxTest extends ApplicationTest {
 	@Test
 	public void testFxNode() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),

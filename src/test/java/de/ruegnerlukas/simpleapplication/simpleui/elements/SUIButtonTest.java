@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.FxTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.PropertyTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
-import de.ruegnerlukas.simpleapplication.simpleui.TestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
@@ -30,7 +30,7 @@ public class SUIButtonTest extends ApplicationTest {
 	@Test
 	public void testSNode() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory button = SUIButton.button(
 				Properties.id("myButton"),
@@ -65,7 +65,7 @@ public class SUIButtonTest extends ApplicationTest {
 	@Test
 	public void testMutate() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory button = SUIButton.button(
 				Properties.id("myButton"),
@@ -118,7 +118,7 @@ public class SUIButtonTest extends ApplicationTest {
 	@Test
 	public void testFxNode() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory button = SUIButton.button(
 				Properties.id("myButton"),

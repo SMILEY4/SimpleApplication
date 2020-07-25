@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.utils.SUIStateListener;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SUIState {
@@ -105,5 +106,16 @@ public class SUIState {
 	public void removeStateListener(final SUIStateListener listener) {
 		listeners.remove(listener);
 	}
+
+
+
+
+	/**
+	 * @return an unmodifiable list of the listeners listening to this state.
+	 */
+	public List<SUIStateListener> getListeners() {
+		return Collections.unmodifiableList(listeners);
+	}
+
 
 }
