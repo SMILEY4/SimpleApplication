@@ -1,19 +1,36 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 
-public abstract class SUIComponent<T extends SUIState> implements NodeFactory {
+public class SUIComponent<T extends SUIState> implements NodeFactory {
 
 
 	/**
 	 * The id of this component or null. (This will be transformed into a {@link IdProperty}).
 	 */
 	private String id = null;
+
+	/**
+	 * The renderer for the node factory of this component.
+	 */
+	private final SUIComponentRenderer<T> renderer;
+
+
+
+
+	/**
+	 * @param renderer the renderer for the node factory of this component
+	 */
+	public SUIComponent(final SUIComponentRenderer<T> renderer) {
+		Validations.INPUT.notNull(renderer).exception("The renderer may not be null.");
+		this.renderer = renderer;
+	}
 
 
 
@@ -34,23 +51,12 @@ public abstract class SUIComponent<T extends SUIState> implements NodeFactory {
 
 	@Override
 	public SUINode create(final SUIState state) {
-		SUINode node = render((T) state).create(state);
+		SUINode node = renderer.render((T) state).create(state);
 		if (id != null) {
 			node.getProperties().put(IdProperty.class, Properties.id(this.id));
 		}
 		return node;
 	}
-
-
-
-
-	/**
-	 * Renders this component, i.e. creates the node factories dependent in the given state.
-	 *
-	 * @param state the state
-	 * @return the node factory
-	 */
-	public abstract NodeFactory render(T state);
 
 
 }

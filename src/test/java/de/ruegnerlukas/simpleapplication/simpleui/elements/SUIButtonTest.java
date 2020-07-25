@@ -4,7 +4,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -93,7 +92,7 @@ public class SUIButtonTest extends ApplicationTest {
 				})
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, button);
+		SUISceneContext context = new SUISceneContext(state, button);
 		SUINode original = context.getRootNode();
 		SUINode target = buttonTarget.create(state);
 
@@ -133,7 +132,7 @@ public class SUIButtonTest extends ApplicationTest {
 				})
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, button);
+		SUISceneContext context = new SUISceneContext(state, button);
 		SUINode node = context.getRootNode();
 
 		FxTestUtils.assertButton((Button) node.getFxNode(), FxTestUtils.ButtonInfo.builder()

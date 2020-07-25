@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-public interface SUIStateUpdate {
+public interface SUIStateUpdate<T> {
 
 
 	/**
@@ -8,6 +8,6 @@ public interface SUIStateUpdate {
 	 *
 	 * @param state the state to modify
 	 */
-	void doUpdate(SUIState state);
+	void doUpdate(T state);
 
 }

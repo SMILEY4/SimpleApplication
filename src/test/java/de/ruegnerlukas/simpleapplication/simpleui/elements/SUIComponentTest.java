@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
-import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -28,13 +28,13 @@ public class SUIComponentTest extends ApplicationTest {
 	private static class TestSUIComponent extends SUIComponent<ElementTestState> {
 
 
-		@Override
-		public NodeFactory render(final ElementTestState state) {
-			return SUIButton.button(
+		public TestSUIComponent() {
+			super(state -> SUIButton.button(
 					Properties.id("myButton"),
 					Properties.textContent("My Button")
-			);
+			));
 		}
+
 
 	}
 

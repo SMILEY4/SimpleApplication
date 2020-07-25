@@ -15,7 +15,6 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.application.Platform;
@@ -118,7 +117,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 			final SUISceneContext context = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
 			assertThat(context.getState()).isEqualTo(state);
 			assertThat(state.getListeners()).hasSize(1);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContextImpl) context);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContext) context);
 		});
 	}
 
@@ -157,7 +156,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(context2.getState()).isEqualTo(state);
 
 			assertThat(state.getListeners()).hasSize(2);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContextImpl) context1, (SUISceneContextImpl) context2);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContext) context1, (SUISceneContext) context2);
 		});
 	}
 
@@ -215,10 +214,10 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 			assertThat(state.getListeners()).hasSize(4);
 			assertThat(state.getListeners()).containsExactlyInAnyOrder(
-					(SUISceneContextImpl) context1,
-					(SUISceneContextImpl) context2,
-					(SUISceneContextImpl) context3,
-					(SUISceneContextImpl) context4
+					(SUISceneContext) context1,
+					(SUISceneContext) context2,
+					(SUISceneContext) context3,
+					(SUISceneContext) context4
 			);
 		});
 	}
@@ -248,7 +247,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(context1.getState()).isEqualTo(state);
 
 			assertThat(state.getListeners()).hasSize(1);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContextImpl) context1);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContext) context1);
 		});
 	}
 
@@ -270,7 +269,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 
 	private View view(final String id) {
-		return view(id, new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(
+		return view(id, new SUIWindowHandleDataFactory(() -> new SUISceneContext(
 				button(
 						textContent("A Button")
 				)
@@ -281,7 +280,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 
 	private View view(final String id, final SUIState state, final String btnText) {
-		return view(id, new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(state,
+		return view(id, new SUIWindowHandleDataFactory(() -> new SUISceneContext(state,
 				button(
 						textContent(btnText)
 				)

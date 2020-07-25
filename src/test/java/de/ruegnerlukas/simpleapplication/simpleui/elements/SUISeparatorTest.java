@@ -4,7 +4,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -85,7 +84,7 @@ public class SUISeparatorTest extends ApplicationTest {
 				Properties.orientation(Orientation.VERTICAL)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, separator);
+		SUISceneContext context = new SUISceneContext(state, separator);
 		SUINode original = context.getRootNode();
 		SUINode target = separatorTarget.create(state);
 
@@ -120,7 +119,7 @@ public class SUISeparatorTest extends ApplicationTest {
 				Properties.orientation(Orientation.HORIZONTAL)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, separator);
+		SUISceneContext context = new SUISceneContext(state, separator);
 		SUINode node = context.getRootNode();
 
 		FxTestUtils.assertSeparator((Separator) node.getFxNode(), FxTestUtils.SeparatorInfo.builder()

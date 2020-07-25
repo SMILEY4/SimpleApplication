@@ -4,7 +4,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -121,7 +120,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, scrollPane);
+		SUISceneContext context = new SUISceneContext(state, scrollPane);
 		SUINode original = context.getRootNode();
 		SUINode target = scrollPaneTarget.create(state);
 
@@ -188,7 +187,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, scrollPane);
+		SUISceneContext context = new SUISceneContext(state, scrollPane);
 		SUINode original = context.getRootNode();
 		SUINode target = scrollPaneTarget.create(state);
 
@@ -249,7 +248,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, scrollPane);
+		SUISceneContext context = new SUISceneContext(state, scrollPane);
 		SUINode original = context.getRootNode();
 		SUINode target = scrollPaneTarget.create(state);
 
@@ -301,7 +300,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				)
 		);
 
-		SUISceneContext context = new SUISceneContextImpl(state, scrollPane);
+		SUISceneContext context = new SUISceneContext(state, scrollPane);
 		SUINode node = context.getRootNode();
 
 		FxTestUtils.assertScrollPane((ScrollPane) node.getFxNode(), FxTestUtils.ScrollPaneInfo.builder()
