@@ -5,7 +5,8 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Prov
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
-import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIViewNodeFactory;
+import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleData;
+import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
@@ -79,12 +80,12 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 			final WindowHandle handle = viewService.showView(view.getId());
 
-			assertThat(handle.getRootNode()).isNotNull();
-			assertThat(handle.getRootNode() instanceof Button).isTrue();
-			assertThat(((Button) handle.getRootNode()).getText()).isEqualTo("A Button");
+			assertThat(handle.getCurrentRootNode()).isNotNull();
+			assertThat(handle.getCurrentRootNode() instanceof Button).isTrue();
+			assertThat(((Button) handle.getCurrentRootNode()).getText()).isEqualTo("A Button");
 
-			assertThat(((SUIViewNodeFactory) view.getNodeFactory()).getSceneContext()).isPresent();
-			final SUISceneContext context = ((SUIViewNodeFactory) view.getNodeFactory()).getSceneContext().get();
+			final SUISceneContext context = ((SUIWindowHandleData) handle.getData()).getSceneContext();
+			assertThat(context).isNotNull();
 			assertThat(context.getState()).isEqualTo(state);
 			assertThat(state.getListeners()).hasSize(1);
 			assertThat(state.getListeners().get(0)).isEqualTo(context);
@@ -107,23 +108,17 @@ public class SimpleUIViewTest extends ApplicationTest {
 			final WindowHandle handle1 = viewService.showView(view1.getId());
 			final WindowHandle handle2 = viewService.showView(view2.getId());
 
-			assertThat(viewService.isWindowHandleActive(handle1)).isTrue();
-			assertThat(viewService.isWindowHandleActive(handle2)).isTrue();
 			assertThat(handle1).isEqualTo(handle2);
+			assertThat(viewService.isWindowHandleActive(handle2)).isTrue();
 
-			assertThat(handle2.getRootNode()).isNotNull();
-			assertThat(handle2.getRootNode() instanceof Button).isTrue();
-			assertThat(((Button) handle2.getRootNode()).getText()).isEqualTo("Button 2");
+			assertThat(handle2.getCurrentRootNode()).isNotNull();
+			assertThat(handle2.getCurrentRootNode() instanceof Button).isTrue();
+			assertThat(((Button) handle2.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			assertThat(((SUIViewNodeFactory) view1.getNodeFactory()).getSceneContext()).isEmpty();
-			assertThat(((SUIViewNodeFactory) view2.getNodeFactory()).getSceneContext()).isPresent();
-
-			final SUISceneContext context2 = ((SUIViewNodeFactory) view2.getNodeFactory()).getSceneContext().get();
-
-			assertThat(context2.getState()).isEqualTo(state);
-
+			final SUISceneContext context = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			assertThat(context.getState()).isEqualTo(state);
 			assertThat(state.getListeners()).hasSize(1);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContextImpl) context2);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContextImpl) context);
 		});
 	}
 
@@ -146,19 +141,17 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(viewService.isWindowHandleActive(handle1)).isTrue();
 			assertThat(viewService.isWindowHandleActive(handle2)).isTrue();
 
-			assertThat(handle1.getRootNode()).isNotNull();
-			assertThat(handle1.getRootNode() instanceof Button).isTrue();
-			assertThat(((Button) handle1.getRootNode()).getText()).isEqualTo("Button 1");
+			assertThat(handle1.getCurrentRootNode()).isNotNull();
+			assertThat(handle1.getCurrentRootNode() instanceof Button).isTrue();
+			assertThat(((Button) handle1.getCurrentRootNode()).getText()).isEqualTo("Button 1");
 
-			assertThat(handle2.getRootNode()).isNotNull();
-			assertThat(handle2.getRootNode() instanceof Button).isTrue();
-			assertThat(((Button) handle2.getRootNode()).getText()).isEqualTo("Button 2");
+			assertThat(handle2.getCurrentRootNode()).isNotNull();
+			assertThat(handle2.getCurrentRootNode() instanceof Button).isTrue();
+			assertThat(((Button) handle2.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			assertThat(((SUIViewNodeFactory) view1.getNodeFactory()).getSceneContext()).isPresent();
-			assertThat(((SUIViewNodeFactory) view2.getNodeFactory()).getSceneContext()).isPresent();
-
-			final SUISceneContext context1 = ((SUIViewNodeFactory) view1.getNodeFactory()).getSceneContext().get();
-			final SUISceneContext context2 = ((SUIViewNodeFactory) view2.getNodeFactory()).getSceneContext().get();
+			final SUISceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			final SUISceneContext context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			assertThat(context1).isNotEqualTo(context2);
 
 			assertThat(context1.getState()).isEqualTo(state);
 			assertThat(context2.getState()).isEqualTo(state);
@@ -167,6 +160,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContextImpl) context1, (SUISceneContextImpl) context2);
 		});
 	}
+
 
 
 
@@ -190,23 +184,42 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(viewService.isWindowHandleActive(handle3)).isTrue();
 			assertThat(viewService.isWindowHandleActive(handle4)).isTrue();
 
-			assertThat(handle1.getRootNode()).isNotNull();
-			assertThat(handle1.getRootNode() instanceof Button).isTrue();
-			assertThat(((Button) handle1.getRootNode()).getText()).isEqualTo("Button 1");
+			assertThat(handle1.getCurrentRootNode()).isNotNull();
+			assertThat(handle1.getCurrentRootNode() instanceof Button).isTrue();
+			assertThat(((Button) handle1.getCurrentRootNode()).getText()).isEqualTo("Button 1");
 
-			assertThat(handle2.getRootNode()).isNotNull();
-			assertThat(handle2.getRootNode() instanceof Button).isTrue();
-			assertThat(((Button) handle2.getRootNode()).getText()).isEqualTo("Button 2");
+			assertThat(handle2.getCurrentRootNode()).isNotNull();
+			assertThat(handle2.getCurrentRootNode() instanceof Button).isTrue();
+			assertThat(((Button) handle2.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			assertThat(handle3.getRootNode()).isNotNull();
-			assertThat(handle3.getRootNode() instanceof Button).isTrue();
-			assertThat(((Button) handle3.getRootNode()).getText()).isEqualTo("Button 2");
+			assertThat(handle3.getCurrentRootNode()).isNotNull();
+			assertThat(handle3.getCurrentRootNode() instanceof Button).isTrue();
+			assertThat(((Button) handle3.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			assertThat(handle4.getRootNode()).isNotNull();
-			assertThat(handle4.getRootNode() instanceof Button).isTrue();
-			assertThat(((Button) handle4.getRootNode()).getText()).isEqualTo("Button 2");
+			assertThat(handle4.getCurrentRootNode()).isNotNull();
+			assertThat(handle4.getCurrentRootNode() instanceof Button).isTrue();
+			assertThat(((Button) handle4.getCurrentRootNode()).getText()).isEqualTo("Button 2");
+
+			final SUISceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			final SUISceneContext context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			final SUISceneContext context3 = ((SUIWindowHandleData) handle3.getData()).getSceneContext();
+			final SUISceneContext context4 = ((SUIWindowHandleData) handle4.getData()).getSceneContext();
+			assertThat(context1).isNotEqualTo(context2);
+			assertThat(context1).isNotEqualTo(context3);
+			assertThat(context1).isNotEqualTo(context4);
+
+			assertThat(context1.getState()).isEqualTo(state);
+			assertThat(context2.getState()).isEqualTo(state);
+			assertThat(context3.getState()).isEqualTo(state);
+			assertThat(context4.getState()).isEqualTo(state);
 
 			assertThat(state.getListeners()).hasSize(4);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder(
+					(SUISceneContextImpl) context1,
+					(SUISceneContextImpl) context2,
+					(SUISceneContextImpl) context3,
+					(SUISceneContextImpl) context4
+			);
 		});
 	}
 
@@ -230,11 +243,8 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(viewService.isWindowHandleActive(handle1)).isTrue();
 			assertThat(viewService.isWindowHandleActive(handle2)).isFalse();
 
-			assertThat(((SUIViewNodeFactory) view1.getNodeFactory()).getSceneContext()).isPresent();
-			assertThat(((SUIViewNodeFactory) view2.getNodeFactory()).getSceneContext()).isEmpty();
-
-			final SUISceneContext context1 = ((SUIViewNodeFactory) view1.getNodeFactory()).getSceneContext().get();
-
+			final SUISceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			assertThat(handle2.getData()).isNull();
 			assertThat(context1.getState()).isEqualTo(state);
 
 			assertThat(state.getListeners()).hasSize(1);
@@ -260,7 +270,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 
 	private View view(final String id) {
-		return view(id, new SUIViewNodeFactory(() -> new SUISceneContextImpl(
+		return view(id, new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(
 				button(
 						textContent("A Button")
 				)
@@ -271,7 +281,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 
 	private View view(final String id, final SUIState state, final String btnText) {
-		return view(id, new SUIViewNodeFactory(() -> new SUISceneContextImpl(state,
+		return view(id, new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(state,
 				button(
 						textContent(btnText)
 				)
@@ -281,12 +291,12 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 
 
-	private View view(final String id, final SUIViewNodeFactory suiViewNodeFactory) {
+	private View view(final String id, final SUIWindowHandleDataFactory suiWindowHandleDataFactory) {
 		return View.builder()
 				.id(id)
 				.size(new Dimension2D(100, 10))
 				.title(id)
-				.nodeFactory(suiViewNodeFactory)
+				.dataFactory(suiWindowHandleDataFactory)
 				.icon(Resource.internal("testResources/icon.png"))
 				.build();
 	}

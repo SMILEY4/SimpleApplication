@@ -288,12 +288,12 @@ public class ViewServiceTest extends ApplicationTest {
 			viewService.registerView(viewB);
 
 			final WindowHandle windowHandleA = viewService.showView(viewA.getId());
-			assertThat(windowHandleA.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;");
-			assertThat(styleService.getAppliedStyleNames(windowHandleA.getRootNode())).containsExactlyInAnyOrder("style.a");
+			assertThat(windowHandleA.getCurrentRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleA.getCurrentRootNode())).containsExactlyInAnyOrder("style.a");
 
 			final WindowHandle windowHandleB = viewService.showView(viewB.getId());
-			assertThat(windowHandleB.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:blue;");
-			assertThat(styleService.getAppliedStyleNames(windowHandleB.getRootNode())).containsExactlyInAnyOrder("style.b");
+			assertThat(windowHandleB.getCurrentRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:blue;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleB.getCurrentRootNode())).containsExactlyInAnyOrder("style.b");
 
 		});
 	}
@@ -315,16 +315,16 @@ public class ViewServiceTest extends ApplicationTest {
 			viewService.registerView(viewB);
 
 			final WindowHandle windowHandleA = viewService.showView(viewA.getId());
-			assertThat(windowHandleA.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;");
-			assertThat(styleService.getAppliedStyleNames(windowHandleA.getRootNode())).containsExactlyInAnyOrder("style.a");
+			assertThat(windowHandleA.getCurrentRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleA.getCurrentRootNode())).containsExactlyInAnyOrder("style.a");
 
 			final WindowHandle windowHandleB = viewService.showView(viewB.getId());
-			assertThat(windowHandleB.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;");
-			assertThat(styleService.getAppliedStyleNames(windowHandleB.getRootNode())).containsExactlyInAnyOrder("style.a");
+			assertThat(windowHandleB.getCurrentRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleB.getCurrentRootNode())).containsExactlyInAnyOrder("style.a");
 
 			styleService.setRootStyle("style.b", true);
-			assertThat(windowHandleB.getRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;-fx-background-color:blue;");
-			assertThat(styleService.getAppliedStyleNames(windowHandleB.getRootNode())).containsExactlyInAnyOrder("style.a", "style.b");
+			assertThat(windowHandleB.getCurrentRootNode().getStyle().replace(" ", "")).isEqualTo("-fx-background-color:red;-fx-background-color:blue;");
+			assertThat(styleService.getAppliedStyleNames(windowHandleB.getCurrentRootNode())).containsExactlyInAnyOrder("style.a", "style.b");
 		});
 	}
 
@@ -376,7 +376,7 @@ public class ViewServiceTest extends ApplicationTest {
 				.id(id)
 				.size(new Dimension2D(100, 10))
 				.title(id)
-				.nodeFactory(Pane::new)
+				.dataFactory(() -> Pane::new)
 				.icon(Resource.internal("testResources/icon.png"))
 				.build();
 	}
@@ -389,7 +389,7 @@ public class ViewServiceTest extends ApplicationTest {
 				.id(id)
 				.size(new Dimension2D(100, 10))
 				.title(id)
-				.nodeFactory(Pane::new)
+				.dataFactory(() -> Pane::new)
 				.styles(Set.of(styles))
 				.build();
 	}
