@@ -42,8 +42,8 @@ public class SUIState {
 	 * @param silent    true, to not notify listeners and this not modifying the interface.
 	 * @param update    the update to apply to this state
 	 */
-	public synchronized <T extends SUIState> void update(final Class<T> stateType,
-														 final boolean silent, final SUIStateUpdate<T> update) {
+	public synchronized <T extends SUIState> void update(
+			final Class<T> stateType, final boolean silent, final SUIStateUpdate<T> update) {
 		Validations.INPUT.notNull(update).exception("The state update may not be null.");
 		Platform.runLater(() -> updateUnsafe(stateType, silent, update));
 	}
@@ -74,8 +74,8 @@ public class SUIState {
 	 * @param silent    true, to not notify listeners and this not modifying the interface.
 	 * @param update    the update to apply to this state
 	 */
-	public synchronized <T extends SUIState> void updateUnsafe(final Class<T> stateType,
-															   final boolean silent, final SUIStateUpdate<T> update) {
+	public synchronized <T extends SUIState> void updateUnsafe(
+			final Class<T> stateType, final boolean silent, final SUIStateUpdate<T> update) {
 		Validations.INPUT.notNull(update).exception("The state update may not be null.");
 		if (!silent) {
 			listeners.forEach(listener -> listener.beforeUpdate(this, update));

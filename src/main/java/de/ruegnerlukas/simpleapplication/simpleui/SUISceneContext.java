@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIRenderer;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MasterNodeMutator;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.SUIStateListener;
 import javafx.scene.Node;
@@ -62,7 +62,8 @@ public class SUISceneContext implements SUIStateListener {
 	 * @param stateType the exact type of the state to use
 	 * @param renderer  the node renderer used for a component as the root node
 	 */
-	public <T extends SUIState> SUISceneContext(final SUIState state, final Class<T> stateType, final SUIRenderer<T> renderer) {
+	public <T extends SUIState> SUISceneContext(final SUIState state, final Class<T> stateType,
+												final SUIComponentRenderer<T> renderer) {
 		this(state, new SUIComponent<>(renderer));
 	}
 

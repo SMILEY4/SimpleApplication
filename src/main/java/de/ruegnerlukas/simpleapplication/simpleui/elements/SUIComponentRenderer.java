@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 
-public interface SUIRenderer<T extends SUIState> {
+public interface SUIComponentRenderer<T extends SUIState> {
 
 
 	/**

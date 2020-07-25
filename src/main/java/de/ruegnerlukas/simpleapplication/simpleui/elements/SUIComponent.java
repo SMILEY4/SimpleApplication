@@ -19,7 +19,7 @@ public class SUIComponent<T extends SUIState> implements NodeFactory {
 	/**
 	 * The renderer for the node factory of this component.
 	 */
-	private final SUIRenderer<T> renderer;
+	private final SUIComponentRenderer<T> renderer;
 
 
 
@@ -27,7 +27,7 @@ public class SUIComponent<T extends SUIState> implements NodeFactory {
 	/**
 	 * @param renderer the renderer for the node factory of this component
 	 */
-	public SUIComponent(final SUIRenderer<T> renderer) {
+	public SUIComponent(final SUIComponentRenderer<T> renderer) {
 		Validations.INPUT.notNull(renderer).exception("The renderer may not be null.");
 		this.renderer = renderer;
 	}
