@@ -3,6 +3,8 @@ package de.ruegnerlukas.simpleapplication.simpleui;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MasterNodeMutator;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.SUIStateListener;
 import javafx.scene.Node;
@@ -48,6 +50,18 @@ public class SUISceneContextImpl implements SUISceneContext, SUIStateListener {
 	 */
 	public SUISceneContextImpl(final NodeFactory nodeFactory) {
 		this(new SUIState(), nodeFactory);
+	}
+
+
+	/**
+	 * Creates a new scene context with the given state and component with the given renderer as root node.
+	 *
+	 * @param state     the state of this context
+	 * @param stateType the exact type of the state to use
+	 * @param renderer  the node renderer used for a component as the root node
+	 */
+	public <T extends SUIState> SUISceneContextImpl(final SUIState state, final Class<T> stateType, final SUIRenderer<T> renderer) {
+		this(state, new SUIComponent<>(renderer));
 	}
 
 

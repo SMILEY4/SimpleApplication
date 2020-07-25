@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.Node;
@@ -65,15 +64,10 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
 		final SUISceneContext context = new SUISceneContextImpl(testState,
-				new SUIComponent<TestState>() {
-					@Override
-					public NodeFactory render(final TestState state) {
-						return button(
-								textContent("counter = " + testState.counter),
-								buttonListener(() -> state.update(s -> ((TestState) s).increment()))
-						);
-					}
-				}
+				new SUIComponent<TestState>(state -> button(
+						textContent("counter = " + testState.counter),
+						buttonListener(() -> state.update(s -> ((TestState) s).increment()))
+				))
 		);
 		testState.addStateListener((state, update) -> phaser.arrive());
 
@@ -99,18 +93,13 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
 		final SUISceneContext context = new SUISceneContextImpl(testState,
-				new SUIComponent<TestState>() {
-					@Override
-					public NodeFactory render(final TestState state) {
-						return button(
-								textContent("counter = " + testState.counter),
-								buttonListener(() -> state.update(true, s -> {
-									((TestState) s).increment();
-									phaser.arrive();
-								}))
-						);
-					}
-				}
+				new SUIComponent<TestState>(state -> button(
+						textContent("counter = " + testState.counter),
+						buttonListener(() -> state.update(true, s -> {
+							((TestState) s).increment();
+							phaser.arrive();
+						}))
+				))
 		);
 		testState.addStateListener((state, update) -> phaser.arrive());
 
