@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.utils;
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContextListener;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIStateUpdate;
 
@@ -25,19 +24,5 @@ public interface SUIStateListener {
 	 */
 	void stateUpdated(SUIState state, SUIStateUpdate update);
 
-	/**
-	 * Adds the given listener to this context. Any listener is only added once to this context.
-	 *
-	 * @param listener the listener to add
-	 */
-	void addListener(SUISceneContextListener listener);
-
-
-	/**
-	 * Removes the given listener from this context.
-	 *
-	 * @param listener the listener to remove
-	 */
-	void removeListener(SUISceneContextListener listener);
 
 }

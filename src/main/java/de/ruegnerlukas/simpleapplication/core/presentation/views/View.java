@@ -51,9 +51,9 @@ public class View {
 	private final String title;
 
 	/**
-	 * The factory for the root node of this view.
+	 * The factory for the window handle data of this view.
 	 */
-	private final ViewNodeFactory nodeFactory;
+	private final WindowHandleDataFactory dataFactory;
 
 	/**
 	 * The styles automatically applied to this view.

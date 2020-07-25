@@ -1,4 +1,6 @@
-package de.ruegnerlukas.simpleapplication.simpleui;
+package de.ruegnerlukas.simpleapplication.simpleui.utils;
+
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

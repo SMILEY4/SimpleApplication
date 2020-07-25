@@ -122,7 +122,11 @@ public class SUISceneContextImpl implements SUISceneContext, SUIStateListener {
 
 
 
-	@Override
+	/**
+	 * Adds the given listener to this context. Any listener is only added once to this context.
+	 *
+	 * @param listener the listener to add
+	 */
 	public void addListener(final SUISceneContextListener listener) {
 		Validations.INPUT.notNull(listener).exception("The context listener to add may not be null.");
 		if (!listeners.contains(listener)) {
@@ -133,7 +137,11 @@ public class SUISceneContextImpl implements SUISceneContext, SUIStateListener {
 
 
 
-	@Override
+	/**
+	 * Removes the given listener from this context.
+	 *
+	 * @param listener the listener to remove
+	 */
 	public void removeListener(final SUISceneContextListener listener) {
 		listeners.remove(listener);
 	}

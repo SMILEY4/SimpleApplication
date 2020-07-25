@@ -1,5 +1,6 @@
-package de.ruegnerlukas.simpleapplication.simpleui;
+package de.ruegnerlukas.simpleapplication.simpleui.utils;
 
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ActionListenerProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AnchorProperty;

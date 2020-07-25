@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.PropertyTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
-import de.ruegnerlukas.simpleapplication.simpleui.TestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import javafx.stage.Stage;
@@ -25,11 +25,11 @@ public class SUIComponentTest extends ApplicationTest {
 
 
 
-	private static class TestSUIComponent extends SUIComponent<TestState> {
+	private static class TestSUIComponent extends SUIComponent<ElementTestState> {
 
 
 		@Override
-		public NodeFactory render(final TestState state) {
+		public NodeFactory render(final ElementTestState state) {
 			return SUIButton.button(
 					Properties.id("myButton"),
 					Properties.textContent("My Button")
@@ -44,7 +44,7 @@ public class SUIComponentTest extends ApplicationTest {
 	@Test
 	public void testComponentSNode() {
 
-		final TestState state = new TestState();
+		final ElementTestState state = new ElementTestState();
 
 		NodeFactory vbox = SUIVBox.vbox(
 				Properties.id("myVBox"),

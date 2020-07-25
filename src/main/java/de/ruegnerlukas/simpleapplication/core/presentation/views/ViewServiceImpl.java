@@ -84,7 +84,7 @@ public class ViewServiceImpl implements ViewService {
 			final EventRootStyleMark event = (EventRootStyleMark) publishable;
 			if (event.isRootStyle()) {
 				windowHandles.values().forEach(handle -> {
-					final Parent root = handle.getRootNode();
+					final Parent root = handle.getCurrentRootNode();
 					styleServiceProvider.get().applyStyleTo(event.getStyle(), root);
 				});
 			}
@@ -95,13 +95,13 @@ public class ViewServiceImpl implements ViewService {
 
 
 	/**
-	 * Setup primary stage with the given view
+	 * Setup primary stage with the given view.
 	 *
 	 * @param stage the primary stage passed to this view service
 	 * @param view  the view to (possibly) show at startup
 	 */
 	private void setupPrimaryStage(final Stage stage, final View view) {
-		final Scene scene = new Scene(view.getNodeFactory().buildNode(), view.getSize().getWidth(), view.getSize().getHeight());
+		final Scene scene = new Scene(new Pane(), view.getSize().getWidth(), view.getSize().getHeight());
 		primaryStage = stage;
 		primaryStage.setScene(scene);
 		primaryStage.setTitle(view.getTitle());
@@ -147,7 +147,7 @@ public class ViewServiceImpl implements ViewService {
 		Validations.STATE.notNull(primaryStage).exception("The view service is not yet initialized / the primary stage is null.");
 		WindowHandle handle = getPrimaryWindowHandle();
 		if (handle == null) {
-			handle = new WindowHandle(WindowHandle.ID_PRIMARY, views.get(viewId), primaryStage);
+			handle = new WindowHandle(WindowHandle.ID_PRIMARY, primaryStage);
 			windowHandles.put(handle.getHandleId(), handle);
 		}
 		return showView(viewId, handle);
@@ -162,14 +162,16 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.containsKey(views, viewId).exception("No view with the id {} found.", viewId);
 		Validations.INPUT.notNull(handle).exception("The handle may not be null.");
 
-		final String prevView = handle.getView().getId();
-		final Parent prevViewNode = handle.getRootNode();
+		final String prevViewId = handle.getViewId();
+		final Parent prevViewNode = handle.getCurrentRootNode();
 
-		handle.setView(views.get(viewId));
+		final View view = views.get(viewId);
+		handle.setView(view);
+
 		final Stage stage = handle.getStage();
 		final Scene scene = stage.getScene();
-		final View view = handle.getView();
-		final Parent viewNode = view.getNodeFactory().buildNode();
+		final Parent viewNode = handle.getData().getNode();
+
 		scene.setRoot(viewNode);
 		setStageSize(stage, view);
 		stage.setTitle(view.getTitle());
@@ -184,7 +186,7 @@ public class ViewServiceImpl implements ViewService {
 			stage.show();
 		}
 
-		eventServiceProvider.get().publish(new EventShowView(prevView.equals(viewId) ? null : prevView, viewId, handle));
+		eventServiceProvider.get().publish(new EventShowView((viewId.equals(prevViewId) ? null : prevViewId), viewId, handle));
 
 		return handle;
 	}
@@ -199,10 +201,16 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.notNull(config).exception("The popup config may not be null.");
 
 		final View view = views.get(viewId);
-		final Parent viewNode = view.getNodeFactory().buildNode();
+		final Stage stage = new Stage();
+
+		final WindowHandle handle = new WindowHandle(createHandleId(), stage);
+		handle.setView(view);
+		windowHandles.put(handle.getHandleId(), handle);
+
+		final Parent viewNode = handle.getData().getNode();
 		final Scene scene = new Scene(viewNode, view.getSize().getWidth(), view.getSize().getHeight());
 		scene.setRoot(viewNode);
-		final Stage stage = new Stage();
+
 		stage.initModality(config.getModality());
 		stage.initOwner(config.getParent() == null ? getPrimaryWindowHandle().getStage() : config.getParent().getStage());
 		stage.initStyle(config.getStyle());
@@ -211,8 +219,7 @@ public class ViewServiceImpl implements ViewService {
 		setStageSize(stage, view);
 		stage.setScene(scene);
 		setIcon(stage, view.getIcon());
-		final WindowHandle handle = new WindowHandle(createHandleId(), view, stage);
-		windowHandles.put(handle.getHandleId(), handle);
+
 
 		final StyleService styleService = styleServiceProvider.get();
 		styleService.applyStylesTo(styleService.getRootStyles(), viewNode);
@@ -237,9 +244,10 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.notNull(handle).exception("The handle may not be null.");
 		Validations.INPUT.containsKey(windowHandles, handle.getHandleId())
 				.exception("The handle '{}' was not found.", handle.getHandleId());
-		final Parent prevViewNode = handle.getRootNode();
+		final Parent prevViewNode = handle.getCurrentRootNode();
 		handle.getStage().close();
 		handle.getStage().getScene().setRoot(new Pane());
+		handle.disposeCurrentData();
 		windowHandles.remove(handle.getHandleId());
 		styleServiceProvider.get().disconnectNode(prevViewNode);
 		eventServiceProvider.get().publish(new EventClosePopup(handle.getView().getId(), handle));
@@ -260,12 +268,18 @@ public class ViewServiceImpl implements ViewService {
 
 
 
-	/**
-	 * @return the handle of the primary window
-	 */
 	@Override
 	public WindowHandle getPrimaryWindowHandle() {
 		return windowHandles.get(WindowHandle.ID_PRIMARY);
+	}
+
+
+
+
+	@Override
+	public boolean isWindowHandleActive(final WindowHandle handle) {
+		Validations.INPUT.notNull(handle).exception("The handle to check may not be null.");
+		return windowHandles.containsKey(handle.getHandleId());
 	}
 
 

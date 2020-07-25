@@ -89,5 +89,10 @@ public interface ViewService {
 	 */
 	WindowHandle getPrimaryWindowHandle();
 
+	/**
+	 * @return whether the given handle is currently active and visible.
+	 */
+	boolean isWindowHandleActive(WindowHandle handle);
+
 
 }

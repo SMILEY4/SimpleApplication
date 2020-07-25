@@ -12,7 +12,7 @@ import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
-import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIViewNodeFactory;
+import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
@@ -123,19 +123,19 @@ public class TestApplication {
 			ID_A -> ID_B -> (popup: ID_B_POPUP -> ID_B_WARN) -> ID_A
 			 */
 
-//			new Thread(() -> {
-//				while (true) {
-//					try {
-//						Thread.sleep(1000 * 5);
-//					} catch (InterruptedException e) {
-//						e.printStackTrace();
-//					}
-//					state.update(s -> {
-//						TestUIState uis = (TestUIState) s;
-//						uis.setGlobalCount(uis.getGlobalCount() + 1);
-//					});
-//				}
-//			}).start();
+			new Thread(() -> {
+				while (true) {
+					try {
+						Thread.sleep(1000 * 3);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					state.update(s -> {
+						TestUIState uis = (TestUIState) s;
+						uis.setGlobalCount(uis.getGlobalCount() + 1);
+					});
+				}
+			}).start();
 
 
 			// VIEW A
@@ -146,7 +146,7 @@ public class TestApplication {
 					.maxSize(new Dimension2D(300, 300))
 					.title(applicationName + " - View A")
 					.icon(Resource.internal("testResources/icon.png"))
-					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(state,
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(state,
 							new SUIComponent<TestUIState>() {
 								@Override
 								public NodeFactory render(final TestUIState state) {
@@ -175,7 +175,7 @@ public class TestApplication {
 					.size(new Dimension2D(200, 500))
 					.title(applicationName + " - View B")
 					.icon(Resource.internal("testResources/icon.png"))
-					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(
 							button( // TODO when using state here -> dont get updated -> maybe wrap root node in root component by default
 									textContent(state.getGlobalCount() + ":   Switch B -> A"),
 									buttonListener(() -> viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build()))
@@ -191,7 +191,7 @@ public class TestApplication {
 					.size(new Dimension2D(300, 200))
 					.title(applicationName + " - View B Confirm")
 					.icon(Resource.internal("testResources/icon.png"))
-					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(
 							button(
 									textContent(state.getGlobalCount() + ":   Confirm switch"),
 									buttonListener(() -> {
@@ -207,7 +207,7 @@ public class TestApplication {
 					.size(new Dimension2D(200, 300))
 					.title(applicationName + " - View B LAST WARNING")
 					.icon(Resource.internal("testResources/icon.png"))
-					.nodeFactory(new SUIViewNodeFactory(() -> new SUISceneContextImpl(state,
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContextImpl(state,
 							new SUIComponent<TestUIState>() {
 								@Override
 								public NodeFactory render(final TestUIState state) {
