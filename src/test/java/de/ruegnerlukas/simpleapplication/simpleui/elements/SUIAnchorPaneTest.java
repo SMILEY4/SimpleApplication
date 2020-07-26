@@ -41,6 +41,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				Properties.maxSize(5.0, 6.0),
 				Properties.size(10.0, 11.0, 12.0, 13.0, 14.0, 15.0),
 				Properties.disabled(true),
+				Properties.style("-fx-background-color: red"),
 				Properties.items(
 						SUIAnchorPane.anchorPaneItem(
 								SUIButton.button(
@@ -70,6 +71,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertSizeMaxProperty(node, 5.0, 6.0);
 		PropertyTestUtils.assertSizeProperty(node, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0);
 		PropertyTestUtils.assertDisabledProperty(node, true);
+		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
 
 		final List<SUINode> children = node.getChildren();
 		assertThat(children).isNotNull();
@@ -115,6 +117,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				Properties.maxSize(5.0, 6.0),
 				Properties.size(10.0, 11.0, 12.0, 13.0, 14.0, 15.0),
 				Properties.disabled(true),
+				Properties.style("-fx-background-color: red"),
 				Properties.items(
 						SUIAnchorPane.anchorPaneItem(
 								SUIButton.button(
@@ -133,6 +136,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				Properties.maxSize(5.0, 6.0),
 				Properties.size(10.0, 11.0, 12.0, 13.0, 14.0, 15.0),
 				Properties.disabled(false),
+				Properties.style("-fx-background-color: blue"),
 				Properties.items(
 						SUIAnchorPane.anchorPaneItem(
 								SUIButton.button(
@@ -158,6 +162,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertSizeMaxProperty(mutatedNode, 5.0, 6.0);
 		PropertyTestUtils.assertSizeProperty(mutatedNode, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0);
 		PropertyTestUtils.assertDisabledProperty(mutatedNode, false);
+		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 
 		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
@@ -516,6 +521,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				Properties.maxSize(5.0, 6.0),
 				Properties.size(10.0, 11.0, 12.0, 13.0, 14.0, 15.0),
 				Properties.disabled(true),
+				Properties.style("-fx-background-color: red"),
 				Properties.items(
 						SUIAnchorPane.anchorPaneItem(
 								SUIButton.button(
@@ -542,6 +548,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 				.prefWidth(3.0).prefHeight(4.0)
 				.maxWidth(5.0).maxHeight(6.0)
 				.disabled(true)
+				.style("-fx-background-color: red")
 				.children(List.of(
 						FxTestUtils.AnchorPaneChildButtonInfo.builder()
 								.text("Child Button 1")

@@ -30,6 +30,7 @@ public class FxTestUtils {
 		assertThat(button.getText()).isEqualTo(info.getText());
 		assertThat(button.isWrapText()).isEqualTo(info.isWrap());
 		assertThat(button.isDisabled()).isEqualTo(info.isDisabled());
+		assertThat(button.getStyle()).isEqualTo(info.getStyle());
 		if (info.hasOnActionListener) {
 			assertThat(button.getOnAction()).isNotNull();
 		} else {
@@ -63,6 +64,8 @@ public class FxTestUtils {
 
 		private boolean hasOnActionListener;
 
+		private String style;
+
 	}
 
 
@@ -78,6 +81,7 @@ public class FxTestUtils {
 		assertThat(anchorPane.getMaxWidth()).isCloseTo(info.getMaxWidth(), Percentage.withPercentage(0.01));
 		assertThat(anchorPane.getMaxHeight()).isCloseTo(info.getMaxHeight(), Percentage.withPercentage(0.01));
 		assertThat(anchorPane.isDisabled()).isEqualTo(info.isDisabled());
+		assertThat(anchorPane.getStyle()).isEqualTo(info.getStyle());
 		assertThat(anchorPane.getChildren()).hasSize(info.children.size());
 		for (int i = 0; i < info.children.size(); i++) {
 			final AnchorPaneChildButtonInfo childInfo = info.children.get(i);
@@ -127,6 +131,8 @@ public class FxTestUtils {
 
 		private boolean disabled;
 
+		private String style;
+
 		private List<AnchorPaneChildButtonInfo> children;
 
 	}
@@ -167,6 +173,7 @@ public class FxTestUtils {
 		assertThat(scrollPane.isFitToHeight()).isEqualTo(info.isFitToHeight());
 		assertThat(scrollPane.getHbarPolicy()).isEqualTo(info.getHorzBar());
 		assertThat(scrollPane.getVbarPolicy()).isEqualTo(info.getVertBar());
+		assertThat(scrollPane.getStyle()).isEqualTo(info.getStyle());
 		assertThat(scrollPane.getContent()).isNotNull();
 		assertThat(((Button) scrollPane.getContent()).getText()).isEqualTo(info.getContentButtonText());
 	}
@@ -198,6 +205,7 @@ public class FxTestUtils {
 
 		private String contentButtonText;
 
+		private String style;
 	}
 
 
@@ -215,6 +223,7 @@ public class FxTestUtils {
 		assertThat(vbox.isFillWidth()).isEqualTo(info.isFitToWidth());
 		assertThat(vbox.getSpacing()).isCloseTo(info.getSpacing(), Percentage.withPercentage(0.01));
 		assertThat(vbox.getAlignment()).isEqualTo(info.getAlignment());
+		assertThat(vbox.getStyle()).isEqualTo(info.getStyle());
 		assertThat(vbox.getChildren()).hasSameSizeAs(info.getContentButtonTexts());
 		for (int i = 0; i < info.getContentButtonTexts().size(); i++) {
 			assertThat(((Button) vbox.getChildren().get(i)).getText()).isEqualTo(info.getContentButtonTexts().get(i));
@@ -249,6 +258,8 @@ public class FxTestUtils {
 
 		private List<String> contentButtonTexts;
 
+		private String style;
+
 	}
 
 
@@ -264,6 +275,7 @@ public class FxTestUtils {
 		assertThat(separator.getMaxHeight()).isCloseTo(info.getMaxHeight(), Percentage.withPercentage(0.01));
 		assertThat(separator.isDisabled()).isEqualTo(info.isDisabled());
 		assertThat(separator.getOrientation()).isEqualTo(info.getOrientation());
+		assertThat(separator.getStyle()).isEqualTo(info.getStyle());
 	}
 
 
@@ -287,6 +299,8 @@ public class FxTestUtils {
 		private boolean disabled;
 
 		private Orientation orientation;
+
+		private String style;
 
 	}
 

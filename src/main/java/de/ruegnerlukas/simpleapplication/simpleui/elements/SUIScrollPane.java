@@ -16,6 +16,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.control.ScrollPane;
 
@@ -85,6 +86,7 @@ public final class SUIScrollPane {
 		registry.registerProperty(SUIScrollPane.class, ShowScrollbarsProperty.class,
 				new ShowScrollbarsProperty.ShowScrollbarUpdatingBuilder());
 		registry.registerProperty(SUIScrollPane.class, ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder());
+		registry.registerProperty(SUIScrollPane.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
 	}
 
 

@@ -44,6 +44,7 @@ public class SUIVBoxTest extends ApplicationTest {
 				Properties.disabled(true),
 				Properties.spacing(5.0),
 				Properties.fitToWidth(true),
+				Properties.style("-fx-background-color: red"),
 				Properties.alignment(Pos.CENTER),
 				Properties.items(
 						SUIButton.button(
@@ -71,6 +72,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		PropertyTestUtils.assertSpacingProperty(node, 5.0);
 		PropertyTestUtils.assertFitToWidthProperty(node, true);
 		PropertyTestUtils.assertAlignment(node, Pos.CENTER);
+		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
 
 		final List<SUINode> children = node.getChildren();
 		assertThat(children).isNotNull();
@@ -106,6 +108,7 @@ public class SUIVBoxTest extends ApplicationTest {
 				Properties.spacing(5.0),
 				Properties.fitToWidth(true),
 				Properties.alignment(Pos.CENTER),
+				Properties.style("-fx-background-color: red"),
 				Properties.items(
 						SUIButton.button(
 								Properties.id("btn"),
@@ -124,6 +127,7 @@ public class SUIVBoxTest extends ApplicationTest {
 				Properties.spacing(15.0),
 				Properties.fitToWidth(false),
 				Properties.alignment(Pos.TOP_RIGHT),
+				Properties.style("-fx-background-color: blue"),
 				Properties.items(
 						SUIButton.button(
 								Properties.id("btn"),
@@ -149,6 +153,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		PropertyTestUtils.assertSpacingProperty(mutatedNode, 15.0);
 		PropertyTestUtils.assertFitToWidthProperty(mutatedNode, false);
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
+		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 
 		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
@@ -484,6 +489,7 @@ public class SUIVBoxTest extends ApplicationTest {
 				Properties.spacing(5.0),
 				Properties.fitToWidth(true),
 				Properties.alignment(Pos.CENTER),
+				Properties.style("-fx-background-color: red"),
 				Properties.items(
 						SUIButton.button(
 								Properties.id("btn1"),
@@ -508,6 +514,7 @@ public class SUIVBoxTest extends ApplicationTest {
 				.fitToWidth(true)
 				.alignment(Pos.CENTER)
 				.contentButtonTexts(List.of("Button 1", "Button 2"))
+				.style("-fx-background-color: red")
 				.build());
 	}
 

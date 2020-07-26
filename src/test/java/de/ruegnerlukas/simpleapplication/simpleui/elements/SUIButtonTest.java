@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -40,6 +40,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.textContent("My Text"),
 				Properties.wrapText(),
 				Properties.disabled(false),
+				Properties.style("-fx-background-color: red"),
 				Properties.buttonListener(() -> {
 				})
 		);
@@ -58,7 +59,10 @@ public class SUIButtonTest extends ApplicationTest {
 		PropertyTestUtils.assertWrapTextProperty(node, true);
 		PropertyTestUtils.assertDisabledProperty(node, false);
 		PropertyTestUtils.assertActionListenerProperty(node);
+		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
 	}
+
+
 
 
 	@Test
@@ -75,6 +79,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.textContent("My Text"),
 				Properties.wrapText(),
 				Properties.disabled(false),
+				Properties.style("-fx-background-color: red"),
 				Properties.buttonListener(() -> {
 				})
 		);
@@ -88,6 +93,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.textContent("My New Text"),
 				Properties.wrapText(),
 				Properties.disabled(true),
+				Properties.style("-fx-background-color: blue"),
 				Properties.buttonListener(() -> {
 				})
 		);
@@ -109,8 +115,10 @@ public class SUIButtonTest extends ApplicationTest {
 		PropertyTestUtils.assertWrapTextProperty(mutatedNode, true);
 		PropertyTestUtils.assertDisabledProperty(mutatedNode, true);
 		PropertyTestUtils.assertActionListenerProperty(mutatedNode);
+		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 
 	}
+
 
 
 
@@ -128,6 +136,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.textContent("My Text"),
 				Properties.wrapText(),
 				Properties.disabled(false),
+				Properties.style("-fx-background-color: red"),
 				Properties.buttonListener(() -> {
 				})
 		);
@@ -143,6 +152,7 @@ public class SUIButtonTest extends ApplicationTest {
 				.wrap(true)
 				.disabled(false)
 				.hasOnActionListener(true)
+				.style("-fx-background-color: red")
 				.build());
 
 	}

@@ -15,6 +15,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SpacingProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.WrapTextProperty;
 import javafx.geometry.Orientation;
@@ -177,6 +178,15 @@ public class PropertyTestUtils {
 		assertThat(node.getProperties()).containsKey(OrientationProperty.class);
 		final OrientationProperty property = node.getProperty(OrientationProperty.class);
 		assertThat(property.getOrientation()).isEqualTo(orientation);
+	}
+
+
+
+
+	public static void assertStyle(final SUINode node, final String style) {
+		assertThat(node.getProperties()).containsKey(StyleProperty.class);
+		final StyleProperty property = node.getProperty(StyleProperty.class);
+		assertThat(property.getStrStyle()).isEqualTo(style);
 	}
 
 }
