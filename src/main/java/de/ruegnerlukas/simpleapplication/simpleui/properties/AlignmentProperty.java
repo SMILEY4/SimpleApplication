@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.geometry.Pos;
 import javafx.scene.control.Labeled;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
@@ -83,6 +84,36 @@ public class AlignmentProperty extends Property {
 
 
 
+	public static class HBoxAlignmentUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, HBox> {
+
+
+		@Override
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final AlignmentProperty property,
+						  final HBox fxNode) {
+			fxNode.setAlignment(property.getAlignment());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
+									 final SUINode node, final HBox fxNode) {
+			fxNode.setAlignment(property.getAlignment());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
+									 final SUINode node, final HBox fxNode) {
+			fxNode.setAlignment(Pos.TOP_LEFT);
+			return MutationResult.MUTATED;
+		}
+
+	}
 
 
 

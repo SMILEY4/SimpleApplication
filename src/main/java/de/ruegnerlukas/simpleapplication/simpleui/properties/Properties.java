@@ -385,4 +385,15 @@ public final class Properties {
 		return new StyleProperty(style);
 	}
 
+
+
+
+	/**
+	 * @param selected whether it is selected
+	 * @return an {@link SelectedProperty}
+	 */
+	public static Property selected(final boolean selected) {
+		return new SelectedProperty(selected);
+	}
+
 }

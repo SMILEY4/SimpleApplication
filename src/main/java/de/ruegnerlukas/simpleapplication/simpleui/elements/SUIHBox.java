@@ -18,6 +18,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -25,13 +26,13 @@ import java.util.List;
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
 
-public final class SUIVBox {
+public final class SUIHBox {
 
 
 	/**
 	 * Hidden constructor for utility classes.
 	 */
-	private SUIVBox() {
+	private SUIHBox() {
 		// do nothing
 	}
 
@@ -39,14 +40,14 @@ public final class SUIVBox {
 
 
 	/**
-	 * Creates a new vbox node.
+	 * Creates a new hbox node.
 	 *
 	 * @param properties the properties
-	 * @return the factory for a vbox node
+	 * @return the factory for a hbox node
 	 */
-	public static NodeFactory vbox(final Property... properties) {
-		Properties.checkIllegal(SUIVBox.class, get().getEntry(SUIVBox.class).getProperties(), properties);
-		return state -> new SUINode(SUIVBox.class, List.of(properties), state, SUIVBox::handleChildrenChange);
+	public static NodeFactory hbox(final Property... properties) {
+		Properties.checkIllegal(SUIHBox.class, get().getEntry(SUIHBox.class).getProperties(), properties);
+		return state -> new SUINode(SUIHBox.class, List.of(properties), state, SUIHBox::handleChildrenChange);
 	}
 
 
@@ -58,10 +59,10 @@ public final class SUIVBox {
 	 * @param node the vbox node
 	 */
 	private static void handleChildrenChange(final SUINode node) {
-		final VBox vbox = (VBox) node.getFxNode();
-		vbox.getChildren().clear();
+		final HBox hbox = (HBox) node.getFxNode();
+		hbox.getChildren().clear();
 		node.getChildren().forEach(child -> {
-			vbox.getChildren().add(child.getFxNode());
+			hbox.getChildren().add(child.getFxNode());
 		});
 	}
 
@@ -73,9 +74,9 @@ public final class SUIVBox {
 	 * @param registry the registry
 	 */
 	public static void register(final SUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SUIVBox.class, new SUIVBox.VBoxNodeBuilder());
+		registry.registerBaseFxNodeBuilder(SUIHBox.class, new SUIHBox.VBoxNodeBuilder());
 
-		registry.registerProperties(SUIVBox.class, List.of(
+		registry.registerProperties(SUIHBox.class, List.of(
 				// node
 				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
@@ -86,8 +87,8 @@ public final class SUIVBox {
 				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
 				// special
 				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.VBoxFitToWidthUpdatingBuilder()),
-				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.VBoxSpacingUpdatingBuilder()),
-				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.VBoxAlignmentUpdatingBuilder()),
+				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.HBoxSpacingUpdatingBuilder()),
+				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.HBoxAlignmentUpdatingBuilder()),
 				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null)
 		));
 	}
