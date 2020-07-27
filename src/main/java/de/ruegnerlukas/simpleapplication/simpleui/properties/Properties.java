@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -360,6 +361,28 @@ public final class Properties {
 	 */
 	public static Property orientation(final Orientation orientation) {
 		return new OrientationProperty(orientation);
+	}
+
+
+
+
+	/**
+	 * @param style the css style as a string
+	 * @return an {@link StyleProperty}
+	 */
+	public static Property style(final String style) {
+		return new StyleProperty(style);
+	}
+
+
+
+
+	/**
+	 * @param style the css style as a file/resource
+	 * @return an {@link StyleProperty}
+	 */
+	public static Property style(final Resource style) {
+		return new StyleProperty(style);
 	}
 
 }

@@ -16,6 +16,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SpacingProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.layout.VBox;
 
@@ -80,6 +81,7 @@ public final class SUIVBox {
 		registry.registerProperty(SUIVBox.class, SpacingProperty.class, new SpacingProperty.VBoxSpacingUpdatingBuilder());
 		registry.registerProperty(SUIVBox.class, AlignmentProperty.class, new AlignmentProperty.VBoxAlignmentUpdatingBuilder());
 		registry.registerProperty(SUIVBox.class, FitToWidthProperty.class, new FitToWidthProperty.VBoxFitToWidthUpdatingBuilder());
+		registry.registerProperty(SUIVBox.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
 	}
 
 

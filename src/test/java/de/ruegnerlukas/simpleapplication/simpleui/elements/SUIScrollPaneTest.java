@@ -42,6 +42,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				Properties.disabled(true),
 				Properties.fitToWidth(),
 				Properties.fitToHeight(),
+				Properties.style("-fx-background-color: red"),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
 				Properties.item(
 						SUIButton.button(
@@ -65,6 +66,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToWidthProperty(node, true);
 		PropertyTestUtils.assertFitToHeightProperty(node, true);
 		PropertyTestUtils.assertShowScrollBarProperty(node, ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS);
+		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
 
 		final List<SUINode> children = node.getChildren();
 		assertThat(children).isNotNull();
@@ -93,6 +95,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				Properties.disabled(true),
 				Properties.fitToWidth(),
 				Properties.fitToHeight(),
+				Properties.style("-fx-background-color: red"),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
 				Properties.item(
 						SUIButton.button(
@@ -111,6 +114,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				Properties.disabled(true),
 				Properties.fitToWidth(false),
 				Properties.fitToHeight(false),
+				Properties.style("-fx-background-color: blue"),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED),
 				Properties.item(
 						SUIButton.button(
@@ -137,6 +141,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToWidthProperty(mutatedNode, false);
 		PropertyTestUtils.assertFitToHeightProperty(mutatedNode, false);
 		PropertyTestUtils.assertShowScrollBarProperty(mutatedNode, ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 
 		final List<SUINode> children = mutatedNode.getChildren();
 		assertThat(children).isNotNull();
@@ -291,6 +296,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				Properties.disabled(true),
 				Properties.fitToWidth(),
 				Properties.fitToHeight(),
+				Properties.style("-fx-background-color: red"),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
 				Properties.item(
 						SUIButton.button(
@@ -313,6 +319,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				.horzBar(ScrollPane.ScrollBarPolicy.NEVER)
 				.vertBar(ScrollPane.ScrollBarPolicy.ALWAYS)
 				.contentButtonText("Scroll Content")
+				.style("-fx-background-color: red")
 				.build());
 	}
 

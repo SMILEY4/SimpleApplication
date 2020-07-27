@@ -13,6 +13,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
@@ -79,6 +80,7 @@ public final class SUISeparator {
 		registry.registerProperty(SUISeparator.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
 		registry.registerProperty(SUISeparator.class, OrientationProperty.class,
 				new OrientationProperty.SeparatorOrientationUpdatingBuilder());
+		registry.registerProperty(SUISeparator.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
 	}
 
 

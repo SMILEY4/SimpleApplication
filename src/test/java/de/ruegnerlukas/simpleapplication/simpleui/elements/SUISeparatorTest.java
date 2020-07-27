@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import javafx.stage.Stage;
@@ -39,6 +39,7 @@ public class SUISeparatorTest extends ApplicationTest {
 				Properties.maxSize(5.0, 6.0),
 				Properties.size(10.0, 11.0, 12.0, 13.0, 14.0, 15.0),
 				Properties.disabled(false),
+				Properties.style("-fx-background-color: red"),
 				Properties.orientation(Orientation.HORIZONTAL)
 		);
 
@@ -54,6 +55,8 @@ public class SUISeparatorTest extends ApplicationTest {
 		PropertyTestUtils.assertSizeProperty(node, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0);
 		PropertyTestUtils.assertDisabledProperty(node, false);
 		PropertyTestUtils.assertOrientation(node, Orientation.HORIZONTAL);
+		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
+
 	}
 
 
@@ -71,7 +74,8 @@ public class SUISeparatorTest extends ApplicationTest {
 				Properties.maxSize(5.0, 6.0),
 				Properties.size(10.0, 11.0, 12.0, 13.0, 14.0, 15.0),
 				Properties.disabled(false),
-				Properties.orientation(Orientation.HORIZONTAL)
+				Properties.orientation(Orientation.HORIZONTAL),
+				Properties.style("-fx-background-color: red")
 		);
 
 		NodeFactory separatorTarget = SUISeparator.separator(
@@ -81,7 +85,8 @@ public class SUISeparatorTest extends ApplicationTest {
 				Properties.maxSize(5.0, 6.0),
 				Properties.size(10.0, 11.0, 12.0, 13.0, 14.0, 15.0),
 				Properties.disabled(true),
-				Properties.orientation(Orientation.VERTICAL)
+				Properties.orientation(Orientation.VERTICAL),
+				Properties.style("-fx-background-color: blue")
 		);
 
 		SUISceneContext context = new SUISceneContext(state, separator);
@@ -99,6 +104,7 @@ public class SUISeparatorTest extends ApplicationTest {
 		PropertyTestUtils.assertSizeProperty(mutatedNode, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0);
 		PropertyTestUtils.assertDisabledProperty(mutatedNode, true);
 		PropertyTestUtils.assertOrientation(mutatedNode, Orientation.VERTICAL);
+		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 	}
 
 
@@ -116,7 +122,8 @@ public class SUISeparatorTest extends ApplicationTest {
 				Properties.maxSize(5.0, 6.0),
 				Properties.size(10.0, 11.0, 12.0, 13.0, 14.0, 15.0),
 				Properties.disabled(false),
-				Properties.orientation(Orientation.HORIZONTAL)
+				Properties.orientation(Orientation.HORIZONTAL),
+				Properties.style("-fx-background-color: red")
 		);
 
 		SUISceneContext context = new SUISceneContext(state, separator);
@@ -128,6 +135,7 @@ public class SUISeparatorTest extends ApplicationTest {
 				.maxWidth(5.0).maxHeight(6.0)
 				.disabled(false)
 				.orientation(Orientation.HORIZONTAL)
+				.style("-fx-background-color: red")
 				.build());
 
 	}

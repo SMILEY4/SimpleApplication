@@ -12,13 +12,17 @@ import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.Publishable;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
+import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyleProperty;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.Style;
+import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Dimension2D;
 import javafx.stage.StageStyle;
@@ -27,6 +31,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import static de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyleProperty.managedStyle;
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton.button;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.buttonListener;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
@@ -37,6 +42,8 @@ public class TestApplication {
 
 	public static void main(String[] args) {
 		SUIRegistry.initialize();
+		SUIRegistry.get().registerProperty(SUIButton.class, ManagedStyleProperty.class, new ManagedStyleProperty.ManagedStyleUpdatingBuilder());
+
 		final ApplicationConfiguration configuration = new ApplicationConfiguration();
 		configuration.getPlugins().add(new LoggingPlugin());
 		configuration.getPlugins().add(new UIPlugin());
@@ -116,24 +123,28 @@ public class TestApplication {
 
 			final TestUIState testUIState = new TestUIState();
 
+			final StyleService styleService = new Provider<>(StyleService.class).get();
+
 			/*
 			Shows the views in the following order:
 			ID_A -> ID_B -> (popup: ID_B_POPUP -> ID_B_WARN) -> ID_A
 			 */
 
-			new Thread(() -> {
+			Thread thread = new Thread(() -> {
 				while (true) {
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					styleService.reloadAll();
 					testUIState.update(TestUIState.class, state -> {
 						state.setGlobalCount(state.getGlobalCount() + 1);
 					});
 				}
-			}).start();
-
+			});
+			thread.setDaemon(true);
+			thread.start();
 
 			// VIEW A
 
@@ -145,6 +156,7 @@ public class TestApplication {
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
 							button(
+									managedStyle(styleService, Style.fromResource(Resource.externalRelative("src/test/resources/testResources/testStyle.css"))),
 									textContent(state.getGlobalCount() + ":   Switch A -> B (" + state.getCycleCount() + ")"),
 									buttonListener(() -> eventService.publish(new ChangeCycleCountEvent(state.getCycleCount() + 1)))
 							)

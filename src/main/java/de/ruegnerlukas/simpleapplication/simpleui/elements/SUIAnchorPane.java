@@ -16,6 +16,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.layout.AnchorPane;
 
@@ -80,6 +81,7 @@ public final class SUIAnchorPane {
 		registry.registerProperty(SUIAnchorPane.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
 		registry.registerProperty(SUIAnchorPane.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
 		registry.registerProperty(SUIAnchorPane.class, ItemListProperty.class, new ItemListProperty.ItemListBuilder());
+		registry.registerProperty(SUIAnchorPane.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
 
 		registry.registerBaseFxNodeBuilder(AnchorPaneChildItem.class, new ChildItem.ChildItemNodeBuilder());
 		registry.registerProperty(AnchorPaneChildItem.class, ItemListProperty.class, new NoOpUpdatingBuilder());

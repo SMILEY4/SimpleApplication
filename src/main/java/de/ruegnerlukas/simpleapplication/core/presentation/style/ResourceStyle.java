@@ -47,6 +47,7 @@ public class ResourceStyle extends Style {
 	@Override
 	public void applyTo(final Node target) {
 		validateIsParent(target);
+//		((Parent) target).getStylesheets().add("file:///" + getAsPath().replace("\\", "/"));
 		((Parent) target).getStylesheets().add(getAsPath());
 	}
 

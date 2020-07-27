@@ -13,6 +13,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
@@ -64,6 +65,7 @@ public final class SUIButton {
 		registry.registerProperty(SUIButton.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
 		registry.registerProperty(SUIButton.class, ActionListenerProperty.class,
 				new ActionListenerProperty.ButtonActionListenerUpdatingBuilder());
+		registry.registerProperty(SUIButton.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
 	}
 
 
