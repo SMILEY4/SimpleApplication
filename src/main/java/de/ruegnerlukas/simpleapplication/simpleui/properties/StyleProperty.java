@@ -56,19 +56,10 @@ public class StyleProperty extends Property {
 	/**
 	 * @return whether this property gets the style from a string or a resource.
 	 */
-	public boolean usesResourceStyle() {
+	private boolean usesResourceStyle() {
 		return resStyle != null;
 	}
 
-
-
-
-	/**
-	 * @return whether this property gets the style from a string or a resource.
-	 */
-	public boolean usesStringStyle() {
-		return strStyle != null;
-	}
 
 
 

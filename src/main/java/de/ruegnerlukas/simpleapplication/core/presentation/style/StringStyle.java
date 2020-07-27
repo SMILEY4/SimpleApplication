@@ -35,7 +35,7 @@ public class StringStyle extends Style {
 	/**
 	 * @return this style as a single string. Seperated and terminated by a ';'.
 	 */
-	private String getAsSingleString() {
+	public String getAsSingleString() {
 		return String.join("; ", styleStrings) + "; ";
 	}
 
