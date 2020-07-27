@@ -63,7 +63,7 @@ public class ActionListenerProperty extends Property {
 
 
 
-	public static class ButtonActionListenerUpdatingBuilder implements PropFxNodeUpdatingBuilder<ActionListenerProperty, ButtonBase> {
+	public static class ButtonListenerUpdatingBuilder implements PropFxNodeUpdatingBuilder<ActionListenerProperty, ButtonBase> {
 
 
 		@Override

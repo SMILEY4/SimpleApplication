@@ -22,6 +22,9 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
+import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
+
 public final class SUIVBox {
 
 
@@ -42,7 +45,7 @@ public final class SUIVBox {
 	 * @return the factory for a vbox node
 	 */
 	public static NodeFactory vbox(final Property... properties) {
-		Properties.checkIllegal(SUIVBox.class, SUIRegistry.get().getEntry(SUIVBox.class).getProperties(), properties);
+		Properties.checkIllegal(SUIVBox.class, get().getEntry(SUIVBox.class).getProperties(), properties);
 		return state -> new SUINode(SUIVBox.class, List.of(properties), state, SUIVBox::handleChildrenChange);
 	}
 
@@ -71,17 +74,19 @@ public final class SUIVBox {
 	 */
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUIVBox.class, new SUIVBox.VBoxNodeBuilder());
-		registry.registerProperty(SUIVBox.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
-		registry.registerProperty(SUIVBox.class, SizePreferredProperty.class,
-				new SizePreferredProperty.SizePreferredUpdatingBuilder());
-		registry.registerProperty(SUIVBox.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
-		registry.registerProperty(SUIVBox.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
-		registry.registerProperty(SUIVBox.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
-		registry.registerProperty(SUIVBox.class, ItemListProperty.class, new ItemListProperty.ItemListBuilder());
-		registry.registerProperty(SUIVBox.class, SpacingProperty.class, new SpacingProperty.VBoxSpacingUpdatingBuilder());
-		registry.registerProperty(SUIVBox.class, AlignmentProperty.class, new AlignmentProperty.VBoxAlignmentUpdatingBuilder());
-		registry.registerProperty(SUIVBox.class, FitToWidthProperty.class, new FitToWidthProperty.VBoxFitToWidthUpdatingBuilder());
-		registry.registerProperty(SUIVBox.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
+
+		registry.registerProperties(SUIVBox.class, List.of(
+				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder()),
+				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.SizePreferredUpdatingBuilder()),
+				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder()),
+				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
+				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
+				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.VBoxFitToWidthUpdatingBuilder()),
+				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null),
+				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.VBoxSpacingUpdatingBuilder()),
+				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.VBoxAlignmentUpdatingBuilder(), null)
+		));
 	}
 
 

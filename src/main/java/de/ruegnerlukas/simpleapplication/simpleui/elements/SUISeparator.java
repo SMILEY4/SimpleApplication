@@ -21,6 +21,9 @@ import javafx.scene.control.Separator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
+import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
+
 public final class SUISeparator {
 
 
@@ -44,7 +47,7 @@ public final class SUISeparator {
 	public static NodeFactory separator(final Orientation orientation, final Property... properties) {
 		final List<Property> propList = new ArrayList<>(List.of(properties));
 		propList.add(new OrientationProperty(orientation));
-		Properties.checkIllegal(SUISeparator.class, SUIRegistry.get().getEntry(SUISeparator.class).getProperties(), propList);
+		Properties.checkIllegal(SUISeparator.class, get().getEntry(SUISeparator.class).getProperties(), propList);
 		return state -> new SUINode(SUISeparator.class, propList, state, null);
 	}
 
@@ -58,7 +61,7 @@ public final class SUISeparator {
 	 * @return the factory for a separator node
 	 */
 	public static NodeFactory separator(final Property... properties) {
-		Properties.checkIllegal(SUISeparator.class, SUIRegistry.get().getEntry(SUISeparator.class).getProperties(), properties);
+		Properties.checkIllegal(SUISeparator.class, get().getEntry(SUISeparator.class).getProperties(), properties);
 		return state -> new SUINode(SUISeparator.class, List.of(properties), state, null);
 	}
 
@@ -72,15 +75,15 @@ public final class SUISeparator {
 	 */
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUISeparator.class, new SUISeparator.SeperatorNodeBuilder());
-		registry.registerProperty(SUISeparator.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
-		registry.registerProperty(SUISeparator.class, SizePreferredProperty.class,
-				new SizePreferredProperty.SizePreferredUpdatingBuilder());
-		registry.registerProperty(SUISeparator.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
-		registry.registerProperty(SUISeparator.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
-		registry.registerProperty(SUISeparator.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
-		registry.registerProperty(SUISeparator.class, OrientationProperty.class,
-				new OrientationProperty.SeparatorOrientationUpdatingBuilder());
-		registry.registerProperty(SUISeparator.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
+		registry.registerProperties(SUISeparator.class, List.of(
+				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder()),
+				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.SizePreferredUpdatingBuilder()),
+				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder()),
+				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
+				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
+				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
+				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.SeparatorOrientationUpdatingBuilder())
+		));
 	}
 
 
