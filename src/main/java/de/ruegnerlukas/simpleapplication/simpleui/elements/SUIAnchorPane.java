@@ -74,16 +74,21 @@ public final class SUIAnchorPane {
 	 * @param registry the registry
 	 */
 	public static void register(final SUIRegistry registry) {
+
 		registry.registerBaseFxNodeBuilder(SUIAnchorPane.class, new AnchorPaneNodeBuilder());
 		registry.registerProperties(SUIAnchorPane.class, List.of(
+				// node
+				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
+				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
+				// region
 				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder()),
 				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.SizePreferredUpdatingBuilder()),
 				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder()),
 				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
-				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
-				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null),
-				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder())
+				// special
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null)
 		));
+
 		registry.registerBaseFxNodeBuilder(AnchorPaneChildItem.class, new ChildItem.ChildItemNodeBuilder());
 		registry.registerProperties(AnchorPaneChildItem.class, List.of(
 				PropertyEntry.of(ItemListProperty.class, new NoOpUpdatingBuilder()),
