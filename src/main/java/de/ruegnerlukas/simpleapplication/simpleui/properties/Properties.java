@@ -396,4 +396,26 @@ public final class Properties {
 		return new SelectedProperty(selected);
 	}
 
+
+
+
+	/**
+	 * @param choices the list of possible choices
+	 * @return an {@link ChoicesProperty}
+	 */
+	public static Property choices(final List<Object> choices) {
+		return new ChoicesProperty(List.copyOf(choices));
+	}
+
+
+
+
+	/**
+	 * @param listener the listener
+	 * @return an {@link ChoiceBoxListenerProperty.ChoiceBoxListener}
+	 */
+	public static Property choiceListener(final ChoiceBoxListenerProperty.ChoiceBoxListener listener) {
+		return new ChoiceBoxListenerProperty(listener);
+	}
+
 }

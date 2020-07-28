@@ -8,6 +8,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIChoiceBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUILabel;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUISeparator;
@@ -80,8 +82,10 @@ public class SUIRegistry {
 		SUIAnchorPane.register(this);
 		SUIScrollPane.register(this);
 		SUIVBox.register(this);
+		SUIHBox.register(this);
 		SUISeparator.register(this);
 		SUILabel.register(this);
+		SUIChoiceBox.register(this);
 	}
 
 
