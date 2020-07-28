@@ -10,14 +10,14 @@ import lombok.Getter;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
 
-public class ChoiceBoxConverterProperty extends Property {
+public class ChoiceBoxConverterProperty<T> extends Property {
 
 
 	/**
 	 * The string converter
 	 */
 	@Getter
-	private final StringConverter<Object> converter;
+	private final StringConverter<T> converter;
 
 
 
@@ -25,7 +25,7 @@ public class ChoiceBoxConverterProperty extends Property {
 	/**
 	 * @param converter the string converter
 	 */
-	public ChoiceBoxConverterProperty(final StringConverter<Object> converter) {
+	public ChoiceBoxConverterProperty(final StringConverter<T> converter) {
 		super(ChoiceBoxConverterProperty.class);
 		this.converter = converter;
 	}
@@ -49,12 +49,12 @@ public class ChoiceBoxConverterProperty extends Property {
 
 
 
-	public static class CBConverterUpdatingBuilder implements PropFxNodeUpdatingBuilder<ChoiceBoxConverterProperty, ChoiceBox<Object>> {
+	public static class CBConverterUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoiceBoxConverterProperty<T>, ChoiceBox<T>> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ChoiceBoxConverterProperty property,
-						  final ChoiceBox<Object> fxNode) {
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ChoiceBoxConverterProperty<T> property,
+						  final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 		}
 
@@ -62,8 +62,8 @@ public class ChoiceBoxConverterProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoiceBoxConverterProperty property,
-									 final SUINode node, final ChoiceBox<Object> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoiceBoxConverterProperty<T> property,
+									 final SUINode node, final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 			return MutationResult.MUTATED;
 		}
@@ -72,8 +72,8 @@ public class ChoiceBoxConverterProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoiceBoxConverterProperty property,
-									 final SUINode node, final ChoiceBox<Object> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoiceBoxConverterProperty<T> property,
+									 final SUINode node, final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(null);
 			return MutationResult.MUTATED;
 		}

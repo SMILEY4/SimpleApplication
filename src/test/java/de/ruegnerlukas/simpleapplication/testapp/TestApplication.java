@@ -23,6 +23,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Dimension2D;
+import javafx.util.StringConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPaneItem;
@@ -162,15 +162,29 @@ public class TestApplication {
 									Properties.items(
 											anchorPaneItem(
 													choiceBox(
-															Properties.choices(state.strings.stream().map(str -> (Object) str).collect(Collectors.toList())),
-															Properties.choiceListener(((index, item) -> {
-																if(item == null) {
+															Properties.choices(state.strings),
+															Properties.choiceBoxConverter(String.class, new StringConverter<>() {
+																@Override
+																public String toString(final String s) {
+																	return "item:" + s;
+																}
+
+
+
+
+																@Override
+																public String fromString(final String s) {
+																	return s.split(":")[1];
+																}
+															}),
+															Properties.choiceListener(String.class, ((index, item) -> {
+																if (item == null) {
+																	System.out.println("selected null");
 																	return;
 																}
 																state.update(TestUIState.class, s -> {
-																	System.out.println("update state");
-																	s.strings.add("" + s.strings.size() + " - " +  new Random().nextInt(1000));
-																	s.strings.remove((String)item);
+																	s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
+																	s.strings.remove(item);
 																});
 																System.out.println(index + "  " + item);
 															}))

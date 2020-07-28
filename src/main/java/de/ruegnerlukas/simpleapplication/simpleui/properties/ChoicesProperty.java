@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
 
-public class ChoicesProperty extends Property {
+public class ChoicesProperty<T> extends Property {
 
 
 	/**
 	 * The list of choices
 	 */
 	@Getter
-	private final List<Object> choices;
+	private final List<T> choices;
 
 
 
@@ -29,7 +29,7 @@ public class ChoicesProperty extends Property {
 	/**
 	 * @param choices the list of choices
 	 */
-	public ChoicesProperty(final List<Object> choices) {
+	public ChoicesProperty(final List<T> choices) {
 		super(ChoicesProperty.class);
 		this.choices = choices;
 	}
@@ -44,7 +44,7 @@ public class ChoicesProperty extends Property {
 			return false;
 		} else {
 			for (int i = 0; i < getChoices().size(); i++) {
-				if (!getChoices().get(i).equals(otherProp.getChoices().get(i))) {
+				if (!Objects.equals(getChoices().get(i), otherProp.getChoices().get(i))) {
 					return false;
 				}
 			}
@@ -63,12 +63,12 @@ public class ChoicesProperty extends Property {
 
 
 
-	public static class ChoicesPropertyUpdatingBuilder implements PropFxNodeUpdatingBuilder<ChoicesProperty, ChoiceBox<Object>> {
+	public static class ChoicesPropertyUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoicesProperty<T>, ChoiceBox<T>> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ChoicesProperty property,
-						  final ChoiceBox<Object> fxNode) {
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ChoicesProperty<T> property,
+						  final ChoiceBox<T> fxNode) {
 			setItems(node, property, fxNode);
 		}
 
@@ -76,8 +76,8 @@ public class ChoicesProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoicesProperty property,
-									 final SUINode node, final ChoiceBox<Object> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<T> property,
+									 final SUINode node, final ChoiceBox<T> fxNode) {
 			setItems(node, property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -86,8 +86,8 @@ public class ChoicesProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoicesProperty property,
-									 final SUINode node, final ChoiceBox<Object> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<T> property,
+									 final SUINode node, final ChoiceBox<T> fxNode) {
 			final Object prevValue = fxNode.getSelectionModel().getSelectedItem();
 			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
 			removeListener(node, fxNode);
@@ -109,9 +109,9 @@ public class ChoicesProperty extends Property {
 		 * @param property the choices-property
 		 * @param fxNode   the javafx choicebox
 		 */
-		private void setItems(final SUINode node, final ChoicesProperty property, final ChoiceBox<Object> fxNode) {
+		private void setItems(final SUINode node, final ChoicesProperty<T> property, final ChoiceBox<T> fxNode) {
 
-			final Object prevValue = fxNode.getSelectionModel().getSelectedItem();
+			final T prevValue = fxNode.getSelectionModel().getSelectedItem();
 			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
 
 			removeListener(node, fxNode);
@@ -138,7 +138,7 @@ public class ChoicesProperty extends Property {
 		 * @param node   the simpleui node
 		 * @param fxNode the javafx choicebox
 		 */
-		private void removeListener(final SUINode node, final ChoiceBox<Object> fxNode) {
+		private void removeListener(final SUINode node, final ChoiceBox<T> fxNode) {
 			final Optional<ChoiceBoxListenerProperty> listenerProperty = node.getPropertySafe(ChoiceBoxListenerProperty.class);
 			listenerProperty.ifPresent(listenerProp ->
 					fxNode.getSelectionModel().selectedIndexProperty().removeListener(listenerProp.getIndexListener()));
@@ -153,7 +153,7 @@ public class ChoicesProperty extends Property {
 		 * @param node   the simpleui node
 		 * @param fxNode the javafx choicebox
 		 */
-		private void addListener(final SUINode node, final ChoiceBox<Object> fxNode) {
+		private void addListener(final SUINode node, final ChoiceBox<T> fxNode) {
 			final Optional<ChoiceBoxListenerProperty> listenerProperty = node.getPropertySafe(ChoiceBoxListenerProperty.class);
 			listenerProperty.ifPresent(listenerProp ->
 					fxNode.getSelectionModel().selectedIndexProperty().addListener(listenerProp.getIndexListener()));
