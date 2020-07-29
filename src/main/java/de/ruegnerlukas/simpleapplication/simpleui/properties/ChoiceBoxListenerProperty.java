@@ -103,7 +103,7 @@ public class ChoiceBoxListenerProperty<T> extends Property {
 			property.setIndexListener(((observable, prev, next) -> {
 				final Object prevItem = prev.intValue() < 0 ? null : choiceBox.getItems().get(prev.intValue());
 				final Object nextItem = next.intValue() < 0 ? null : choiceBox.getItems().get(next.intValue());
-				property.getListener().onSelection(prev.intValue(), next.intValue(), (T)prevItem, (T)nextItem);
+				property.getListener().onSelection(prev.intValue(), next.intValue(), (T) prevItem, (T) nextItem);
 			}));
 			choiceBox.getSelectionModel().selectedIndexProperty().addListener(property.getIndexListener());
 		}

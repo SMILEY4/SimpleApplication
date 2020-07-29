@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -41,6 +42,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.wrapText(),
 				Properties.disabled(false),
 				Properties.style("-fx-background-color: red"),
+				Properties.alignment(Pos.CENTER),
 				Properties.buttonListener(() -> {
 				})
 		);

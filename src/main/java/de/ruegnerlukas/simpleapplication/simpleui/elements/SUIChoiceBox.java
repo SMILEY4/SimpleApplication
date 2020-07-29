@@ -4,7 +4,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoiceBoxConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoiceBoxListenerProperty;
@@ -17,7 +16,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.TypeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.control.ChoiceBox;
 
@@ -71,14 +69,10 @@ public final class SUIChoiceBox {
 				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
 				// special
 				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ChoicesPropertyUpdatingBuilder<>()),
-				PropertyEntry.of(ChoiceBoxListenerProperty.class, new ChoiceBoxListenerProperty.CBListenerUpdatingBuilder<>()),
-				PropertyEntry.of(ChoiceBoxConverterProperty.class, new ChoiceBoxConverterProperty.CBConverterUpdatingBuilder()),
-
-				PropertyEntry.of(TypeProperty.class, new NoOpUpdatingBuilder()) // TODO ???
-
-
-				// TODO setValue()-prop (optional flag: only if getValue() == null) ??
-
+				PropertyEntry.of(ChoiceBoxListenerProperty.class,
+						new ChoiceBoxListenerProperty.CBListenerUpdatingBuilder<>()),
+				PropertyEntry.of(ChoiceBoxConverterProperty.class,
+						new ChoiceBoxConverterProperty.CBConverterUpdatingBuilder<>())
 		));
 	}
 
