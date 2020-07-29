@@ -14,27 +14,28 @@ import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyleProperty;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
-import de.ruegnerlukas.simpleapplication.core.presentation.style.Style;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Dimension2D;
-import javafx.stage.StageStyle;
+import javafx.util.StringConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import static de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyleProperty.managedStyle;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.buttonListener;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPane;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPaneItem;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIChoiceBox.choiceBox;
 
 @Slf4j
 public class TestApplication {
@@ -82,6 +83,8 @@ public class TestApplication {
 		@Setter
 		private static class TestUIState extends SUIState {
 
+
+			private List<String> strings = new ArrayList<>(List.of("A", "B", "C"));
 
 			private int cycleCount = 1;
 
@@ -137,10 +140,10 @@ public class TestApplication {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					styleService.reloadAll();
-					testUIState.update(TestUIState.class, state -> {
-						state.setGlobalCount(state.getGlobalCount() + 1);
-					});
+//					styleService.reloadAll();
+//					testUIState.update(TestUIState.class, state -> {
+//						state.setGlobalCount(state.getGlobalCount() + 1);
+//					});
 				}
 			});
 			thread.setDaemon(true);
@@ -155,77 +158,123 @@ public class TestApplication {
 					.title(applicationName + " - View A")
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
-							button(
-									managedStyle(styleService, Style.fromResource(Resource.externalRelative("src/test/resources/testResources/testStyle.css"))),
-									textContent(state.getGlobalCount() + ":   Switch A -> B (" + state.getCycleCount() + ")"),
-									buttonListener(() -> eventService.publish(new ChangeCycleCountEvent(state.getCycleCount() + 1)))
+							anchorPane(
+									Properties.items(
+											anchorPaneItem(
+													choiceBox(
+															Properties.choices(state.strings),
+															Properties.choiceBoxConverter(String.class, new StringConverter<>() {
+																@Override
+																public String toString(final String s) {
+																	return "item:" + s;
+																}
+
+
+
+
+																@Override
+																public String fromString(final String s) {
+																	return s.split(":")[1];
+																}
+															}),
+															Properties.choiceListener(String.class, ((index, item) -> {
+																if (item == null) {
+																	System.out.println("selected null");
+																	return;
+																}
+																state.update(TestUIState.class, s -> {
+																	s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
+																	s.strings.remove(item);
+																});
+																System.out.println(index + "  " + item);
+															}))
+													),
+													Properties.anchor(0, 0, 0, 0)
+											)
+									)
 							)
+
 					)))
 					.build();
 
-			eventService.subscribe(Channel.type(ChangeCycleCountEvent.class), publishable -> {
-				final ChangeCycleCountEvent event = (ChangeCycleCountEvent) publishable;
-				testUIState.update(TestUIState.class, true, state -> {
-					state.setCycleCount(event.cycleCount);
-				});
-				viewService.showView(ID_B);
-			});
+//			final View viewA = View.builder()
+//					.id(ID_A)
+//					.size(new Dimension2D(300, 100))
+//					.maxSize(new Dimension2D(300, 300))
+//					.title(applicationName + " - View A")
+//					.icon(Resource.internal("testResources/icon.png"))
+//					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
+//							button(
+//									managedStyle(styleService, Style.fromResource(Resource.externalRelative("src/test/resources/testResources/testStyle.css"))),
+//									textContent(state.getGlobalCount() + ":   Switch A -> B (" + state.getCycleCount() + ")"),
+//									buttonListener(() -> eventService.publish(new ChangeCycleCountEvent(state.getCycleCount() + 1)))
+//							)
+//					)))
+//					.build();
 
-			// VIEW B
+//			eventService.subscribe(Channel.type(ChangeCycleCountEvent.class), publishable -> {
+//				final ChangeCycleCountEvent event = (ChangeCycleCountEvent) publishable;
+//				testUIState.update(TestUIState.class, true, state -> {
+//					state.setCycleCount(event.cycleCount);
+//				});
+//				viewService.showView(ID_B);
+//			});
 
-			final View viewB = View.builder()
-					.id(ID_B)
-					.size(new Dimension2D(200, 500))
-					.title(applicationName + " - View B")
-					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
-							button(
-									textContent(testUIState.getGlobalCount() + ":   Switch B -> A"),
-									buttonListener(() -> viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build()))
-							)
-					)))
-					.build();
-
-
-			// VIEW B CONFIRM
-
-			final View viewBPopup = View.builder()
-					.id(ID_B_POPUP)
-					.size(new Dimension2D(300, 200))
-					.title(applicationName + " - View B Confirm")
-					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
-							button(
-									textContent(testUIState.getGlobalCount() + ":   Confirm switch"),
-									buttonListener(() -> {
-										final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_POPUP).get(0);
-										viewService.showView(ID_B_WARN, handlePopup);
-									})
-							)
-					)))
-					.build();
-
-			final View viewBWarn = View.builder()
-					.id(ID_B_WARN)
-					.size(new Dimension2D(200, 300))
-					.title(applicationName + " - View B LAST WARNING")
-					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
-							button(
-									textContent(state.getGlobalCount() + ":   You sure ? (" + " -> " + state.getCycleCount() + ")"),
-									buttonListener(() -> {
-										final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_WARN).get(0);
-										viewService.closePopup(handlePopup);
-										viewService.showView(ID_A);
-									})
-							)
-					)))
-					.build();
+//			// VIEW B
+//
+//			final View viewB = View.builder()
+//					.id(ID_B)
+//					.size(new Dimension2D(200, 500))
+//					.title(applicationName + " - View B")
+//					.icon(Resource.internal("testResources/icon.png"))
+//					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
+//							button(
+//									textContent(testUIState.getGlobalCount() + ":   Switch B -> A"),
+//									buttonListener(() -> viewService.popupView(ID_B_POPUP, PopupConfiguration.builder().style(StageStyle.UNDECORATED).wait(false).build()))
+//							)
+//					)))
+//					.build();
+//
+//
+//			// VIEW B CONFIRM
+//
+//			final View viewBPopup = View.builder()
+//					.id(ID_B_POPUP)
+//					.size(new Dimension2D(300, 200))
+//					.title(applicationName + " - View B Confirm")
+//					.icon(Resource.internal("testResources/icon.png"))
+//					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
+//							button(
+//									textContent(testUIState.getGlobalCount() + ":   Confirm switch"),
+//									buttonListener(() -> {
+//										final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_POPUP).get(0);
+//										viewService.showView(ID_B_WARN, handlePopup);
+//									})
+//							)
+//					)))
+//					.build();
+//
+//			final View viewBWarn = View.builder()
+//					.id(ID_B_WARN)
+//					.size(new Dimension2D(200, 300))
+//					.title(applicationName + " - View B LAST WARNING")
+//					.icon(Resource.internal("testResources/icon.png"))
+//					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
+//							button(
+//									textContent(state.getGlobalCount() + ":   You sure ? (" + " -> " + state.getCycleCount() + ")"),
+//									buttonListener(() -> {
+//										final WindowHandle handlePopup = viewService.getWindowHandles(ID_B_WARN).get(0);
+//										viewService.closePopup(handlePopup);
+//										viewService.showView(ID_A);
+//									})
+//							)
+//					)))
+//					.build();
 
 			viewService.registerView(viewA);
-			viewService.registerView(viewB);
-			viewService.registerView(viewBPopup);
-			viewService.registerView(viewBWarn);
+//			viewService.registerView(viewB);
+//			viewService.registerView(viewBPopup);
+//			viewService.registerView(viewBWarn);
 			viewService.showView(viewA.getId());
 
 		}

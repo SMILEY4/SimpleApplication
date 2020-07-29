@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
+import javafx.util.StringConverter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -384,5 +385,50 @@ public final class Properties {
 	public static Property style(final Resource style) {
 		return new StyleProperty(style);
 	}
+
+
+
+
+	/**
+	 * @param selected whether it is selected
+	 * @return an {@link SelectedProperty}
+	 */
+	public static Property selected(final boolean selected) {
+		return new SelectedProperty(selected);
+	}
+
+
+
+
+	/**
+	 * @param choices the list of possible choices
+	 * @return an {@link ChoicesProperty}
+	 */
+	public static <T> Property choices(final List<T> choices) {
+		return new ChoicesProperty<>(List.copyOf(choices));
+	}
+
+
+
+
+	/**
+	 * @param listener the listener
+	 * @return an {@link ChoiceBoxListenerProperty.ChoiceBoxListener}
+	 */
+	public static <T> Property choiceListener(final Class<T> type, final ChoiceBoxListenerProperty.ChoiceBoxListener<T> listener) {
+		return new ChoiceBoxListenerProperty<T>(listener);
+	}
+
+
+
+
+	/**
+	 * @param converter the converter for the displayed choice box items
+	 * @return an {@link ChoiceBoxConverterProperty}
+	 */
+	public static <T> Property choiceBoxConverter(final Class<T> type, final StringConverter<T> converter) {
+		return new ChoiceBoxConverterProperty<>(converter);
+	}
+
 
 }

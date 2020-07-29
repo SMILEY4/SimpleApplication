@@ -18,6 +18,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProper
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
@@ -73,19 +74,26 @@ public final class SUIAnchorPane {
 	 * @param registry the registry
 	 */
 	public static void register(final SUIRegistry registry) {
+
 		registry.registerBaseFxNodeBuilder(SUIAnchorPane.class, new AnchorPaneNodeBuilder());
-		registry.registerProperty(SUIAnchorPane.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
-		registry.registerProperty(SUIAnchorPane.class, SizePreferredProperty.class,
-				new SizePreferredProperty.SizePreferredUpdatingBuilder());
-		registry.registerProperty(SUIAnchorPane.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
-		registry.registerProperty(SUIAnchorPane.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
-		registry.registerProperty(SUIAnchorPane.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
-		registry.registerProperty(SUIAnchorPane.class, ItemListProperty.class, new ItemListProperty.ItemListBuilder());
-		registry.registerProperty(SUIAnchorPane.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
+		registry.registerProperties(SUIAnchorPane.class, List.of(
+				// node
+				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
+				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
+				// region
+				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder()),
+				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.SizePreferredUpdatingBuilder()),
+				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder()),
+				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
+				// special
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null)
+		));
 
 		registry.registerBaseFxNodeBuilder(AnchorPaneChildItem.class, new ChildItem.ChildItemNodeBuilder());
-		registry.registerProperty(AnchorPaneChildItem.class, ItemListProperty.class, new NoOpUpdatingBuilder());
-		registry.registerProperty(AnchorPaneChildItem.class, AnchorProperty.class, new AnchorProperty.AnchorUpdatingBuilder());
+		registry.registerProperties(AnchorPaneChildItem.class, List.of(
+				PropertyEntry.of(ItemListProperty.class, new NoOpUpdatingBuilder()),
+				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.AnchorUpdatingBuilder())
+		));
 	}
 
 

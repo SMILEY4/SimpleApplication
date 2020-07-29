@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ActionListenerProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
@@ -20,6 +21,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.control.Button;
 
 import java.util.List;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
+import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
 
 public final class SUIButton {
 
@@ -41,7 +45,7 @@ public final class SUIButton {
 	 * @return the factory for a button node
 	 */
 	public static NodeFactory button(final Property... properties) {
-		Properties.checkIllegal(SUIButton.class, SUIRegistry.get().getEntry(SUIButton.class).getProperties(), properties);
+		Properties.checkIllegal(SUIButton.class, get().getEntry(SUIButton.class).getProperties(), properties);
 		return state -> new SUINode(SUIButton.class, List.of(properties), state, null);
 	}
 
@@ -55,17 +59,22 @@ public final class SUIButton {
 	 */
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUIButton.class, new ButtonNodeBuilder());
-		registry.registerProperty(SUIButton.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
-		registry.registerProperty(SUIButton.class, SizePreferredProperty.class,
-				new SizePreferredProperty.SizePreferredUpdatingBuilder());
-		registry.registerProperty(SUIButton.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
-		registry.registerProperty(SUIButton.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
-		registry.registerProperty(SUIButton.class, TextContentProperty.class, new TextContentProperty.TextContentUpdatingBuilder());
-		registry.registerProperty(SUIButton.class, WrapTextProperty.class, new WrapTextProperty.WrapTextUpdatingBuilder());
-		registry.registerProperty(SUIButton.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
-		registry.registerProperty(SUIButton.class, ActionListenerProperty.class,
-				new ActionListenerProperty.ButtonActionListenerUpdatingBuilder());
-		registry.registerProperty(SUIButton.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
+		registry.registerProperties(SUIButton.class, List.of(
+				// node
+				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
+				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
+				// region
+				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder()),
+				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.SizePreferredUpdatingBuilder()),
+				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder()),
+				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
+				// labeled
+				PropertyEntry.of(TextContentProperty.class, new TextContentProperty.TextContentUpdatingBuilder()),
+				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.WrapTextUpdatingBuilder()),
+				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledAlignmentUpdatingBuilder()),
+				// button base
+				PropertyEntry.of(ActionListenerProperty.class, new ActionListenerProperty.ButtonListenerUpdatingBuilder())
+		));
 	}
 
 

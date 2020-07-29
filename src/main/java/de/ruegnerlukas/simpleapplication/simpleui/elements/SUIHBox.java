@@ -5,32 +5,34 @@ import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.OrientationProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToWidthProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
-import javafx.geometry.Orientation;
-import javafx.scene.control.Separator;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
 
-public final class SUISeparator {
+public final class SUIHBox {
 
 
 	/**
-	 * Hidden constructor for utility classes
+	 * Hidden constructor for utility classes.
 	 */
-	private SUISeparator() {
+	private SUIHBox() {
 		// do nothing
 	}
 
@@ -38,33 +40,31 @@ public final class SUISeparator {
 
 
 	/**
-	 * Creates a new separator node,
+	 * Creates a new hbox node.
 	 *
-	 * @param orientation the orientation of the separator
-	 * @param properties  the properties
-	 * @return the factory for a separator node
+	 * @param properties the properties
+	 * @return the factory for a hbox node
 	 */
-	public static NodeFactory separator(final Orientation orientation, final Property... properties) {
-		final List<Property> propList = new ArrayList<>(List.of(properties));
-		propList.add(new OrientationProperty(orientation));
-		Properties.checkIllegal(SUISeparator.class, get().getEntry(SUISeparator.class).getProperties(), propList);
-		return state -> new SUINode(SUISeparator.class, propList, state, null);
+	public static NodeFactory hbox(final Property... properties) {
+		Properties.checkIllegal(SUIHBox.class, get().getEntry(SUIHBox.class).getProperties(), properties);
+		return state -> new SUINode(SUIHBox.class, List.of(properties), state, SUIHBox::handleChildrenChange);
 	}
 
 
 
 
 	/**
-	 * Creates a new separator node,
+	 * Handle a change in the child nodes of the given vbox node.
 	 *
-	 * @param properties the properties
-	 * @return the factory for a separator node
+	 * @param node the vbox node
 	 */
-	public static NodeFactory separator(final Property... properties) {
-		Properties.checkIllegal(SUISeparator.class, get().getEntry(SUISeparator.class).getProperties(), properties);
-		return state -> new SUINode(SUISeparator.class, List.of(properties), state, null);
+	private static void handleChildrenChange(final SUINode node) {
+		final HBox hbox = (HBox) node.getFxNode();
+		hbox.getChildren().clear();
+		node.getChildren().forEach(child -> {
+			hbox.getChildren().add(child.getFxNode());
+		});
 	}
-
 
 
 
@@ -74,8 +74,9 @@ public final class SUISeparator {
 	 * @param registry the registry
 	 */
 	public static void register(final SUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SUISeparator.class, new SUISeparator.SeperatorNodeBuilder());
-		registry.registerProperties(SUISeparator.class, List.of(
+		registry.registerBaseFxNodeBuilder(SUIHBox.class, new SUIHBox.VBoxNodeBuilder());
+
+		registry.registerProperties(SUIHBox.class, List.of(
 				// node
 				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
@@ -85,21 +86,25 @@ public final class SUISeparator {
 				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder()),
 				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
 				// special
-				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.SeparatorOrientationUpdatingBuilder())
+				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.VBoxFitToWidthUpdatingBuilder()),
+				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.HBoxSpacingUpdatingBuilder()),
+				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.HBoxAlignmentUpdatingBuilder()),
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null)
 		));
 	}
 
 
 
 
-	private static class SeperatorNodeBuilder implements BaseFxNodeBuilder<Separator> {
+	private static class VBoxNodeBuilder implements BaseFxNodeBuilder<VBox> {
 
 
 		@Override
-		public Separator build(final MasterNodeHandlers nodeHandlers, final SUINode node) {
-			return new Separator();
+		public VBox build(final MasterNodeHandlers nodeHandlers, final SUINode node) {
+			return new VBox();
 		}
 
 	}
+
 
 }

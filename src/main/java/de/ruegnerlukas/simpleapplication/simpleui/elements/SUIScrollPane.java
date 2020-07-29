@@ -22,6 +22,9 @@ import javafx.scene.control.ScrollPane;
 
 import java.util.List;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
+import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
+
 public final class SUIScrollPane {
 
 
@@ -42,7 +45,7 @@ public final class SUIScrollPane {
 	 * @return the factory for an scroll-pane node
 	 */
 	public static NodeFactory scrollPane(final Property... properties) {
-		Properties.checkIllegal(SUIScrollPane.class, SUIRegistry.get().getEntry(SUIScrollPane.class).getProperties(), properties);
+		Properties.checkIllegal(SUIScrollPane.class, get().getEntry(SUIScrollPane.class).getProperties(), properties);
 		return state -> new SUINode(SUIScrollPane.class, List.of(properties), state, SUIScrollPane::handleChildrenChange);
 	}
 
@@ -73,20 +76,21 @@ public final class SUIScrollPane {
 	 */
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUIScrollPane.class, new SUIScrollPane.ScrollPaneNodeBuilder());
-		registry.registerProperty(SUIScrollPane.class, SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder());
-		registry.registerProperty(SUIScrollPane.class, SizePreferredProperty.class,
-				new SizePreferredProperty.SizePreferredUpdatingBuilder());
-		registry.registerProperty(SUIScrollPane.class, SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder());
-		registry.registerProperty(SUIScrollPane.class, SizeProperty.class, new SizeProperty.SizeUpdatingBuilder());
-		registry.registerProperty(SUIScrollPane.class, DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder());
-		registry.registerProperty(SUIScrollPane.class, FitToWidthProperty.class,
-				new FitToWidthProperty.ScrollPaneFitToWidthUpdatingBuilder());
-		registry.registerProperty(SUIScrollPane.class, FitToHeightProperty.class,
-				new FitToHeightProperty.FitToHeightUpdatingBuilder());
-		registry.registerProperty(SUIScrollPane.class, ShowScrollbarsProperty.class,
-				new ShowScrollbarsProperty.ShowScrollbarUpdatingBuilder());
-		registry.registerProperty(SUIScrollPane.class, ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder());
-		registry.registerProperty(SUIScrollPane.class, StyleProperty.class, new StyleProperty.StyleUpdatingBuilder());
+		registry.registerProperties(SUIScrollPane.class, List.of(
+				// node
+				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
+				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
+				// region
+				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder()),
+				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.SizePreferredUpdatingBuilder()),
+				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder()),
+				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
+				// special
+				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.ScrollPaneFitToWidthUpdatingBuilder()),
+				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.FitToHeightUpdatingBuilder()),
+				PropertyEntry.of(ShowScrollbarsProperty.class, new ShowScrollbarsProperty.ShowScrollbarUpdatingBuilder()),
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder(), null)
+		));
 	}
 
 

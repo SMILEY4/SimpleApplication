@@ -8,11 +8,16 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIChoiceBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIHBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUILabel;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUISeparator;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -77,7 +82,10 @@ public class SUIRegistry {
 		SUIAnchorPane.register(this);
 		SUIScrollPane.register(this);
 		SUIVBox.register(this);
+		SUIHBox.register(this);
 		SUISeparator.register(this);
+		SUILabel.register(this);
+		SUIChoiceBox.register(this);
 	}
 
 
@@ -102,12 +110,12 @@ public class SUIRegistry {
 	 *
 	 * @param nodeType the type of the node
 	 * @param property the type of the property
-	 * @param up       the {@link PropFxNodeUpdatingBuilder}
+	 * @param ub       the {@link PropFxNodeUpdatingBuilder}
 	 */
 	public void registerProperty(final Class<?> nodeType,
 								 final Class<? extends Property> property,
-								 final PropFxNodeUpdatingBuilder<? extends Property, ? extends Node> up) {
-		registerProperty(nodeType, property, up, up);
+								 final PropFxNodeUpdatingBuilder<? extends Property, ? extends Node> ub) {
+		registerProperty(nodeType, property, ub, ub);
 	}
 
 
@@ -124,7 +132,7 @@ public class SUIRegistry {
 								 final Class<? extends Property> property,
 								 final PropFxNodeBuilder<? extends Property, ? extends Node> builder) {
 		final RegistryEntry entry = getEntry(nodeType);
-		if (entry != null) {
+		if (entry != null && builder != null) {
 			entry.getPropFxNodeBuilders().put(property, builder);
 		}
 	}
@@ -146,9 +154,26 @@ public class SUIRegistry {
 								 final PropFxNodeUpdater<? extends Property, ? extends Node> updater) {
 		final RegistryEntry entry = getEntry(nodeType);
 		if (entry != null) {
-			entry.getPropFxNodeBuilders().put(property, builder);
-			entry.getPropFxNodeUpdaters().put(property, updater);
+			if (builder != null) {
+				entry.getPropFxNodeBuilders().put(property, builder);
+			}
+			if (updater != null) {
+				entry.getPropFxNodeUpdaters().put(property, updater);
+			}
 		}
+	}
+
+
+
+
+	/**
+	 * Registers the given list of properties
+	 *
+	 * @param nodeType   the type of the node
+	 * @param properties the list of property data
+	 */
+	public void registerProperties(final Class<?> nodeType, final List<PropertyEntry> properties) {
+		properties.forEach(entry -> registerProperty(nodeType, entry.getType(), entry.getBuilder(), entry.getUpdater()));
 	}
 
 
@@ -187,6 +212,64 @@ public class SUIRegistry {
 	 */
 	public List<NodeFactory> get(final String injectionPointId) {
 		return injectedFactories.getOrDefault(injectionPointId, List.of());
+	}
+
+
+
+
+	@Getter
+	@AllArgsConstructor
+	public static class PropertyEntry {
+
+
+		/**
+		 * the type of the property
+		 */
+		@Getter
+		private final Class<? extends Property> type;
+
+		/**
+		 * The builder
+		 */
+		@Getter
+		private final PropFxNodeBuilder<? extends Property, ? extends Node> builder;
+
+		/**
+		 * The updater
+		 */
+		@Getter
+		private final PropFxNodeUpdater<? extends Property, ? extends Node> updater;
+
+
+
+
+		/**
+		 * @param type    the type of the property
+		 * @param builder the builder
+		 * @param updater the updater
+		 * @return the property entry
+		 */
+		public static PropertyEntry of(
+				final Class<? extends Property> type,
+				final PropFxNodeBuilder<? extends Property, ? extends Node> builder,
+				final PropFxNodeUpdater<? extends Property, ? extends Node> updater) {
+			return new PropertyEntry(type, builder, updater);
+		}
+
+
+
+
+		/**
+		 * @param type            the type of the property
+		 * @param updatingBuilder the builder and updater
+		 * @return the property entry
+		 */
+		public static PropertyEntry of(
+				final Class<? extends Property> type,
+				final PropFxNodeUpdatingBuilder<? extends Property, ? extends Node> updatingBuilder) {
+			return new PropertyEntry(type, updatingBuilder, updatingBuilder);
+		}
+
 	}
 
 
