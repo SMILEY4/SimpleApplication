@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.Node;
@@ -16,19 +17,41 @@ import java.util.Set;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult.MUTATED;
 import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult.REBUILD;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty.MutationBehaviour;
 
 public class NodeMutator implements BaseNodeMutator {
 
 
 	@Override
 	public MutationResult mutateNode(final SUINode original, final SUINode target, final MasterNodeHandlers nodeHandlers) {
-		if (mutateProperties(nodeHandlers, original, target) == REBUILD) {
-			return REBUILD;
+		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
+		if (mutationBehaviour == MutationBehaviour.DEFAULT) {
+			if (mutateProperties(nodeHandlers, original, target) == REBUILD) {
+				return REBUILD;
+			}
 		}
-		if (mutateChildren(nodeHandlers, original, target) == REBUILD) {
-			return REBUILD;
+		if (mutationBehaviour != MutationBehaviour.STATIC_SUBTREE) {
+			if (mutateChildren(nodeHandlers, original, target) == REBUILD) {
+				return REBUILD;
+			}
 		}
 		return MUTATED;
+	}
+
+
+
+
+	/**
+	 * Get the mutation behaviour from the given node.
+	 * Returns the default behaviour if the property was not added to the given node.
+	 *
+	 * @param node the node
+	 * @return the {@link MutationBehaviour}.
+	 */
+	private MutationBehaviour getMutationBehaviour(final SUINode node) {
+		return node.getPropertySafe(MutationBehaviourProperty.class)
+				.map(MutationBehaviourProperty::getBehaviour)
+				.orElse(MutationBehaviour.DEFAULT);
 	}
 
 
