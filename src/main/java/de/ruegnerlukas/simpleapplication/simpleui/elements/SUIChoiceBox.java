@@ -4,11 +4,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoiceBoxConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoiceBoxListenerProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
@@ -60,6 +62,7 @@ public final class SUIChoiceBox {
 		registry.registerBaseFxNodeBuilder(SUIChoiceBox.class, new ChoiceBoxNodeBuilder<>());
 		registry.registerProperties(SUIChoiceBox.class, List.of(
 				// node
+				PropertyEntry.of(MutationBehaviourProperty.class, new NoOpUpdatingBuilder()),
 				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
 				// region
