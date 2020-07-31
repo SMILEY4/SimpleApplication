@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.OrientationProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ShowScrollbarsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
@@ -187,6 +188,15 @@ public class PropertyTestUtils {
 		assertThat(node.getProperties()).containsKey(StyleProperty.class);
 		final StyleProperty property = node.getProperty(StyleProperty.class);
 		assertThat(property.getStrStyle()).isEqualTo(style);
+	}
+
+
+
+
+	public static void assertMutationBehaviour(final SUINode node, final MutationBehaviourProperty.MutationBehaviour behaviour) {
+		assertThat(node.getProperties()).containsKey(MutationBehaviourProperty.class);
+		final MutationBehaviourProperty property = node.getProperty(MutationBehaviourProperty.class);
+		assertThat(property.getBehaviour()).isEqualTo(behaviour);
 	}
 
 }
