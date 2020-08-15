@@ -40,6 +40,7 @@ public class SUISeparatorTest extends ApplicationTest {
 				Properties.size(10.0, 11.0, 12.0, 13.0, 14.0, 15.0),
 				Properties.disabled(false),
 				Properties.style("-fx-background-color: red"),
+				Properties.defaultMutationBehaviour(),
 				Properties.orientation(Orientation.HORIZONTAL)
 		);
 

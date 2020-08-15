@@ -44,6 +44,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 				Properties.fitToHeight(),
 				Properties.style("-fx-background-color: red"),
 				Properties.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
+				Properties.defaultMutationBehaviour(),
 				Properties.item(
 						SUIButton.button(
 								Properties.id("btn"),

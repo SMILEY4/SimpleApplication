@@ -431,6 +431,13 @@ public final class Properties {
 	}
 
 
+	/**
+	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#DEFAULT}
+	 */
+	public static Property defaultMutationBehaviour() {
+		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.DEFAULT);
+	}
+
 
 
 	/**
