@@ -61,10 +61,10 @@ public final class SUIScrollPane {
 	 */
 	private static void handleChildrenChange(final SUINode node) {
 		final ScrollPane scrollPane = (ScrollPane) node.getFxNode();
-		if (node.getChildren().isEmpty()) {
-			scrollPane.setContent(null);
+		if (node.hasChildren()) {
+			scrollPane.setContent(node.getChild(0).getFxNode());
 		} else {
-			scrollPane.setContent(node.getChildren().get(0).getFxNode());
+			scrollPane.setContent(null);
 		}
 	}
 

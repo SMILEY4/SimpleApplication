@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
+import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
@@ -7,31 +8,38 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
-@Getter
 public class SUINode {
 
 
 	/**
 	 * The type of this node.
 	 */
+	@Getter
 	private final Class<?> nodeType;
 
 
 	/**
 	 * The properties of this node.
 	 */
+	@Getter
 	private final Map<Class<? extends Property>, Property> properties = new HashMap<>();
 
 	/**
 	 * The child nodes of this node.
 	 */
-	@Getter
-	private final List<SUINode> children;
+	private final List<SUINode> children = new ArrayList<>();
+
+	/**
+	 * The child nodes of this node with their id as a key.
+	 */
+	private final Map<String, SUINode> childMap = new HashMap<>();
 
 	/**
 	 * The listener for changes to child nodes (if required).
@@ -44,6 +52,7 @@ public class SUINode {
 	 * The fx-node attached to this node (or null).
 	 */
 	@Setter
+	@Getter
 	private javafx.scene.Node fxNode;
 
 
@@ -59,7 +68,7 @@ public class SUINode {
 				   final SUIState state, final ChildListener childListener) {
 		this.nodeType = nodeType;
 		propertyList.forEach(property -> properties.put(property.getKey(), property));
-		this.children = childNodesFromProperties(state);
+		childNodesFromProperties(state);
 		this.childListener = childListener;
 	}
 
@@ -70,16 +79,15 @@ public class SUINode {
 	 * Create the child nodes from the properties of this node and the given state.
 	 *
 	 * @param state the current state
-	 * @return the list of child nodes.
 	 */
-	private List<SUINode> childNodesFromProperties(final SUIState state) {
+	private void childNodesFromProperties(final SUIState state) {
 		final List<SUINode> children = new ArrayList<>();
 		getPropertySafe(ItemListProperty.class).ifPresent(itemListProp -> itemListProp.getFactories().forEach(factory -> {
 			final SUINode child = factory.create(state);
 			children.add(child);
 		}));
 		getPropertySafe(ItemProperty.class).ifPresent(itemProp -> children.add(itemProp.getFactory().create(state)));
-		return children;
+		setChildren(children, false);
 	}
 
 
@@ -92,6 +100,92 @@ public class SUINode {
 		if (childListener != null && getFxNode() != null) {
 			childListener.onChange(this);
 		}
+	}
+
+
+
+
+	/**
+	 * @return whether this nodes has child nodes
+	 */
+	public boolean hasChildren() {
+		return !this.children.isEmpty();
+	}
+
+
+
+
+	/**
+	 * @return the number of child nodes of this node
+	 */
+	public int childCount() {
+		return this.children.size();
+	}
+
+
+
+
+	/**
+	 * @param index the index of the child
+	 * @return the child at the given index
+	 * @throws IndexOutOfBoundsException if the given index is out of range
+	 */
+	public SUINode getChild(final int index) {
+		return this.children.get(index);
+	}
+
+
+
+
+	/**
+	 * Finds the child node with the given id
+	 *
+	 * @param id the id of the requested child node
+	 * @return the child node with the given id (if one exists)
+	 */
+	public Optional<SUINode> findChild(final String id) {
+		return Optional.ofNullable(childMap.get(id));
+	}
+
+
+
+
+	/**
+	 * @return an unmodifiable list of children
+	 */
+	public List<SUINode> getChildrenUnmodifiable() {
+		return Collections.unmodifiableList(this.children);
+	}
+
+
+
+
+	/**
+	 * Replaces all children of this node with the given children
+	 *
+	 * @param childrenList       the list of new child nodes
+	 * @param triggerChildChange true, to trigger the child change action
+	 */
+	public void setChildren(final List<SUINode> childrenList, final boolean triggerChildChange) {
+		this.children.clear();
+		this.children.addAll(childrenList);
+		this.childMap.clear();
+		for (SUINode child : this.children) {
+			child.getPropertySafe(IdProperty.class).ifPresent(idProp -> childMap.put(idProp.getId(), child));
+		}
+		if (triggerChildChange) {
+			triggerChildListChange();
+		}
+	}
+
+
+
+
+	/**
+	 * @return the children of this node as a stream
+	 */
+	public Stream<SUINode> streamChildren() {
+		return this.children.stream();
 	}
 
 

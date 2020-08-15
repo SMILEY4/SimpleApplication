@@ -60,7 +60,7 @@ public final class SUIAnchorPane {
 	 */
 	private static void handleChildrenChange(final SUINode node) {
 		final AnchorPane anchorPane = (AnchorPane) node.getFxNode();
-		anchorPane.getChildren().setAll(node.getChildren().stream()
+		anchorPane.getChildren().setAll(node.streamChildren()
 				.map(SUINode::getFxNode)
 				.collect(Collectors.toList()));
 	}

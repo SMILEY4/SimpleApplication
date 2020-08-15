@@ -62,7 +62,7 @@ public final class SUIVBox {
 	 */
 	private static void handleChildrenChange(final SUINode node) {
 		final VBox vbox = (VBox) node.getFxNode();
-		vbox.getChildren().setAll(node.getChildren().stream()
+		vbox.getChildren().setAll(node.streamChildren()
 				.map(SUINode::getFxNode)
 				.collect(Collectors.toList()));
 	}

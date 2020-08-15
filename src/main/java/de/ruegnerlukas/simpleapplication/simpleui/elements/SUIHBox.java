@@ -63,7 +63,7 @@ public final class SUIHBox {
 	 */
 	private static void handleChildrenChange(final SUINode node) {
 		final HBox hbox = (HBox) node.getFxNode();
-		hbox.getChildren().setAll(node.getChildren().stream()
+		hbox.getChildren().setAll(node.streamChildren()
 				.map(SUINode::getFxNode)
 				.collect(Collectors.toList()));
 	}

@@ -247,6 +247,7 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 
 
 
+
 	@Test
 	public void mutateChildrenPropertySimple() {
 		log.info("mutateChildrenPropertySimple");
@@ -287,7 +288,6 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 		}
 		log.info("-".repeat(50));
 	}
-
 
 
 

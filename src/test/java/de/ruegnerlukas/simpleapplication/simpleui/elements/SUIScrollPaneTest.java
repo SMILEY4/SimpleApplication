@@ -69,7 +69,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertShowScrollBarProperty(node, ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS);
 		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
 
-		final List<SUINode> children = node.getChildren();
+		final List<SUINode> children = node.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -144,7 +144,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertShowScrollBarProperty(mutatedNode, ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -211,7 +211,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToHeightProperty(mutatedNode, false);
 		PropertyTestUtils.assertShowScrollBarProperty(mutatedNode, ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(0);
 
@@ -272,7 +272,7 @@ public class SUIScrollPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertFitToHeightProperty(mutatedNode, false);
 		PropertyTestUtils.assertShowScrollBarProperty(mutatedNode, ScrollPane.ScrollBarPolicy.ALWAYS, ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();

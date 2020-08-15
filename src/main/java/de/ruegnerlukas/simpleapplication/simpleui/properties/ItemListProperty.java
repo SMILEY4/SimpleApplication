@@ -93,7 +93,7 @@ public class ItemListProperty extends Property {
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ItemListProperty property,
 						  final Pane fxNode) {
-			List<Node> childFxNodes = node.getChildren().stream()
+			List<Node> childFxNodes = node.streamChildren()
 					.map(child -> nodeHandlers.getFxNodeBuilder().build(child))
 					.collect(Collectors.toList());
 			fxNode.getChildren().setAll(childFxNodes);

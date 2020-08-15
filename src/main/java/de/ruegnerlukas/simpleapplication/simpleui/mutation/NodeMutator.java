@@ -4,6 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
@@ -11,8 +12,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.Node;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult.MUTATED;
@@ -115,46 +117,105 @@ public class NodeMutator implements BaseNodeMutator {
 	 * @param nodeHandlers the primary node handlers
 	 * @param original     the original node
 	 * @param target       the target node to match
+	 * @return the result of the mutation
 	 */
 	private MutationResult mutateChildren(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+		if (original.hasChildren() || target.hasChildren()) {
+			if (allChildrenHaveId(original) && allChildrenHaveId(target)) {
+				return mutateChildrenWithIdProp(nodeHandlers, original, target);
+			} else {
+				return mutateChildrenNoIdProp(nodeHandlers, original, target);
+			}
+		} else {
+			return MUTATED;
+		}
+	}
 
-		// TODO: optimize: make use of id property
-		boolean childrenChanged = false;
-		for (int i = 0; i < Math.max(original.getChildren().size(), target.getChildren().size()); i++) {
-			final SUINode childOriginal = original.getChildren().size() <= i ? null : original.getChildren().get(i);
-			final SUINode childTarget = target.getChildren().size() <= i ? null : target.getChildren().get(i);
+
+
+
+	/**
+	 * Checks whether all children of the given node have a valid id
+	 *
+	 * @param parent the parent to check
+	 * @return whether all nodes have a valid id
+	 */
+	private boolean allChildrenHaveId(final SUINode parent) {
+		return parent.streamChildren().allMatch(node -> node.hasProperty(IdProperty.class));
+	}
+
+
+
+
+	/**
+	 * This method will be used to mutate the children of the given original node
+	 * when some child nodes (original and target) are missing an id property.
+	 *
+	 * @param nodeHandlers the primary node handlers
+	 * @param original     the original node
+	 * @param target       the target node to match
+	 * @return the result of the mutation
+	 */
+	private MutationResult mutateChildrenNoIdProp(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+
+		final List<SUINode> newChildList = new ArrayList<>();
+
+		boolean childrenChanged = false; // todo: isn't this always true ?
+		for (int i = 0; i < Math.max(original.childCount(), target.childCount()); i++) {
+			final SUINode childTarget = target.childCount() <= i ? null : target.getChild(i);
+			final SUINode childOriginal = original.childCount() <= i ? null : original.getChild(i);
+
 
 			if (isRemoved(childOriginal, childTarget)) {
-				original.getChildren().set(i, null); // note: to remove inside the loop: set to null, remove nulls later
 				childrenChanged = true;
 				continue;
 			}
 
 			if (isAdded(childOriginal, childTarget)) {
 				nodeHandlers.getFxNodeBuilder().build(childTarget);
-				if (i < original.getChildren().size()) {
-					original.getChildren().set(i, childTarget);
-				} else {
-					original.getChildren().add(childTarget);
-				}
+				newChildList.add(childTarget);
 				childrenChanged = true;
 				continue;
 			}
 
 			if (notAddedOrRemoved(childOriginal, childTarget)) {
 				SUINode childMutated = nodeHandlers.getMutator().mutate(childOriginal, childTarget);
-				original.getChildren().set(i, childMutated);
+				newChildList.add(childMutated);
 				childrenChanged = true;
-				continue;
 			}
 
 		}
-		original.getChildren().removeAll(Collections.singleton(null));
 
-		if (childrenChanged) {
-			original.triggerChildListChange();
+		original.setChildren(newChildList, childrenChanged);
+		return MUTATED;
+	}
+
+
+
+
+	/**
+	 * This method will be used to mutate the children of the given original node
+	 * when all child nodes (original and target) have an id property.
+	 *
+	 * @param nodeHandlers the primary node handlers
+	 * @param original     the original node
+	 * @param target       the target node to match
+	 * @return the result of the mutation
+	 */
+	private MutationResult mutateChildrenWithIdProp(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+		final List<SUINode> newChildList = new ArrayList<>();
+		for (int i = 0; i < target.childCount(); i++) {
+			final SUINode childTarget = target.getChild(i);
+			final String targetId = childTarget.getProperty(IdProperty.class).getId();
+			final SUINode resultingNode = original.findChild(targetId)
+					.map(childOriginal -> nodeHandlers.getMutator().mutate(childOriginal, childTarget))
+					.orElseGet(() -> {
+						nodeHandlers.getFxNodeBuilder().build(childTarget);
+						return childTarget;
+					});
+			newChildList.add(resultingNode);
 		}
-
+		original.setChildren(newChildList, true);
 		return MUTATED;
 	}
 

@@ -75,7 +75,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		PropertyTestUtils.assertAlignment(node, Pos.CENTER);
 		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
 
-		final List<SUINode> children = node.getChildren();
+		final List<SUINode> children = node.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
@@ -156,7 +156,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -208,7 +208,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
@@ -254,7 +254,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -302,7 +302,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(0);
 
@@ -350,7 +350,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -402,7 +402,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -458,7 +458,7 @@ public class SUIVBoxTest extends ApplicationTest {
 		TestUtils.assertNode(mutatedNode, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(mutatedNode, "myVBox");
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
