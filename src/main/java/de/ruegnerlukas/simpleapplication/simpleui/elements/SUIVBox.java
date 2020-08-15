@@ -23,6 +23,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
@@ -61,11 +62,9 @@ public final class SUIVBox {
 	 */
 	private static void handleChildrenChange(final SUINode node) {
 		final VBox vbox = (VBox) node.getFxNode();
-		vbox.getChildren().clear();
-		node.getChildren().forEach(child -> {
-			// TODO: add on fx observable collections is slow => map to fxNodes first, then "addAll"
-			vbox.getChildren().add(child.getFxNode());
-		});
+		vbox.getChildren().setAll(node.getChildren().stream()
+				.map(SUINode::getFxNode)
+				.collect(Collectors.toList()));
 	}
 
 

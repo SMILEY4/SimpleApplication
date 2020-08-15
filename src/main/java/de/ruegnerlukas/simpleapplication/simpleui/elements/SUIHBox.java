@@ -24,6 +24,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.layout.HBox;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
@@ -62,10 +63,9 @@ public final class SUIHBox {
 	 */
 	private static void handleChildrenChange(final SUINode node) {
 		final HBox hbox = (HBox) node.getFxNode();
-		hbox.getChildren().clear();
-		node.getChildren().forEach(child -> {
-			hbox.getChildren().add(child.getFxNode());
-		});
+		hbox.getChildren().setAll(node.getChildren().stream()
+				.map(SUINode::getFxNode)
+				.collect(Collectors.toList()));
 	}
 
 

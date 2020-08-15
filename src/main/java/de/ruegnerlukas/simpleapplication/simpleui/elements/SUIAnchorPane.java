@@ -23,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public final class SUIAnchorPane {
@@ -59,10 +60,9 @@ public final class SUIAnchorPane {
 	 */
 	private static void handleChildrenChange(final SUINode node) {
 		final AnchorPane anchorPane = (AnchorPane) node.getFxNode();
-		anchorPane.getChildren().clear();
-		node.getChildren().forEach(child -> {
-			anchorPane.getChildren().add(child.getFxNode());
-		});
+		anchorPane.getChildren().setAll(node.getChildren().stream()
+				.map(SUINode::getFxNode)
+				.collect(Collectors.toList()));
 	}
 
 
