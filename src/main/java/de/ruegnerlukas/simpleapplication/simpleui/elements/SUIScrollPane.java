@@ -90,7 +90,7 @@ public final class SUIScrollPane {
 				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
 				// special
 				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.ScrollPaneFitToWidthUpdatingBuilder()),
-				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.FitToHeightUpdatingBuilder()),
+				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.ScrollPaneFitToHeightUpdatingBuilder()),
 				PropertyEntry.of(ShowScrollbarsProperty.class, new ShowScrollbarsProperty.ShowScrollbarUpdatingBuilder()),
 				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder(), null)
 		));

@@ -116,7 +116,6 @@ public class FitToWidthProperty extends Property {
 
 	}
 
-
 }
 
 

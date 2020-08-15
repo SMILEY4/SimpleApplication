@@ -63,9 +63,11 @@ public final class SUIVBox {
 		final VBox vbox = (VBox) node.getFxNode();
 		vbox.getChildren().clear();
 		node.getChildren().forEach(child -> {
+			// TODO: add on fx observable collections is slow => map to fxNodes first, then "addAll"
 			vbox.getChildren().add(child.getFxNode());
 		});
 	}
+
 
 
 

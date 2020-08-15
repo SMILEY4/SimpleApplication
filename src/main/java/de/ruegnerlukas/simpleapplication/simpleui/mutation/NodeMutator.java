@@ -124,17 +124,13 @@ public class NodeMutator implements BaseNodeMutator {
 			final SUINode childOriginal = original.getChildren().size() <= i ? null : original.getChildren().get(i);
 			final SUINode childTarget = target.getChildren().size() <= i ? null : target.getChildren().get(i);
 
-			if (childOriginal != null && childTarget != null) {
-				SUINode childMutated = nodeHandlers.getMutator().mutate(childOriginal, childTarget);
-				original.getChildren().set(i, childMutated);
+			if (isRemoved(childOriginal, childTarget)) {
+				original.getChildren().set(i, null); // note: to remove inside the loop: set to null, remove nulls later
 				childrenChanged = true;
+				continue;
 			}
-			if (childOriginal != null && childTarget == null) {
-				// to remove inside the loop: set to null, remove nulls later
-				original.getChildren().set(i, null);
-				childrenChanged = true;
-			}
-			if (childOriginal == null && childTarget != null) {
+
+			if (isAdded(childOriginal, childTarget)) {
 				nodeHandlers.getFxNodeBuilder().build(childTarget);
 				if (i < original.getChildren().size()) {
 					original.getChildren().set(i, childTarget);
@@ -142,7 +138,16 @@ public class NodeMutator implements BaseNodeMutator {
 					original.getChildren().add(childTarget);
 				}
 				childrenChanged = true;
+				continue;
 			}
+
+			if (notAddedOrRemoved(childOriginal, childTarget)) {
+				SUINode childMutated = nodeHandlers.getMutator().mutate(childOriginal, childTarget);
+				original.getChildren().set(i, childMutated);
+				childrenChanged = true;
+				continue;
+			}
+
 		}
 		original.getChildren().removeAll(Collections.singleton(null));
 
@@ -171,13 +176,13 @@ public class NodeMutator implements BaseNodeMutator {
 
 
 	/**
-	 * Check whether the property was added (i.e. only the target property exists).
+	 * Check whether the object was added (i.e. only the target object exists).
 	 *
-	 * @param original the original property
-	 * @param target   the target property
-	 * @return whether the property was added.
+	 * @param original the original object
+	 * @param target   the target object
+	 * @return whether the object was added.
 	 */
-	private boolean isAdded(final Property original, final Property target) {
+	private boolean isAdded(final Object original, final Object target) {
 		return (original == null) && (target != null);
 	}
 
@@ -185,14 +190,28 @@ public class NodeMutator implements BaseNodeMutator {
 
 
 	/**
-	 * Check whether the property was removed (i.e. only the original property exists).
+	 * Check whether the object was removed (i.e. only the original object exists).
 	 *
-	 * @param original the original property
-	 * @param target   the target property
-	 * @return whether the property was removed.
+	 * @param original the original object
+	 * @param target   the target object
+	 * @return whether the object was removed.
 	 */
-	private boolean isRemoved(final Property original, final Property target) {
+	private boolean isRemoved(final Object original, final Object target) {
 		return (original != null) && (target == null);
+	}
+
+
+
+
+	/**
+	 * Check whether the object was neither removed nor added (both != null).
+	 *
+	 * @param original the original object
+	 * @param target   the target object
+	 * @return true, if the object was neither removed nor added
+	 */
+	private boolean notAddedOrRemoved(final Object original, final Object target) {
+		return (original != null) && (target != null);
 	}
 
 
