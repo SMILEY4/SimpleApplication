@@ -43,6 +43,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.disabled(false),
 				Properties.style("-fx-background-color: red"),
 				Properties.alignment(Pos.CENTER),
+				Properties.defaultMutationBehaviour(),
 				Properties.buttonListener(() -> {
 				})
 		);

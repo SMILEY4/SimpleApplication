@@ -46,6 +46,7 @@ public class SUIVBoxTest extends ApplicationTest {
 				Properties.fitToWidth(true),
 				Properties.style("-fx-background-color: red"),
 				Properties.alignment(Pos.CENTER),
+				Properties.defaultMutationBehaviour(),
 				Properties.items(
 						SUIButton.button(
 								Properties.id("btn1"),

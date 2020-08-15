@@ -431,4 +431,42 @@ public final class Properties {
 	}
 
 
+	/**
+	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#DEFAULT}
+	 */
+	public static Property defaultMutationBehaviour() {
+		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.DEFAULT);
+	}
+
+
+
+	/**
+	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#STATIC_NODE}
+	 */
+	public static Property staticNode() {
+		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.STATIC_NODE);
+	}
+
+
+
+
+	/**
+	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#STATIC_SUBTREE}
+	 */
+	public static Property staticSubtree() {
+		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.STATIC_SUBTREE);
+	}
+
+
+
+
+	/**
+	 * @param behaviour the {@link MutationBehaviourProperty.MutationBehaviour}.
+	 * @return an {@link MutationBehaviourProperty}
+	 */
+	public static Property mutationBehaviour(final MutationBehaviourProperty.MutationBehaviour behaviour) {
+		return new MutationBehaviourProperty(behaviour);
+	}
+
+
 }
