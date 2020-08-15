@@ -49,7 +49,7 @@ public class MasterNodeMutator implements BaseNodeMutator {
 	 * @return the mutated or newly created node.
 	 */
 	public SUINode mutate(final SUINode original, final SUINode target) {
-		if (mutateNode(original, target, context.getMasterNodeHandlers()) == MutationResult.REBUILD) {
+		if (mutateNode(original, target, context.getMasterNodeHandlers()) == MutationResult.REQUIRES_REBUILD) {
 			fxNodeBuilder.build(target, context.getMasterNodeHandlers());
 			return target;
 		} else {

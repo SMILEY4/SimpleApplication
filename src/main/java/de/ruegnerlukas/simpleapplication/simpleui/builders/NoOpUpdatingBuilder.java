@@ -19,7 +19,7 @@ public class NoOpUpdatingBuilder implements PropFxNodeUpdatingBuilder<Property, 
 	@Override
 	public MutationResult update(final MasterNodeHandlers nodeHandlers, final Property property,
 								 final SUINode node, final Node fxNode) {
-		return MutationResult.REBUILD;
+		return MutationResult.REQUIRES_REBUILD;
 	}
 
 
@@ -28,7 +28,7 @@ public class NoOpUpdatingBuilder implements PropFxNodeUpdatingBuilder<Property, 
 	@Override
 	public MutationResult remove(final MasterNodeHandlers nodeHandlers, final Property property,
 								 final SUINode node, final Node fxNode) {
-		return MutationResult.REBUILD;
+		return MutationResult.REQUIRES_REBUILD;
 	}
 
 }

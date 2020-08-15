@@ -32,6 +32,7 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.simpleui.builders;
 	exports de.ruegnerlukas.simpleapplication.simpleui.elements;
 	exports de.ruegnerlukas.simpleapplication.simpleui.mutation;
+	exports de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 	exports de.ruegnerlukas.simpleapplication.simpleui.properties;
 	exports de.ruegnerlukas.simpleapplication.simpleui.registry;
 	exports de.ruegnerlukas.simpleapplication.simpleui.utils;

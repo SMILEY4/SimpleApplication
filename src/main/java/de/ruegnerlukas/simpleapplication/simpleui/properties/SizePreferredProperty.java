@@ -88,7 +88,7 @@ public class SizePreferredProperty extends Property {
 				fxNode.setPrefSize(sizeProp.getPreferredWidth(), sizeProp.getPreferredHeight());
 				return MutationResult.MUTATED;
 			} else {
-				return MutationResult.REBUILD;
+				return MutationResult.REQUIRES_REBUILD;
 			}
 		}
 

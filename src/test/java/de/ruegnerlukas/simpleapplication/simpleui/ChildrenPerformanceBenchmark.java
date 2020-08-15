@@ -12,7 +12,9 @@ import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.StopWatch;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 @Slf4j
+@FixMethodOrder (MethodSorters.NAME_ASCENDING)
 public class ChildrenPerformanceBenchmark extends ApplicationTest {
 
 
