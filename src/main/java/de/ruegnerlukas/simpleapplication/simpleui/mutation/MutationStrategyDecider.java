@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
-import de.ruegnerlukas.simpleapplication.common.Sampler;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.AddAllStrategy;
@@ -32,24 +31,17 @@ public class MutationStrategyDecider implements ChildNodesMutationStrategy {
 			return BaseNodeMutator.MutationResult.MUTATED;
 		}
 
-		ChildNodesMutationStrategy strategy = standardStrategy;
-
+		ChildNodesMutationStrategy strategy;
 		if (original.hasChildren() && !target.hasChildren()) {
 			strategy = removeAllStrategy;
-		}
-
-		if (!original.hasChildren() && target.hasChildren()) {
+		} else if (!original.hasChildren() && target.hasChildren()) {
 			strategy = addAllStrategy;
-		}
-
-		if (allChildrenHaveId(original) && allChildrenHaveId(target)) {
+		} else if (allChildrenHaveId(original) && allChildrenHaveId(target)) {
 			strategy = idStrategy;
+		} else {
+			strategy = standardStrategy;
 		}
-
-		Sampler.Sample runStrategy = Sampler.start("runStrategy");
-		BaseNodeMutator.MutationResult result = strategy.mutate(nodeHandlers, original, target);
-		runStrategy.stop();
-		return result;
+		return strategy.mutate(nodeHandlers, original, target);
 	}
 
 

@@ -6,7 +6,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.AddOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.RemoveOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.ReplaceOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.SwapOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToWidthProperty;
@@ -21,6 +24,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -63,17 +67,43 @@ public final class SUIVBox {
 	 */
 	private static void handleChildrenChange(final SUINode node) {
 		final VBox vbox = (VBox) node.getFxNode();
-		vbox.getChildren().setAll(node.streamChildren()
-				.map(SUINode::getFxNode)
-				.collect(Collectors.toList()));
+		if (node.hasChildren()) {
+			vbox.getChildren().setAll(node.streamChildren()
+					.map(SUINode::getFxNode)
+					.collect(Collectors.toList()));
+		} else {
+			vbox.getChildren().clear();
+		}
 	}
 
 
 
 
-	private static void handleChildrenTransform(final SUINode node, final List<IdMutationStrategy.Operation> operations) {
+	private static void handleChildrenTransform(final SUINode node,
+												final List<ReplaceOperation> replaceOperations,
+												final List<RemoveOperation> removeOperations,
+												final List<AddOperation> addOperations,
+												final List<SwapOperation> swapOperations) {
 		final VBox vbox = (VBox) node.getFxNode();
-		operations.forEach(op -> op.apply(vbox));
+//		operations.forEach(op -> op.apply(vbox));
+
+		/*
+		Order of operations:
+		- remove
+		- add
+		- swap
+		- replace
+		 */
+
+		List<Node> nodesToRemove = removeOperations.stream()
+				.map(o -> o.getNode().getFxNode())
+				.collect(Collectors.toList());
+		vbox.getChildren().removeAll(nodesToRemove);
+
+		addOperations.forEach(op -> op.apply(vbox));
+		swapOperations.forEach(op -> op.apply(vbox));
+		replaceOperations.forEach(op -> op.apply(vbox));
+
 	}
 
 

@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-import de.ruegnerlukas.simpleapplication.common.Sampler;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.ElementTestState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
@@ -103,45 +102,45 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 
 
 
-	@Test
-	public void addChildrenPropertySimple() {
-		log.info("addChildrenPropertySimple");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox")
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildButtonItems(n, false, 1234))
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
-
-
-
-	@Test
-	public void addChildrenPropertyComplex() {
-		log.info("addChildrenPropertyComplex");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox")
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildComplexFormItems(n, false, 1234))
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
+//	@Test
+//	public void addChildrenPropertySimple() {
+//		log.info("addChildrenPropertySimple");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox")
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildButtonItems(n, false, 1234))
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
+//
+//
+//
+//	@Test
+//	public void addChildrenPropertyComplex() {
+//		log.info("addChildrenPropertyComplex");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox")
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildComplexFormItems(n, false, 1234))
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
 
 
 
@@ -209,180 +208,180 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 	}
 
 
-
-
-	@Test
-	public void clearChildrenPropertySimple() {
-		log.info("clearChildrenPropertySimple");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildButtonItems(n, false, 1234))
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox")
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
-
-
-
-	@Test
-	public void clearChildrenPropertyComplex() {
-		log.info("clearChildrenPropertyComplex");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildComplexFormItems(n, false, 1234))
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox")
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
-
-
-
-	@Test
-	public void removeSomeChildrenPropertySimple() {
-		log.info("removeSomeChildrenPropertySimple");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildButtonItems(n, false, 1234))
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildButtonItems(n, true, 1234))
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
-
-
-
-	@Test
-	public void removeSomeChildrenPropertyComplex() {
-		log.info("removeSomeChildrenPropertyComplex");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildComplexFormItems(n, false, 1234))
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildComplexFormItems(n, true, 1234))
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
-
-
-
-	@Test
-	public void shuffleChildrenPropertySimple() {
-		log.info("shuffleChildrenPropertySimple");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildButtonItems(n, false, 1234))
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(shuffle(buildButtonItems(n, false, 1234)))
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
-
-
-
-	@Test
-	public void shuffleSomeChildrenPropertyComplex() {
-		log.info("shuffleSomeChildrenPropertyComplex");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildComplexFormItems(n, false, 1234))
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(shuffle(buildComplexFormItems(n, false, 1234)))
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
-
-
-
-	@Test
-	public void mutateChildrenPropertySimple() {
-		log.info("mutateChildrenPropertySimple");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildButtonItems(n, false, 1234))
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildButtonItems(n, false, 6789))
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
-
-
-
-	@Test
-	public void mutateSomeChildrenPropertyComplex() {
-		log.info("mutateSomeChildrenPropertyComplex");
-		for (int i = 0; i <= 1000; i += 100) {
-			final int n = Math.max(i, 1) * 100;
-			doTest(n, "n = " + n,
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildComplexFormItems(n, false, 1234))
-					),
-					SUIVBox.vbox(
-							Properties.id("myVBox"),
-							Properties.items(buildComplexFormItems(n, false, 5678))
-					)
-			);
-		}
-		log.info("-".repeat(50));
-	}
-
-
+//
+//
+//	@Test
+//	public void clearChildrenPropertySimple() {
+//		log.info("clearChildrenPropertySimple");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildButtonItems(n, false, 1234))
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox")
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
+//
+//
+//
+//	@Test
+//	public void clearChildrenPropertyComplex() {
+//		log.info("clearChildrenPropertyComplex");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildComplexFormItems(n, false, 1234))
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox")
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
+//
+//
+//
+//	@Test
+//	public void removeSomeChildrenPropertySimple() {
+//		log.info("removeSomeChildrenPropertySimple");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildButtonItems(n, false, 1234))
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildButtonItems(n, true, 1234))
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
+//
+//
+//
+//	@Test
+//	public void removeSomeChildrenPropertyComplex() {
+//		log.info("removeSomeChildrenPropertyComplex");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildComplexFormItems(n, false, 1234))
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildComplexFormItems(n, true, 1234))
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
+//
+//
+//
+//	@Test
+//	public void shuffleChildrenPropertySimple() {
+//		log.info("shuffleChildrenPropertySimple");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildButtonItems(n, false, 1234))
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(shuffle(buildButtonItems(n, false, 1234)))
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
+//
+//
+//
+//	@Test
+//	public void shuffleSomeChildrenPropertyComplex() {
+//		log.info("shuffleSomeChildrenPropertyComplex");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildComplexFormItems(n, false, 1234))
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(shuffle(buildComplexFormItems(n, false, 1234)))
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
+//
+//
+//
+//	@Test
+//	public void mutateChildrenPropertySimple() {
+//		log.info("mutateChildrenPropertySimple");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildButtonItems(n, false, 1234))
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildButtonItems(n, false, 6789))
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
+//
+//
+//
+//	@Test
+//	public void mutateSomeChildrenPropertyComplex() {
+//		log.info("mutateSomeChildrenPropertyComplex");
+//		for (int i = 0; i <= 1000; i += 100) {
+//			final int n = Math.max(i, 1) * 100;
+//			doTest(n, "n = " + n,
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildComplexFormItems(n, false, 1234))
+//					),
+//					SUIVBox.vbox(
+//							Properties.id("myVBox"),
+//							Properties.items(buildComplexFormItems(n, false, 5678))
+//					)
+//			);
+//		}
+//		log.info("-".repeat(50));
+//	}
+//
+//
 
 
 	private List<NodeFactory> shuffle(List<NodeFactory> list) {
@@ -486,12 +485,6 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 		watchMutate.start();
 		final SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		watchMutate.stop();
-
-		log.info("samples: ");
-		Sampler.getAllNames().forEach(name -> {
-			log.info("  - {}: avg={} min={} max={}", name, Sampler.getAvgTime(name), Sampler.getMinTime(name), Sampler.getMaxTime(name));
-		});
-		Sampler.clear();
 
 		printResult(index, description, watchBuildOriginal.getTime(), watchBuildTarget.getTime(), watchMutate.getTime());
 	}

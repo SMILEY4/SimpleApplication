@@ -1,7 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
 import de.ruegnerlukas.simpleapplication.common.AsyncChunkProcessor;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.AddOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.Operation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.RemoveOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.ReplaceOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.SwapOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
@@ -155,9 +159,12 @@ public class SUINode {
 
 
 
-	public void triggerChildListTransform(final List<IdMutationStrategy.Operation> operations) {
+	public void triggerChildListTransform(final List<ReplaceOperation> replaceOperations,
+										  final List<RemoveOperation> removeOperations,
+										  final List<AddOperation> addOperations,
+										  final List<SwapOperation> swapOperations) {
 		if (childTransformListener != null && getFxNode() != null) {
-			childTransformListener.onTransform(this, operations);
+			childTransformListener.onTransform(this, replaceOperations, removeOperations, addOperations, swapOperations);
 		}
 	}
 
@@ -210,6 +217,19 @@ public class SUINode {
 
 
 	/**
+	 * Finds the child node with the given id
+	 *
+	 * @param id the id of the requested child node
+	 * @return the child node with the given id or null
+	 */
+	public SUINode findChildUnsafe(final String id) {
+		return childMap.get(id);
+	}
+
+
+
+
+	/**
 	 * @return an unmodifiable list of children
 	 */
 	public List<SUINode> getChildrenUnmodifiable() {
@@ -242,22 +262,45 @@ public class SUINode {
 
 	/**
 	 * todo: prototype
-	 *
-	 * @param operations
 	 */
-	public void applyChildTransformations(final List<IdMutationStrategy.Operation> operations) {
+	public void applyChildTransformations(final List<ReplaceOperation> replaceOperations,
+										  final List<RemoveOperation> removeOperations,
+										  final List<AddOperation> addOperations,
+										  final List<SwapOperation> swapOperations) {
 
-		int cost = 0;
-		for (IdMutationStrategy.Operation operation : operations) {
+				/*
+		Order of operations:
+		- remove
+		- add
+		- swap
+		- replace
+		 */
+
+				int cost = 0;
+		for (Operation operation : removeOperations) {
+			operation.apply(this.children);
+			operation.apply(this.childMap);
+			cost += operation.getCost();
+		}
+		for (Operation operation : addOperations) {
+			operation.apply(this.children);
+			operation.apply(this.childMap);
+			cost += operation.getCost();
+		}
+		for (Operation operation : swapOperations) {
+			operation.apply(this.children);
+			operation.apply(this.childMap);
+			cost += operation.getCost();
+		}
+		for (Operation operation : replaceOperations) {
 			operation.apply(this.children);
 			operation.apply(this.childMap);
 			cost += operation.getCost();
 		}
 
-		if (childTransformListener != null && cost < Math.min(childCount() / 3, 64)) {
-			triggerChildListTransform(operations);
+		if (childTransformListener != null && cost < 10000) {
+			triggerChildListTransform(replaceOperations, removeOperations, addOperations, swapOperations);
 		} else {
-			System.out.println("change " + cost + " " + childTransformListener + " " + Math.min(childCount() / 3, 64));
 			triggerChildListChange();
 		}
 	}
@@ -341,7 +384,7 @@ public class SUINode {
 	public interface ChildTransformListener {
 
 
-		void onTransform(SUINode parent, List<IdMutationStrategy.Operation> operations);
+		void onTransform(SUINode parent, List<ReplaceOperation> replaceOperations, List<RemoveOperation> removeOperations, List<AddOperation> addOperations, List<SwapOperation> swapOperations);
 
 	}
 

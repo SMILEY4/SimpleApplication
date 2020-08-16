@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.common.Sampler;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
@@ -30,23 +29,17 @@ public class NodeMutator implements BaseNodeMutator {
 	@Override
 	public MutationResult mutateNode(final SUINode original, final SUINode target, final MasterNodeHandlers nodeHandlers) {
 		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
-		Sampler.Sample mutateProps = Sampler.start("mutateProps " + original.childCount());
 		if (mutationBehaviour == MutationBehaviour.DEFAULT) {
 			if (mutateProperties(nodeHandlers, original, target) == REQUIRES_REBUILD) {
-				mutateProps.stop();
 				return REQUIRES_REBUILD;
 			}
 		}
-		mutateProps.stop();
 
-		Sampler.Sample mutateChildren = Sampler.start("mutateChildren " + original.childCount());
 		if (mutationBehaviour != MutationBehaviour.STATIC_SUBTREE) {
 			if (mutateChildren(nodeHandlers, original, target) == REQUIRES_REBUILD) {
-				mutateChildren.stop();
 				return REQUIRES_REBUILD;
 			}
 		}
-		mutateChildren.stop();
 		return MUTATED;
 	}
 

@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.common.Sampler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,45 +22,51 @@ public class ListTransformer {
 
 	private final Map<String, Integer> targetIndexMap;
 
+	private final Set<String> setTarget;
+
+
 
 
 	public ListTransformer(final List<String> source, final List<String> target) {
 		this.source = source;
 		this.target = target;
 		this.targetIndexMap = buildIndexMap(target);
+		this.setTarget = new HashSet<>(target);
 	}
 
 
 
 
 	public Set<Pair<String, Integer>> getElementsKept() {
-		Sampler.Sample samplerKept = Sampler.start("getKept " + source.size());
-
-		final Set<String> setTarget = Set.copyOf(target);
-
-		Set<Pair<String, Integer>> result = Set.copyOf(source).stream()
+		return source.stream()
 				.filter(setTarget::contains)
 				.map(element -> Pair.of(element, targetIndexMap.get(element)))
 				.collect(Collectors.toSet());
+	}
 
-		samplerKept.stop();
-		return result;
+
+
+
+	public Set<Pair<Integer, Integer>> getIndicesKept() { // <srcIndex,tgtIndex>
+		Set<Pair<Integer, Integer>> set = new HashSet<>();
+		for (int i = 0, n = source.size(); i < n; i++) {
+			final String elementSource = source.get(i);
+			if (setTarget.contains(elementSource)) {
+				set.add(Pair.of(i, targetIndexMap.get(elementSource)));
+			}
+		}
+		return set;
 	}
 
 
 
 
 	public List<TransformOperation> calculateTransformations() {
-		Sampler.Sample sample = Sampler.start("calculateTransformations " + source.size() + "->" + target.size());
 		if (listsEqual(source, target)) {
-			sample.stop();
 			return new ArrayList<>();
 		}
-		final Set<String> setSource = Set.copyOf(source);
-		final Set<String> setTarget = Set.copyOf(target);
-		List<TransformOperation> result = calculateTransformations(new ArrayList<>(source), setSource, Collections.unmodifiableList(target), setTarget);
-		sample.stop();
-		return result;
+		final Set<String> setSource = new HashSet<>(source);
+		return calculateTransformations(new ArrayList<>(source), setSource, Collections.unmodifiableList(target), setTarget);
 	}
 
 
@@ -83,23 +89,16 @@ public class ListTransformer {
 
 	private List<TransformOperation> calculateTransformations(final List<String> source, final Set<String> setSource,
 															  final List<String> target, final Set<String> setTarget) {
-		final List<TransformOperation> operations = new ArrayList<>();
 
-		Sampler.Sample sampleRemove = Sampler.start("removeOperations " + source.size() + "->" + target.size());
 		List<RemoveOperations> removeOperations = calculateRemoveOperations(source, setSource, target, setTarget);
 		applyRemoveOperations(removeOperations, source);
-		operations.addAll(removeOperations);
-		sampleRemove.stop();
+		final List<TransformOperation> operations = new ArrayList<>(removeOperations);
 
-		Sampler.Sample sampleAdd = Sampler.start("addOperations " + source.size() + "->" + target.size());
 		List<AddOperations> addOperations = calculateAddOperations(source, setSource, target, setTarget);
 		applyAddOperations(addOperations, source);
 		operations.addAll(addOperations);
-		sampleAdd.stop();
 
-		Sampler.Sample sampleSwap = Sampler.start("swapOperations " + source.size() + "->" + target.size());
 		operations.addAll(calculateSwapOperations(source, target));
-		sampleSwap.stop();
 
 		return operations;
 	}
@@ -109,9 +108,10 @@ public class ListTransformer {
 
 	private List<RemoveOperations> calculateRemoveOperations(final List<String> source, final Set<String> setSource,
 															 final List<String> target, final Set<String> setTarget) {
+		final Map<String, Integer> sourceIndexMap = buildIndexMap(source);
 		return setSource.stream()
 				.filter(e -> !setTarget.contains(e))
-				.map(e -> source.indexOf(e))
+				.map(sourceIndexMap::get)
 				.sorted((a, b) -> -Integer.compare(a, b))
 				.map(RemoveOperations::new)
 				.collect(Collectors.toList());
@@ -148,31 +148,48 @@ public class ListTransformer {
 
 
 	private List<SwapOperation> calculateSwapOperations(final List<String> source, final List<String> target) {
-
 		Map<String, Integer> indexMap = buildIndexMap(target);
+		List<IntPair> pairs = getSwapIndexPairs(source, indexMap);
+		final List<IntPair> swaps = calculateSwaps(pairs);
+		final List<SwapOperation> result = new ArrayList<>(swaps.size());
+		swaps.forEach(swap -> result.add(new SwapOperation(swap.getLeft(), swap.getRight())));
+		return result;
+	}
 
-		final List<Pair<Integer, Integer>> pairs = new ArrayList<>();
+
+
+
+	private List<IntPair> calculateSwaps(List<IntPair> pairs) {
+		final List<IntPair> swaps = new ArrayList<>(pairs.size());
+		while (!pairs.isEmpty()) {
+			IntPair pair = pairs.remove(pairs.size()-1);
+			swaps.add(pair);
+			List<IntPair> toKeep = new ArrayList<>(pairs.size());
+			for (int i = 0, n = pairs.size(); i < n; i++) {
+				IntPair p = pairs.get(i);
+				if (!(p.getRight() == pair.getRight() || p.getLeft() == pair.getRight())) {
+					toKeep.add(p);
+				}
+			}
+			pairs = toKeep;
+		}
+		return swaps;
+	}
+
+
+
+
+	private List<IntPair> getSwapIndexPairs(final List<String> source, final Map<String, Integer> indexMap) {
+		List<IntPair> pairs = new ArrayList<>(source.size());
 		for (int i = 0; i < source.size(); i++) {
-			final int indexMatch = indexMap.getOrDefault(source.get(i), -1);
-			if (indexMatch > -1) {
+			final Integer indexMatch = indexMap.get(source.get(i));
+			if (indexMatch != null) {
 				if (i != indexMatch) {
-					pairs.add(Pair.of(i, indexMatch));
+					pairs.add(IntPair.of(i, indexMatch));
 				}
 			}
 		}
-
-		final List<Pair<Integer, Integer>> swaps = new ArrayList<>();
-		if (!pairs.isEmpty()) {
-			while (!pairs.isEmpty()) {
-				Pair<Integer, Integer> pair = pairs.remove(0);
-				swaps.add(pair);
-				pairs.removeIf(p -> p.getRight().equals(pair.getRight()) || p.getLeft().equals(pair.getRight()));
-			}
-		}
-
-		return swaps.stream()
-				.map(swap -> new SwapOperation(swap.getLeft(), swap.getRight()))
-				.collect(Collectors.toList());
+		return pairs;
 	}
 
 
@@ -295,6 +312,37 @@ public class ListTransformer {
 		}
 
 	}
+
+
+
+
+
+
+	@Getter
+	@AllArgsConstructor
+	public static class IntPair {
+
+
+		public static IntPair of(final int left, final int right) {
+			return new IntPair(left, right);
+		}
+
+
+
+
+		private final int left;
+		private final int right;
+
+
+
+
+		@Override
+		public String toString() {
+			return "<" + left + "," + right + ">";
+		}
+
+	}
+
 
 }
 
