@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.AddAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ChildNodesMutationStrategy;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStategy;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.RemoveAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.StandardMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
@@ -14,7 +14,8 @@ public class MutationStrategyDecider implements ChildNodesMutationStrategy {
 
 	private final ChildNodesMutationStrategy standardStrategy = new StandardMutationStrategy();
 
-	private final ChildNodesMutationStrategy idStrategy = new IdMutationStategy();
+		private final ChildNodesMutationStrategy idStrategy = new IdMutationStrategy();
+//	private final ChildNodesMutationStrategy idStrategy = new AsyncIdMutationStrategy();
 
 	private final ChildNodesMutationStrategy removeAllStrategy = new RemoveAllStrategy();
 

@@ -43,6 +43,14 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 		}
 
+
+		// todo bottleneck for smaller number of modifications
+		/*
+		Idea:
+		- still collect all nodes in single list here
+		- also keep track of modifications (remove, add, modify)
+		- if number of modifications small ( less than 30% ?) -> original.applyMods, else -> setChildren
+		 */
 		original.setChildren(newChildList, childrenChanged);
 		return MUTATED;
 	}

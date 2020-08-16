@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToWidthProperty;
@@ -49,7 +50,7 @@ public final class SUIVBox {
 	 */
 	public static NodeFactory vbox(final Property... properties) {
 		Properties.checkIllegal(SUIVBox.class, get().getEntry(SUIVBox.class).getProperties(), properties);
-		return state -> new SUINode(SUIVBox.class, List.of(properties), state, SUIVBox::handleChildrenChange);
+		return state -> new SUINode(SUIVBox.class, List.of(properties), state, SUIVBox::handleChildrenChange, SUIVBox::handleChildrenTransform);
 	}
 
 
@@ -65,6 +66,14 @@ public final class SUIVBox {
 		vbox.getChildren().setAll(node.streamChildren()
 				.map(SUINode::getFxNode)
 				.collect(Collectors.toList()));
+	}
+
+
+
+
+	private static void handleChildrenTransform(final SUINode node, final List<IdMutationStrategy.Operation> operations) {
+		final VBox vbox = (VBox) node.getFxNode();
+		operations.forEach(op -> op.apply(vbox));
 	}
 
 

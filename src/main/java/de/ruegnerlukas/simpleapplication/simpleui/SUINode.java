@@ -1,5 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
+import de.ruegnerlukas.simpleapplication.common.AsyncChunkProcessor;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
@@ -13,10 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SUINode {
 
+
+	private static final int N_CORES = Runtime.getRuntime().availableProcessors();
 
 	/**
 	 * The type of this node.
@@ -47,6 +52,8 @@ public class SUINode {
 	@Getter
 	private ChildListener childListener;
 
+	@Getter
+	private ChildTransformListener childTransformListener;
 
 	/**
 	 * The fx-node attached to this node (or null).
@@ -66,10 +73,19 @@ public class SUINode {
 	 */
 	public SUINode(final Class<?> nodeType, final List<Property> propertyList,
 				   final SUIState state, final ChildListener childListener) {
+		this(nodeType, propertyList, state, childListener, null);
+	}
+
+
+
+
+	public SUINode(final Class<?> nodeType, final List<Property> propertyList,
+				   final SUIState state, final ChildListener childListener, final ChildTransformListener childTransformListener) {
 		this.nodeType = nodeType;
 		propertyList.forEach(property -> properties.put(property.getKey(), property));
-		childNodesFromProperties(state);
+		createChildNodesFromProperties(state);
 		this.childListener = childListener;
+		this.childTransformListener = childTransformListener;
 	}
 
 
@@ -80,14 +96,48 @@ public class SUINode {
 	 *
 	 * @param state the current state
 	 */
-	private void childNodesFromProperties(final SUIState state) {
-		final List<SUINode> children = new ArrayList<>();
-		getPropertySafe(ItemListProperty.class).ifPresent(itemListProp -> itemListProp.getFactories().forEach(factory -> {
-			final SUINode child = factory.create(state);
-			children.add(child);
-		}));
-		getPropertySafe(ItemProperty.class).ifPresent(itemProp -> children.add(itemProp.getFactory().create(state)));
-		setChildren(children, false);
+	private void createChildNodesFromProperties(final SUIState state) {
+		getPropertySafe(ItemListProperty.class)
+				.ifPresent(property -> setChildren(createChildNodesFromItemListProperty(state, property), false));
+		getPropertySafe(ItemProperty.class)
+				.ifPresent(property -> setChildren(createChildNodesFromItemProperty(state, property), false));
+	}
+
+
+
+
+	/**
+	 * Create the child nodes from given item list property and the given state.
+	 *
+	 * @param state    the current state
+	 * @param property the item list property
+	 */
+	private List<SUINode> createChildNodesFromItemListProperty(final SUIState state, final ItemListProperty property) {
+
+		if (property.getFactories().size() < 1028) {
+			return property.getFactories().stream()
+					.map(factory -> factory.create(state))
+					.collect(Collectors.toList());
+		} else {
+			return new AsyncChunkProcessor<>(property.getFactories(), property.getFactories().size() / N_CORES, factories ->
+					factories.stream()
+							.map(factory -> factory.create(state))
+							.collect(Collectors.toList()))
+					.get();
+		}
+	}
+
+
+
+
+	/**
+	 * Create the child nodes from given item property and the given state.
+	 *
+	 * @param state    the current state
+	 * @param property the item property
+	 */
+	private List<SUINode> createChildNodesFromItemProperty(final SUIState state, final ItemProperty property) {
+		return List.of(property.getFactory().create(state));
 	}
 
 
@@ -99,6 +149,15 @@ public class SUINode {
 	public void triggerChildListChange() {
 		if (childListener != null && getFxNode() != null) {
 			childListener.onChange(this);
+		}
+	}
+
+
+
+
+	public void triggerChildListTransform(final List<IdMutationStrategy.Operation> operations) {
+		if (childTransformListener != null && getFxNode() != null) {
+			childTransformListener.onTransform(this, operations);
 		}
 	}
 
@@ -182,6 +241,37 @@ public class SUINode {
 
 
 	/**
+	 * todo: prototype
+	 *
+	 * @param operations
+	 */
+	public void applyChildTransformations(final List<IdMutationStrategy.Operation> operations) {
+
+		long tsSUI = System.currentTimeMillis();
+		int cost = 0;
+		for (IdMutationStrategy.Operation operation : operations) {
+			operation.apply(this.children);
+			operation.apply(this.childMap);
+			cost += operation.getCost();
+		}
+		if (childCount() > 100) System.out.println("tsSUI:" + (System.currentTimeMillis() - tsSUI) + "ms");
+
+		long tsFx = System.currentTimeMillis();
+		if (childTransformListener != null) {
+			triggerChildListTransform(operations);
+			if (childCount() > 100) System.out.println(" - transform " + operations.size());
+		} else {
+			triggerChildListChange();
+			if (childCount() > 100) System.out.println(" - change");
+		}
+		if (childCount() > 100) System.out.println("tsFx:" + (System.currentTimeMillis() - tsFx) + "ms");
+
+	}
+
+
+
+
+	/**
 	 * @return the children of this node as a stream
 	 */
 	public Stream<SUINode> streamChildren() {
@@ -246,6 +336,18 @@ public class SUINode {
 		 * @param parent the parent node of the changed child nodes
 		 */
 		void onChange(SUINode parent);
+
+	}
+
+
+
+
+
+
+	public interface ChildTransformListener {
+
+
+		void onTransform(SUINode parent, List<IdMutationStrategy.Operation> operations);
 
 	}
 

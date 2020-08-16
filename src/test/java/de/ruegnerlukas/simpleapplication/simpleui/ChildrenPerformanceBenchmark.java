@@ -9,6 +9,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.StopWatch;
@@ -30,6 +32,75 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 	@Override
 	public void start(Stage stage) {
 		SUIRegistry.initialize();
+	}
+
+
+
+
+
+
+	@Test
+	public void testA() {
+		final int N = 50_000 / 2;
+
+		NodeFactory vboxFactory = SUIVBox.vbox(
+				Properties.id("myVBox"),
+				Properties.items(buildComplexFormItems(50_000, false, 1234))
+		);
+
+		final ElementTestState state = new ElementTestState();
+		final SUISceneContext context = new SUISceneContext(state, vboxFactory);
+
+		final VBox vbox = (VBox) context.getRootNode().getFxNode();
+
+		final Random random = new Random(1234);
+
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		for (int i = 0; i < N; i++) {
+			int index = random.nextInt(vbox.getChildren().size());
+			vbox.getChildren().remove(index);
+		}
+		stopWatch.stop();
+
+		log.info("removing {} nodes individually took {}ms", N, stopWatch.getTime());
+
+	}
+
+
+
+
+	@Test
+	public void testB() {
+		final int N = 50_000 / 2;
+
+		NodeFactory vboxFactory = SUIVBox.vbox(
+				Properties.id("myVBox"),
+				Properties.items(buildComplexFormItems(50_000, false, 1234))
+		);
+
+		final ElementTestState state = new ElementTestState();
+		final SUISceneContext context = new SUISceneContext(state, vboxFactory);
+
+		final VBox vbox = (VBox) context.getRootNode().getFxNode();
+
+
+		final List<Node> nodes = new ArrayList<>();
+		nodes.addAll(vbox.getChildren());
+
+		final Random random = new Random(1234);
+		for (int i = 0; i < N; i++) {
+			int index = random.nextInt(nodes.size());
+			nodes.remove(index);
+		}
+
+
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		vbox.getChildren().setAll(nodes);
+		stopWatch.stop();
+
+		log.info("removing {} nodes in batch took {}ms", N, stopWatch.getTime());
 	}
 
 
@@ -108,6 +179,28 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 					SUIVBox.vbox(
 							Properties.id("myVBox"),
 							Properties.items(buildComplexFormItems(n, true, 1234))
+					),
+					SUIVBox.vbox(
+							Properties.id("myVBox"),
+							Properties.items(buildComplexFormItems(n, false, 1234))
+					)
+			);
+		}
+		log.info("-".repeat(50));
+	}
+
+
+
+
+	@Test
+	public void addFewChildrenPropertyComplex() {
+		log.info("addSomeChildrenPropertyComplex");
+		for (int i = 0; i <= 1000; i += 100) {
+			final int n = Math.max(i, 1) * 100;
+			doTest(n, "n = " + n,
+					SUIVBox.vbox(
+							Properties.id("myVBox"),
+							Properties.items(buildComplexFormItems(n, n, true, 1234))
 					),
 					SUIVBox.vbox(
 							Properties.id("myVBox"),
@@ -316,19 +409,22 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 					Properties.textContent("Button " + i + "(" + number + ")")
 			));
 		}
+//		log.info("build {} simple items", items.size());
 		return items;
 	}
 
 
-
-
 	private List<NodeFactory> buildComplexFormItems(int n, boolean skipUneven, long seed) {
+		return buildComplexFormItems(n, skipUneven ? 2 : 1, skipUneven ? true : false, seed);
+	}
+
+	private List<NodeFactory> buildComplexFormItems(int n, int skipMod, boolean modIsZero, long seed) {
 		final Random random = new Random(seed);
 		final List<NodeFactory> items = new ArrayList<>(n);
 		for (int i = 0; i < n; i++) {
 			final int numberA = random.nextInt(10000);
 			final int numberB = random.nextInt(10000);
-			if (skipUneven && i % 2 == 0) {
+			if ((i % skipMod == 0) == modIsZero) {
 				continue;
 			}
 			items.add(SUIVBox.vbox(
@@ -362,6 +458,7 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 					)
 			));
 		}
+//		log.info("build {} complex items", items.size());
 		return items;
 	}
 
