@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,7 @@ public class Sampler {
 
 	public static Sample start(final String name) {
 		Sample sample = new Sample(name, System.currentTimeMillis(), -1);
-		samples.computeIfAbsent(name, k -> new ArrayList<>()).add(sample);
+//		samples.computeIfAbsent(name, k -> new ArrayList<>()).add(sample);
 		return sample;
 	}
 

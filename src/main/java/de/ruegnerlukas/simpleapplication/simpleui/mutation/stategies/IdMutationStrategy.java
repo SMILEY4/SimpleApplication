@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
+import de.ruegnerlukas.simpleapplication.common.AsyncChunkProcessor;
 import de.ruegnerlukas.simpleapplication.common.Sampler;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -13,6 +15,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -85,25 +88,61 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	private List<ListTransformer.TransformOperation> mutateKeepChildren(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target,
-																		final Set<ListTransformer.Pair<String, Integer>> elementsKept) {
+																		final Set<Pair<String, Integer>> elementsKept) {
 
 		final List<ListTransformer.TransformOperation> transformations = new ArrayList<>();
 
 		Sampler.Sample samplerReplace = Sampler.start("replaceOp " + elementsKept.size());
-		elementsKept.forEach(pair -> {
-			Sampler.Sample samplerReplaceIn = Sampler.start("replaceOpIter " + elementsKept.size());
-			final SUINode childOriginal = original.findChild(pair.getLeft()).orElse(null);
-			final SUINode childTarget = target.findChild(pair.getLeft()).orElse(null);
-			BaseNodeMutator.MutationResult result = nodeHandlers.getMutator().mutateNode(childOriginal, childTarget, nodeHandlers);
-			if (result == BaseNodeMutator.MutationResult.REQUIRES_REBUILD) {
-				transformations.add(new ListTransformer.ReplaceOperation(pair.getRight(), pair.getLeft()));
-			}
-			samplerReplaceIn.stop();
-		});
+
+		List<ChildNodeKept> childNodesKept = elementsKept.stream()
+				.map(pair -> {
+					final SUINode childOriginal = original.findChild(pair.getLeft()).orElse(null);
+					final SUINode childTarget = target.findChild(pair.getLeft()).orElse(null);
+					return new ChildNodeKept(pair.getRight(), pair.getLeft(), childOriginal, childTarget);
+				})
+				.collect(Collectors.toList());
+
+		AsyncChunkProcessor<ChildNodeKept, ListTransformer.TransformOperation> processor =
+				new AsyncChunkProcessor<>(childNodesKept, target.childCount() / 12,
+						chunk -> chunk.stream()
+								.map(keepData -> {
+									final SUINode childOriginal = keepData.getChildNode();
+									final SUINode childTarget = keepData.getTargetNode();
+									BaseNodeMutator.MutationResult result = nodeHandlers.getMutator().mutateNode(childOriginal, childTarget, nodeHandlers);
+									if (result == BaseNodeMutator.MutationResult.REQUIRES_REBUILD) {
+										return new ListTransformer.ReplaceOperation(keepData.getChildIndex(), keepData.getIdTarget());
+									} else {
+										return null;
+									}
+								})
+								.filter(Objects::nonNull)
+								.collect(Collectors.toList())
+				);
+		transformations.addAll(processor.get());
+
+
 		samplerReplace.stop();
 
 		return transformations;
 	}
+
+
+
+
+	@Getter
+	@AllArgsConstructor
+	private static class ChildNodeKept {
+
+
+		private final int childIndex;
+		private final String idTarget;
+		private final SUINode childNode;
+		private final SUINode targetNode;
+
+
+	}
+
+
 
 
 
