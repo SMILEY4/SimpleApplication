@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
+import de.ruegnerlukas.simpleapplication.common.Sampler;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.ElementTestState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
@@ -9,8 +10,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.StopWatch;
@@ -37,71 +36,69 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 
 
 
-
-
-	@Test
-	public void testA() {
-		final int N = 50_000 / 2;
-
-		NodeFactory vboxFactory = SUIVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.items(buildComplexFormItems(50_000, false, 1234))
-		);
-
-		final ElementTestState state = new ElementTestState();
-		final SUISceneContext context = new SUISceneContext(state, vboxFactory);
-
-		final VBox vbox = (VBox) context.getRootNode().getFxNode();
-
-		final Random random = new Random(1234);
-
-		StopWatch stopWatch = new StopWatch();
-		stopWatch.start();
-		for (int i = 0; i < N; i++) {
-			int index = random.nextInt(vbox.getChildren().size());
-			vbox.getChildren().remove(index);
-		}
-		stopWatch.stop();
-
-		log.info("removing {} nodes individually took {}ms", N, stopWatch.getTime());
-
-	}
-
-
-
-
-	@Test
-	public void testB() {
-		final int N = 50_000 / 2;
-
-		NodeFactory vboxFactory = SUIVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.items(buildComplexFormItems(50_000, false, 1234))
-		);
-
-		final ElementTestState state = new ElementTestState();
-		final SUISceneContext context = new SUISceneContext(state, vboxFactory);
-
-		final VBox vbox = (VBox) context.getRootNode().getFxNode();
-
-
-		final List<Node> nodes = new ArrayList<>();
-		nodes.addAll(vbox.getChildren());
-
-		final Random random = new Random(1234);
-		for (int i = 0; i < N; i++) {
-			int index = random.nextInt(nodes.size());
-			nodes.remove(index);
-		}
-
-
-		StopWatch stopWatch = new StopWatch();
-		stopWatch.start();
-		vbox.getChildren().setAll(nodes);
-		stopWatch.stop();
-
-		log.info("removing {} nodes in batch took {}ms", N, stopWatch.getTime());
-	}
+//	@Test
+//	public void testA() {
+//		final int N = 50_000 / 2;
+//
+//		NodeFactory vboxFactory = SUIVBox.vbox(
+//				Properties.id("myVBox"),
+//				Properties.items(buildComplexFormItems(50_000, false, 1234))
+//		);
+//
+//		final ElementTestState state = new ElementTestState();
+//		final SUISceneContext context = new SUISceneContext(state, vboxFactory);
+//
+//		final VBox vbox = (VBox) context.getRootNode().getFxNode();
+//
+//		final Random random = new Random(1234);
+//
+//		StopWatch stopWatch = new StopWatch();
+//		stopWatch.start();
+//		for (int i = 0; i < N; i++) {
+//			int index = random.nextInt(vbox.getChildren().size());
+//			vbox.getChildren().remove(index);
+//		}
+//		stopWatch.stop();
+//
+//		log.info("removing {} nodes individually took {}ms", N, stopWatch.getTime());
+//
+//	}
+//
+//
+//
+//
+//	@Test
+//	public void testB() {
+//		final int N = 50_000 / 2;
+//
+//		NodeFactory vboxFactory = SUIVBox.vbox(
+//				Properties.id("myVBox"),
+//				Properties.items(buildComplexFormItems(50_000, false, 1234))
+//		);
+//
+//		final ElementTestState state = new ElementTestState();
+//		final SUISceneContext context = new SUISceneContext(state, vboxFactory);
+//
+//		final VBox vbox = (VBox) context.getRootNode().getFxNode();
+//
+//
+//		final List<Node> nodes = new ArrayList<>();
+//		nodes.addAll(vbox.getChildren());
+//
+//		final Random random = new Random(1234);
+//		for (int i = 0; i < N; i++) {
+//			int index = random.nextInt(nodes.size());
+//			nodes.remove(index);
+//		}
+//
+//
+//		StopWatch stopWatch = new StopWatch();
+//		stopWatch.start();
+//		vbox.getChildren().setAll(nodes);
+//		stopWatch.stop();
+//
+//		log.info("removing {} nodes in batch took {}ms", N, stopWatch.getTime());
+//	}
 
 
 
@@ -414,9 +411,14 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 	}
 
 
+
+
 	private List<NodeFactory> buildComplexFormItems(int n, boolean skipUneven, long seed) {
 		return buildComplexFormItems(n, skipUneven ? 2 : 1, skipUneven ? true : false, seed);
 	}
+
+
+
 
 	private List<NodeFactory> buildComplexFormItems(int n, int skipMod, boolean modIsZero, long seed) {
 		final Random random = new Random(seed);
@@ -485,13 +487,20 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 		final SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		watchMutate.stop();
 
+		log.info("samples: ");
+		Sampler.getAllNames().forEach(name -> {
+			log.info("  - {}: avg={} min={} max={}", name, Sampler.getAvgTime(name), Sampler.getMinTime(name), Sampler.getMaxTime(name));
+		});
+		Sampler.clear();
+
 		printResult(index, description, watchBuildOriginal.getTime(), watchBuildTarget.getTime(), watchMutate.getTime());
 	}
 
 
 
 
-	private static void printResult(int index, String description, final long millisBuildOriginal, final long millisBuildTarget, final long millisMutate) {
+	private static void printResult(int index, String description, final long millisBuildOriginal, final long millisBuildTarget,
+									final long millisMutate) {
 //		final String message = System.lineSeparator()
 //				+ "=".repeat(30) + System.lineSeparator()
 //				+ description + System.lineSeparator()

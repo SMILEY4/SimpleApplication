@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
+import de.ruegnerlukas.simpleapplication.common.Sampler;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.AddAllStrategy;
@@ -14,7 +15,7 @@ public class MutationStrategyDecider implements ChildNodesMutationStrategy {
 
 	private final ChildNodesMutationStrategy standardStrategy = new StandardMutationStrategy();
 
-		private final ChildNodesMutationStrategy idStrategy = new IdMutationStrategy();
+	private final ChildNodesMutationStrategy idStrategy = new IdMutationStrategy();
 //	private final ChildNodesMutationStrategy idStrategy = new AsyncIdMutationStrategy();
 
 	private final ChildNodesMutationStrategy removeAllStrategy = new RemoveAllStrategy();
@@ -31,19 +32,24 @@ public class MutationStrategyDecider implements ChildNodesMutationStrategy {
 			return BaseNodeMutator.MutationResult.MUTATED;
 		}
 
+		ChildNodesMutationStrategy strategy = standardStrategy;
+
 		if (original.hasChildren() && !target.hasChildren()) {
-			return removeAllStrategy.mutate(nodeHandlers, original, target);
+			strategy = removeAllStrategy;
 		}
 
 		if (!original.hasChildren() && target.hasChildren()) {
-			return addAllStrategy.mutate(nodeHandlers, original, target);
+			strategy = addAllStrategy;
 		}
 
 		if (allChildrenHaveId(original) && allChildrenHaveId(target)) {
-			return idStrategy.mutate(nodeHandlers, original, target);
+			strategy = idStrategy;
 		}
 
-		return standardStrategy.mutate(nodeHandlers, original, target);
+		Sampler.Sample runStrategy = Sampler.start("runStrategy");
+		BaseNodeMutator.MutationResult result = strategy.mutate(nodeHandlers, original, target);
+		runStrategy.stop();
+		return result;
 	}
 
 

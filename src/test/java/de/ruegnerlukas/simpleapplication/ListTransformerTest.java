@@ -20,6 +20,39 @@ public class ListTransformerTest {
 
 
 	@Test
+	public void someTest() {
+
+		List<String> source = List.of("a", "b", "c");
+		List<String> target = List.of("a", "c");
+
+		log.info("source: {}", source);
+		log.info("target: {}", target);
+
+		List<TransformOperation> operations = new ListTransformer(source, target).calculateTransformations();
+		List<String> processed = new ArrayList<>(source);
+		operations.forEach(op -> {
+			if(op instanceof AddOperations) {
+				AddOperations operation = (AddOperations) op;
+				processed.add(operation.getIndex(), operation.getElement());
+			}
+			if(op instanceof RemoveOperations) {
+				RemoveOperations operation = (RemoveOperations) op;
+				processed.remove(operation.getIndex());
+			}
+			if(op instanceof SwapOperation) {
+				SwapOperation operation = (SwapOperation) op;
+				String elementMax = processed.remove(operation.getIndexMax());
+				String elementMin = processed.set(operation.getIndexMin(), elementMax);
+				processed.add(operation.getIndexMax(), elementMin);
+			}
+		});
+
+		log.info("result: {}", processed);
+
+	}
+
+
+	@Test
 	public void test() {
 
 		log.info("test 1: ");
@@ -65,7 +98,7 @@ public class ListTransformerTest {
 			}
 		});
 
-		log.info("  done: {}", processed);
+		log.info("  done: {}  (ops: {})", processed, operations.size());
 	}
 
 

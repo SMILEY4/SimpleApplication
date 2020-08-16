@@ -1,11 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
+import de.ruegnerlukas.simpleapplication.common.Sampler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,36 +20,49 @@ public class ListTransformer {
 
 	private final List<String> target;
 
+	private final Map<String, Integer> targetIndexMap;
 
 
 
 	public ListTransformer(final List<String> source, final List<String> target) {
 		this.source = source;
 		this.target = target;
+		this.targetIndexMap = buildIndexMap(target);
 	}
 
 
 
 
 	public Set<Pair<String, Integer>> getElementsKept() {
+		Sampler.Sample samplerKept = Sampler.start("getKept " + source.size());
+
 		final Set<String> setTarget = Set.copyOf(target);
-		return Set.copyOf(source).stream()
+
+		Set<Pair<String, Integer>> result = Set.copyOf(source).stream()
 				.filter(setTarget::contains)
-				.map(element -> Pair.of(element, target.indexOf(element)))
+				.map(element -> Pair.of(element, targetIndexMap.get(element)))
 				.collect(Collectors.toSet());
+
+		samplerKept.stop();
+		return result;
 	}
 
 
 
 
 	public List<TransformOperation> calculateTransformations() {
+		Sampler.Sample sample = Sampler.start("calculateTransformations " + source.size() + "->" + target.size());
 		if (listsEqual(source, target)) {
+			sample.stop();
 			return new ArrayList<>();
 		}
 		final Set<String> setSource = Set.copyOf(source);
 		final Set<String> setTarget = Set.copyOf(target);
-		return calculateTransformations(new ArrayList<>(source), setSource, new ArrayList<>(target), setTarget);
+		List<TransformOperation> result = calculateTransformations(new ArrayList<>(source), setSource, Collections.unmodifiableList(target), setTarget);
+		sample.stop();
+		return result;
 	}
+
 
 
 
@@ -64,13 +81,26 @@ public class ListTransformer {
 
 
 
-
 	private List<TransformOperation> calculateTransformations(final List<String> source, final Set<String> setSource,
 															  final List<String> target, final Set<String> setTarget) {
 		final List<TransformOperation> operations = new ArrayList<>();
-		operations.addAll(calculateRemoveOperations(source, setSource, target, setTarget));
-		operations.addAll(calculateAddOperations(source, setSource, target, setTarget));
+
+		Sampler.Sample sampleRemove = Sampler.start("removeOperations " + source.size() + "->" + target.size());
+		List<RemoveOperations> removeOperations = calculateRemoveOperations(source, setSource, target, setTarget);
+		applyRemoveOperations(removeOperations, source);
+		operations.addAll(removeOperations);
+		sampleRemove.stop();
+
+		Sampler.Sample sampleAdd = Sampler.start("addOperations " + source.size() + "->" + target.size());
+		List<AddOperations> addOperations = calculateAddOperations(source, setSource, target, setTarget);
+		applyAddOperations(addOperations, source);
+		operations.addAll(addOperations);
+		sampleAdd.stop();
+
+		Sampler.Sample sampleSwap = Sampler.start("swapOperations " + source.size() + "->" + target.size());
 		operations.addAll(calculateSwapOperations(source, target));
+		sampleSwap.stop();
+
 		return operations;
 	}
 
@@ -79,10 +109,9 @@ public class ListTransformer {
 
 	private List<RemoveOperations> calculateRemoveOperations(final List<String> source, final Set<String> setSource,
 															 final List<String> target, final Set<String> setTarget) {
-		// TODO: apply operations to source list for real -> better results, less bugs
 		return setSource.stream()
 				.filter(e -> !setTarget.contains(e))
-				.map(source::indexOf)
+				.map(e -> source.indexOf(e))
 				.sorted((a, b) -> -Integer.compare(a, b))
 				.map(RemoveOperations::new)
 				.collect(Collectors.toList());
@@ -91,12 +120,18 @@ public class ListTransformer {
 
 
 
+	private void applyRemoveOperations(List<RemoveOperations> operations, List<String> source) {
+		operations.forEach(operation -> source.remove(operation.getIndex()));
+	}
+
+
+
+
 	private List<AddOperations> calculateAddOperations(final List<String> source, final Set<String> setSource,
 													   final List<String> target, final Set<String> setTarget) {
-		// TODO: apply operations to source list for real -> better results, less bugs
 		return setTarget.stream()
 				.filter(e -> !setSource.contains(e))
-				.map(e -> Pair.of(e, target.indexOf(e)))
+				.map(e -> Pair.of(e, targetIndexMap.get(e)))
 				.sorted(Comparator.comparingInt(Pair::getRight))
 				.map(pair -> new AddOperations(pair.getLeft(), pair.getRight()))
 				.collect(Collectors.toList());
@@ -105,12 +140,20 @@ public class ListTransformer {
 
 
 
+	private void applyAddOperations(List<AddOperations> operations, List<String> source) {
+		operations.forEach(operation -> source.add(operation.getIndex(), operation.getElement()));
+	}
+
+
+
+
 	private List<SwapOperation> calculateSwapOperations(final List<String> source, final List<String> target) {
 
-		// TODO: apply operations to source list for real -> better results, less bugs
+		Map<String, Integer> indexMap = buildIndexMap(target);
+
 		final List<Pair<Integer, Integer>> pairs = new ArrayList<>();
 		for (int i = 0; i < source.size(); i++) {
-			final int indexMatch = target.indexOf(source.get(i));
+			final int indexMatch = indexMap.getOrDefault(source.get(i), -1);
 			if (indexMatch > -1) {
 				if (i != indexMatch) {
 					pairs.add(Pair.of(i, indexMatch));
@@ -130,6 +173,17 @@ public class ListTransformer {
 		return swaps.stream()
 				.map(swap -> new SwapOperation(swap.getLeft(), swap.getRight()))
 				.collect(Collectors.toList());
+	}
+
+
+
+
+	private Map<String, Integer> buildIndexMap(List<String> list) {
+		final Map<String, Integer> indexMap = new HashMap<>();
+		for (int i = 0; i < list.size(); i++) {
+			indexMap.put(list.get(i), i);
+		}
+		return indexMap;
 	}
 
 

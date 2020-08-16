@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
+import de.ruegnerlukas.simpleapplication.common.Sampler;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class IdMutationStrategy implements ChildNodesMutationStrategy {
@@ -20,30 +22,21 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	@Override
 	public BaseNodeMutator.MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
 
-		long tPrep = System.currentTimeMillis();
+		Sampler.Sample samplerMapIds = Sampler.start("samplerMapIds " + original.childCount());
 		final List<String> idsOriginal = original.streamChildren()
 				.map(child -> child.getProperty(IdProperty.class).getId())
 				.collect(Collectors.toList());
 		final List<String> idsTarget = target.streamChildren()
 				.map(child -> child.getProperty(IdProperty.class).getId())
 				.collect(Collectors.toList());
-		if(original.childCount() > 100) System.out.println("tPrep:" + (System.currentTimeMillis() - tPrep) + "ms");
+		samplerMapIds.stop();
 
-		long tCalc = System.currentTimeMillis();
 		final ListTransformer transformer = new ListTransformer(idsOriginal, idsTarget);
 		final List<ListTransformer.TransformOperation> transformations = transformer.calculateTransformations();
-		if(original.childCount() > 100) System.out.println("tCalc:" + (System.currentTimeMillis() - tCalc) + "ms");
 
-		transformer.getElementsKept().forEach(pair -> {
-			final SUINode childOriginal = original.findChild(pair.getLeft()).orElse(null);
-			final SUINode childTarget = target.findChild(pair.getLeft()).orElse(null);
-			BaseNodeMutator.MutationResult result = nodeHandlers.getMutator().mutateNode(childOriginal, childTarget, nodeHandlers);
-			if (result == BaseNodeMutator.MutationResult.REQUIRES_REBUILD) {
-				transformations.add(new ListTransformer.ReplaceOperation(pair.getRight(), pair.getLeft()));
-			}
-		});
+		transformations.addAll(mutateKeepChildren(nodeHandlers, original, target, transformer.getElementsKept()));
 
-		long tConv = System.currentTimeMillis();
+		Sampler.Sample samplerConvert = Sampler.start("convertT2O");
 		final List<Operation> operations = new ArrayList<>();
 		transformations.forEach(transformation -> {
 			if (transformation instanceof ListTransformer.ReplaceOperation) {
@@ -77,13 +70,39 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 						swapOperation.getIndexMax()));
 			}
 		});
-		if(original.childCount() > 100) System.out.println("tConv:" + (System.currentTimeMillis() - tConv) + "ms");
+		samplerConvert.stop();
 
-		long tAppl = System.currentTimeMillis();
-		original.applyChildTransformations(operations);
-		if(original.childCount() > 100) System.out.println("tAppl:" + (System.currentTimeMillis() - tAppl) + "ms");
+		Sampler.Sample samplerApply = Sampler.start("apply " + operations.size());
+		if (!operations.isEmpty()) {
+			original.applyChildTransformations(operations);
+		}
+		samplerApply.stop();
 
 		return BaseNodeMutator.MutationResult.MUTATED;
+	}
+
+
+
+
+	private List<ListTransformer.TransformOperation> mutateKeepChildren(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target,
+																		final Set<ListTransformer.Pair<String, Integer>> elementsKept) {
+
+		final List<ListTransformer.TransformOperation> transformations = new ArrayList<>();
+
+		Sampler.Sample samplerReplace = Sampler.start("replaceOp " + elementsKept.size());
+		elementsKept.forEach(pair -> {
+			Sampler.Sample samplerReplaceIn = Sampler.start("replaceOpIter " + elementsKept.size());
+			final SUINode childOriginal = original.findChild(pair.getLeft()).orElse(null);
+			final SUINode childTarget = target.findChild(pair.getLeft()).orElse(null);
+			BaseNodeMutator.MutationResult result = nodeHandlers.getMutator().mutateNode(childOriginal, childTarget, nodeHandlers);
+			if (result == BaseNodeMutator.MutationResult.REQUIRES_REBUILD) {
+				transformations.add(new ListTransformer.ReplaceOperation(pair.getRight(), pair.getLeft()));
+			}
+			samplerReplaceIn.stop();
+		});
+		samplerReplace.stop();
+
+		return transformations;
 	}
 
 

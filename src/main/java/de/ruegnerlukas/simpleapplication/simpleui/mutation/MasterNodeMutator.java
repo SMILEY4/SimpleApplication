@@ -50,6 +50,7 @@ public class MasterNodeMutator implements BaseNodeMutator {
 	 */
 	public SUINode mutate(final SUINode original, final SUINode target) {
 		if (mutateNode(original, target, context.getMasterNodeHandlers()) == MutationResult.REQUIRES_REBUILD) {
+			System.out.println("rebuild");
 			fxNodeBuilder.build(target, context.getMasterNodeHandlers());
 			return target;
 		} else {

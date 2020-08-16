@@ -247,25 +247,19 @@ public class SUINode {
 	 */
 	public void applyChildTransformations(final List<IdMutationStrategy.Operation> operations) {
 
-		long tsSUI = System.currentTimeMillis();
 		int cost = 0;
 		for (IdMutationStrategy.Operation operation : operations) {
 			operation.apply(this.children);
 			operation.apply(this.childMap);
 			cost += operation.getCost();
 		}
-		if (childCount() > 100) System.out.println("tsSUI:" + (System.currentTimeMillis() - tsSUI) + "ms");
 
-		long tsFx = System.currentTimeMillis();
-		if (childTransformListener != null) {
+		if (childTransformListener != null && cost < Math.min(childCount() / 3, 64)) {
 			triggerChildListTransform(operations);
-			if (childCount() > 100) System.out.println(" - transform " + operations.size());
 		} else {
+			System.out.println("change " + cost + " " + childTransformListener + " " + Math.min(childCount() / 3, 64));
 			triggerChildListChange();
-			if (childCount() > 100) System.out.println(" - change");
 		}
-		if (childCount() > 100) System.out.println("tsFx:" + (System.currentTimeMillis() - tsFx) + "ms");
-
 	}
 
 
