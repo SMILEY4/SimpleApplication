@@ -62,7 +62,6 @@ public class RegistryEntry {
 	 */
 	public Set<Class<? extends Property>> getProperties() {
 		Set<Class<? extends Property>> properties = new HashSet<>(propFxNodeBuilders.keySet());
-		properties.addAll(propFxNodeBuilders.keySet());
 		properties.add(IdProperty.class);
 		return properties;
 	}

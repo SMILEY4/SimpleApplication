@@ -122,6 +122,30 @@ public class ChildrenPerformanceBenchmark extends ApplicationTest {
 
 
 
+	@Test
+	public void testCreateComplex() {
+
+		for (int i = 0; i <= 1000; i += 100) {
+			final int n = Math.max(i, 1) * 100;
+
+			NodeFactory vbox = SUIVBox.vbox(
+					Properties.id("myVBox"),
+					Properties.items(buildComplexFormItems(n, false, 1234))
+			);
+
+			final ElementTestState state = new ElementTestState();
+			final SUISceneContext context = new SUISceneContext(state, vbox);
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
+			final SUINode original = context.getRootNode();
+			stopWatch.stop();
+
+			log.info("{};{}", n, stopWatch.getTime());
+		}
+
+
+	}
+
 
 	@Test
 	public void addChildrenPropertyComplex() {
