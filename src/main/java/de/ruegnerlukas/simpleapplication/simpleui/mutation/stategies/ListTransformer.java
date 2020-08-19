@@ -28,10 +28,17 @@ public class ListTransformer {
 
 
 	public ListTransformer(final List<String> source, final List<String> target) {
+		this(source, null, target, new HashSet<>(target));
+	}
+
+
+
+
+	public ListTransformer(final List<String> source, final Set<String> initialSetSource, final List<String> target, final Set<String> setTarget) {
 		this.source = source;
 		this.target = target;
 		this.targetIndexMap = buildIndexMap(target);
-		this.setTarget = new HashSet<>(target);
+		this.setTarget = setTarget;
 	}
 
 
@@ -42,20 +49,6 @@ public class ListTransformer {
 				.filter(setTarget::contains)
 				.map(element -> Pair.of(element, targetIndexMap.get(element)))
 				.collect(Collectors.toSet());
-	}
-
-
-
-
-	public Set<Pair<Integer, Integer>> getIndicesKept() { // <srcIndex,tgtIndex>
-		Set<Pair<Integer, Integer>> set = new HashSet<>();
-		for (int i = 0, n = source.size(); i < n; i++) {
-			final String elementSource = source.get(i);
-			if (setTarget.contains(elementSource)) {
-				set.add(Pair.of(i, targetIndexMap.get(elementSource)));
-			}
-		}
-		return set;
 	}
 
 
@@ -90,9 +83,11 @@ public class ListTransformer {
 	private List<TransformOperation> calculateTransformations(final List<String> source, final Set<String> setSource,
 															  final List<String> target, final Set<String> setTarget) {
 
+		final List<TransformOperation> operations = new ArrayList<>();
+
 		List<RemoveOperations> removeOperations = calculateRemoveOperations(source, setSource, target, setTarget);
 		applyRemoveOperations(removeOperations, source);
-		final List<TransformOperation> operations = new ArrayList<>(removeOperations);
+		operations.addAll(removeOperations);
 
 		List<AddOperations> addOperations = calculateAddOperations(source, setSource, target, setTarget);
 		applyAddOperations(addOperations, source);
@@ -108,6 +103,9 @@ public class ListTransformer {
 
 	private List<RemoveOperations> calculateRemoveOperations(final List<String> source, final Set<String> setSource,
 															 final List<String> target, final Set<String> setTarget) {
+		if (setTarget.size() > setSource.size() && setTarget.containsAll(setSource)) {
+			return List.of();
+		}
 		final Map<String, Integer> sourceIndexMap = buildIndexMap(source);
 		return setSource.stream()
 				.filter(e -> !setTarget.contains(e))
@@ -129,6 +127,9 @@ public class ListTransformer {
 
 	private List<AddOperations> calculateAddOperations(final List<String> source, final Set<String> setSource,
 													   final List<String> target, final Set<String> setTarget) {
+		if (setSource.size() > setTarget.size() && setSource.containsAll(setTarget)) {
+			return List.of();
+		}
 		return setTarget.stream()
 				.filter(e -> !setSource.contains(e))
 				.map(e -> Pair.of(e, targetIndexMap.get(e)))
@@ -148,55 +149,40 @@ public class ListTransformer {
 
 
 	private List<SwapOperation> calculateSwapOperations(final List<String> source, final List<String> target) {
-		Map<String, Integer> indexMap = buildIndexMap(target);
-		List<IntPair> pairs = getSwapIndexPairs(source, indexMap);
-		final List<IntPair> swaps = calculateSwaps(pairs);
-		final List<SwapOperation> result = new ArrayList<>(swaps.size());
-		swaps.forEach(swap -> result.add(new SwapOperation(swap.getLeft(), swap.getRight())));
+		final List<SwapOperation> result = new ArrayList<>();
+
+		final Map<String, Integer> sourceIndexMap = buildIndexMap(source);
+		final List<String> workingList = new ArrayList<>(source);
+
+		for (int i = 0; i < workingList.size(); i++) {
+			final String elementSource = workingList.get(i);
+			final String elementTarget = target.get(i);
+			if (!elementSource.equals(elementTarget)) {
+				int indexOfCorrect = sourceIndexMap.get(elementTarget);
+				result.add(new SwapOperation(i, indexOfCorrect));
+				Collections.swap(workingList, i, indexOfCorrect);
+				swapInIndexMap(sourceIndexMap, elementSource, elementTarget);
+			}
+		}
+
 		return result;
 	}
 
 
 
 
-	private List<IntPair> calculateSwaps(List<IntPair> pairs) {
-		final List<IntPair> swaps = new ArrayList<>(pairs.size());
-		while (!pairs.isEmpty()) {
-			IntPair pair = pairs.remove(pairs.size()-1);
-			swaps.add(pair);
-			List<IntPair> toKeep = new ArrayList<>(pairs.size());
-			for (int i = 0, n = pairs.size(); i < n; i++) {
-				IntPair p = pairs.get(i);
-				if (!(p.getRight() == pair.getRight() || p.getLeft() == pair.getRight())) {
-					toKeep.add(p);
-				}
-			}
-			pairs = toKeep;
-		}
-		return swaps;
-	}
-
-
-
-
-	private List<IntPair> getSwapIndexPairs(final List<String> source, final Map<String, Integer> indexMap) {
-		List<IntPair> pairs = new ArrayList<>(source.size());
-		for (int i = 0; i < source.size(); i++) {
-			final Integer indexMatch = indexMap.get(source.get(i));
-			if (indexMatch != null) {
-				if (i != indexMatch) {
-					pairs.add(IntPair.of(i, indexMatch));
-				}
-			}
-		}
-		return pairs;
+	public void swapInIndexMap(Map<String, Integer> indexMap, String a, String b) {
+		int indexA = indexMap.get(a);
+		int indexB = indexMap.get(b);
+		indexMap.put(a, indexB);
+		indexMap.put(b, indexA);
 	}
 
 
 
 
 	private Map<String, Integer> buildIndexMap(List<String> list) {
-		final Map<String, Integer> indexMap = new HashMap<>();
+		final Map<String, Integer> indexMap = new HashMap<>(list.size());
 		for (int i = 0; i < list.size(); i++) {
 			indexMap.put(list.get(i), i);
 		}

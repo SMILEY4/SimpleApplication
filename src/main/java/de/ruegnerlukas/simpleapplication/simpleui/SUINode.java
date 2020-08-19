@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -239,6 +240,13 @@ public class SUINode {
 
 
 
+	public Set<String> getChildrenIds() {
+		return childMap.keySet();
+	}
+
+
+
+
 	/**
 	 * Replaces all children of this node with the given children
 	 *
@@ -250,7 +258,10 @@ public class SUINode {
 		this.children.addAll(childrenList);
 		this.childMap.clear();
 		for (SUINode child : this.children) {
-			child.getPropertySafe(IdProperty.class).ifPresent(idProp -> childMap.put(idProp.getId(), child));
+			final IdProperty idProp = child.getProperty(IdProperty.class);
+			if (idProp != null) {
+				childMap.put(idProp.getId(), child);
+			}
 		}
 		if (triggerChildChange) {
 			triggerChildListChange();
@@ -276,7 +287,7 @@ public class SUINode {
 		- replace
 		 */
 
-				int cost = 0;
+		int cost = 0;
 		for (Operation operation : removeOperations) {
 			operation.apply(this.children);
 			operation.apply(this.childMap);

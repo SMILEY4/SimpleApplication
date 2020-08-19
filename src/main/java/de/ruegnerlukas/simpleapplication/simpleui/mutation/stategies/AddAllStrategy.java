@@ -13,7 +13,19 @@ public class AddAllStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public BaseNodeMutator.MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+	public DecisionData canBeAppliedTo(final SUINode original, final SUINode target, final boolean allChildrenHaveId) {
+		if (!original.hasChildren() && target.hasChildren()) {
+			return DecisionData.APPLIABLE_NO_DATA;
+		} else {
+			return DecisionData.NOT_APPLIABLE;
+		}
+	}
+
+
+
+
+	@Override
+	public BaseNodeMutator.MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target, final DecisionData decisionData) {
 		final List<SUINode> newChildList = new ArrayList<>();
 		for (int i = 0; i < target.childCount(); i++) {
 			final SUINode childTarget = target.getChild(i);

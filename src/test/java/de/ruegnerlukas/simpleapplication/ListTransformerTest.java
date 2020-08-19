@@ -14,6 +14,8 @@ import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.List
 import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.RemoveOperations;
 import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.SwapOperation;
 import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.TransformOperation;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @Slf4j
 public class ListTransformerTest {
@@ -31,15 +33,15 @@ public class ListTransformerTest {
 		List<TransformOperation> operations = new ListTransformer(source, target).calculateTransformations();
 		List<String> processed = new ArrayList<>(source);
 		operations.forEach(op -> {
-			if(op instanceof AddOperations) {
+			if (op instanceof AddOperations) {
 				AddOperations operation = (AddOperations) op;
 				processed.add(operation.getIndex(), operation.getElement());
 			}
-			if(op instanceof RemoveOperations) {
+			if (op instanceof RemoveOperations) {
 				RemoveOperations operation = (RemoveOperations) op;
 				processed.remove(operation.getIndex());
 			}
-			if(op instanceof SwapOperation) {
+			if (op instanceof SwapOperation) {
 				SwapOperation operation = (SwapOperation) op;
 				String elementMax = processed.remove(operation.getIndexMax());
 				String elementMin = processed.set(operation.getIndexMin(), elementMax);
@@ -50,6 +52,53 @@ public class ListTransformerTest {
 		log.info("result: {}", processed);
 
 	}
+
+
+
+	@Test
+	public void testShuffle() {
+
+		int n = 10;
+
+		Random random = new Random(1234);
+		for(int i=0; i<10; i++) {
+
+			List<String> source = new ArrayList<>();
+			List<String> target = new ArrayList<>();
+			for (int j = 0; j < n; j++) {
+				source.add(String.valueOf((char) ('a' + j)));
+				target.add(String.valueOf((char) ('a' + j)));
+			}
+			Collections.shuffle(source, random);
+
+			log.info("source: {}", source);
+			log.info("target: {}", target);
+
+			List<TransformOperation> operations = new ListTransformer(source, target).calculateTransformations();
+			List<String> processed = new ArrayList<>(source);
+			operations.forEach(op -> {
+				if (op instanceof AddOperations) {
+					fail("not allowed: add");
+				}
+				if (op instanceof RemoveOperations) {
+					fail("not allowed: remove");
+				}
+				if (op instanceof SwapOperation) {
+					SwapOperation operation = (SwapOperation) op;
+					String elementMax = processed.remove(operation.getIndexMax());
+					String elementMin = processed.set(operation.getIndexMin(), elementMax);
+					processed.add(operation.getIndexMax(), elementMin);
+				}
+			});
+
+			log.info("  done: {}  (ops: {})", processed, operations.size());
+			assertThat(processed).containsExactlyElementsOf(target);
+
+			System.out.println();
+		}
+
+	}
+
 
 
 	@Test
@@ -73,24 +122,25 @@ public class ListTransformerTest {
 	}
 
 
+
+
 	public void doTest(Pair<List<String>, List<String>> testData) {
 
 		log.info("source: {}", testData.getLeft());
 		log.info("target: {}", testData.getRight());
 
 		List<TransformOperation> operations = new ListTransformer(testData.getLeft(), testData.getRight()).calculateTransformations();
-
 		List<String> processed = new ArrayList<>(testData.getLeft());
 		operations.forEach(op -> {
-			if(op instanceof AddOperations) {
+			if (op instanceof AddOperations) {
 				AddOperations operation = (AddOperations) op;
 				processed.add(operation.getIndex(), operation.getElement());
 			}
-			if(op instanceof RemoveOperations) {
+			if (op instanceof RemoveOperations) {
 				RemoveOperations operation = (RemoveOperations) op;
 				processed.remove(operation.getIndex());
 			}
-			if(op instanceof SwapOperation) {
+			if (op instanceof SwapOperation) {
 				SwapOperation operation = (SwapOperation) op;
 				String elementMax = processed.remove(operation.getIndexMax());
 				String elementMin = processed.set(operation.getIndexMin(), elementMax);
@@ -99,7 +149,9 @@ public class ListTransformerTest {
 		});
 
 		log.info("  done: {}  (ops: {})", processed, operations.size());
+		assertThat(processed).containsExactlyElementsOf(testData.getRight());
 	}
+
 
 
 

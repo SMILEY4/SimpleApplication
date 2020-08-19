@@ -22,7 +22,19 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public BaseNodeMutator.MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+	public DecisionData canBeAppliedTo(final SUINode original, final SUINode target, final boolean allChildrenHaveId) {
+		if (allChildrenHaveId) {
+			return DecisionData.APPLIABLE_NO_DATA;
+		} else {
+			return DecisionData.NOT_APPLIABLE;
+		}
+	}
+
+
+
+
+	@Override
+	public BaseNodeMutator.MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target, final DecisionData decisionData) {
 
 		final List<String> idsOriginal = original.streamChildren()
 				.map(child -> child.getProperty(IdProperty.class).getId())

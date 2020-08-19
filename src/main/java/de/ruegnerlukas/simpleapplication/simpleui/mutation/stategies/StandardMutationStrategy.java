@@ -13,7 +13,15 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public BaseNodeMutator.MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+	public DecisionData canBeAppliedTo(final SUINode original, final SUINode target, final boolean allChildrenHaveId) {
+		return DecisionData.APPLIABLE_NO_DATA;
+	}
+
+
+
+
+	@Override
+	public BaseNodeMutator.MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target, final DecisionData decisionData) {
 
 		final List<SUINode> newChildList = new ArrayList<>();
 
