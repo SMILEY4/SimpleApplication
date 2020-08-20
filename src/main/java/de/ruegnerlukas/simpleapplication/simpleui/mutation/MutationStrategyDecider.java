@@ -8,62 +8,81 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationS
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdShuffleMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.RemoveAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.StandardMutationStrategy;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.StrategyDecisionResult;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
+
+import java.util.List;
 
 public class MutationStrategyDecider {
 
 
-	private final ChildNodesMutationStrategy standardStrategy = new StandardMutationStrategy();
+	/**
+	 * The default list of mutation strategies.
+	 */
+	public static final List<ChildNodesMutationStrategy> DEFAULT_STRATEGIES = List.of(
+			new RemoveAllStrategy(),
+			new AddAllStrategy(),
+			new IdShuffleMutationStrategy(),
+			new IdMutationStrategy(),
+			new StandardMutationStrategy()
+	);
 
-	private final ChildNodesMutationStrategy idStrategy = new IdMutationStrategy();
-
-	private final ChildNodesMutationStrategy removeAllStrategy = new RemoveAllStrategy();
-
-	private final ChildNodesMutationStrategy addAllStrategy = new AddAllStrategy();
-
-	private final ChildNodesMutationStrategy idShuffleStrategy = new IdShuffleMutationStrategy();
+	/**
+	 * The list of available strategies. The first possible strategy from this list will be executed.
+	 */
+	private final List<ChildNodesMutationStrategy> strategies;
 
 
 
 
-	public BaseNodeMutator.MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
-
-		if (!original.hasChildren() && !target.hasChildren()) {
-			return BaseNodeMutator.MutationResult.MUTATED;
-		}
-
-		final boolean allHaveId = allChildrenHaveId(original) && allChildrenHaveId(target);
-
-		BaseNodeMutator.MutationResult resultRemoveAll = runStrategy(removeAllStrategy, nodeHandlers, original, target, allHaveId);
-		if (resultRemoveAll != null) {
-			return resultRemoveAll;
-		}
-
-		BaseNodeMutator.MutationResult resultAddAll = runStrategy(addAllStrategy, nodeHandlers, original, target, allHaveId);
-		if (resultAddAll != null) {
-			return resultAddAll;
-		}
-
-		BaseNodeMutator.MutationResult resultIdShuffle = runStrategy(idShuffleStrategy, nodeHandlers, original, target, allHaveId);
-		if (resultIdShuffle != null) {
-			return resultIdShuffle;
-		}
-
-		BaseNodeMutator.MutationResult resultIdStrategy = runStrategy(idStrategy, nodeHandlers, original, target, allHaveId);
-		if (resultIdStrategy != null) {
-			return resultIdStrategy;
-		}
-
-		return runStrategy(standardStrategy, nodeHandlers, original, target, allHaveId);
+	/**
+	 * @param strategies rhe list of available strategies. The first possible strategy from this list will be executed.
+	 */
+	public MutationStrategyDecider(final List<ChildNodesMutationStrategy> strategies) {
+		this.strategies = strategies;
 	}
 
 
 
 
-	private BaseNodeMutator.MutationResult runStrategy(final ChildNodesMutationStrategy strategy, final MasterNodeHandlers nodeHandlers,
-													   final SUINode original, final SUINode target, final boolean allHaveId) {
-		ChildNodesMutationStrategy.DecisionData decisionData = strategy.canBeAppliedTo(original, target, allHaveId);
-		if (decisionData.canBeApplied) {
+	/**
+	 * Tries to mutate the children of the given original node to match the given target node with a matching mutation strategy.
+	 *
+	 * @param nodeHandlers the primary node handlers
+	 * @param original     the original node
+	 * @param target       the target node to match
+	 * @return the result of the mutation
+	 */
+	public MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+		if (!original.hasChildren() && !target.hasChildren()) {
+			return MutationResult.MUTATED;
+		}
+		final boolean allHaveId = allChildrenHaveId(original) && allChildrenHaveId(target);
+		for (ChildNodesMutationStrategy strategy : strategies) {
+			MutationResult result = runStrategy(strategy, nodeHandlers, original, target, allHaveId);
+			if (result != null) {
+				return result;
+			}
+		}
+		return MutationResult.REQUIRES_REBUILD;
+	}
+
+
+
+
+	/**
+	 * Tries to run the given mutation strategy. Returns 'null', if the strategy could not be applied.
+	 *
+	 * @param nodeHandlers the primary node handlers
+	 * @param original     the original node
+	 * @param target       the target node to match
+	 * @param allHaveId    whether all participating child nodes have an id property
+	 * @return the mutation result or 'null', if the strategy could not be applied.
+	 */
+	private MutationResult runStrategy(final ChildNodesMutationStrategy strategy, final MasterNodeHandlers nodeHandlers,
+									   final SUINode original, final SUINode target, final boolean allHaveId) {
+		StrategyDecisionResult decisionData = strategy.canBeAppliedTo(original, target, allHaveId);
+		if (decisionData.isApplicable()) {
 			return strategy.mutate(nodeHandlers, original, target, decisionData);
 		} else {
 			return null;

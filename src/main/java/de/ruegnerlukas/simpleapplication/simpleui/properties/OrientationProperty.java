@@ -8,7 +8,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import lombok.Getter;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 public class OrientationProperty extends Property {
 

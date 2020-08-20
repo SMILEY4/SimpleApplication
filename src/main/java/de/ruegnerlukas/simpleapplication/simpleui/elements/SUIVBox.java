@@ -6,10 +6,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.AddOperation;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.RemoveOperation;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.ReplaceOperation;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.SwapOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.BaseOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.OperationType;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.RemoveOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToWidthProperty;
@@ -62,6 +61,22 @@ public final class SUIVBox {
 
 
 
+	private static void handleChildrenTransform(final SUINode node, final OperationType type, final List<? extends BaseOperation> ops) {
+		final VBox vbox = (VBox) node.getFxNode();
+		if (type == OperationType.REMOVE) {
+			List<Node> nodesToRemove = ops.stream()
+					.map(op -> (RemoveOperation) op)
+					.map(op -> op.getNode().getFxNode())
+					.collect(Collectors.toList());
+			vbox.getChildren().removeAll(nodesToRemove);
+		} else {
+			ops.forEach(op -> op.applyTo(vbox));
+		}
+	}
+
+
+
+
 	/**
 	 * Handle a change in the child nodes of the given vbox node.
 	 *
@@ -76,36 +91,6 @@ public final class SUIVBox {
 		} else {
 			vbox.getChildren().clear();
 		}
-	}
-
-
-
-
-	private static void handleChildrenTransform(final SUINode node,
-												final List<ReplaceOperation> replaceOperations,
-												final List<RemoveOperation> removeOperations,
-												final List<AddOperation> addOperations,
-												final List<SwapOperation> swapOperations) {
-		final VBox vbox = (VBox) node.getFxNode();
-//		operations.forEach(op -> op.apply(vbox));
-
-		/*
-		Order of operations:
-		- remove
-		- add
-		- swap
-		- replace
-		 */
-
-		List<Node> nodesToRemove = removeOperations.stream()
-				.map(o -> o.getNode().getFxNode())
-				.collect(Collectors.toList());
-		vbox.getChildren().removeAll(nodesToRemove);
-
-		addOperations.forEach(op -> op.apply(vbox));
-		swapOperations.forEach(op -> op.apply(vbox));
-		replaceOperations.forEach(op -> op.apply(vbox));
-
 	}
 
 
@@ -138,7 +123,14 @@ public final class SUIVBox {
 	}
 
 
+
+
 	public static AtomicInteger invalidations = new AtomicInteger(0);
+
+
+
+
+
 
 	private static class VBoxNodeBuilder implements BaseFxNodeBuilder<VBox> {
 

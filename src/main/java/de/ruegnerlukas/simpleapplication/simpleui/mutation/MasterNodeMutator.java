@@ -5,6 +5,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ChildNodesMutationStrategy;
+
+import java.util.List;
 
 public class MasterNodeMutator implements BaseNodeMutator {
 
@@ -22,18 +25,22 @@ public class MasterNodeMutator implements BaseNodeMutator {
 	/**
 	 * The actual node mutator.
 	 */
-	private final BaseNodeMutator mutator = new NodeMutator();
+	private final BaseNodeMutator mutator;
 
 
 
 
 	/**
-	 * @param fxNodeBuilder the primary builder for fx-nodes.
-	 * @param context       the scene context.
+	 * @param fxNodeBuilder      the primary builder for fx-nodes.
+	 * @param context            the scene context.
+	 * @param mutationStrategies the strategies for mutating child nodes
 	 */
-	public MasterNodeMutator(final MasterFxNodeBuilder fxNodeBuilder, final SUISceneContext context) {
+	public MasterNodeMutator(final MasterFxNodeBuilder fxNodeBuilder,
+							 final SUISceneContext context,
+							 final List<ChildNodesMutationStrategy> mutationStrategies) {
 		this.fxNodeBuilder = fxNodeBuilder;
 		this.context = context;
+		this.mutator = new NodeMutator(mutationStrategies);
 	}
 
 

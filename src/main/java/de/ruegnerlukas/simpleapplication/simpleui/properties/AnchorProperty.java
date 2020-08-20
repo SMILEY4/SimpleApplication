@@ -11,7 +11,7 @@ import lombok.Getter;
 import java.util.Objects;
 import java.util.Optional;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 @Getter
 public class AnchorProperty extends Property {

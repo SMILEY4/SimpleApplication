@@ -17,6 +17,7 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.providers;
 	exports de.ruegnerlukas.simpleapplication.common.resources;
 	exports de.ruegnerlukas.simpleapplication.common.validation;
+	exports de.ruegnerlukas.simpleapplication.common.utils;
 
 	exports de.ruegnerlukas.simpleapplication.core.application;
 	exports de.ruegnerlukas.simpleapplication.core.events;
@@ -33,6 +34,7 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.simpleui.elements;
 	exports de.ruegnerlukas.simpleapplication.simpleui.mutation;
 	exports de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
+	exports de.ruegnerlukas.simpleapplication.simpleui.mutation.operations;
 	exports de.ruegnerlukas.simpleapplication.simpleui.properties;
 	exports de.ruegnerlukas.simpleapplication.simpleui.registry;
 	exports de.ruegnerlukas.simpleapplication.simpleui.utils;

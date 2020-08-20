@@ -4,6 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ChildNodesMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
@@ -12,16 +13,30 @@ import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.Node;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult.MUTATED;
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult.REQUIRES_REBUILD;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult.MUTATED;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult.REQUIRES_REBUILD;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty.MutationBehaviour;
 
 public class NodeMutator implements BaseNodeMutator {
 
 
-	private final MutationStrategyDecider mutationStrategyDecider = new MutationStrategyDecider();
+	/**
+	 * The strategy decider for mutation child nodes
+	 */
+	private final MutationStrategyDecider strategyDecider;
+
+
+
+
+	/**
+	 * @param mutationStrategies the strategies for mutating child nodes
+	 */
+	public NodeMutator(final List<ChildNodesMutationStrategy> mutationStrategies) {
+		this.strategyDecider = new MutationStrategyDecider(mutationStrategies);
+	}
 
 
 
@@ -47,22 +62,6 @@ public class NodeMutator implements BaseNodeMutator {
 
 
 	/**
-	 * Get the mutation behaviour from the given node.
-	 * Returns the default behaviour if the property was not added to the given node.
-	 *
-	 * @param node the node
-	 * @return the {@link MutationBehaviour}.
-	 */
-	private MutationBehaviour getMutationBehaviour(final SUINode node) {
-		return node.getPropertySafe(MutationBehaviourProperty.class)
-				.map(MutationBehaviourProperty::getBehaviour)
-				.orElse(MutationBehaviour.DEFAULT);
-	}
-
-
-
-
-	/**
 	 * Tries to mutate the properties (and fx-node) of the given original node to match the given target node.
 	 * Ignores {@link ItemListProperty} and {@link ItemProperty}. These have to be handled separately.
 	 * See {@link NodeMutator#mutateChildren}.
@@ -73,17 +72,15 @@ public class NodeMutator implements BaseNodeMutator {
 	 */
 	private MutationResult mutateProperties(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
 
-		final Set<Class<? extends Property>> commonProperties = new HashSet<>();
-		commonProperties.addAll(original.getProperties().keySet());
-		commonProperties.addAll(target.getProperties().keySet());
+		final Set<Class<? extends Property>> commonProperties = getCommonProperties(original, target);
 
 		for (Class<? extends Property> key : commonProperties) {
-			if (key == ItemListProperty.class || key == ItemProperty.class) {
+			if (shouldSkipPropertyMutation(key)) {
 				continue;
 			}
+
 			final Property propOriginal = original.getProperty(key);
 			final Property propTarget = target.getProperty(key);
-
 			if (isUnchanged(propOriginal, propTarget)) {
 				continue;
 			}
@@ -123,7 +120,48 @@ public class NodeMutator implements BaseNodeMutator {
 	 * @return the result of the mutation
 	 */
 	private MutationResult mutateChildren(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
-		return mutationStrategyDecider.mutate(nodeHandlers, original, target);
+		return strategyDecider.mutate(nodeHandlers, original, target);
+	}
+
+
+
+
+	/**
+	 * @param a the first node
+	 * @param b the other node
+	 * @return the set of property-key the two given nodes have in common.
+	 */
+	private Set<Class<? extends Property>> getCommonProperties(final SUINode a, final SUINode b) {
+		final Set<Class<? extends Property>> properties = new HashSet<>(a.getProperties().keySet());
+		properties.addAll(b.getProperties().keySet());
+		return properties;
+	}
+
+
+
+
+	/**
+	 * @param propertyKey the key of the property
+	 * @return whether the given property type should be skipped during property mutation.
+	 */
+	private boolean shouldSkipPropertyMutation(final Class<? extends Property> propertyKey) {
+		return propertyKey == ItemListProperty.class || propertyKey == ItemProperty.class;
+	}
+
+
+
+
+	/**
+	 * Get the mutation behaviour from the given node.
+	 * Returns the default behaviour if the property was not added to the given node.
+	 *
+	 * @param node the node
+	 * @return the {@link MutationBehaviour}.
+	 */
+	private MutationBehaviour getMutationBehaviour(final SUINode node) {
+		return node.getPropertySafe(MutationBehaviourProperty.class)
+				.map(MutationBehaviourProperty::getBehaviour)
+				.orElse(MutationBehaviour.DEFAULT);
 	}
 
 
@@ -166,20 +204,6 @@ public class NodeMutator implements BaseNodeMutator {
 	 */
 	private boolean isRemoved(final Object original, final Object target) {
 		return (original != null) && (target == null);
-	}
-
-
-
-
-	/**
-	 * Check whether the object was neither removed nor added (both != null).
-	 *
-	 * @param original the original object
-	 * @param target   the target object
-	 * @return true, if the object was neither removed nor added
-	 */
-	private boolean notAddedOrRemoved(final Object original, final Object target) {
-		return (original != null) && (target != null);
 	}
 
 

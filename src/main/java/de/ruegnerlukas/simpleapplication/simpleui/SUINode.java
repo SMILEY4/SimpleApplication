@@ -1,11 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-import de.ruegnerlukas.simpleapplication.common.AsyncChunkProcessor;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.AddOperation;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.Operation;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.RemoveOperation;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.ReplaceOperation;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy.SwapOperation;
+import de.ruegnerlukas.simpleapplication.common.utils.Loop;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.BaseOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
@@ -26,7 +23,10 @@ import java.util.stream.Stream;
 public class SUINode {
 
 
-	private static final int N_CORES = Runtime.getRuntime().availableProcessors();
+	/**
+	 * The amount of child nodes that have to be created to use the async processing.
+	 */
+	private static final int CREATE_CHILD_LIST_ASYNC_CUTOFF = 1028;
 
 	/**
 	 * The type of this node.
@@ -119,16 +119,12 @@ public class SUINode {
 	 */
 	private List<SUINode> createChildNodesFromItemListProperty(final SUIState state, final ItemListProperty property) {
 
-		if (property.getFactories().size() < 1028) {
+		if (property.getFactories().size() < CREATE_CHILD_LIST_ASYNC_CUTOFF) {
 			return property.getFactories().stream()
 					.map(factory -> factory.create(state))
 					.collect(Collectors.toList());
 		} else {
-			return new AsyncChunkProcessor<>(property.getFactories(), property.getFactories().size() / N_CORES, factories ->
-					factories.stream()
-							.map(factory -> factory.create(state))
-							.collect(Collectors.toList()))
-					.get();
+			return Loop.asyncCollectingLoop(property.getFactories(), factory -> factory.create(state));
 		}
 	}
 
@@ -143,30 +139,6 @@ public class SUINode {
 	 */
 	private List<SUINode> createChildNodesFromItemProperty(final SUIState state, final ItemProperty property) {
 		return List.of(property.getFactory().create(state));
-	}
-
-
-
-
-	/**
-	 * Inform the listener (if possible) of any changes to the child nodes.
-	 */
-	public void triggerChildListChange() {
-		if (childListener != null && getFxNode() != null) {
-			childListener.onChange(this);
-		}
-	}
-
-
-
-
-	public void triggerChildListTransform(final List<ReplaceOperation> replaceOperations,
-										  final List<RemoveOperation> removeOperations,
-										  final List<AddOperation> addOperations,
-										  final List<SwapOperation> swapOperations) {
-		if (childTransformListener != null && getFxNode() != null) {
-			childTransformListener.onTransform(this, replaceOperations, removeOperations, addOperations, swapOperations);
-		}
 	}
 
 
@@ -250,10 +222,10 @@ public class SUINode {
 	/**
 	 * Replaces all children of this node with the given children
 	 *
-	 * @param childrenList       the list of new child nodes
-	 * @param triggerChildChange true, to trigger the child change action
+	 * @param childrenList    the list of new child nodes
+	 * @param triggerListener true, to trigger the child change action
 	 */
-	public void setChildren(final List<SUINode> childrenList, final boolean triggerChildChange) {
+	public void setChildren(final List<SUINode> childrenList, final boolean triggerListener) {
 		this.children.clear();
 		this.children.addAll(childrenList);
 		this.childMap.clear();
@@ -263,7 +235,7 @@ public class SUINode {
 				childMap.put(idProp.getId(), child);
 			}
 		}
-		if (triggerChildChange) {
+		if (triggerListener) {
 			triggerChildListChange();
 		}
 	}
@@ -272,47 +244,32 @@ public class SUINode {
 
 
 	/**
-	 * todo: prototype
+	 * Inform the listener (if possible) of any changes to the child nodes.
 	 */
-	public void applyChildTransformations(final List<ReplaceOperation> replaceOperations,
-										  final List<RemoveOperation> removeOperations,
-										  final List<AddOperation> addOperations,
-										  final List<SwapOperation> swapOperations) {
+	public void triggerChildListChange() {
+		if (childListener != null && getFxNode() != null) {
+			childListener.onChange(this);
+		}
+	}
 
-				/*
-		Order of operations:
-		- remove
-		- add
-		- swap
-		- replace
-		 */
 
-		int cost = 0;
-		for (Operation operation : removeOperations) {
-			operation.apply(this.children);
-			operation.apply(this.childMap);
-			cost += operation.getCost();
-		}
-		for (Operation operation : addOperations) {
-			operation.apply(this.children);
-			operation.apply(this.childMap);
-			cost += operation.getCost();
-		}
-		for (Operation operation : swapOperations) {
-			operation.apply(this.children);
-			operation.apply(this.childMap);
-			cost += operation.getCost();
-		}
-		for (Operation operation : replaceOperations) {
-			operation.apply(this.children);
-			operation.apply(this.childMap);
-			cost += operation.getCost();
-		}
 
-		if (childTransformListener != null && cost < 10000) {
-			triggerChildListTransform(replaceOperations, removeOperations, addOperations, swapOperations);
-		} else {
-			triggerChildListChange();
+
+	/**
+	 * Applies the list of operations to this node. Also optionally triggers the {@link ChildTransformListener}.
+	 * All given operations must be of the given type.
+	 *
+	 * @param type            the type of all given operations
+	 * @param operations      the operations to apply
+	 * @param triggerListener whether to trigger the listener
+	 */
+	public void applyTransformOperation(final OperationType type, final List<? extends BaseOperation> operations, final boolean triggerListener) {
+		operations.forEach(operation -> {
+			operation.applyTo(this.children);
+			operation.applyTo(this.childMap);
+		});
+		if (triggerListener && childTransformListener != null && getFxNode() != null) {
+			childTransformListener.onTransformOperations(this, type, operations);
 		}
 	}
 
@@ -395,7 +352,14 @@ public class SUINode {
 	public interface ChildTransformListener {
 
 
-		void onTransform(SUINode parent, List<ReplaceOperation> replaceOperations, List<RemoveOperation> removeOperations, List<AddOperation> addOperations, List<SwapOperation> swapOperations);
+		/**
+		 * The given operations of the given type must be applied to the children of the fx-node of the given parent node.
+		 *
+		 * @param parent     the parent node
+		 * @param type       the type of all of the operations
+		 * @param operations the operations to apply
+		 */
+		void onTransformOperations(SUINode parent, OperationType type, List<? extends BaseOperation> operations);
 
 	}
 

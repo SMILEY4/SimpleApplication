@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MasterNodeMutator;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationStrategyDecider;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.SUIStateListener;
 import javafx.scene.Node;
 
@@ -82,9 +83,9 @@ public class SUISceneContext implements SUIStateListener {
 		this.state = state;
 		this.state.addStateListener(this);
 		this.nodeFactory = nodeFactory;
-		MasterFxNodeBuilder masterFxNodeBuilder = new MasterFxNodeBuilder(this);
-		MasterNodeMutator masterNodeMutator = new MasterNodeMutator(masterFxNodeBuilder, this);
-		this.masterNodeHandlers = new MasterNodeHandlers(masterFxNodeBuilder, masterNodeMutator);
+		MasterFxNodeBuilder fxNodeBuilder = new MasterFxNodeBuilder(this);
+		MasterNodeMutator nodeMutator = new MasterNodeMutator(fxNodeBuilder, this, MutationStrategyDecider.DEFAULT_STRATEGIES);
+		this.masterNodeHandlers = new MasterNodeHandlers(new MasterFxNodeBuilder(this), nodeMutator);
 	}
 
 

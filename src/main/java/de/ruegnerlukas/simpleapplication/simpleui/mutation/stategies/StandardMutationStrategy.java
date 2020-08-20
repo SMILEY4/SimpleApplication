@@ -2,30 +2,36 @@ package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult.MUTATED;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult.MUTATED;
 
+/**
+ * This strategy can be applied for any situation (even when nodes do not have an id property).
+ */
 public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public DecisionData canBeAppliedTo(final SUINode original, final SUINode target, final boolean allChildrenHaveId) {
-		return DecisionData.APPLIABLE_NO_DATA;
+	public StrategyDecisionResult canBeAppliedTo(final SUINode original, final SUINode target, final boolean allChildrenHaveId) {
+		return StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA;
 	}
 
 
 
 
 	@Override
-	public BaseNodeMutator.MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target, final DecisionData decisionData) {
+	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
+								 final SUINode original,
+								 final SUINode target,
+								 final StrategyDecisionResult decisionData) {
 
 		final List<SUINode> newChildList = new ArrayList<>();
 
-		boolean childrenChanged = false; // todo: isn't this always true ?
+		boolean childrenChanged = false;
 		for (int i = 0; i < Math.max(original.childCount(), target.childCount()); i++) {
 			final SUINode childTarget = target.childCount() <= i ? null : target.getChild(i);
 			final SUINode childOriginal = original.childCount() <= i ? null : original.getChild(i);
@@ -51,14 +57,6 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 		}
 
-
-		// todo bottleneck for smaller number of modifications
-		/*
-		Idea:
-		- still collect all nodes in single list here
-		- also keep track of modifications (remove, add, modify)
-		- if number of modifications small ( less than 30% ?) -> original.applyMods, else -> setChildren
-		 */
 		original.setChildren(newChildList, childrenChanged);
 		return MUTATED;
 	}

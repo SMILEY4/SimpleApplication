@@ -1,5 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
+import de.ruegnerlukas.simpleapplication.common.utils.Pair;
+import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.AddOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.BaseOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.RemoveOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.ReplaceOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.SwapOperation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,35 +24,49 @@ import java.util.stream.Collectors;
 public class ListTransformer {
 
 
+	/**
+	 * The source list.
+	 */
 	private final List<String> source;
 
+	/**
+	 * The target list.
+	 */
 	private final List<String> target;
 
+	/**
+	 * The map of all (target) elements and their indices in the target list.
+	 */
 	private final Map<String, Integer> targetIndexMap;
 
+	/**
+	 * The set of all elements of the target list.
+	 */
 	private final Set<String> setTarget;
 
 
 
 
+	/**
+	 * @param source the source list
+	 * @param target the target list to match
+	 */
 	public ListTransformer(final List<String> source, final List<String> target) {
-		this(source, null, target, new HashSet<>(target));
-	}
-
-
-
-
-	public ListTransformer(final List<String> source, final Set<String> initialSetSource, final List<String> target, final Set<String> setTarget) {
 		this.source = source;
 		this.target = target;
 		this.targetIndexMap = buildIndexMap(target);
-		this.setTarget = setTarget;
+		this.setTarget = new HashSet<>(target);
 	}
 
 
 
 
-	public Set<Pair<String, Integer>> getElementsKept() {
+	/**
+	 * Return all elements that are in the source and target list together with their indices in the target list
+	 *
+	 * @return the elements as a pair of the element and the index
+	 */
+	public Set<Pair<String, Integer>> getPermanentElements() {
 		return source.stream()
 				.filter(setTarget::contains)
 				.map(element -> Pair.of(element, targetIndexMap.get(element)))
@@ -54,7 +76,12 @@ public class ListTransformer {
 
 
 
-	public List<TransformOperation> calculateTransformations() {
+	/**
+	 * Calculates all {@link BaseTransformation} required to make the source list match the target list.
+	 *
+	 * @return the required transformations
+	 */
+	public List<BaseTransformation> calculateTransformations() {
 		if (listsEqual(source, target)) {
 			return new ArrayList<>();
 		}
@@ -65,35 +92,30 @@ public class ListTransformer {
 
 
 
-	private boolean listsEqual(final List<String> source, final List<String> target) {
-		if (source.size() != target.size()) {
-			return false;
-		}
-		for (int i = 0, n = source.size(); i < n; i++) {
-			if (!source.get(i).equals(target.get(i))) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-
-
-
-	private List<TransformOperation> calculateTransformations(final List<String> source, final Set<String> setSource,
+	/**
+	 * Calculates all {@link BaseTransformation} required to make the given source list match the given target list.
+	 *
+	 * @param setSource the set of source elements
+	 * @param setTarget the set of elements to match
+	 * @return the required transformations
+	 */
+	private List<BaseTransformation> calculateTransformations(final List<String> source, final Set<String> setSource,
 															  final List<String> target, final Set<String> setTarget) {
 
-		final List<TransformOperation> operations = new ArrayList<>();
+		final List<BaseTransformation> operations = new ArrayList<>();
 
-		List<RemoveOperations> removeOperations = calculateRemoveOperations(source, setSource, target, setTarget);
-		applyRemoveOperations(removeOperations, source);
+		// remove
+		List<RemoveTransformation> removeOperations = calculateRemoveTransformations(source, setSource, setTarget);
+		applyRemoveTransformations(removeOperations, source);
 		operations.addAll(removeOperations);
 
-		List<AddOperations> addOperations = calculateAddOperations(source, setSource, target, setTarget);
-		applyAddOperations(addOperations, source);
+		// add
+		List<AddTransformation> addOperations = calculateAddTransformations(setSource, setTarget);
+		applyAddTransformations(addOperations, source);
 		operations.addAll(addOperations);
 
-		operations.addAll(calculateSwapOperations(source, target));
+		// swap
+		operations.addAll(calculateSwapTransformations(source, target));
 
 		return operations;
 	}
@@ -101,8 +123,15 @@ public class ListTransformer {
 
 
 
-	private List<RemoveOperations> calculateRemoveOperations(final List<String> source, final Set<String> setSource,
-															 final List<String> target, final Set<String> setTarget) {
+	/**
+	 * Calculates all {@link RemoveTransformation} required to make the given source list match the given target list.
+	 *
+	 * @param setSource the set of source elements
+	 * @param setTarget the set of elements to match
+	 * @return the required remove-transformations
+	 */
+	private List<RemoveTransformation> calculateRemoveTransformations(final List<String> source, final Set<String> setSource,
+																	  final Set<String> setTarget) {
 		if (setTarget.size() > setSource.size() && setTarget.containsAll(setSource)) {
 			return List.of();
 		}
@@ -111,22 +140,21 @@ public class ListTransformer {
 				.filter(e -> !setTarget.contains(e))
 				.map(sourceIndexMap::get)
 				.sorted((a, b) -> -Integer.compare(a, b))
-				.map(RemoveOperations::new)
+				.map(RemoveTransformation::new)
 				.collect(Collectors.toList());
 	}
 
 
 
 
-	private void applyRemoveOperations(List<RemoveOperations> operations, List<String> source) {
-		operations.forEach(operation -> source.remove(operation.getIndex()));
-	}
-
-
-
-
-	private List<AddOperations> calculateAddOperations(final List<String> source, final Set<String> setSource,
-													   final List<String> target, final Set<String> setTarget) {
+	/**
+	 * Calculates all {@link AddTransformation} required to make the given source list match the given target list.
+	 *
+	 * @param setSource the set of source elements
+	 * @param setTarget the set of elements to match
+	 * @return the required add-transformations
+	 */
+	private List<AddTransformation> calculateAddTransformations(final Set<String> setSource, final Set<String> setTarget) {
 		if (setSource.size() > setTarget.size() && setSource.containsAll(setTarget)) {
 			return List.of();
 		}
@@ -134,22 +162,22 @@ public class ListTransformer {
 				.filter(e -> !setSource.contains(e))
 				.map(e -> Pair.of(e, targetIndexMap.get(e)))
 				.sorted(Comparator.comparingInt(Pair::getRight))
-				.map(pair -> new AddOperations(pair.getLeft(), pair.getRight()))
+				.map(pair -> new AddTransformation(pair.getLeft(), pair.getRight()))
 				.collect(Collectors.toList());
 	}
 
 
 
 
-	private void applyAddOperations(List<AddOperations> operations, List<String> source) {
-		operations.forEach(operation -> source.add(operation.getIndex(), operation.getElement()));
-	}
-
-
-
-
-	private List<SwapOperation> calculateSwapOperations(final List<String> source, final List<String> target) {
-		final List<SwapOperation> result = new ArrayList<>();
+	/**
+	 * Calculates all {@link SwapTransformation} required to make the given source list match the given target list.
+	 *
+	 * @param source the source list
+	 * @param target the target list to match
+	 * @return the required swap-transformations
+	 */
+	private List<SwapTransformation> calculateSwapTransformations(final List<String> source, final List<String> target) {
+		final List<SwapTransformation> result = new ArrayList<>();
 
 		final Map<String, Integer> sourceIndexMap = buildIndexMap(source);
 		final List<String> workingList = new ArrayList<>(source);
@@ -159,7 +187,7 @@ public class ListTransformer {
 			final String elementTarget = target.get(i);
 			if (!elementSource.equals(elementTarget)) {
 				int indexOfCorrect = sourceIndexMap.get(elementTarget);
-				result.add(new SwapOperation(i, indexOfCorrect));
+				result.add(new SwapTransformation(i, indexOfCorrect));
 				Collections.swap(workingList, i, indexOfCorrect);
 				swapInIndexMap(sourceIndexMap, elementSource, elementTarget);
 			}
@@ -171,7 +199,62 @@ public class ListTransformer {
 
 
 
-	public void swapInIndexMap(Map<String, Integer> indexMap, String a, String b) {
+	/**
+	 * Checks whether the two given lists are equal (equal size and equal elements at any index)
+	 *
+	 * @param a the first list
+	 * @param b the other list
+	 * @return whether the lists are equal
+	 */
+	private boolean listsEqual(final List<String> a, final List<String> b) {
+		if (a.size() != b.size()) {
+			return false;
+		}
+		for (int i = 0, n = a.size(); i < n; i++) {
+			if (!a.get(i).equals(b.get(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+
+
+	/**
+	 * Applies all given add-transformations to the given list.
+	 *
+	 * @param transformations the transformations to apply to the list
+	 * @param list            the list to transform
+	 */
+	private void applyAddTransformations(final List<AddTransformation> transformations, final List<String> list) {
+		transformations.forEach(operation -> list.add(operation.getIndex(), operation.getElement()));
+	}
+
+
+
+
+	/**
+	 * Applies all given remove-transformations to the given list.
+	 *
+	 * @param transformations the transformations to apply to the list
+	 * @param list            the list to transform
+	 */
+	private void applyRemoveTransformations(final List<RemoveTransformation> transformations, final List<String> list) {
+		transformations.forEach(operation -> list.remove(operation.getIndex()));
+	}
+
+
+
+
+	/**
+	 * Swaps the indices of the two given elements in the given index map.
+	 *
+	 * @param indexMap the index map.
+	 * @param a        the first element
+	 * @param b        the other element
+	 */
+	public void swapInIndexMap(final Map<String, Integer> indexMap, final String a, final String b) {
 		int indexA = indexMap.get(a);
 		int indexB = indexMap.get(b);
 		indexMap.put(a, indexB);
@@ -181,7 +264,13 @@ public class ListTransformer {
 
 
 
-	private Map<String, Integer> buildIndexMap(List<String> list) {
+	/**
+	 * Creates a map with all the given elements and their indices in the list as their keys.
+	 *
+	 * @param list the input list
+	 * @return a map with the index into the input list as a key and the element at that index as the value
+	 */
+	private Map<String, Integer> buildIndexMap(final List<String> list) {
 		final Map<String, Integer> indexMap = new HashMap<>(list.size());
 		for (int i = 0; i < list.size(); i++) {
 			indexMap.put(list.get(i), i);
@@ -192,15 +281,33 @@ public class ListTransformer {
 
 
 
+	/**
+	 * A transformation that adds the given element at the given index.
+	 */
 	@Getter
 	@AllArgsConstructor
-	public static class AddOperations implements TransformOperation {
+	public static class AddTransformation implements BaseTransformation {
 
 
+		/**
+		 * The element to add
+		 */
 		private final String element;
 
+		/**
+		 * The index
+		 */
 		private final int index;
 
+
+
+
+		@Override
+		public BaseOperation toOperation(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+			final SUINode addNode = target.findChildUnsafe(this.getElement());
+			nodeHandlers.getFxNodeBuilder().build(addNode);
+			return new AddOperation(this.getIndex(), addNode);
+		}
 
 	}
 
@@ -209,12 +316,26 @@ public class ListTransformer {
 
 
 
+	/**
+	 * A transformation that removes the element at the given index from the list.
+	 */
 	@Getter
 	@AllArgsConstructor
-	public static class RemoveOperations implements TransformOperation {
+	public static class RemoveTransformation implements BaseTransformation {
 
 
+		/**
+		 * The index of the element to remove
+		 */
 		private final int index;
+
+
+
+
+		@Override
+		public RemoveOperation toOperation(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+			return new RemoveOperation(this.getIndex(), original.getChild(this.getIndex()));
+		}
 
 	}
 
@@ -223,23 +344,44 @@ public class ListTransformer {
 
 
 
+	/**
+	 * A transformation that swaps the elements at the given indices
+	 */
 	@Getter
-	public static class SwapOperation implements TransformOperation {
+	public static class SwapTransformation implements BaseTransformation {
 
 
+		/**
+		 * The first index (indexMin <= indexMax)
+		 */
 		private final int indexMin;
 
+		/**
+		 * The second index (indexMax >= indexMin)
+		 */
 		private final int indexMax;
 
 
 
 
-		public SwapOperation(final int a, final int b) {
+		/**
+		 * @param a the first index
+		 * @param b the other index
+		 */
+		public SwapTransformation(final int a, final int b) {
 			this.indexMin = Math.min(a, b);
 			this.indexMax = Math.max(a, b);
 		}
 
 
+
+
+		@Override
+		public SwapOperation toOperation(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+			return new SwapOperation(this.getIndexMin(), this.getIndexMax());
+		}
+
+
 	}
 
 
@@ -247,54 +389,32 @@ public class ListTransformer {
 
 
 
+	/**
+	 * A transformation that replaces the element at the given index with the given new element.
+	 */
 	@Getter
 	@AllArgsConstructor
-	public static class ReplaceOperation implements TransformOperation {
+	public static class ReplaceTransformation implements BaseTransformation {
 
 
+		/**
+		 * The index
+		 */
 		private final int index;
 
+		/**
+		 * The new element to replace the existing element at the index.
+		 */
 		private final String element;
 
 
-	}
-
-
-
-
-
-
-	public interface TransformOperation {
-
-
-	}
-
-
-
-
-
-
-	@Getter
-	@AllArgsConstructor
-	public static class Pair<L, R> {
-
-
-		public static <L, R> Pair<L, R> of(final L left, final R right) {
-			return new Pair<>(left, right);
-		}
-
-
-
-
-		private final L left;
-		private final R right;
-
-
 
 
 		@Override
-		public String toString() {
-			return "<" + left + "," + right + ">";
+		public ReplaceOperation toOperation(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+			final SUINode replacementNode = target.findChildUnsafe(this.getElement());
+			nodeHandlers.getFxNodeBuilder().build(replacementNode);
+			return new ReplaceOperation(this.getIndex(), replacementNode, original.getChild(this.getIndex()));
 		}
 
 	}
@@ -304,31 +424,23 @@ public class ListTransformer {
 
 
 
-	@Getter
-	@AllArgsConstructor
-	public static class IntPair {
+	/**
+	 * A generic transformation.
+	 */
+	public interface BaseTransformation {
 
 
-		public static IntPair of(final int left, final int right) {
-			return new IntPair(left, right);
-		}
-
-
-
-
-		private final int left;
-		private final int right;
-
-
-
-
-		@Override
-		public String toString() {
-			return "<" + left + "," + right + ">";
-		}
+		/**
+		 * Converts this transformation into an operation
+		 *
+		 * @param nodeHandlers the simpleui hanelers
+		 * @param original     the original node
+		 * @param target       the target node
+		 * @return the created operation
+		 */
+		BaseOperation toOperation(MasterNodeHandlers nodeHandlers, SUINode original, SUINode target);
 
 	}
-
 
 }
 

@@ -10,10 +10,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.AddOperations;
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.RemoveOperations;
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.SwapOperation;
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.TransformOperation;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.AddTransformation;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.RemoveTransformation;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.SwapTransformation;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.BaseTransformation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -30,19 +30,19 @@ public class ListTransformerTest {
 		log.info("source: {}", source);
 		log.info("target: {}", target);
 
-		List<TransformOperation> operations = new ListTransformer(source, target).calculateTransformations();
+		List<BaseTransformation> operations = new ListTransformer(source, target).calculateTransformations();
 		List<String> processed = new ArrayList<>(source);
 		operations.forEach(op -> {
-			if (op instanceof AddOperations) {
-				AddOperations operation = (AddOperations) op;
+			if (op instanceof AddTransformation) {
+				AddTransformation operation = (AddTransformation) op;
 				processed.add(operation.getIndex(), operation.getElement());
 			}
-			if (op instanceof RemoveOperations) {
-				RemoveOperations operation = (RemoveOperations) op;
+			if (op instanceof RemoveTransformation) {
+				RemoveTransformation operation = (RemoveTransformation) op;
 				processed.remove(operation.getIndex());
 			}
-			if (op instanceof SwapOperation) {
-				SwapOperation operation = (SwapOperation) op;
+			if (op instanceof SwapTransformation) {
+				SwapTransformation operation = (SwapTransformation) op;
 				String elementMax = processed.remove(operation.getIndexMax());
 				String elementMin = processed.set(operation.getIndexMin(), elementMax);
 				processed.add(operation.getIndexMax(), elementMin);
@@ -74,17 +74,17 @@ public class ListTransformerTest {
 			log.info("source: {}", source);
 			log.info("target: {}", target);
 
-			List<TransformOperation> operations = new ListTransformer(source, target).calculateTransformations();
+			List<BaseTransformation> operations = new ListTransformer(source, target).calculateTransformations();
 			List<String> processed = new ArrayList<>(source);
 			operations.forEach(op -> {
-				if (op instanceof AddOperations) {
+				if (op instanceof AddTransformation) {
 					fail("not allowed: add");
 				}
-				if (op instanceof RemoveOperations) {
+				if (op instanceof RemoveTransformation) {
 					fail("not allowed: remove");
 				}
-				if (op instanceof SwapOperation) {
-					SwapOperation operation = (SwapOperation) op;
+				if (op instanceof SwapTransformation) {
+					SwapTransformation operation = (SwapTransformation) op;
 					String elementMax = processed.remove(operation.getIndexMax());
 					String elementMin = processed.set(operation.getIndexMin(), elementMax);
 					processed.add(operation.getIndexMax(), elementMin);
@@ -129,19 +129,19 @@ public class ListTransformerTest {
 		log.info("source: {}", testData.getLeft());
 		log.info("target: {}", testData.getRight());
 
-		List<TransformOperation> operations = new ListTransformer(testData.getLeft(), testData.getRight()).calculateTransformations();
+		List<BaseTransformation> operations = new ListTransformer(testData.getLeft(), testData.getRight()).calculateTransformations();
 		List<String> processed = new ArrayList<>(testData.getLeft());
 		operations.forEach(op -> {
-			if (op instanceof AddOperations) {
-				AddOperations operation = (AddOperations) op;
+			if (op instanceof AddTransformation) {
+				AddTransformation operation = (AddTransformation) op;
 				processed.add(operation.getIndex(), operation.getElement());
 			}
-			if (op instanceof RemoveOperations) {
-				RemoveOperations operation = (RemoveOperations) op;
+			if (op instanceof RemoveTransformation) {
+				RemoveTransformation operation = (RemoveTransformation) op;
 				processed.remove(operation.getIndex());
 			}
-			if (op instanceof SwapOperation) {
-				SwapOperation operation = (SwapOperation) op;
+			if (op instanceof SwapTransformation) {
+				SwapTransformation operation = (SwapTransformation) op;
 				String elementMax = processed.remove(operation.getIndexMax());
 				String elementMin = processed.set(operation.getIndexMin(), elementMax);
 				processed.add(operation.getIndexMax(), elementMin);
