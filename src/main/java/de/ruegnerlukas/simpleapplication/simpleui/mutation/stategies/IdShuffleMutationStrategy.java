@@ -49,7 +49,7 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 			final Set<String> idsTarget = target.getChildrenIds();
 			if (idsOriginal.equals(idsTarget)) {
 				final int diffCount = countDiffs(original, target);
-				if ((double) diffCount / (double) idsOriginal.size() > PERCENTAGE_MAJORITY) {
+				if (diffCount == 0 || (double) diffCount / (double) idsOriginal.size() > PERCENTAGE_MAJORITY) {
 					return new IdShuffleDecisionResult(true, diffCount);
 				} else {
 					return StrategyDecisionResult.NOT_APPLICABLE;

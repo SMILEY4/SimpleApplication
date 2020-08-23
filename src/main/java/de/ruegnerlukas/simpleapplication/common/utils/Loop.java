@@ -45,7 +45,7 @@ public class Loop {
 		final AsyncChunkProcessor<T, R> processor = new AsyncChunkProcessor<>(list, list.size() / CORE_COUNT,
 				chunk -> chunk.stream()
 						.map(function)
-						.filter(e -> removeNulls || e != null)
+						.filter(e -> !removeNulls || e != null)
 						.collect(Collectors.toList())
 		);
 		return processor.get();
