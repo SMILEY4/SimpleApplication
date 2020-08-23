@@ -97,18 +97,10 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 		});
 
 		final boolean useOperationsForFxNode = totalCost.get() < COST_CUTOFF;
-		if (!removeOperations.isEmpty()) {
-			original.applyTransformOperation(OperationType.REMOVE, removeOperations, useOperationsForFxNode);
-		}
-		if (!addOperations.isEmpty()) {
-			original.applyTransformOperation(OperationType.ADD, addOperations, useOperationsForFxNode);
-		}
-		if (!swapOperations.isEmpty()) {
-			original.applyTransformOperation(OperationType.SWAP, swapOperations, useOperationsForFxNode);
-		}
-		if (!replaceOperations.isEmpty()) {
-			original.applyTransformOperation(OperationType.REPLACE, replaceOperations, useOperationsForFxNode);
-		}
+		original.applyTransformOperations(OperationType.REMOVE, removeOperations, useOperationsForFxNode);
+		original.applyTransformOperations(OperationType.ADD, addOperations, useOperationsForFxNode);
+		original.applyTransformOperations(OperationType.SWAP, swapOperations, useOperationsForFxNode);
+		original.applyTransformOperations(OperationType.REPLACE, replaceOperations, useOperationsForFxNode);
 		if (!useOperationsForFxNode) {
 			original.triggerChildListChange();
 		}

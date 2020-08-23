@@ -263,7 +263,10 @@ public class SUINode {
 	 * @param operations      the operations to apply
 	 * @param triggerListener whether to trigger the listener
 	 */
-	public void applyTransformOperation(final OperationType type, final List<? extends BaseOperation> operations, final boolean triggerListener) {
+	public void applyTransformOperations(final OperationType type, final List<? extends BaseOperation> operations, final boolean triggerListener) {
+		if (operations.isEmpty()) {
+			return;
+		}
 		operations.forEach(operation -> {
 			operation.applyTo(this.children);
 			operation.applyTo(this.childMap);

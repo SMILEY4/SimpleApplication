@@ -3,6 +3,8 @@ package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.OperationType;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.ReplaceOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import lombok.Getter;
 
@@ -12,21 +14,16 @@ import java.util.Set;
 
 /**
  * This strategy can be applied when all participating child nodes haven an id property and no direct child nodes where added or removed.
+ * This strategy is optimized for when the order of ids was not changed, or was changed for the majority of nodes ( >x% of children).
  */
 public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	/**
-	 * The percentage threshold for the bulk set operation.
-	 * Lower than this and the changes are applied individually, higher and the new child list is set in one call.
+	 * The percentage that defines "the majority of child nodes".
+	 * This strategy is only used, when more nodes than this percentage changes position
 	 */
-	private static final double THRESHOLD_BULK_SET_PERCENTAGE = 0.3;
-
-	/**
-	 * The min number of changes.
-	 * Lower than this and the changes are applied individually, higher and the new child list is set in one call.
-	 */
-	private static final int THRESHOLD_BULK_SET_MIN = 128;
+	private static final double PERCENTAGE_MAJORITY = 0.6;
 
 
 
@@ -51,7 +48,12 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 			final Set<String> idsOriginal = original.getChildrenIds();
 			final Set<String> idsTarget = target.getChildrenIds();
 			if (idsOriginal.equals(idsTarget)) {
-				return new IdShuffleDecisionResult(true, countDiffs(original, target));
+				final int diffCount = countDiffs(original, target);
+				if ((double) diffCount / (double) idsOriginal.size() > PERCENTAGE_MAJORITY) {
+					return new IdShuffleDecisionResult(true, diffCount);
+				} else {
+					return StrategyDecisionResult.NOT_APPLICABLE;
+				}
 			} else {
 				return StrategyDecisionResult.NOT_APPLICABLE;
 			}
@@ -95,7 +97,7 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 		 * A 'diff' is counted when the id of the original and target node do not match at any index in the list.
 		 */
 		@Getter
-		public final int diffCount;
+		private final int diffCount;
 
 
 
@@ -140,26 +142,19 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 * @param target       the target node
 	 */
 	private void mutateNoDiffs(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
-
-		final List<IdMutationStrategy.ReplaceOperation> replaceOperations = new ArrayList<>(original.childCount());
-
+		final List<ReplaceOperation> replaceOperations = new ArrayList<>(original.childCount());
 		for (int i = 0; i < target.childCount(); i++) {
 			final SUINode originalNode = original.getChild(i);
 			final SUINode targetNode = target.getChild(i);
 			final SUINode childNode = nodeHandlers.getMutator().mutate(originalNode, targetNode);
-
 			if (childNode.getFxNode() == null) {
 				nodeHandlers.getFxNodeBuilder().build(childNode);
 			}
-
 			if (!originalNode.equals(childNode)) {
-				replaceOperations.add(new IdMutationStrategy.ReplaceOperation(i, childNode, originalNode));
+				replaceOperations.add(new ReplaceOperation(i, childNode, originalNode));
 			}
 		}
-
-		if (!replaceOperations.isEmpty()) {
-			original.applyChildTransformations(replaceOperations, List.of(), List.of(), List.of());
-		}
+		original.applyTransformOperations(OperationType.REPLACE, replaceOperations, true);
 	}
 
 
@@ -173,32 +168,15 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 * @param target       the target node
 	 */
 	private void mutateWithDiffs(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
-		final List<IdMutationStrategy.ReplaceOperation> replaceOperations = new ArrayList<>(original.childCount());
 		final List<SUINode> newChildList = new ArrayList<>(original.childCount());
-
-		for (int i = 0; i < target.childCount(); i++) {
-			final SUINode targetChild = original.getChild(i);
+		for (int i = 0, n = target.childCount(); i < n; i++) {
+			final SUINode targetChild = target.getChild(i);
 			final String targetChildId = targetChild.getProperty(IdProperty.class).getId();
-
-			final SUINode childNode = nodeHandlers.getMutator().mutate(original.findChildUnsafe(targetChildId), targetChild);
-
-			if (childNode.getFxNode() == null) {
-				nodeHandlers.getFxNodeBuilder().build(childNode);
-			}
-
-			final SUINode originalChild = original.getChild(i);
-			if (!originalChild.equals(childNode)) {
-				replaceOperations.add(new IdMutationStrategy.ReplaceOperation(i, childNode, originalChild));
-			}
-			newChildList.add(childNode);
+			final SUINode originalChild = original.findChildUnsafe(targetChildId);
+			final SUINode newChildNode = nodeHandlers.getMutator().mutate(originalChild, targetChild);
+			newChildList.add(newChildNode);
 		}
-
-		final int threshold = (int) Math.min(THRESHOLD_BULK_SET_MIN, original.childCount() * THRESHOLD_BULK_SET_PERCENTAGE);
-		if (replaceOperations.size() < threshold) {
-			original.applyChildTransformations(replaceOperations, List.of(), List.of(), List.of());
-		} else {
-			original.setChildren(newChildList, true);
-		}
+		original.setChildren(newChildList, true);
 	}
 
 
