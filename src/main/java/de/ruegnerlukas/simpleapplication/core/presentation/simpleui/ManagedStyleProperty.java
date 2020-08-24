@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 public class ManagedStyleProperty extends Property {
 

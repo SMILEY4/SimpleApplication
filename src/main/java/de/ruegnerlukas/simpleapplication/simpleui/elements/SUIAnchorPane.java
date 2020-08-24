@@ -4,6 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
+import de.ruegnerlukas.simpleapplication.simpleui.SUIUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
@@ -46,24 +47,18 @@ public final class SUIAnchorPane {
 	 */
 	public static NodeFactory anchorPane(final Property... properties) {
 		Properties.checkIllegal(SUIAnchorPane.class, SUIRegistry.get().getEntry(SUIAnchorPane.class).getProperties(), properties);
-		return state -> new SUINode(SUIAnchorPane.class, List.of(properties), state, SUIAnchorPane::handleChildrenChange);
+		return state -> new SUINode(
+				SUIAnchorPane.class,
+				List.of(properties),
+				state,
+				SUIUtils.defaultPaneChildListener(),
+				SUIUtils.defaultPaneChildTransformListener());
 	}
 
 
 
 
-	/**
-	 * Handle a change in the child nodes of the given anchor-pane node.
-	 *
-	 * @param node the anchor-pane node
-	 */
-	private static void handleChildrenChange(final SUINode node) {
-		final AnchorPane anchorPane = (AnchorPane) node.getFxNode();
-		anchorPane.getChildren().clear();
-		node.getChildren().forEach(child -> {
-			anchorPane.getChildren().add(child.getFxNode());
-		});
-	}
+
 
 
 

@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBui
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 @Getter
 public class SizePreferredProperty extends Property {
@@ -88,7 +88,7 @@ public class SizePreferredProperty extends Property {
 				fxNode.setPrefSize(sizeProp.getPreferredWidth(), sizeProp.getPreferredHeight());
 				return MutationResult.MUTATED;
 			} else {
-				return MutationResult.REBUILD;
+				return MutationResult.REQUIRES_REBUILD;
 			}
 		}
 

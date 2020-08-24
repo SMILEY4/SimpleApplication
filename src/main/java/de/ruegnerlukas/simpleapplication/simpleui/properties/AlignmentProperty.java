@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 public class AlignmentProperty extends Property {
 

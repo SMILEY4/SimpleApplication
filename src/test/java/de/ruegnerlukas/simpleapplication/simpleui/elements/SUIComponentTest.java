@@ -58,7 +58,7 @@ public class SUIComponentTest extends ApplicationTest {
 		TestUtils.assertNode(node, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(node, "myVBox");
 
-		final List<SUINode> children = node.getChildren();
+		final List<SUINode> children = node.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();

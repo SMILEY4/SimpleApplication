@@ -32,10 +32,10 @@ public class ChildItem extends SUINode {
 
 		@Override
 		public Node build(final MasterNodeHandlers nodeHandlers, final SUINode node) {
-			if (node.getChildren().isEmpty()) {
-				return null;
+			if (node.hasChildren()) {
+				return nodeHandlers.getFxNodeBuilder().build(node.getChild(0));
 			} else {
-				return nodeHandlers.getFxNodeBuilder().build(node.getChildren().get(0));
+				return null;
 			}
 		}
 

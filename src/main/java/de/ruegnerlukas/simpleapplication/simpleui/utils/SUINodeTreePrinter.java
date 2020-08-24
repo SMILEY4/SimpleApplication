@@ -52,9 +52,9 @@ public final class SUINodeTreePrinter {
 				System.out.println(baseIdent + IDENT + IDENT + prop.getKey().getSimpleName() + ": " + prop.printValue());
 			}
 		}
-		if (!node.getChildren().isEmpty()) {
+		if (node.hasChildren()) {
 			System.out.println(baseIdent + IDENT + "children:");
-			for (SUINode child : node.getChildren()) {
+			for (SUINode child : node.getChildrenUnmodifiable()) {
 				print(child, level + 2);
 			}
 		}

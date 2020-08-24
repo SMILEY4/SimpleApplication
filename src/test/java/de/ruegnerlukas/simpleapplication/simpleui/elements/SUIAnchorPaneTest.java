@@ -73,7 +73,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertDisabledProperty(node, true);
 		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
 
-		final List<SUINode> children = node.getChildren();
+		final List<SUINode> children = node.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
@@ -81,22 +81,22 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 		final SUINode child1 = children.get(0);
 		TestUtils.assertNode(child1, SUIAnchorPane.AnchorPaneChildItem.class);
 		PropertyTestUtils.assertAnchorProperty(child1, 10, null, null, 50);
-		assertThat(child1.getChildren()).isNotNull();
-		assertThat(child1.getChildren()).hasSize(1);
-		assertThat(child1.getChildren()).doesNotContainNull();
+		assertThat(child1.getChildrenUnmodifiable()).isNotNull();
+		assertThat(child1.getChildrenUnmodifiable()).hasSize(1);
+		assertThat(child1.getChildrenUnmodifiable()).doesNotContainNull();
 
-		final SUINode child1Button = child1.getChildren().get(0);
+		final SUINode child1Button = child1.getChildrenUnmodifiable().get(0);
 		PropertyTestUtils.assertIdProperty(child1Button, "btn1");
 		PropertyTestUtils.assertTextContentProperty(child1Button, "Child Button 1");
 
 		final SUINode child2 = children.get(0);
 		TestUtils.assertNode(child2, SUIAnchorPane.AnchorPaneChildItem.class);
 		PropertyTestUtils.assertAnchorProperty(child2, 10, null, null, 50);
-		assertThat(child2.getChildren()).isNotNull();
-		assertThat(child2.getChildren()).hasSize(1);
-		assertThat(child2.getChildren()).doesNotContainNull();
+		assertThat(child2.getChildrenUnmodifiable()).isNotNull();
+		assertThat(child2.getChildrenUnmodifiable()).hasSize(1);
+		assertThat(child2.getChildrenUnmodifiable()).doesNotContainNull();
 
-		final SUINode child2Button = child2.getChildren().get(0);
+		final SUINode child2Button = child2.getChildrenUnmodifiable().get(0);
 		PropertyTestUtils.assertIdProperty(child2Button, "btn1");
 		PropertyTestUtils.assertTextContentProperty(child2Button, "Child Button 1");
 
@@ -164,7 +164,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertDisabledProperty(mutatedNode, false);
 		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -172,11 +172,11 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 		final SUINode child1 = children.get(0);
 		TestUtils.assertNode(child1, SUIAnchorPane.AnchorPaneChildItem.class);
 		PropertyTestUtils.assertAnchorProperty(child1, 500, 100, null, null);
-		assertThat(child1.getChildren()).isNotNull();
-		assertThat(child1.getChildren()).hasSize(1);
-		assertThat(child1.getChildren()).doesNotContainNull();
+		assertThat(child1.getChildrenUnmodifiable()).isNotNull();
+		assertThat(child1.getChildrenUnmodifiable()).hasSize(1);
+		assertThat(child1.getChildrenUnmodifiable()).doesNotContainNull();
 
-		final SUINode child1Button = child1.getChildren().get(0);
+		final SUINode child1Button = child1.getChildrenUnmodifiable().get(0);
 		PropertyTestUtils.assertIdProperty(child1Button, "btn");
 		PropertyTestUtils.assertTextContentProperty(child1Button, "New Button");
 	}
@@ -226,11 +226,11 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 
 		TestUtils.assertNode(mutatedNode, SUIAnchorPane.class);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
-		assertThat(children.get(0)).isEqualTo(original.getChildren().get(0));
+		assertThat(children.get(0)).isEqualTo(original.getChildrenUnmodifiable().get(0));
 
 		assertChildButton(mutatedNode, 0, "btn1", "Button 1");
 		assertChildButton(mutatedNode, 1, "btn2", "Button 2");
@@ -269,7 +269,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 
 		TestUtils.assertNode(mutatedNode, SUIAnchorPane.class);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -316,7 +316,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 
 		TestUtils.assertNode(mutatedNode, SUIAnchorPane.class);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(0);
 
@@ -367,7 +367,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 
 		TestUtils.assertNode(mutatedNode, SUIAnchorPane.class);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -420,7 +420,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 
 		TestUtils.assertNode(mutatedNode, SUIAnchorPane.class);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -479,7 +479,7 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 
 		TestUtils.assertNode(mutatedNode, SUIAnchorPane.class);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
@@ -493,15 +493,15 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 
 	private void assertChildButton(SUINode anchorPaneNode, int index, String id, String text) {
 
-		final List<SUINode> children = anchorPaneNode.getChildren();
+		final List<SUINode> children = anchorPaneNode.getChildrenUnmodifiable();
 
 		final SUINode child = children.get(index);
 		TestUtils.assertNode(child, SUIAnchorPane.AnchorPaneChildItem.class);
-		assertThat(child.getChildren()).isNotNull();
-		assertThat(child.getChildren()).hasSize(1);
-		assertThat(child.getChildren()).doesNotContainNull();
+		assertThat(child.getChildrenUnmodifiable()).isNotNull();
+		assertThat(child.getChildrenUnmodifiable()).hasSize(1);
+		assertThat(child.getChildrenUnmodifiable()).doesNotContainNull();
 
-		final SUINode childButton = child.getChildren().get(0);
+		final SUINode childButton = child.getChildrenUnmodifiable().get(0);
 		PropertyTestUtils.assertIdProperty(childButton, id);
 		PropertyTestUtils.assertTextContentProperty(childButton, text);
 	}

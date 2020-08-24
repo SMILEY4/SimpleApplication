@@ -4,6 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ChildNodesMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
@@ -11,31 +12,140 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.Node;
 
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult.MUTATED;
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult.REBUILD;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult.MUTATED;
+import static de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult.REQUIRES_REBUILD;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty.MutationBehaviour;
 
 public class NodeMutator implements BaseNodeMutator {
+
+
+	/**
+	 * The strategy decider for mutation child nodes
+	 */
+	private final MutationStrategyDecider strategyDecider;
+
+
+
+
+	/**
+	 * @param mutationStrategies the strategies for mutating child nodes
+	 */
+	public NodeMutator(final List<ChildNodesMutationStrategy> mutationStrategies) {
+		this.strategyDecider = new MutationStrategyDecider(mutationStrategies);
+	}
+
+
 
 
 	@Override
 	public MutationResult mutateNode(final SUINode original, final SUINode target, final MasterNodeHandlers nodeHandlers) {
 		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
 		if (mutationBehaviour == MutationBehaviour.DEFAULT) {
-			if (mutateProperties(nodeHandlers, original, target) == REBUILD) {
-				return REBUILD;
+			if (mutateProperties(nodeHandlers, original, target) == REQUIRES_REBUILD) {
+				return REQUIRES_REBUILD;
 			}
 		}
+
 		if (mutationBehaviour != MutationBehaviour.STATIC_SUBTREE) {
-			if (mutateChildren(nodeHandlers, original, target) == REBUILD) {
-				return REBUILD;
+			if (mutateChildren(nodeHandlers, original, target) == REQUIRES_REBUILD) {
+				return REQUIRES_REBUILD;
 			}
 		}
 		return MUTATED;
+	}
+
+
+
+
+	/**
+	 * Tries to mutate the properties (and fx-node) of the given original node to match the given target node.
+	 * Ignores {@link ItemListProperty} and {@link ItemProperty}. These have to be handled separately.
+	 * See {@link NodeMutator#mutateChildren}.
+	 *
+	 * @param nodeHandlers the primary node handlers
+	 * @param original     the original node
+	 * @param target       the target node to match
+	 */
+	private MutationResult mutateProperties(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+
+		final Set<Class<? extends Property>> commonProperties = getCommonProperties(original, target);
+
+		for (Class<? extends Property> key : commonProperties) {
+			if (shouldSkipPropertyMutation(key)) {
+				continue;
+			}
+
+			final Property propOriginal = original.getProperty(key);
+			final Property propTarget = target.getProperty(key);
+			if (isUnchanged(propOriginal, propTarget)) {
+				continue;
+			}
+
+			final PropFxNodeUpdater<Property, Node> updater = getPropNodeUpdater(original.getNodeType(), key);
+			if (updater == null) {
+				return REQUIRES_REBUILD;
+			} else {
+				if (isRemoved(propOriginal, propTarget)) {
+					if (updater.remove(nodeHandlers, propOriginal, original, original.getFxNode()) == REQUIRES_REBUILD) {
+						return REQUIRES_REBUILD;
+					}
+				}
+				if (isAdded(propOriginal, propTarget) || isUpdated(propOriginal, propTarget)) {
+					if (updater.update(nodeHandlers, propTarget, original, original.getFxNode()) == REQUIRES_REBUILD) {
+						return REQUIRES_REBUILD;
+					}
+				}
+				original.getProperties().put(propTarget.getKey(), propTarget);
+			}
+
+		}
+
+		return MUTATED;
+	}
+
+
+
+
+	/**
+	 * Tries to mutate the children ({@link ItemListProperty} and {@link ItemProperty})
+	 * of the given original node to match the given target node.
+	 *
+	 * @param nodeHandlers the primary node handlers
+	 * @param original     the original node
+	 * @param target       the target node to match
+	 * @return the result of the mutation
+	 */
+	private MutationResult mutateChildren(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+		return strategyDecider.mutate(nodeHandlers, original, target);
+	}
+
+
+
+
+	/**
+	 * @param a the first node
+	 * @param b the other node
+	 * @return the set of property-key the two given nodes have in common.
+	 */
+	private Set<Class<? extends Property>> getCommonProperties(final SUINode a, final SUINode b) {
+		final Set<Class<? extends Property>> properties = new HashSet<>(a.getProperties().keySet());
+		properties.addAll(b.getProperties().keySet());
+		return properties;
+	}
+
+
+
+
+	/**
+	 * @param propertyKey the key of the property
+	 * @return whether the given property type should be skipped during property mutation.
+	 */
+	private boolean shouldSkipPropertyMutation(final Class<? extends Property> propertyKey) {
+		return propertyKey == ItemListProperty.class || propertyKey == ItemProperty.class;
 	}
 
 
@@ -58,105 +168,6 @@ public class NodeMutator implements BaseNodeMutator {
 
 
 	/**
-	 * Tries to mutate the properties (and fx-node) of the given original node to match the given target node.
-	 * Ignores {@link ItemListProperty} and {@link ItemProperty}. These have to be handled separately.
-	 * See {@link NodeMutator#mutateChildren}.
-	 *
-	 * @param nodeHandlers the primary node handlers
-	 * @param original     the original node
-	 * @param target       the target node to match
-	 */
-	private MutationResult mutateProperties(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
-
-		final Set<Class<? extends Property>> commonProperties = new HashSet<>();
-		commonProperties.addAll(original.getProperties().keySet());
-		commonProperties.addAll(target.getProperties().keySet());
-
-		for (Class<? extends Property> key : commonProperties) {
-			if (key == ItemListProperty.class || key == ItemProperty.class) {
-				continue;
-			}
-			final Property propOriginal = original.getProperty(key);
-			final Property propTarget = target.getProperty(key);
-
-			if (isUnchanged(propOriginal, propTarget)) {
-				continue;
-			}
-
-			final PropFxNodeUpdater<Property, Node> updater = getPropNodeUpdater(original.getNodeType(), key);
-			if (updater == null) {
-				return REBUILD;
-			} else {
-				if (isRemoved(propOriginal, propTarget)) {
-					if (updater.remove(nodeHandlers, propOriginal, original, original.getFxNode()) == REBUILD) {
-						return REBUILD;
-					}
-				}
-				if (isAdded(propOriginal, propTarget) || isUpdated(propOriginal, propTarget)) {
-					if (updater.update(nodeHandlers, propTarget, original, original.getFxNode()) == REBUILD) {
-						return REBUILD;
-					}
-				}
-				original.getProperties().put(propTarget.getKey(), propTarget);
-			}
-
-		}
-
-		return MUTATED;
-	}
-
-
-
-
-	/**
-	 * Tries to mutate the children ({@link ItemListProperty} and {@link ItemProperty})
-	 * of the given original node to match the given target node.
-	 *
-	 * @param nodeHandlers the primary node handlers
-	 * @param original     the original node
-	 * @param target       the target node to match
-	 */
-	private MutationResult mutateChildren(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
-
-		// TODO: optimize: make use of id property
-		boolean childrenChanged = false;
-		for (int i = 0; i < Math.max(original.getChildren().size(), target.getChildren().size()); i++) {
-			final SUINode childOriginal = original.getChildren().size() <= i ? null : original.getChildren().get(i);
-			final SUINode childTarget = target.getChildren().size() <= i ? null : target.getChildren().get(i);
-
-			if (childOriginal != null && childTarget != null) {
-				SUINode childMutated = nodeHandlers.getMutator().mutate(childOriginal, childTarget);
-				original.getChildren().set(i, childMutated);
-				childrenChanged = true;
-			}
-			if (childOriginal != null && childTarget == null) {
-				// to remove inside the loop: set to null, remove nulls later
-				original.getChildren().set(i, null);
-				childrenChanged = true;
-			}
-			if (childOriginal == null && childTarget != null) {
-				nodeHandlers.getFxNodeBuilder().build(childTarget);
-				if (i < original.getChildren().size()) {
-					original.getChildren().set(i, childTarget);
-				} else {
-					original.getChildren().add(childTarget);
-				}
-				childrenChanged = true;
-			}
-		}
-		original.getChildren().removeAll(Collections.singleton(null));
-
-		if (childrenChanged) {
-			original.triggerChildListChange();
-		}
-
-		return MUTATED;
-	}
-
-
-
-
-	/**
 	 * @param nodeType the identifying type of the node
 	 * @param propType the identifying type of the property
 	 * @return the {@link PropFxNodeUpdater} for the given property and given node type
@@ -171,13 +182,13 @@ public class NodeMutator implements BaseNodeMutator {
 
 
 	/**
-	 * Check whether the property was added (i.e. only the target property exists).
+	 * Check whether the object was added (i.e. only the target object exists).
 	 *
-	 * @param original the original property
-	 * @param target   the target property
-	 * @return whether the property was added.
+	 * @param original the original object
+	 * @param target   the target object
+	 * @return whether the object was added.
 	 */
-	private boolean isAdded(final Property original, final Property target) {
+	private boolean isAdded(final Object original, final Object target) {
 		return (original == null) && (target != null);
 	}
 
@@ -185,13 +196,13 @@ public class NodeMutator implements BaseNodeMutator {
 
 
 	/**
-	 * Check whether the property was removed (i.e. only the original property exists).
+	 * Check whether the object was removed (i.e. only the original object exists).
 	 *
-	 * @param original the original property
-	 * @param target   the target property
-	 * @return whether the property was removed.
+	 * @param original the original object
+	 * @param target   the target object
+	 * @return whether the object was removed.
 	 */
-	private boolean isRemoved(final Property original, final Property target) {
+	private boolean isRemoved(final Object original, final Object target) {
 		return (original != null) && (target == null);
 	}
 

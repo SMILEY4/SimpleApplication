@@ -61,10 +61,10 @@ public final class SUIScrollPane {
 	 */
 	private static void handleChildrenChange(final SUINode node) {
 		final ScrollPane scrollPane = (ScrollPane) node.getFxNode();
-		if (node.getChildren().isEmpty()) {
-			scrollPane.setContent(null);
+		if (node.hasChildren()) {
+			scrollPane.setContent(node.getChild(0).getFxNode());
 		} else {
-			scrollPane.setContent(node.getChildren().get(0).getFxNode());
+			scrollPane.setContent(null);
 		}
 	}
 
@@ -90,7 +90,7 @@ public final class SUIScrollPane {
 				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
 				// special
 				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.ScrollPaneFitToWidthUpdatingBuilder()),
-				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.FitToHeightUpdatingBuilder()),
+				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.ScrollPaneFitToHeightUpdatingBuilder()),
 				PropertyEntry.of(ShowScrollbarsProperty.class, new ShowScrollbarsProperty.ShowScrollbarUpdatingBuilder()),
 				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder(), null)
 		));

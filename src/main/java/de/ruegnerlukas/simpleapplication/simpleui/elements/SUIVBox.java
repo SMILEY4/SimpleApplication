@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUIUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
@@ -48,24 +49,17 @@ public final class SUIVBox {
 	 */
 	public static NodeFactory vbox(final Property... properties) {
 		Properties.checkIllegal(SUIVBox.class, get().getEntry(SUIVBox.class).getProperties(), properties);
-		return state -> new SUINode(SUIVBox.class, List.of(properties), state, SUIVBox::handleChildrenChange);
+		return state -> new SUINode(
+				SUIVBox.class,
+				List.of(properties),
+				state,
+				SUIUtils.defaultPaneChildListener(),
+				SUIUtils.defaultPaneChildTransformListener());
 	}
 
 
 
 
-	/**
-	 * Handle a change in the child nodes of the given vbox node.
-	 *
-	 * @param node the vbox node
-	 */
-	private static void handleChildrenChange(final SUINode node) {
-		final VBox vbox = (VBox) node.getFxNode();
-		vbox.getChildren().clear();
-		node.getChildren().forEach(child -> {
-			vbox.getChildren().add(child.getFxNode());
-		});
-	}
 
 
 
@@ -94,6 +88,10 @@ public final class SUIVBox {
 				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null)
 		));
 	}
+
+
+
+
 
 
 

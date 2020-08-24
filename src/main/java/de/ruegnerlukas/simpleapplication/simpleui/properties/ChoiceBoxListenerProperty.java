@@ -10,7 +10,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.mutation.BaseNodeMutator.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 public class ChoiceBoxListenerProperty<T> extends Property {
 

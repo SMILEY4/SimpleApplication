@@ -66,7 +66,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -118,7 +118,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.DEFAULT);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -170,7 +170,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.STATIC_NODE);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -224,7 +224,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.STATIC_SUBTREE);
 
-		final List<SUINode> children = mutatedNode.getChildren();
+		final List<SUINode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();

@@ -56,8 +56,8 @@ public class ItemProperty extends Property {
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ItemProperty property,
 						  final ScrollPane fxNode) {
 			Node childNode = null;
-			if (!node.getChildren().isEmpty()) {
-				childNode = nodeHandlers.getFxNodeBuilder().build(node.getChildren().get(0));
+			if (node.hasChildren()) {
+				childNode = nodeHandlers.getFxNodeBuilder().build(node.getChild(0));
 			}
 			fxNode.setContent(childNode);
 		}
