@@ -284,15 +284,18 @@ public class SUINode {
 	public void applyTransformOperations(final OperationType type,
 										 final List<? extends BaseOperation> operations,
 										 final boolean triggerListener) {
-		if (operations.isEmpty()) {
-			return;
-		}
-		operations.forEach(operation -> {
-			operation.applyTo(this.children);
-			operation.applyTo(this.childMap);
-		});
-		if (triggerListener && childTransformListener != null && getFxNode() != null) {
-			childTransformListener.onTransformOperations(this, type, operations);
+		if (!operations.isEmpty()) {
+			operations.forEach(operation -> {
+				operation.applyTo(this.children);
+				operation.applyTo(this.childMap);
+			});
+			if (triggerListener && getFxNode() != null) {
+				if (childTransformListener != null) {
+					childTransformListener.onTransformOperations(this, type, operations);
+				} else {
+					triggerChildListChange();
+				}
+			}
 		}
 	}
 

@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUIUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
@@ -24,7 +25,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.layout.HBox;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
@@ -50,23 +50,15 @@ public final class SUIHBox {
 	 */
 	public static NodeFactory hbox(final Property... properties) {
 		Properties.checkIllegal(SUIHBox.class, get().getEntry(SUIHBox.class).getProperties(), properties);
-		return state -> new SUINode(SUIHBox.class, List.of(properties), state, SUIHBox::handleChildrenChange);
+		return state -> new SUINode(
+				SUIHBox.class,
+				List.of(properties),
+				state,
+				SUIUtils.defaultPaneChildListener(),
+				SUIUtils.defaultPaneChildTransformListener());
 	}
 
 
-
-
-	/**
-	 * Handle a change in the child nodes of the given hbox node.
-	 *
-	 * @param node the hbox node
-	 */
-	private static void handleChildrenChange(final SUINode node) {
-		final HBox hbox = (HBox) node.getFxNode();
-		hbox.getChildren().setAll(node.streamChildren()
-				.map(SUINode::getFxNode)
-				.collect(Collectors.toList()));
-	}
 
 
 

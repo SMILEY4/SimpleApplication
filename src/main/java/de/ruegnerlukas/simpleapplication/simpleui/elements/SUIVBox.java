@@ -3,12 +3,10 @@ package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.SUIUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.BaseOperation;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.OperationType;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.RemoveOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToWidthProperty;
@@ -23,11 +21,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
-import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.get;
@@ -57,51 +53,12 @@ public final class SUIVBox {
 				SUIVBox.class,
 				List.of(properties),
 				state,
-				SUIVBox::handleChildrenChange,
-				SUIVBox::handleChildrenTransform);
+				SUIUtils.defaultPaneChildListener(),
+				SUIUtils.defaultPaneChildTransformListener());
 	}
 
 
 
-
-	/**
-	 * Handles transforming operations on the child nodes.
-	 *
-	 * @param node the parent node
-	 * @param type the type of all given operations
-	 * @param ops  the operations to apply
-	 */
-	private static void handleChildrenTransform(final SUINode node, final OperationType type, final List<? extends BaseOperation> ops) {
-		final VBox vbox = (VBox) node.getFxNode();
-		if (type == OperationType.REMOVE) {
-			List<Node> nodesToRemove = ops.stream()
-					.map(op -> (RemoveOperation) op)
-					.map(op -> op.getNode().getFxNode())
-					.collect(Collectors.toList());
-			vbox.getChildren().removeAll(nodesToRemove);
-		} else {
-			ops.forEach(op -> op.applyTo(vbox));
-		}
-	}
-
-
-
-
-	/**
-	 * Handle a change in the child nodes of the given vbox node.
-	 *
-	 * @param node the vbox node
-	 */
-	private static void handleChildrenChange(final SUINode node) {
-		final VBox vbox = (VBox) node.getFxNode();
-		if (node.hasChildren()) {
-			vbox.getChildren().setAll(node.streamChildren()
-					.map(SUINode::getFxNode)
-					.collect(Collectors.toList()));
-		} else {
-			vbox.getChildren().clear();
-		}
-	}
 
 
 
