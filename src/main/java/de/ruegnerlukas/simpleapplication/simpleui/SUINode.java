@@ -57,6 +57,9 @@ public class SUINode {
 	@Getter
 	private ChildListener childListener;
 
+	/**
+	 * The listener for child node transformations (if required).
+	 */
 	@Getter
 	private ChildTransformListener childTransformListener;
 
@@ -76,16 +79,28 @@ public class SUINode {
 	 * @param state         the current state
 	 * @param childListener the listener for changes to child nodes (if required).
 	 */
-	public SUINode(final Class<?> nodeType, final List<Property> propertyList,
-				   final SUIState state, final ChildListener childListener) {
+	public SUINode(final Class<?> nodeType,
+				   final List<Property> propertyList,
+				   final SUIState state,
+				   final ChildListener childListener) {
 		this(nodeType, propertyList, state, childListener, null);
 	}
 
 
 
 
-	public SUINode(final Class<?> nodeType, final List<Property> propertyList,
-				   final SUIState state, final ChildListener childListener, final ChildTransformListener childTransformListener) {
+	/**
+	 * @param nodeType               the type of this node.
+	 * @param propertyList           the properties of this node.
+	 * @param state                  the current state
+	 * @param childListener          the listener for changes to child nodes (if required).
+	 * @param childTransformListener the listener for child node transformations (if required).
+	 */
+	public SUINode(final Class<?> nodeType,
+				   final List<Property> propertyList,
+				   final SUIState state,
+				   final ChildListener childListener,
+				   final ChildTransformListener childTransformListener) {
 		this.nodeType = nodeType;
 		propertyList.forEach(property -> properties.put(property.getKey(), property));
 		createChildNodesFromProperties(state);
@@ -212,6 +227,9 @@ public class SUINode {
 
 
 
+	/**
+	 * @return the set ids of all child nodes (that have the id property)
+	 */
 	public Set<String> getChildrenIds() {
 		return childMap.keySet();
 	}
@@ -263,7 +281,9 @@ public class SUINode {
 	 * @param operations      the operations to apply
 	 * @param triggerListener whether to trigger the listener
 	 */
-	public void applyTransformOperations(final OperationType type, final List<? extends BaseOperation> operations, final boolean triggerListener) {
+	public void applyTransformOperations(final OperationType type,
+										 final List<? extends BaseOperation> operations,
+										 final boolean triggerListener) {
 		if (operations.isEmpty()) {
 			return;
 		}

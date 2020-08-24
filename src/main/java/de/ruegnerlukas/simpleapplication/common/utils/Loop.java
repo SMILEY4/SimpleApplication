@@ -4,8 +4,15 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Loop {
+public final class Loop {
 
+
+	/**
+	 * Hidden constructor.
+	 */
+	private Loop() {
+		// hide constructor
+	}
 
 	/**
 	 * The number of available processors.

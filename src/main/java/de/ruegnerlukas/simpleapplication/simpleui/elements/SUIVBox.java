@@ -23,12 +23,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
-import javafx.beans.InvalidationListener;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
@@ -55,12 +53,24 @@ public final class SUIVBox {
 	 */
 	public static NodeFactory vbox(final Property... properties) {
 		Properties.checkIllegal(SUIVBox.class, get().getEntry(SUIVBox.class).getProperties(), properties);
-		return state -> new SUINode(SUIVBox.class, List.of(properties), state, SUIVBox::handleChildrenChange, SUIVBox::handleChildrenTransform);
+		return state -> new SUINode(
+				SUIVBox.class,
+				List.of(properties),
+				state,
+				SUIVBox::handleChildrenChange,
+				SUIVBox::handleChildrenTransform);
 	}
 
 
 
 
+	/**
+	 * Handles transforming operations on the child nodes.
+	 *
+	 * @param node the parent node
+	 * @param type the type of all given operations
+	 * @param ops  the operations to apply
+	 */
 	private static void handleChildrenTransform(final SUINode node, final OperationType type, final List<? extends BaseOperation> ops) {
 		final VBox vbox = (VBox) node.getFxNode();
 		if (type == OperationType.REMOVE) {
@@ -125,9 +135,6 @@ public final class SUIVBox {
 
 
 
-	public static AtomicInteger invalidations = new AtomicInteger(0);
-
-
 
 
 
@@ -137,11 +144,7 @@ public final class SUIVBox {
 
 		@Override
 		public VBox build(final MasterNodeHandlers nodeHandlers, final SUINode node) {
-			VBox vBox = new VBox();
-			vBox.getChildren().addListener((InvalidationListener) observable -> {
-				invalidations.incrementAndGet();
-			});
-			return vBox;
+			return new VBox();
 		}
 
 	}
