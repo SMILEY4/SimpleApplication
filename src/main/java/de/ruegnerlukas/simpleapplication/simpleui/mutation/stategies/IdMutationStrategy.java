@@ -13,7 +13,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.ReplaceOpe
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.SwapOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.BaseTransformation;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ListTransformer.ReplaceTransformation;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +118,7 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	 */
 	private List<String> extractChildIds(final SUINode parent) {
 		return parent.streamChildren()
-				.map(child -> child.getProperty(IdProperty.class).getId())
+				.map(child -> child.getIdUnsafe())
 				.collect(Collectors.toList());
 	}
 

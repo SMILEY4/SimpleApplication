@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.mutation.operations;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -57,7 +56,7 @@ public class RemoveOperation extends BaseOperation {
 
 	@Override
 	public void applyTo(final Map<String, SUINode> map) {
-		map.remove(node.getProperty(IdProperty.class).getId());
+		map.remove(node.getIdUnsafe());
 	}
 
 

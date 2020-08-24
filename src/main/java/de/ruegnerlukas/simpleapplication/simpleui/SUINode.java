@@ -238,6 +238,87 @@ public class SUINode {
 
 
 	/**
+	 * @return the children of this node as a stream
+	 */
+	public Stream<SUINode> streamChildren() {
+		return this.children.stream();
+	}
+
+
+
+
+	/**
+	 * Get the property with the given type.
+	 *
+	 * @param type the type of the requested property
+	 * @param <T>  the generic type
+	 * @return the requested property
+	 */
+	public <T> Optional<T> getPropertySafe(final Class<T> type) {
+		return Optional.ofNullable(getProperty(type));
+	}
+
+
+
+
+	/**
+	 * Get the property with the given type or null.
+	 *
+	 * @param type the type of the requested property
+	 * @param <T>  the generic type
+	 * @return the requested property or null
+	 */
+	public <T> T getProperty(final Class<T> type) {
+		Property property = getProperties().get(type);
+		if (property != null) {
+			return (T) property;
+		} else {
+			return null;
+		}
+	}
+
+
+
+
+	/**
+	 * Check whether this node has a property of the given type.
+	 *
+	 * @param type the type of the property
+	 * @return whether this node has a property of the given type.
+	 */
+	public boolean hasProperty(final Class<? extends Property> type) {
+		return getProperties().containsKey(type);
+	}
+
+
+
+
+	/**
+	 * @return the id of this node defined by the {@link IdProperty}.
+	 */
+	public Optional<String> getId() {
+		IdProperty idProperty = getProperty(IdProperty.class);
+		if (idProperty != null) {
+			return Optional.of(idProperty.getId());
+		} else {
+			return Optional.empty();
+		}
+	}
+
+
+
+
+	/**
+	 * @return the id of this node defined by the {@link IdProperty} or null.
+	 */
+	public String getIdUnsafe() {
+		return getProperty(IdProperty.class).getId();
+	}
+
+
+
+
+	/**
 	 * Replaces all children of this node with the given children
 	 *
 	 * @param childrenList    the list of new child nodes
@@ -297,62 +378,6 @@ public class SUINode {
 				}
 			}
 		}
-	}
-
-
-
-
-	/**
-	 * @return the children of this node as a stream
-	 */
-	public Stream<SUINode> streamChildren() {
-		return this.children.stream();
-	}
-
-
-
-
-	/**
-	 * Get the property with the given type.
-	 *
-	 * @param type the type of the requested property
-	 * @param <T>  the generic type
-	 * @return the requested property
-	 */
-	public <T> Optional<T> getPropertySafe(final Class<T> type) {
-		return Optional.ofNullable(getProperty(type));
-	}
-
-
-
-
-	/**
-	 * Get the property with the given type or null.
-	 *
-	 * @param type the type of the requested property
-	 * @param <T>  the generic type
-	 * @return the requested property or null
-	 */
-	public <T> T getProperty(final Class<T> type) {
-		Property property = getProperties().get(type);
-		if (property != null) {
-			return (T) property;
-		} else {
-			return null;
-		}
-	}
-
-
-
-
-	/**
-	 * Check whether this node has a property of the given type.
-	 *
-	 * @param type the type of the property
-	 * @return whether this node has a property of the given type.
-	 */
-	public boolean hasProperty(final Class<? extends Property> type) {
-		return getProperties().containsKey(type);
 	}
 
 

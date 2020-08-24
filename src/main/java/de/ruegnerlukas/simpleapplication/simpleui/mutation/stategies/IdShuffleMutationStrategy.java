@@ -5,7 +5,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.ReplaceOperation;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -74,8 +73,8 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	private int countDiffs(final SUINode original, final SUINode target) {
 		int count = 0;
 		for (int i = 0, n = original.childCount(); i < n; i++) {
-			final String idOriginal = original.getChild(i).getProperty(IdProperty.class).getId();
-			final String idTarget = target.getChild(i).getProperty(IdProperty.class).getId();
+			final String idOriginal = original.getChild(i).getIdUnsafe();
+			final String idTarget = target.getChild(i).getIdUnsafe();
 			if (!idOriginal.equals(idTarget)) {
 				count++;
 			}
@@ -171,7 +170,7 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 		final List<SUINode> newChildList = new ArrayList<>(original.childCount());
 		for (int i = 0, n = target.childCount(); i < n; i++) {
 			final SUINode targetChild = target.getChild(i);
-			final String targetChildId = targetChild.getProperty(IdProperty.class).getId();
+			final String targetChildId = targetChild.getIdUnsafe();
 			final SUINode originalChild = original.findChildUnsafe(targetChildId);
 			final SUINode newChildNode = nodeHandlers.getMutator().mutate(originalChild, targetChild);
 			newChildList.add(newChildNode);

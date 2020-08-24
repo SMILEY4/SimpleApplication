@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.operations;
 
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.IdProperty;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -56,7 +55,7 @@ public class AddOperation extends BaseOperation {
 
 	@Override
 	public void applyTo(final Map<String, SUINode> map) {
-		map.put(node.getProperty(IdProperty.class).getId(), node);
+		map.put(node.getIdUnsafe(), node);
 	}
 
 
