@@ -431,12 +431,29 @@ public final class Properties {
 	}
 
 
+
+
+	/**
+	 * @param fromString converter from a string to an object
+	 * @param toString   converter from an object to a string
+	 * @return an {@link ChoiceBoxConverterProperty}
+	 */
+	public static <T> Property choiceBoxConverter(final Class<T> type,
+												  final ChoiceBoxConverterProperty.FromStringConverter<T> fromString,
+												  final ChoiceBoxConverterProperty.ToStringConverter<T> toString) {
+		return new ChoiceBoxConverterProperty<>(fromString, toString);
+	}
+
+
+
+
 	/**
 	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#DEFAULT}
 	 */
 	public static Property defaultMutationBehaviour() {
 		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.DEFAULT);
 	}
+
 
 
 

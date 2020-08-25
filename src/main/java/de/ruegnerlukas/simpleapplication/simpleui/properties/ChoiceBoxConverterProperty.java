@@ -4,11 +4,10 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
 import javafx.util.StringConverter;
 import lombok.Getter;
-
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 public class ChoiceBoxConverterProperty<T> extends Property {
 
@@ -18,6 +17,30 @@ public class ChoiceBoxConverterProperty<T> extends Property {
 	 */
 	@Getter
 	private final StringConverter<T> converter;
+
+
+
+
+	/**
+	 * @param fromString converter from a string to an object
+	 * @param toString   converter from an object to a string
+	 */
+	public ChoiceBoxConverterProperty(final FromStringConverter<T> fromString, final ToStringConverter<T> toString) {
+		this(new StringConverter<T>() {
+			@Override
+			public String toString(final T t) {
+				return toString.toString(t);
+			}
+
+
+
+
+			@Override
+			public T fromString(final String s) {
+				return fromString.fromString(s);
+			}
+		});
+	}
 
 
 
@@ -78,6 +101,42 @@ public class ChoiceBoxConverterProperty<T> extends Property {
 			fxNode.setConverter(null);
 			return MutationResult.MUTATED;
 		}
+
+	}
+
+
+
+
+
+
+	public interface FromStringConverter<T> {
+
+
+		/**
+		 * Convert the given string to a value
+		 *
+		 * @param str the string to convert
+		 * @return the created value
+		 */
+		T fromString(String str);
+
+	}
+
+
+
+
+
+
+	public interface ToStringConverter<T> {
+
+
+		/**
+		 * Convert the given value to a string
+		 *
+		 * @param value the object to convert
+		 * @return the created string
+		 */
+		String toString(T value);
 
 	}
 

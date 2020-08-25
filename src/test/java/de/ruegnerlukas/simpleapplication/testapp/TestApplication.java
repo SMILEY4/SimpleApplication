@@ -23,7 +23,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Dimension2D;
-import javafx.util.StringConverter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -163,20 +162,10 @@ public class TestApplication {
 											anchorPaneItem(
 													choiceBox(
 															Properties.choices(state.strings),
-															Properties.choiceBoxConverter(String.class, new StringConverter<>() {
-																@Override
-																public String toString(final String s) {
-																	return "item:" + s;
-																}
-
-
-
-
-																@Override
-																public String fromString(final String s) {
-																	return s.split(":")[1];
-																}
-															}),
+															Properties.choiceBoxConverter(String.class,
+																	s -> "item:" + s,
+																	s -> s.split(":")[1]
+															),
 															Properties.choiceListener(String.class, ((index, item) -> {
 																if (item == null) {
 																	System.out.println("selected null");
