@@ -479,11 +479,12 @@ public final class Properties {
 
 	/**
 	 * @param behaviour the {@link MutationBehaviourProperty.MutationBehaviour}.
-	 * @return an {@link MutationBehaviourProperty}
+	 * @return a {@link MutationBehaviourProperty}
 	 */
 	public static Property mutationBehaviour(final MutationBehaviourProperty.MutationBehaviour behaviour) {
 		return new MutationBehaviourProperty(behaviour);
 	}
+
 
 
 }
