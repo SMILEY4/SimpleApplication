@@ -54,8 +54,6 @@ public class SUIScrollPaneTest extends ApplicationTest {
 		);
 
 		final SUINode node = scrollPane.create(state);
-		assertThat(node.getProperties().keySet())
-				.containsExactlyInAnyOrderElementsOf(SUIRegistry.get().getEntry(SUIScrollPane.class).getProperties());
 
 		TestUtils.assertNode(node, SUIScrollPane.class);
 		PropertyTestUtils.assertIdProperty(node, "myScrollPane");

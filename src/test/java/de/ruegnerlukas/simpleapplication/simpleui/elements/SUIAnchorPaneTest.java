@@ -61,8 +61,6 @@ public class SUIAnchorPaneTest extends ApplicationTest {
 		);
 
 		final SUINode node = anchorPane.create(state);
-		assertThat(node.getProperties().keySet())
-				.containsExactlyInAnyOrderElementsOf(SUIRegistry.get().getEntry(SUIAnchorPane.class).getProperties());
 
 		TestUtils.assertNode(node, SUIAnchorPane.class);
 		PropertyTestUtils.assertIdProperty(node, "myAnchorPane");

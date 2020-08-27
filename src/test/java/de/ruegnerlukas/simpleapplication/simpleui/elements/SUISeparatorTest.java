@@ -45,8 +45,6 @@ public class SUISeparatorTest extends ApplicationTest {
 		);
 
 		SUINode node = separator.create(state);
-		assertThat(node.getProperties().keySet())
-				.containsExactlyInAnyOrderElementsOf(SUIRegistry.get().getEntry(SUISeparator.class).getProperties());
 
 		TestUtils.assertNode(node, SUISeparator.class);
 		PropertyTestUtils.assertIdProperty(node, "mySeparator");
