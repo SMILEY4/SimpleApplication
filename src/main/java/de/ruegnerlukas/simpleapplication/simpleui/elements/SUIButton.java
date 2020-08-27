@@ -5,13 +5,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.ActionListenerProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.WrapTextProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.control.Button;
 
@@ -63,7 +63,7 @@ public final class SUIButton {
 				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.WrapTextUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledAlignmentUpdatingBuilder()),
 				// button base
-				PropertyEntry.of(ActionListenerProperty.class, new ActionListenerProperty.ButtonListenerUpdatingBuilder())
+				PropertyEntry.of(OnActionEventProperty.class, new OnActionEventProperty.UpdatingBuilder())
 		));
 	}
 

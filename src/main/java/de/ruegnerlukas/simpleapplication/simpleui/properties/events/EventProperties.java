@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
+import de.ruegnerlukas.simpleapplication.simpleui.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.HoverEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.KeyEventData;
@@ -318,5 +319,19 @@ public final class EventProperties {
 	public static Property eventHoverStopped(final SUIEventListener<HoverEventData> listener) {
 		return new OnHoverStoppedEventProperty(listener);
 	}
+
+
+
+
+	/**
+	 * When a node is no longer being hovered over.
+	 *
+	 * @param listener the listener for events with {@link ActionEventData}.
+	 * @return a {@link OnActionEventProperty}
+	 */
+	public static Property eventAction(final SUIEventListener<ActionEventData> listener) {
+		return new OnActionEventProperty(listener);
+	}
+
 
 }

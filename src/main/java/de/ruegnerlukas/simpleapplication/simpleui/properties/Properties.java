@@ -94,17 +94,6 @@ public final class Properties {
 
 
 	/**
-	 * @param listener the listener
-	 * @return an {@link ActionListenerProperty}.
-	 */
-	public static Property buttonListener(final ActionListenerProperty.ActionListener listener) {
-		return new ActionListenerProperty(listener);
-	}
-
-
-
-
-	/**
 	 * @param minWidth        the minimum width.
 	 * @param minHeight       the minimum height.
 	 * @param preferredWidth  the preferred width.
@@ -484,7 +473,6 @@ public final class Properties {
 	public static Property mutationBehaviour(final MutationBehaviourProperty.MutationBehaviour behaviour) {
 		return new MutationBehaviourProperty(behaviour);
 	}
-
 
 
 }
