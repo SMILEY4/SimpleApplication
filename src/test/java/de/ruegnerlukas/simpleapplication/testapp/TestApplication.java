@@ -20,7 +20,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.geometry.Dimension2D;
 import lombok.AllArgsConstructor;
@@ -30,11 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPane;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPaneItem;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIChoiceBox.choiceBox;
 
 @Slf4j
 public class TestApplication {
@@ -158,29 +155,30 @@ public class TestApplication {
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
 							anchorPane(
-									Properties.items(
-											anchorPaneItem(
-													choiceBox(
-															Properties.choices(state.strings),
-															Properties.choiceBoxConverter(String.class,
-																	s -> "item:" + s,
-																	s -> s.split(":")[1]
-															),
-															Properties.choiceListener(String.class, ((index, item) -> {
-																if (item == null) {
-																	System.out.println("selected null");
-																	return;
-																}
-																state.update(TestUIState.class, s -> {
-																	s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
-																	s.strings.remove(item);
-																});
-																System.out.println(index + "  " + item);
-															}))
-													),
-													Properties.anchor(0, 0, 0, 0)
-											)
-									)
+									EventProperties.eventMouseClicked(System.out::println)
+//									Properties.items(
+//											anchorPaneItem(
+//													choiceBox(
+//															Properties.choices(state.strings),
+//															Properties.choiceBoxConverter(String.class,
+//																	s -> s.split(":")[1],
+//																	s -> "item:" + s
+//															),
+//															Properties.choiceListener(String.class, ((index, item) -> {
+//																if (item == null) {
+//																	System.out.println("selected null");
+//																	return;
+//																}
+//																state.update(TestUIState.class, s -> {
+//																	s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
+//																	s.strings.remove(item);
+//																});
+//																System.out.println(index + "  " + item);
+//															}))
+//													),
+//													Properties.anchor(0, 0, 0, 0)
+//											)
+//									)
 							)
 
 					)))
