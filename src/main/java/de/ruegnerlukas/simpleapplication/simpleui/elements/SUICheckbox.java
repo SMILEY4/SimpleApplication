@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.ActionListenerPrope
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SelectedProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.WrapTextProperty;

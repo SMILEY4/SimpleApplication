@@ -1,13 +1,9 @@
-package de.ruegnerlukas.simpleapplication.simpleui.elements;
+package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnFocusChangedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnFocusLostEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnFocusReceivedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnKeyPressedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnKeyReleasedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnKeyTypedEventProperty;
@@ -81,7 +77,11 @@ public final class PropertyGroups {
 
 				PropertyEntry.of(OnScrollEventProperty.class, new OnScrollEventProperty.UpdatingBuilder()),
 				PropertyEntry.of(OnScrollStartedEventProperty.class, new OnScrollStartedEventProperty.UpdatingBuilder()),
-				PropertyEntry.of(OnScrollFinishedEventProperty.class, new OnScrollFinishedEventProperty.UpdatingBuilder())
+				PropertyEntry.of(OnScrollFinishedEventProperty.class, new OnScrollFinishedEventProperty.UpdatingBuilder()),
+
+				PropertyEntry.of(OnFocusChangedEventProperty.class, new OnFocusChangedEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnFocusReceivedEventProperty.class, new OnFocusReceivedEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnFocusLostEventProperty.class, new OnFocusLostEventProperty.UpdatingBuilder())
 		);
 	}
 

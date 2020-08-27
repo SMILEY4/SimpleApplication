@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
+import de.ruegnerlukas.simpleapplication.simpleui.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.KeyEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseButtonEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseDragEventData;
@@ -237,6 +238,45 @@ public final class EventProperties {
 	 */
 	public static Property eventScrollFinished(final SUIEventListener<ScrollEventData> listener) {
 		return new OnScrollFinishedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When the input focus of a node changed.
+	 *
+	 * @param listener the listener for events with {@link FocusEventData}.
+	 * @return a {@link OnFocusChangedEventProperty}
+	 */
+	public static Property eventFocusChanged(final SUIEventListener<FocusEventData> listener) {
+		return new OnFocusChangedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node now has the input focus.
+	 *
+	 * @param listener the listener for events with {@link FocusEventData}.
+	 * @return a {@link OnFocusReceivedEventProperty}
+	 */
+	public static Property eventFocusReceived(final SUIEventListener<FocusEventData> listener) {
+		return new OnFocusReceivedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node lost the input focus.
+	 *
+	 * @param listener the listener for events with {@link FocusEventData}.
+	 * @return a {@link OnFocusLostEventProperty}
+	 */
+	public static Property eventFocusLost(final SUIEventListener<FocusEventData> listener) {
+		return new OnFocusLostEventProperty(listener);
 	}
 
 
