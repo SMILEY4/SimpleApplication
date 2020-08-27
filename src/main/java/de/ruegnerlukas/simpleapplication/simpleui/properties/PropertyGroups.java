@@ -4,6 +4,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnFocusChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnFocusLostEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnFocusReceivedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnHoverChangedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnHoverStartedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnHoverStoppedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnKeyPressedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnKeyReleasedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnKeyTypedEventProperty;
@@ -81,7 +84,11 @@ public final class PropertyGroups {
 
 				PropertyEntry.of(OnFocusChangedEventProperty.class, new OnFocusChangedEventProperty.UpdatingBuilder()),
 				PropertyEntry.of(OnFocusReceivedEventProperty.class, new OnFocusReceivedEventProperty.UpdatingBuilder()),
-				PropertyEntry.of(OnFocusLostEventProperty.class, new OnFocusLostEventProperty.UpdatingBuilder())
+				PropertyEntry.of(OnFocusLostEventProperty.class, new OnFocusLostEventProperty.UpdatingBuilder()),
+
+				PropertyEntry.of(OnHoverChangedEventProperty.class, new OnHoverChangedEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnHoverStartedEventProperty.class, new OnHoverStartedEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnHoverStoppedEventProperty.class, new OnHoverStoppedEventProperty.UpdatingBuilder())
 		);
 	}
 

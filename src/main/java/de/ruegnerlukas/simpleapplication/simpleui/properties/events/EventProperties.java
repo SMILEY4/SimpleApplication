@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.events.FocusEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.HoverEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.KeyEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseButtonEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseDragEventData;
@@ -279,5 +280,43 @@ public final class EventProperties {
 		return new OnFocusLostEventProperty(listener);
 	}
 
+
+
+
+	/**
+	 * When the hover over a node changes.
+	 *
+	 * @param listener the listener for events with {@link HoverEventData}.
+	 * @return a {@link OnHoverChangedEventProperty}
+	 */
+	public static Property eventHoverChanged(final SUIEventListener<HoverEventData> listener) {
+		return new OnHoverChangedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node is now being hovered over.
+	 *
+	 * @param listener the listener for events with {@link HoverEventData}.
+	 * @return a {@link OnHoverStartedEventProperty}
+	 */
+	public static Property eventHoverStarted(final SUIEventListener<HoverEventData> listener) {
+		return new OnHoverStartedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node is no longer being hovered over.
+	 *
+	 * @param listener the listener for events with {@link HoverEventData}.
+	 * @return a {@link OnHoverStoppedEventProperty}
+	 */
+	public static Property eventHoverStopped(final SUIEventListener<HoverEventData> listener) {
+		return new OnHoverStoppedEventProperty(listener);
+	}
 
 }

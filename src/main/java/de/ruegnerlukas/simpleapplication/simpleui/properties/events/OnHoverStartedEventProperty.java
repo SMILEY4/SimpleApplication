@@ -4,47 +4,48 @@ import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.events.FocusEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.HoverEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
 
-public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<FocusEventData> {
+public class OnHoverStartedEventProperty extends AbstractEventListenerProperty<HoverEventData> {
 
 
 	/**
 	 * The listener for events with {@link FocusEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<FocusEventData> listener;
+	private final SUIEventListener<HoverEventData> listener;
 
 
 
 
 	/**
-	 * @param listener the listener for events with {@link FocusEventData}.
+	 * @param listener the listener for events with {@link HoverEventData}.
 	 */
-	public OnFocusReceivedEventProperty(final SUIEventListener<FocusEventData> listener) {
-		super(OnFocusReceivedEventProperty.class);
+	public OnHoverStartedEventProperty(final SUIEventListener<HoverEventData> listener) {
+		super(OnHoverStartedEventProperty.class);
 		this.listener = listener;
 	}
 
 
 
 
-	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<OnFocusReceivedEventProperty, Node> {
+	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<OnHoverStartedEventProperty, Node> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnFocusReceivedEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnHoverStartedEventProperty property,
 						  final Node fxNode) {
-			fxNode.focusedProperty().addListener((value, prev, next) -> {
+			fxNode.hoverProperty().addListener((value, prev, next) -> {
 				if (next) {
 					property.getListener().onEvent(new SUIEvent<>(
-							"focus.received",
-							FocusEventData.builder()
-									.focused(false)
+							"hover.started",
+							HoverEventData.builder()
+									.hover(true)
 									.build()
 					));
 				}
@@ -55,7 +56,7 @@ public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnFocusReceivedEventProperty property,
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnHoverStartedEventProperty property,
 									 final SUINode node, final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
@@ -64,7 +65,7 @@ public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnFocusReceivedEventProperty property,
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnHoverStartedEventProperty property,
 									 final SUINode node, final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
