@@ -9,15 +9,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AnchorProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
 import javafx.scene.layout.AnchorPane;
@@ -58,11 +52,6 @@ public final class SUIAnchorPane {
 
 
 
-
-
-
-
-
 	/**
 	 * Register this node type at the given registry.
 	 *
@@ -71,16 +60,10 @@ public final class SUIAnchorPane {
 	public static void register(final SUIRegistry registry) {
 
 		registry.registerBaseFxNodeBuilder(SUIAnchorPane.class, new AnchorPaneNodeBuilder());
+		registry.registerProperties(SUIAnchorPane.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SUIAnchorPane.class, PropertyGroups.commonRegionProperties());
+		registry.registerProperties(SUIAnchorPane.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUIAnchorPane.class, List.of(
-				// node
-				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
-				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder()),
-				// region
-				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder()),
-				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.SizePreferredUpdatingBuilder()),
-				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder()),
-				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder()),
-				// special
 				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null)
 		));
 

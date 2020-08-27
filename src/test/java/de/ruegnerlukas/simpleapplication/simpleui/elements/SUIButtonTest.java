@@ -49,8 +49,6 @@ public class SUIButtonTest extends ApplicationTest {
 		);
 
 		SUINode node = button.create(state);
-		assertThat(node.getProperties().keySet())
-				.containsExactlyInAnyOrderElementsOf(SUIRegistry.get().getEntry(SUIButton.class).getProperties());
 
 		TestUtils.assertNode(node, SUIButton.class);
 		PropertyTestUtils.assertIdProperty(node, "myButton");

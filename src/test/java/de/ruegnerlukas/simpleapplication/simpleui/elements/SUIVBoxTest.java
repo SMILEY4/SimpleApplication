@@ -60,8 +60,6 @@ public class SUIVBoxTest extends ApplicationTest {
 		);
 
 		final SUINode node = vbox.create(state);
-		assertThat(node.getProperties().keySet())
-				.containsExactlyInAnyOrderElementsOf(SUIRegistry.get().getEntry(SUIVBox.class).getProperties());
 
 		TestUtils.assertNode(node, SUIVBox.class);
 		PropertyTestUtils.assertIdProperty(node, "myVBox");
