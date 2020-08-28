@@ -1,16 +1,25 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.AsyncStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.CollectIntoStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.CollectIntoValueStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.DistinctStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FilterStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FlatMapIgnoreNullStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FlatMapNullsStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FlatMapStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.ForEachStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.LastNStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapIgnoreNullsStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapNullsStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.OnJFXStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.PeekStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.SkipStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.UnpackStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.WaitForAndPackStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.WaitForStream;
+import javafx.beans.value.WritableValue;
 
 import java.util.Collection;
 import java.util.List;
@@ -136,6 +145,78 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 	@Override
 	public void collectInto(final Collection<OUT> collection) {
 		new CollectIntoStream<>(this, collection);
+	}
+
+
+
+
+	@Override
+	public void collectInto(final WritableValue<OUT> value) {
+		new CollectIntoValueStream<>(this, value);
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT> distinct() {
+		return new DistinctStream<>(this);
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT> waitFor(final boolean includeMatching, final Predicate<OUT> predicate) {
+		return new WaitForStream<>(this, predicate, includeMatching);
+	}
+
+
+
+
+	@Override
+	public Pipeline<OUT, List<OUT>> waitForAndPack(final boolean includeMatching, final Predicate<OUT> predicate) {
+		return new WaitForAndPackStream<>(this, predicate, includeMatching);
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT> async() {
+		return async(-1);
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT> async(final int poolSize) {
+		return new AsyncStream<>(this, poolSize);
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT> skip(final Supplier<Boolean> skipFlag) {
+		return new SkipStream<>(this, skipFlag);
+	}
+
+
+
+
+	@Override
+	public Pipeline<OUT, List<OUT>> lastN(final int n) {
+		return new LastNStream<>(this, n);
+	}
+
+
+
+
+	@Override
+	public <R> SUIStream<R> unpack() {
+		return new UnpackStream<OUT,R>(this);
 	}
 
 }

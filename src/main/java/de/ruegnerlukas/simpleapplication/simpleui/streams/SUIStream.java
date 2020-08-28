@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.sources.EventStreamSource;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.sources.StreamSource;
 import javafx.beans.value.ObservableValue;
+import javafx.beans.value.WritableValue;
 
 import java.util.Collection;
 import java.util.List;
@@ -114,5 +115,72 @@ public interface SUIStream<T> {
 	 */
 	void collectInto(Collection<T> collection);
 
+	/**
+	 * Sets the given value to the latest element of this stream
+	 *
+	 * @param value the value
+	 */
+	void collectInto(WritableValue<T> value);
+
+
+	/**
+	 * @return a stream with the distinct elements from this stream.
+	 * If an element is followed by the same element, the second element will be passed along.
+	 */
+	SUIStream<T> distinct();
+
+	/**
+	 * Holds back all elements until an element matches the given predicate. Then emits all held back elements.
+	 *
+	 * @param predicate       the predicate to match
+	 * @param includeMatching whether to pass along the matching element
+	 * @return a new stream
+	 */
+	SUIStream<T> waitFor(boolean includeMatching, Predicate<T> predicate);
+
+	/**
+	 * Holds back all elements until an element matches the given predicate. Then emits all held back elements as a single list.
+	 *
+	 * @param predicate       the predicate to match
+	 * @param includeMatching whether to pass along the matching element
+	 * @return a new stream.
+	 */
+	Pipeline<T, List<T>> waitForAndPack(boolean includeMatching, Predicate<T> predicate);
+
+	/**
+	 * @return a new stream that passes along the elements of this stream asynchronously on (a) new thread(s).
+	 */
+	SUIStream<T> async();
+
+	/**
+	 * @param poolSize defines the number of threads in the thread pool used by the stream
+	 * @return a new stream that passes along the elements of this stream asynchronously on (a) new thread(s).
+	 */
+	SUIStream<T> async(int poolSize);
+
+	/**
+	 * Skips and drops all elements of this stream as long as the given flag is "true".
+	 *
+	 * @param skipFlag as long as this is supplier returns true, no elements will be passed along
+	 * @return the new stream
+	 */
+	SUIStream<T> skip(Supplier<Boolean> skipFlag);
+
+
+	/**
+	 * Emits the last n elements (including the latest element) for every element.
+	 *
+	 * @param n the number of elements to emit
+	 * @return a new stream
+	 */
+	Pipeline<T, List<T>> lastN(int n);
+
+
+	/**
+	 * Emits single elements for each collection in this stream.
+	 *
+	 * @return a new stream
+	 */
+	<R> SUIStream<R> unpack();
 
 }

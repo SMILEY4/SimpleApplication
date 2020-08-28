@@ -61,7 +61,7 @@ public abstract class Pipeline<IN, OUT> implements SUIStream<OUT> {
 	 *
 	 * @param element the element to hand to the subscriber
 	 */
-	protected void pushElementToNext(final OUT element) {
+	protected synchronized void pushElementToNext(final OUT element) {
 		if (consumer != null) {
 			consumer.accept(element);
 		}
