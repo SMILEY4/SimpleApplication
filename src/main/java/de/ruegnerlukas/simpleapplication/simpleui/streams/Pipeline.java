@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
 import java.util.function.Consumer;
 
-public abstract class Pipeline<IN, OUT> implements SUIStream<OUT> {
+public abstract class Pipeline<IN, OUT> implements SUIStream<IN, OUT> {
 
 
 	/**

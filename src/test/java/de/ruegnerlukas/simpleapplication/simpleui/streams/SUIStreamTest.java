@@ -568,8 +568,7 @@ public class SUIStreamTest extends ApplicationTest {
 		final SimpleStringProperty observable = new SimpleStringProperty();
 		SUIStream.from(observable)
 				.lastN(2)
-				.unpack()
-				.map(obj -> (String) obj)
+				.unpack(String.class)
 				.forEach(collectedValues::add);
 
 		assertThat(collectedValues).isEmpty();
