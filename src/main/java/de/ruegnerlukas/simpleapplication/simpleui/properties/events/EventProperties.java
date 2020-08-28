@@ -354,6 +354,21 @@ public final class EventProperties {
 
 
 	/**
+	 * When a selection changed. Contains only the items.
+	 *
+	 * @param expectedType the expected type of the selected items
+	 * @param listener     the listener for events with {@link SelectedItemEventData}.
+	 * @param <T>          generic type
+	 * @return a {@link OnSelectedItemEventProperty}
+	 */
+	public static <T> Property eventSelectedItem(final Class<T> expectedType, final SUIEventListener<SelectedItemEventData<T>> listener) {
+		return new OnSelectedItemEventProperty<>(listener);
+	}
+
+
+
+
+	/**
 	 * When a selection changed. Contains only the indices.
 	 *
 	 * @param listener the listener for events with {@link SelectedIndexEventData}.
