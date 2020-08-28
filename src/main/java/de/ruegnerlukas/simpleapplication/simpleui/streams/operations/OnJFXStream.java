@@ -1,5 +1,7 @@
-package de.ruegnerlukas.simpleapplication.simpleui.streams;
+package de.ruegnerlukas.simpleapplication.simpleui.streams.operations;
 
+import de.ruegnerlukas.simpleapplication.simpleui.streams.Pipeline;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.PipelineImpl;
 import javafx.application.Platform;
 
 public class OnJFXStream<T> extends PipelineImpl<T, T> {

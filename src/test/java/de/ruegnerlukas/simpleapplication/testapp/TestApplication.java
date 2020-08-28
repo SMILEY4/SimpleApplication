@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.Stri
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
+import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.core.application.Application;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfiguration;
 import de.ruegnerlukas.simpleapplication.core.application.EventPresentationInitialized;
@@ -23,6 +24,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.SUIStream;
 import javafx.geometry.Dimension2D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -159,6 +161,11 @@ public class TestApplication {
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
 							anchorPane(
+									EventProperties.eventMouseEntered(SUIStream.eventStream(bridge ->
+											SUIStream.from(bridge)
+													.mapIgnoreNulls(e -> Pair.of(e.getX(), e.getY()))
+													.forEach(e -> System.out.println("entered at " + e.getLeft() + "," + e.getRight()))
+									)),
 									Properties.items(
 											anchorPaneItem(
 													choiceBox(
@@ -169,7 +176,7 @@ public class TestApplication {
 															),
 															EventProperties.eventSelectedItem(String.class, e -> {
 																System.out.println(e.getPrevItem() + " -> " + e.getItem());
-																if(e.getItem() != null) {
+																if (e.getItem() != null) {
 																	state.update(TestUIState.class, s -> {
 																		s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
 																		s.strings.remove(e.getItem());

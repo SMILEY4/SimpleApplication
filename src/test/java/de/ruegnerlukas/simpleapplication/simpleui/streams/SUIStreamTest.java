@@ -1,5 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
+import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import javafx.beans.property.SimpleStringProperty;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -9,7 +11,31 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StreamTest extends ApplicationTest {
+public class SUIStreamTest extends ApplicationTest {
+
+	@Test
+	public void testEventStream() {
+
+		final List<String> collectedValues = new ArrayList<>();
+
+		SUIEventListener<String> eventListener = SUIStream.eventStream(bridge -> SUIStream.from(bridge).forEach(collectedValues::add));
+
+		assertThat(collectedValues).isEmpty();
+		eventListener.onEvent(new SUIEvent<>("test", "a"));
+		eventListener.onEvent(new SUIEvent<>("test", "b"));
+		assertThat(collectedValues).containsExactly("a", "b");
+		eventListener.onEvent(new SUIEvent<>("test", "c"));
+		eventListener.onEvent(new SUIEvent<>("test", "d"));
+		assertThat(collectedValues).containsExactly("a", "b", "c", "d");
+		eventListener.onEvent(new SUIEvent<>("test", null));
+		assertThat(collectedValues).containsExactly("a", "b", "c", "d", null);
+
+	}
+
+
+
+
+
 
 	@Test
 	public void testForEachObservable() {
@@ -17,7 +43,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable).forEach(collectedValues::add);
+		SUIStream.from(observable).forEach(collectedValues::add);
 
 		assertThat(collectedValues).isEmpty();
 		observable.setValue("a");
@@ -39,7 +65,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.map(value -> "element " + value)
 				.forEach(collectedValues::add);
 
@@ -61,7 +87,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.mapIgnoreNulls(value -> "element " + value)
 				.forEach(collectedValues::add);
 
@@ -83,7 +109,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.mapNulls(() -> "null element")
 				.forEach(collectedValues::add);
 
@@ -105,7 +131,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.flatMap(value -> List.of(value+"1", value+"2"))
 				.forEach(collectedValues::add);
 
@@ -128,7 +154,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.flatMapIgnoreNulls(value -> List.of(value+"1", value+"2"))
 				.forEach(collectedValues::add);
 
@@ -151,7 +177,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.flatMapNulls(() -> List.of("null1", "null2"))
 				.forEach(collectedValues::add);
 
@@ -173,7 +199,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.filter(value -> ((int)value.charAt(0)-((int)'a')) % 2 == 0)
 				.forEach(collectedValues::add);
 
@@ -194,7 +220,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.filterNulls()
 				.forEach(collectedValues::add);
 
@@ -216,7 +242,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.peek(peekedValues::add)
 				.forEach(collectedValues::add);
 
@@ -242,7 +268,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> threadNames = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable)
+		SUIStream.from(observable)
 				.peek(value -> threadNames.add(Thread.currentThread().getName()))
 				.onJavaFxThread()
 				.forEach(value -> threadNames.add(Thread.currentThread().getName()));
@@ -266,7 +292,7 @@ public class StreamTest extends ApplicationTest {
 		final List<String> collectedValues = new ArrayList<>();
 
 		final SimpleStringProperty observable = new SimpleStringProperty();
-		Stream.from(observable).collectInto(collectedValues);
+		SUIStream.from(observable).collectInto(collectedValues);
 
 		assertThat(collectedValues).isEmpty();
 		observable.setValue("a");

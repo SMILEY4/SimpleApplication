@@ -1,4 +1,7 @@
-package de.ruegnerlukas.simpleapplication.simpleui.streams;
+package de.ruegnerlukas.simpleapplication.simpleui.streams.operations;
+
+import de.ruegnerlukas.simpleapplication.simpleui.streams.Pipeline;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.PipelineImpl;
 
 import java.util.function.Consumer;
 

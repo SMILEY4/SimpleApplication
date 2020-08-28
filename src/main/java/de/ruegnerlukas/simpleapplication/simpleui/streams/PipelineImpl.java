@@ -1,5 +1,17 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.CollectIntoStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FilterStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FlatMapIgnoreNullStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FlatMapNullsStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FlatMapStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.ForEachStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapIgnoreNullsStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapNullsStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.OnJFXStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.PeekStream;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +46,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public Stream<OUT> filter(final Predicate<OUT> predicate) {
+	public SUIStream<OUT> filter(final Predicate<OUT> predicate) {
 		return new FilterStream<>(this, predicate);
 	}
 
@@ -42,7 +54,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public Stream<OUT> filterNulls() {
+	public SUIStream<OUT> filterNulls() {
 		return new FilterStream<>(this, Objects::nonNull);
 	}
 
@@ -50,7 +62,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public <R> Stream<R> map(final Function<OUT, R> mapping) {
+	public <R> SUIStream<R> map(final Function<OUT, R> mapping) {
 		return new MapStream<>(this, mapping);
 	}
 
@@ -58,7 +70,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public <R> Stream<R> mapIgnoreNulls(final Function<OUT, R> mapping) {
+	public <R> SUIStream<R> mapIgnoreNulls(final Function<OUT, R> mapping) {
 		return new MapIgnoreNullsStream<>(this, mapping);
 	}
 
@@ -66,7 +78,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public Stream<OUT> mapNulls(final Supplier<OUT> mapping) {
+	public SUIStream<OUT> mapNulls(final Supplier<OUT> mapping) {
 		return new MapNullsStream<>(this, mapping);
 	}
 
@@ -74,7 +86,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public <R> Stream<R> flatMap(final Function<OUT, List<R>> mapping) {
+	public <R> SUIStream<R> flatMap(final Function<OUT, List<R>> mapping) {
 		return new FlatMapStream<>(this, mapping);
 	}
 
@@ -82,7 +94,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public <R> Stream<R> flatMapIgnoreNulls(final Function<OUT, List<R>> mapping) {
+	public <R> SUIStream<R> flatMapIgnoreNulls(final Function<OUT, List<R>> mapping) {
 		return new FlatMapIgnoreNullStream<>(this, mapping);
 	}
 
@@ -90,7 +102,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public Stream<OUT> flatMapNulls(final Supplier<List<OUT>> mapping) {
+	public SUIStream<OUT> flatMapNulls(final Supplier<List<OUT>> mapping) {
 		return new FlatMapNullsStream<>(this, mapping);
 	}
 
@@ -106,7 +118,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public Stream<OUT> peek(final Consumer<OUT> consumer) {
+	public SUIStream<OUT> peek(final Consumer<OUT> consumer) {
 		return new PeekStream<>(this, consumer);
 	}
 
@@ -114,7 +126,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public Stream<OUT> onJavaFxThread() {
+	public SUIStream<OUT> onJavaFxThread() {
 		return new OnJFXStream<>(this);
 	}
 
