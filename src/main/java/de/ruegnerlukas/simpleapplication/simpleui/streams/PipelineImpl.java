@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.AccumulateStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.AsyncStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.CollectIntoStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.CollectIntoValueStream;
@@ -9,6 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FlatMapIgno
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FlatMapNullsStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.FlatMapStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.ForEachStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.HandleErrorStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.LastNStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapIgnoreNullsStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapNullsStream;
@@ -16,11 +18,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.OnJFXStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.PeekStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.SkipStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.ToStringStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.UnpackStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.WaitForAndPackStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.WaitForStream;
 import javafx.beans.value.WritableValue;
 
+import javafx.util.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -49,6 +53,24 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 	 */
 	public PipelineImpl(final Pipeline<?, IN> source) {
 		super(source);
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT, OUT> suppressErrors() {
+		return handleErrors(e -> {
+			// do nothing
+		});
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT, OUT> handleErrors(final Consumer<Exception> handler) {
+		return new HandleErrorStream<>(this, handler);
 	}
 
 
@@ -89,6 +111,14 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 	@Override
 	public SUIStream<OUT, OUT> mapNulls(final Supplier<OUT> mapping) {
 		return new MapNullsStream<>(this, mapping);
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT, String> mapToString() {
+		return new ToStringStream<>(this);
 	}
 
 
@@ -217,6 +247,30 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 	@Override
 	public <R> SUIStream<OUT, R> unpack(final Class<R> expectedType) {
 		return new UnpackStream<>(this);
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT, List<OUT>> accumulate(final int maxAmount) {
+		return accumulate(maxAmount, Duration.millis(Long.MAX_VALUE));
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT, List<OUT>> accumulate(final Duration timeout) {
+		return accumulate(Integer.MAX_VALUE, timeout);
+	}
+
+
+
+
+	@Override
+	public SUIStream<OUT, List<OUT>> accumulate(final int maxAmount, final Duration timeout) {
+		return new AccumulateStream<>(this, maxAmount, timeout);
 	}
 
 }

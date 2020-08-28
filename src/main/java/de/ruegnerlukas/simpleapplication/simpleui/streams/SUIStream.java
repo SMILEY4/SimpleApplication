@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.streams.sources.EventStreamSou
 import de.ruegnerlukas.simpleapplication.simpleui.streams.sources.ObservableStreamSource;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WritableValue;
+import javafx.util.Duration;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,6 +39,21 @@ public interface SUIStream<IN, OUT> {
 	}
 
 	/**
+	 * Suppresses all unhandled exceptions that are thrown in all following steps.
+	 *
+	 * @return a stream with the same elements as this stream
+	 */
+	SUIStream<OUT, OUT> suppressErrors();
+
+	/**
+	 * Handles all unhandled exceptions that are thrown in all following steps.
+	 *
+	 * @param handler the handler called when an exception is thrown
+	 * @return a stream with the same elements as this stream
+	 */
+	SUIStream<OUT, OUT> handleErrors(Consumer<Exception> handler);
+
+	/**
 	 * @param mapping the function to map the input element to an output element.
 	 * @return a stream with the the results of applying the given function to the elements of this stream.
 	 */
@@ -56,6 +72,11 @@ public interface SUIStream<IN, OUT> {
 	 * @return a stream with the the results of applying the given function to the elements of this stream.
 	 */
 	SUIStream<OUT, OUT> mapNulls(Supplier<OUT> mapping);
+
+	/**
+	 * @return a stream where all elements of this stream where mapped to strings (using Object.toString).
+	 */
+	SUIStream<OUT, String> mapToString();
 
 	/**
 	 * @param mapping the function to map the input element to any amount of output elements.
@@ -181,5 +202,30 @@ public interface SUIStream<IN, OUT> {
 	 * @return a new stream
 	 */
 	<R> SUIStream<OUT, R> unpack(Class<R> expectedType);
+
+	/**
+	 * When an element arrives, it and other incoming elements are held back until the max amount is reached.
+	 * They are then emitted together as a single list. The new elements might not be emitted on the same thread.
+	 *
+	 * @return a new stream
+	 */
+	SUIStream<OUT, List<OUT>> accumulate(int maxAmount);
+
+	/**
+	 * When an element arrives, it and other incoming elements are held back until the timer runs out.
+	 * They are then emitted together as a single list. The new elements might not be emitted on the same thread.
+	 *
+	 * @return a new stream
+	 */
+	SUIStream<OUT, List<OUT>> accumulate(Duration timeout);
+
+	/**
+	 * When an element arrives, it and other incoming elements are held back until the timer runs out or the max amount is reached.
+	 * They are then emitted together as a single list.
+	 *
+	 * @return a new stream
+	 */
+	SUIStream<OUT, List<OUT>> accumulate(int maxAmount, Duration timeout);
+
 
 }

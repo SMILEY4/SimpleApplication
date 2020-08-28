@@ -161,11 +161,13 @@ public class TestApplication {
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
 							anchorPane(
+
 									EventProperties.eventMouseEntered(SUIStream.eventStream(bridge ->
 											SUIStream.from(bridge)
 													.mapIgnoreNulls(e -> Pair.of(e.getX(), e.getY()))
 													.forEach(e -> System.out.println("entered at " + e.getLeft() + "," + e.getRight()))
 									)),
+
 									Properties.items(
 											anchorPaneItem(
 													choiceBox(

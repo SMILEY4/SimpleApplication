@@ -1,8 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.JFXTimer;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.util.Duration;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -347,6 +351,37 @@ public class SUIStreamTest extends ApplicationTest {
 
 
 	@Test
+	public void testDistinct() {
+
+		final List<String> collectedValues = new ArrayList<>();
+
+		final SimpleStringProperty observable = new SimpleStringProperty();
+		SUIStream.from(observable)
+				.distinct()
+				.forEach(collectedValues::add);
+
+		assertThat(collectedValues).isEmpty();
+		observable.setValue("a");
+		observable.setValue("b");
+		assertThat(collectedValues).containsExactly("a", "b");
+		observable.setValue("c");
+		observable.setValue("c");
+		assertThat(collectedValues).containsExactly("a", "b", "c");
+		observable.setValue(null);
+		observable.setValue("d");
+		assertThat(collectedValues).containsExactly("a", "b", "c", null, "d");
+		observable.setValue("e");
+		observable.setValue("e");
+		observable.setValue("e");
+		observable.setValue("e");
+		observable.setValue("e");
+		assertThat(collectedValues).containsExactly("a", "b", "c", null, "d", "e");
+	}
+
+
+
+
+	@Test
 	public void testWaitForExcluding() {
 
 		final List<String> collectedValues = new ArrayList<>();
@@ -578,6 +613,165 @@ public class SUIStreamTest extends ApplicationTest {
 		observable.setValue("c");
 		observable.setValue("d");
 		assertThat(collectedValues).containsExactly("a", "a", "b", "b", "c", "c", "d");
+	}
+
+
+
+
+	@Test
+	public void testSuppressExceptions() {
+
+		final List<String> collectedValues = new ArrayList<>();
+
+		final SimpleStringProperty observable = new SimpleStringProperty();
+		SUIStream.from(observable)
+				.suppressErrors()
+				.peek(value -> Validations.INPUT.notEqual(value, "x").exception("Can not be x"))
+				.forEach(collectedValues::add);
+
+		assertThat(collectedValues).isEmpty();
+		observable.setValue("a");
+		observable.setValue("b");
+		assertThat(collectedValues).containsExactly("a", "b");
+		observable.setValue("x");
+		observable.setValue("d");
+		assertThat(collectedValues).containsExactly("a", "b", "d");
+	}
+
+
+
+
+	@Test
+	public void testHandleExceptions() {
+
+		final List<String> collectedValues = new ArrayList<>();
+		final List<String> collectedExceptions = new ArrayList<>();
+
+		final SimpleStringProperty observable = new SimpleStringProperty();
+		SUIStream.from(observable)
+				.handleErrors(e -> collectedExceptions.add(e.getMessage()))
+				.peek(value -> Validations.INPUT.notEqual(value, "x").exception("Can not be x"))
+				.forEach(collectedValues::add);
+
+		assertThat(collectedValues).isEmpty();
+		assertThat(collectedExceptions).isEmpty();
+		observable.setValue("a");
+		observable.setValue("b");
+		assertThat(collectedValues).containsExactly("a", "b");
+		assertThat(collectedExceptions).isEmpty();
+		observable.setValue("x");
+		observable.setValue("d");
+		assertThat(collectedValues).containsExactly("a", "b", "d");
+		assertThat(collectedExceptions).containsExactly("Can not be x");
+
+	}
+
+
+
+
+	@Test
+	public void testToString() {
+
+		final List<String> collectedValues = new ArrayList<>();
+
+		final SimpleObjectProperty<Integer> observable = new SimpleObjectProperty<>();
+		SUIStream.from(observable)
+				.mapToString()
+				.forEach(collectedValues::add);
+
+		assertThat(collectedValues).isEmpty();
+		observable.setValue(1);
+		observable.setValue(2);
+		assertThat(collectedValues).containsExactly("1", "2");
+		observable.setValue(3);
+		observable.setValue(4);
+		assertThat(collectedValues).containsExactly("1", "2", "3", "4");
+		observable.setValue(null);
+		assertThat(collectedValues).containsExactly("1", "2", "3", "4", "null");
+	}
+
+
+
+
+	@Test
+	public void testAccumulate() {
+
+		final List<List<String>> collectedValues = new ArrayList<>();
+
+		final SimpleStringProperty observable = new SimpleStringProperty();
+		SUIStream.from(observable)
+				.accumulate(3, Duration.millis(200))
+				.forEach(collectedValues::add);
+
+		assertThat(collectedValues).isEmpty();
+
+		observable.setValue("a");
+		observable.setValue("b");
+		observable.setValue("c");
+		observable.setValue("d");
+		delay(400);
+		observable.setValue("e");
+		observable.setValue("f");
+		delay(400);
+		observable.setValue("g");
+		observable.setValue("h");
+		observable.setValue("i");
+		observable.setValue("j");
+		delay(1000);
+
+		assertThat(collectedValues)
+				.containsExactly(List.of("a", "b", "c"), List.of("d"), List.of("e", "f"), List.of("g", "h", "i"), List.of("j"));
+	}
+
+
+
+
+	@Test
+	public void testTimer() {
+
+		final List<String> list = new ArrayList<>();
+		final JFXTimer timer = new JFXTimer(javafx.util.Duration.millis(500), () -> {
+			list.add("action");
+		});
+
+
+		timer.start();
+
+		delay(50);
+
+		assertThat(list).isEmpty();
+		assertThat(timer.isRunning()).isTrue();
+
+		delay(50);
+
+		timer.stop();
+
+		assertThat(list).isEmpty();
+		assertThat(timer.isRunning()).isFalse();
+
+		delay(50);
+
+		timer.start();
+
+		assertThat(list).isEmpty();
+		assertThat(timer.isRunning()).isTrue();
+
+		delay(600);
+
+		assertThat(list).hasSize(1);
+		assertThat(timer.isRunning()).isFalse();
+
+	}
+
+
+
+
+	private void delay(long ms) {
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 
