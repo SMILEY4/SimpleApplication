@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.events.ActionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.HoverEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.KeyEventData;
@@ -402,5 +403,30 @@ public final class EventProperties {
 		return new OnScrollHorizontalEventProperty(listener);
 	}
 
+
+
+
+	/**
+	 * When a box (for example a check box) was checked / selected.
+	 *
+	 * @param listener the listener for events with {@link CheckedEventData}.
+	 * @return a {@link OnCheckedEventProperty}
+	 */
+	public static Property eventChecked(final SUIEventListener<CheckedEventData> listener) {
+		return new OnCheckedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a box (for example a check box) was unchecked / deselected.
+	 *
+	 * @param listener the listener for events with {@link CheckedEventData}.
+	 * @return a {@link OnUncheckedEventProperty}
+	 */
+	public static Property eventUnchecked(final SUIEventListener<CheckedEventData> listener) {
+		return new OnUncheckedEventProperty(listener);
+	}
 
 }
