@@ -6,21 +6,25 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBui
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
 
 import java.util.Optional;
 
-public class OnSelectedIndexEventProperty extends AbstractEventListenerProperty<SelectedIndexEventData> {
+public class OnSelectedIndexEventProperty extends AbstractObservableListenerProperty<SelectedIndexEventData, Number> {
 
 
 	/**
-	 * The listener for events with {@link SelectedItemEventData}.
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "selection.index.choicebox";
+
+	/**
+	 * The listener for events with {@link SelectedIndexEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<SelectedIndexEventData> listener;
+	private SUIEventListener<SelectedIndexEventData> listener;
 
 
 
@@ -29,7 +33,13 @@ public class OnSelectedIndexEventProperty extends AbstractEventListenerProperty<
 	 * @param listener the listener for events with {@link SelectedIndexEventData}.
 	 */
 	public OnSelectedIndexEventProperty(final SUIEventListener<SelectedIndexEventData> listener) {
-		super(OnSelectedIndexEventProperty.class);
+		super(OnSelectedIndexEventProperty.class, (value, prev, next) -> listener.onEvent(new SUIEvent<>(
+				EVENT_ID,
+				SelectedIndexEventData.builder()
+						.index(Optional.ofNullable(next).map(Number::intValue).orElse(null))
+						.prevIndex(Optional.ofNullable(prev).map(Number::intValue).orElse(null))
+						.build()
+		)));
 		this.listener = listener;
 	}
 
@@ -42,7 +52,7 @@ public class OnSelectedIndexEventProperty extends AbstractEventListenerProperty<
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnSelectedIndexEventProperty property,
 						  final ChoiceBox<?> fxNode) {
-			setListener(property, fxNode);
+			fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
 		}
 
 
@@ -51,7 +61,11 @@ public class OnSelectedIndexEventProperty extends AbstractEventListenerProperty<
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
 									 final SUINode node, final ChoiceBox<?> fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(prop -> {
+				fxNode.getSelectionModel().selectedIndexProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 
@@ -60,28 +74,8 @@ public class OnSelectedIndexEventProperty extends AbstractEventListenerProperty<
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
 									 final SUINode node, final ChoiceBox<?> fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
-		}
-
-
-
-
-		/**
-		 * Sets the listener of the given property and the given choicebox.
-		 *
-		 * @param property  the property
-		 * @param choiceBox the choiceBox
-		 */
-		private void setListener(final OnSelectedIndexEventProperty property, final ChoiceBox<?> choiceBox) {
-			choiceBox.getSelectionModel().selectedIndexProperty().addListener((value, prev, next) -> {
-				property.getListener().onEvent(new SUIEvent<>(
-						"selection.index.choicebox",
-						SelectedIndexEventData.builder()
-								.index(Optional.ofNullable(next).map(Number::intValue).orElse(null))
-								.index(Optional.ofNullable(prev).map(Number::intValue).orElse(null))
-								.build()
-				));
-			});
+			fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 	}

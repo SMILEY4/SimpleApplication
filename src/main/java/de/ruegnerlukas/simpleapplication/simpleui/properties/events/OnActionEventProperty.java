@@ -14,6 +14,11 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 
 	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "action.buttonbase";
+
+	/**
 	 * The listener for events with {@link ActionEventData}.
 	 */
 	@Getter
@@ -73,7 +78,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 		 */
 		private void setListener(final ButtonBase fxNode, final OnActionEventProperty property) {
 			fxNode.setOnAction(e -> property.getListener().onEvent(new SUIEvent<>(
-					"action.buttonbase",
+					EVENT_ID,
 					ActionEventData.builder()
 							.source(e)
 							.build()

@@ -10,8 +10,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
 
-public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<HoverEventData> {
+public class OnHoverStoppedEventProperty extends AbstractObservableListenerProperty<HoverEventData, Boolean> {
 
+
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "hover.stopped";
 
 	/**
 	 * The listener for events with {@link HoverEventData}.
@@ -26,7 +31,16 @@ public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<H
 	 * @param listener the listener for events with {@link HoverEventData}.
 	 */
 	public OnHoverStoppedEventProperty(final SUIEventListener<HoverEventData> listener) {
-		super(OnHoverStoppedEventProperty.class);
+		super(OnHoverStoppedEventProperty.class, (value, prev, next) -> {
+			if (!next) {
+				listener.onEvent(new SUIEvent<>(
+						EVENT_ID,
+						HoverEventData.builder()
+								.hover(false)
+								.build()
+				));
+			}
+		});
 		this.listener = listener;
 	}
 
@@ -39,16 +53,7 @@ public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<H
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnHoverStoppedEventProperty property,
 						  final Node fxNode) {
-			fxNode.hoverProperty().addListener((value, prev, next) -> {
-				if (!next) {
-					property.getListener().onEvent(new SUIEvent<>(
-							"hover.stopped",
-							HoverEventData.builder()
-									.hover(false)
-									.build()
-					));
-				}
-			});
+			fxNode.hoverProperty().addListener(property.getChangeListener());
 		}
 
 
@@ -57,7 +62,11 @@ public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<H
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnHoverStoppedEventProperty property,
 									 final SUINode node, final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			node.getPropertySafe(OnHoverStoppedEventProperty.class).ifPresent(prop -> {
+				fxNode.hoverProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.hoverProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 
@@ -66,7 +75,8 @@ public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<H
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnHoverStoppedEventProperty property,
 									 final SUINode node, final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			fxNode.hoverProperty().removeListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 	}

@@ -14,6 +14,11 @@ public class OnKeyPressedEventProperty extends AbstractEventListenerProperty<Key
 
 
 	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "key.pressed";
+
+	/**
 	 * The listener for events with {@link KeyEventData}.
 	 */
 	@Getter
@@ -73,7 +78,7 @@ public class OnKeyPressedEventProperty extends AbstractEventListenerProperty<Key
 		 */
 		private void setListener(final Node fxNode, final OnKeyPressedEventProperty property) {
 			fxNode.setOnKeyPressed(e -> property.getListener().onEvent(new SUIEvent<>(
-					"key.pressed",
+					EVENT_ID,
 					KeyEventData.builder()
 							.keyCode(e.getCode())
 							.character(e.getCharacter())

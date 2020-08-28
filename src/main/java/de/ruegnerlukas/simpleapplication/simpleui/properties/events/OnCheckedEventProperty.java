@@ -10,7 +10,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.CheckBox;
 import lombok.Getter;
 
-public class OnCheckedEventProperty extends AbstractEventListenerProperty<CheckedEventData> {
+public class OnCheckedEventProperty extends AbstractObservableListenerProperty<CheckedEventData, Boolean> {
+
+
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "check.checked";
 
 
 	/**
@@ -26,7 +32,16 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 	 * @param listener the listener for events with {@link CheckedEventData}.
 	 */
 	public OnCheckedEventProperty(final SUIEventListener<CheckedEventData> listener) {
-		super(OnCheckedEventProperty.class);
+		super(OnCheckedEventProperty.class, (value, prev, next) -> {
+			if (next != null && next) {
+				listener.onEvent(new SUIEvent<>(
+						EVENT_ID,
+						CheckedEventData.builder()
+								.checked(true)
+								.build()
+				));
+			}
+		});
 		this.listener = listener;
 	}
 
@@ -39,7 +54,7 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnCheckedEventProperty property,
 						  final CheckBox fxNode) {
-			setListener(fxNode, property);
+			fxNode.selectedProperty().addListener(property.getChangeListener());
 		}
 
 
@@ -48,7 +63,10 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnCheckedEventProperty property,
 									 final SUINode node, final CheckBox fxNode) {
-			setListener(fxNode, property);
+			node.getPropertySafe(OnCheckedEventProperty.class).ifPresent(prop -> {
+				fxNode.selectedProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.selectedProperty().addListener(property.getChangeListener());
 			return MutationResult.MUTATED;
 		}
 
@@ -58,30 +76,8 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnCheckedEventProperty property,
 									 final SUINode node, final CheckBox fxNode) {
-			fxNode.setOnMouseClicked(null);
+			fxNode.selectedProperty().removeListener(property.getChangeListener());
 			return MutationResult.MUTATED;
-		}
-
-
-
-
-		/**
-		 * Attaches the listener to the given fx node.
-		 *
-		 * @param fxNode   the fx node to listen to
-		 * @param property the property with the listener to add
-		 */
-		private void setListener(final CheckBox fxNode, final OnCheckedEventProperty property) {
-			fxNode.selectedProperty().addListener((value, prev, next) -> {
-				if (next != null && next) {
-					property.getListener().onEvent(new SUIEvent<>(
-							"check.checked",
-							CheckedEventData.builder()
-									.checked(true)
-									.build()
-					));
-				}
-			});
 		}
 
 	}

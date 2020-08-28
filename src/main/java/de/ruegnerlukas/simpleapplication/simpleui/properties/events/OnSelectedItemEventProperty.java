@@ -10,8 +10,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
 
-public class OnSelectedItemEventProperty<T> extends AbstractEventListenerProperty<SelectedItemEventData<T>> {
+public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerProperty<SelectedItemEventData<T>, T> {
 
+
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "selection.item";
 
 	/**
 	 * The listener for events with {@link SelectedItemEventData}.
@@ -26,7 +31,12 @@ public class OnSelectedItemEventProperty<T> extends AbstractEventListenerPropert
 	 * @param listener the listener for events with {@link SelectedItemEventData}.
 	 */
 	public OnSelectedItemEventProperty(final SUIEventListener<SelectedItemEventData<T>> listener) {
-		super(OnSelectedItemEventProperty.class);
+		super(OnSelectedItemEventProperty.class, (value, prev, next) -> {
+			listener.onEvent(new SUIEvent<>(
+					EVENT_ID,
+					new SelectedItemEventData<>(next, prev)
+			));
+		});
 		this.listener = listener;
 	}
 
@@ -39,7 +49,7 @@ public class OnSelectedItemEventProperty<T> extends AbstractEventListenerPropert
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnSelectedItemEventProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
-			setListener(property, fxNode);
+			fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
 		}
 
 
@@ -48,7 +58,11 @@ public class OnSelectedItemEventProperty<T> extends AbstractEventListenerPropert
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<T> property,
 									 final SUINode node, final ChoiceBox<T> fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
+				fxNode.getSelectionModel().selectedItemProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 
@@ -57,25 +71,8 @@ public class OnSelectedItemEventProperty<T> extends AbstractEventListenerPropert
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<T> property,
 									 final SUINode node, final ChoiceBox<T> fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
-		}
-
-
-
-
-		/**
-		 * Sets the listener of the given property and the given choicebox.
-		 *
-		 * @param property  the property
-		 * @param choiceBox the choiceBox
-		 */
-		private void setListener(final OnSelectedItemEventProperty<T> property, final ChoiceBox<T> choiceBox) {
-			choiceBox.getSelectionModel().selectedItemProperty().addListener((value, prev, next) -> {
-				property.getListener().onEvent(new SUIEvent<>(
-						"selection.item.choicebox",
-						new SelectedItemEventData<>(next, prev)
-				));
-			});
+			fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 	}

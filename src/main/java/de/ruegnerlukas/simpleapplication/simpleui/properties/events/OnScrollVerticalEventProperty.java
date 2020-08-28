@@ -10,8 +10,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
-public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty<ScrollEventData> {
+public class OnScrollVerticalEventProperty extends AbstractObservableListenerProperty<ScrollEventData, Number> {
 
+
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "scroll.vertical";
 
 	/**
 	 * The listener for events with {@link ScrollEventData}.
@@ -26,7 +31,21 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 	 * @param listener the listener for events with {@link ScrollEventData}.
 	 */
 	public OnScrollVerticalEventProperty(final SUIEventListener<ScrollEventData> listener) {
-		super(OnScrollVerticalEventProperty.class);
+		super(OnScrollVerticalEventProperty.class, (value, prev, next) -> {
+			if (prev != null && next != null) {
+				listener.onEvent(new SUIEvent<>(
+						EVENT_ID,
+						ScrollEventData.builder()
+								.yPos(next.doubleValue())
+								.prevYPos(prev.doubleValue())
+								.dy(next.doubleValue() - prev.doubleValue())
+								.xPos(0)
+								.prevXPos(0)
+								.dx(0)
+								.build()
+				));
+			}
+		});
 		this.listener = listener;
 	}
 
@@ -39,21 +58,7 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnScrollVerticalEventProperty property,
 						  final ScrollPane fxNode) {
-			fxNode.vvalueProperty().addListener((value, prev, next) -> {
-				if (prev != null && next != null) {
-					property.getListener().onEvent(new SUIEvent<>(
-							"scroll.vertical",
-							ScrollEventData.builder()
-									.yPos(next.doubleValue())
-									.prevYPos(prev.doubleValue())
-									.dy(next.doubleValue() - prev.doubleValue())
-									.xPos(0)
-									.prevXPos(0)
-									.dx(0)
-									.build()
-					));
-				}
-			});
+			fxNode.vvalueProperty().addListener(property.getChangeListener());
 		}
 
 
@@ -62,7 +67,11 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnScrollVerticalEventProperty property,
 									 final SUINode node, final ScrollPane fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			node.getPropertySafe(OnScrollVerticalEventProperty.class).ifPresent(prop -> {
+				fxNode.vvalueProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.vvalueProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 
@@ -71,7 +80,8 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnScrollVerticalEventProperty property,
 									 final SUINode node, final ScrollPane fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			fxNode.vvalueProperty().removeListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 	}

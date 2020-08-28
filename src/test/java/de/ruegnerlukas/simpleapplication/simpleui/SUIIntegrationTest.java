@@ -12,9 +12,9 @@ import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.buttonListener;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.wrapText;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventAction;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SUIIntegrationTest extends ApplicationTest {
@@ -38,7 +38,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 				button(
 						textContent("Some Button"),
 						wrapText(),
-						buttonListener(buttonPressCounter::incrementAndGet)
+						eventAction(e -> buttonPressCounter.incrementAndGet())
 				)
 		);
 
@@ -66,7 +66,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final SUISceneContext context = new SUISceneContext(testState,
 				new SUIComponent<TestState>(state -> button(
 						textContent("counter = " + testState.counter),
-						buttonListener(() -> state.update(TestState.class, TestState::increment))
+						eventAction(e -> state.update(TestState.class, TestState::increment))
 				))
 		);
 		testState.addStateListener((state, update) -> phaser.arrive());
@@ -95,7 +95,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final SUISceneContext context = new SUISceneContext(testState,
 				new SUIComponent<TestState>(state -> button(
 						textContent("counter = " + testState.counter),
-						buttonListener(() -> state.update(TestState.class, true, s -> {
+						eventAction(e -> state.update(TestState.class, true, s -> {
 							s.increment();
 							phaser.arrive();
 						}))

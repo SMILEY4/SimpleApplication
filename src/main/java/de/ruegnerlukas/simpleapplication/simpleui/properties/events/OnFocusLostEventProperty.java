@@ -10,9 +10,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
 
-public class OnFocusLostEventProperty extends AbstractEventListenerProperty<FocusEventData> {
+public class OnFocusLostEventProperty extends AbstractObservableListenerProperty<FocusEventData, Boolean> {
 
 
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "focus.lost";
 	/**
 	 * The listener for events with {@link FocusEventData}.
 	 */
@@ -26,7 +30,16 @@ public class OnFocusLostEventProperty extends AbstractEventListenerProperty<Focu
 	 * @param listener the listener for events with {@link FocusEventData}.
 	 */
 	public OnFocusLostEventProperty(final SUIEventListener<FocusEventData> listener) {
-		super(OnFocusLostEventProperty.class);
+		super(OnFocusLostEventProperty.class, (value, prev, next) -> {
+			if (!next) {
+				listener.onEvent(new SUIEvent<>(
+						EVENT_ID,
+						FocusEventData.builder()
+								.focused(false)
+								.build()
+				));
+			}
+		});
 		this.listener = listener;
 	}
 
@@ -39,16 +52,7 @@ public class OnFocusLostEventProperty extends AbstractEventListenerProperty<Focu
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnFocusLostEventProperty property,
 						  final Node fxNode) {
-			fxNode.focusedProperty().addListener((value, prev, next) -> {
-				if (!next) {
-					property.getListener().onEvent(new SUIEvent<>(
-							"focus.lost",
-							FocusEventData.builder()
-									.focused(false)
-									.build()
-					));
-				}
-			});
+			fxNode.focusedProperty().addListener(property.getChangeListener());
 		}
 
 
@@ -57,7 +61,11 @@ public class OnFocusLostEventProperty extends AbstractEventListenerProperty<Focu
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnFocusLostEventProperty property,
 									 final SUINode node, final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			node.getPropertySafe(OnFocusLostEventProperty.class).ifPresent(prop -> {
+				fxNode.focusedProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.focusedProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 
@@ -66,7 +74,8 @@ public class OnFocusLostEventProperty extends AbstractEventListenerProperty<Focu
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnFocusLostEventProperty property,
 									 final SUINode node, final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			fxNode.focusedProperty().removeListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 	}

@@ -10,7 +10,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedIndexEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
@@ -62,8 +61,7 @@ public final class SUIChoiceBox {
 				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ChoicesPropertyUpdatingBuilder<>()),
 				PropertyEntry.of(ChoiceBoxConverterProperty.class, new ChoiceBoxConverterProperty.CBConverterUpdatingBuilder<>()),
 				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.ChoiceBoxUpdatingBuilder<>()),
-				PropertyEntry.of(OnSelectedIndexEventProperty.class, new OnSelectedIndexEventProperty.ChoiceBoxUpdatingBuilder()),
-				PropertyEntry.of(OnSelectedEventProperty.class, new OnSelectedEventProperty.ChoiceBoxUpdatingBuilder<>())
+				PropertyEntry.of(OnSelectedIndexEventProperty.class, new OnSelectedIndexEventProperty.ChoiceBoxUpdatingBuilder())
 		));
 	}
 

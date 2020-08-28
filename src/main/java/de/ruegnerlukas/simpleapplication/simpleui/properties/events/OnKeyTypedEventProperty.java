@@ -12,6 +12,11 @@ import lombok.Getter;
 
 public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEventData> {
 
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "key.typed";
+
 
 	/**
 	 * The listener for events with {@link KeyEventData}.
@@ -73,7 +78,7 @@ public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEv
 		 */
 		private void setListener(final Node fxNode, final OnKeyTypedEventProperty property) {
 			fxNode.setOnKeyTyped(e -> property.getListener().onEvent(new SUIEvent<>(
-					"key.typed",
+					EVENT_ID,
 					KeyEventData.builder()
 							.keyCode(e.getCode())
 							.character(e.getCharacter())

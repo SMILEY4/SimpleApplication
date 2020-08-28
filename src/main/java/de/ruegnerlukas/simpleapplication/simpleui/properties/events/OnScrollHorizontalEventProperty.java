@@ -10,8 +10,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
-public class OnScrollHorizontalEventProperty extends AbstractEventListenerProperty<ScrollEventData> {
+public class OnScrollHorizontalEventProperty extends AbstractObservableListenerProperty<ScrollEventData, Number> {
 
+
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "scroll.horizontal";
 
 	/**
 	 * The listener for events with {@link ScrollEventData}.
@@ -26,7 +31,21 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 	 * @param listener the listener for events with {@link ScrollEventData}.
 	 */
 	public OnScrollHorizontalEventProperty(final SUIEventListener<ScrollEventData> listener) {
-		super(OnScrollHorizontalEventProperty.class);
+		super(OnScrollHorizontalEventProperty.class, (value, prev, next) -> {
+			if (prev != null && next != null) {
+				listener.onEvent(new SUIEvent<>(
+						EVENT_ID,
+						ScrollEventData.builder()
+								.yPos(0)
+								.prevYPos(0)
+								.dy(0)
+								.xPos(next.doubleValue())
+								.prevXPos(prev.doubleValue())
+								.dx(next.doubleValue() - prev.doubleValue())
+								.build()
+				));
+			}
+		});
 		this.listener = listener;
 	}
 
@@ -39,21 +58,7 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnScrollHorizontalEventProperty property,
 						  final ScrollPane fxNode) {
-			fxNode.hvalueProperty().addListener((value, prev, next) -> {
-				if (prev != null && next != null) {
-					property.getListener().onEvent(new SUIEvent<>(
-							"scroll.horizontal",
-							ScrollEventData.builder()
-									.yPos(0)
-									.prevYPos(0)
-									.dy(0)
-									.xPos(next.doubleValue())
-									.prevXPos(prev.doubleValue())
-									.dx(next.doubleValue() - prev.doubleValue())
-									.build()
-					));
-				}
-			});
+			fxNode.hvalueProperty().addListener(property.getChangeListener());
 		}
 
 
@@ -62,7 +67,11 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnScrollHorizontalEventProperty property,
 									 final SUINode node, final ScrollPane fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			node.getPropertySafe(OnScrollHorizontalEventProperty.class).ifPresent(prop -> {
+				fxNode.hvalueProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.hvalueProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 
@@ -71,7 +80,8 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnScrollHorizontalEventProperty property,
 									 final SUINode node, final ScrollPane fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			fxNode.hvalueProperty().removeListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 	}

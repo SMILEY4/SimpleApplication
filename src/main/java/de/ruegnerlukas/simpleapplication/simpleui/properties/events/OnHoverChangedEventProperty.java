@@ -10,8 +10,12 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
 
-public class OnHoverChangedEventProperty extends AbstractEventListenerProperty<HoverEventData> {
+public class OnHoverChangedEventProperty extends AbstractObservableListenerProperty<HoverEventData, Boolean> {
 
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "hover.changed";
 
 	/**
 	 * The listener for events with {@link HoverEventData}.
@@ -26,7 +30,14 @@ public class OnHoverChangedEventProperty extends AbstractEventListenerProperty<H
 	 * @param listener the listener for events with {@link HoverEventData}.
 	 */
 	public OnHoverChangedEventProperty(final SUIEventListener<HoverEventData> listener) {
-		super(OnHoverChangedEventProperty.class);
+		super(OnHoverChangedEventProperty.class, (value, prev, next) -> {
+			listener.onEvent(new SUIEvent<>(
+					EVENT_ID,
+					HoverEventData.builder()
+							.hover(next)
+							.build()
+			));
+		});
 		this.listener = listener;
 	}
 
@@ -39,12 +50,7 @@ public class OnHoverChangedEventProperty extends AbstractEventListenerProperty<H
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnHoverChangedEventProperty property,
 						  final Node fxNode) {
-			fxNode.hoverProperty().addListener((value, prev, next) -> property.getListener().onEvent(new SUIEvent<>(
-					"hover.changed",
-					HoverEventData.builder()
-							.hover(next)
-							.build()
-			)));
+			fxNode.hoverProperty().addListener(property.getChangeListener());
 		}
 
 
@@ -53,7 +59,11 @@ public class OnHoverChangedEventProperty extends AbstractEventListenerProperty<H
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnHoverChangedEventProperty property,
 									 final SUINode node, final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			node.getPropertySafe(OnHoverChangedEventProperty.class).ifPresent(prop -> {
+				fxNode.hoverProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.hoverProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 
@@ -62,7 +72,8 @@ public class OnHoverChangedEventProperty extends AbstractEventListenerProperty<H
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnHoverChangedEventProperty property,
 									 final SUINode node, final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+			fxNode.hoverProperty().removeListener(property.getChangeListener());
+			return MutationResult.MUTATED;
 		}
 
 	}

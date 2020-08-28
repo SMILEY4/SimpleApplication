@@ -12,6 +12,10 @@ import lombok.Getter;
 
 public class OnMouseScrollStartedEventProperty extends AbstractEventListenerProperty<MouseScrollEventData> {
 
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "mousescroll.started";
 
 	/**
 	 * The listener for events with {@link MouseScrollEventData}.
@@ -73,7 +77,7 @@ public class OnMouseScrollStartedEventProperty extends AbstractEventListenerProp
 		 */
 		private void setListener(final Node fxNode, final OnMouseScrollStartedEventProperty property) {
 			fxNode.setOnScrollStarted(e -> property.getListener().onEvent(new SUIEvent<>(
-					"mousescroll.started",
+					EVENT_ID,
 					MouseScrollEventData.builder()
 							.dx(e.getDeltaX())
 							.dy(e.getDeltaY())

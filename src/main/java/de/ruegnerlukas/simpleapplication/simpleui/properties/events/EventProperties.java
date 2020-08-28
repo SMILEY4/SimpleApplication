@@ -13,7 +13,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SelectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 
 public final class EventProperties {
@@ -342,22 +341,9 @@ public final class EventProperties {
 
 
 	/**
-	 * When a selection changed. Contains the items and indices.
-	 *
-	 * @param listener the listener for events with {@link SelectionEventData}.
-	 * @return a {@link OnSelectedEventProperty}
-	 */
-	public static <T> Property eventSelection(final SUIEventListener<SelectionEventData<T>> listener) {
-		return new OnSelectedEventProperty<>(listener);
-	}
-
-
-
-
-	/**
 	 * When a selection changed. Contains only the items.
 	 *
-	 * @param listener the listener for events with {@link SelectionEventData}.
+	 * @param listener the listener for events with {@link SelectedItemEventData}.
 	 * @return a {@link OnSelectedItemEventProperty}
 	 */
 	public static <T> Property eventSelectedItem(final SUIEventListener<SelectedItemEventData<T>> listener) {
