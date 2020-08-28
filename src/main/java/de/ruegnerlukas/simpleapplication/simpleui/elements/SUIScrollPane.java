@@ -12,6 +12,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ShowScrollbarsProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnScrollHorizontalEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnScrollVerticalEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.control.ScrollPane;
 
@@ -78,7 +80,9 @@ public final class SUIScrollPane {
 				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.ScrollPaneFitToWidthUpdatingBuilder()),
 				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.ScrollPaneFitToHeightUpdatingBuilder()),
 				PropertyEntry.of(ShowScrollbarsProperty.class, new ShowScrollbarsProperty.ShowScrollbarUpdatingBuilder()),
-				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder(), null)
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder(), null),
+				PropertyEntry.of(OnScrollHorizontalEventProperty.class, new OnScrollHorizontalEventProperty.ScrollPaneUpdatingBuilder()),
+				PropertyEntry.of(OnScrollVerticalEventProperty.class, new OnScrollVerticalEventProperty.ScrollPaneUpdatingBuilder())
 		));
 	}
 

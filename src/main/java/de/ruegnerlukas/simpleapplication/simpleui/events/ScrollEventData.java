@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.events;
 
-import javafx.scene.input.ScrollEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,28 +13,34 @@ public class ScrollEventData {
 
 
 	/**
-	 * The vertical scroll amount
+	 * The new vertical position after the scrolling happened.
+	 */
+	private final double yPos;
+
+	/**
+	 * The previous vertical position before the scrolling happened.
+	 */
+	private final double prevYPos;
+
+	/**
+	 * The vertical scroll amount.
 	 */
 	private final double dy;
 
 	/**
-	 * The horizontal scroll amount
+	 * The new horizontal position after the scrolling happened.
+	 */
+	private final double xPos;
+
+	/**
+	 * The previous horizontal position before the scrolling happened.
+	 */
+	private final double prevXPos;
+
+	/**
+	 * The horizontal scroll amount.
 	 */
 	private final double dx;
 
-	/**
-	 * The multiplier used to convert vertical mouse wheel rotation units to pixels.
-	 */
-	private final double pixelMultiplierY;
-
-	/**
-	 * The multiplier used to convert horizontal mouse wheel rotation units to pixels.
-	 */
-	private final double pixelMultiplierX;
-
-	/**
-	 * The original javafx event.
-	 */
-	private final ScrollEvent source;
 
 }

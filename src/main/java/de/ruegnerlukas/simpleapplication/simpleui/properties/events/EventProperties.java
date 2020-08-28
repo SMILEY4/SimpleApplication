@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.KeyEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseButtonEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseDragEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseMoveEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.MouseScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
@@ -212,11 +213,11 @@ public final class EventProperties {
 	/**
 	 * When user performs a scrolling action
 	 *
-	 * @param listener the listener for events with {@link ScrollEventData}.
-	 * @return a {@link OnScrollEventProperty}
+	 * @param listener the listener for events with {@link MouseScrollEventData}.
+	 * @return a {@link OnMouseScrollEventProperty}
 	 */
-	public static Property eventScroll(final SUIEventListener<ScrollEventData> listener) {
-		return new OnScrollEventProperty(listener);
+	public static Property eventMouseScroll(final SUIEventListener<MouseScrollEventData> listener) {
+		return new OnMouseScrollEventProperty(listener);
 	}
 
 
@@ -225,11 +226,11 @@ public final class EventProperties {
 	/**
 	 * When a scrolling gesture is detected.
 	 *
-	 * @param listener the listener for events with {@link ScrollEventData}.
-	 * @return a {@link OnScrollEventProperty}
+	 * @param listener the listener for events with {@link MouseScrollEventData}.
+	 * @return a {@link OnMouseScrollEventProperty}
 	 */
-	public static Property eventScrollStarted(final SUIEventListener<ScrollEventData> listener) {
-		return new OnScrollStartedEventProperty(listener);
+	public static Property eventMouseScrollStarted(final SUIEventListener<MouseScrollEventData> listener) {
+		return new OnMouseScrollStartedEventProperty(listener);
 	}
 
 
@@ -238,11 +239,11 @@ public final class EventProperties {
 	/**
 	 * When a scrolling gesture ends.
 	 *
-	 * @param listener the listener for events with {@link ScrollEventData}.
-	 * @return a {@link OnScrollEventProperty}
+	 * @param listener the listener for events with {@link MouseScrollEventData}.
+	 * @return a {@link OnMouseScrollEventProperty}
 	 */
-	public static Property eventScrollFinished(final SUIEventListener<ScrollEventData> listener) {
-		return new OnScrollFinishedEventProperty(listener);
+	public static Property eventMouseScrollFinished(final SUIEventListener<MouseScrollEventData> listener) {
+		return new OnMouseScrollFinishedEventProperty(listener);
 	}
 
 
@@ -374,5 +375,32 @@ public final class EventProperties {
 	public static Property eventSelectedIndex(final SUIEventListener<SelectedIndexEventData> listener) {
 		return new OnSelectedIndexEventProperty(listener);
 	}
+
+
+
+
+	/**
+	 * When a node (for example a scroll pane) was scroll vertically.
+	 *
+	 * @param listener the listener for events with {@link ScrollEventData}.
+	 * @return a {@link OnScrollVerticalEventProperty}
+	 */
+	public static Property eventScrollVertical(final SUIEventListener<ScrollEventData> listener) {
+		return new OnScrollVerticalEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node (for example a scroll pane) was scroll horizontally.
+	 *
+	 * @param listener the listener for events with {@link ScrollEventData}.
+	 * @return a {@link OnScrollHorizontalEventProperty}
+	 */
+	public static Property eventScrollHorizontal(final SUIEventListener<ScrollEventData> listener) {
+		return new OnScrollHorizontalEventProperty(listener);
+	}
+
 
 }
