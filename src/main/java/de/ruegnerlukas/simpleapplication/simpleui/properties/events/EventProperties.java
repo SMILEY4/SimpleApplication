@@ -1,11 +1,18 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
+import de.ruegnerlukas.simpleapplication.simpleui.events.ActionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.CheckedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.FocusEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.HoverEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.KeyEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseButtonEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseDragEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseMoveEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.MouseScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ScrollEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 
 public final class EventProperties {
@@ -206,11 +213,11 @@ public final class EventProperties {
 	/**
 	 * When user performs a scrolling action
 	 *
-	 * @param listener the listener for events with {@link ScrollEventData}.
-	 * @return a {@link OnScrollEventProperty}
+	 * @param listener the listener for events with {@link MouseScrollEventData}.
+	 * @return a {@link OnMouseScrollEventProperty}
 	 */
-	public static Property eventScroll(final SUIEventListener<ScrollEventData> listener) {
-		return new OnScrollEventProperty(listener);
+	public static Property eventMouseScroll(final SUIEventListener<MouseScrollEventData> listener) {
+		return new OnMouseScrollEventProperty(listener);
 	}
 
 
@@ -219,11 +226,11 @@ public final class EventProperties {
 	/**
 	 * When a scrolling gesture is detected.
 	 *
-	 * @param listener the listener for events with {@link ScrollEventData}.
-	 * @return a {@link OnScrollEventProperty}
+	 * @param listener the listener for events with {@link MouseScrollEventData}.
+	 * @return a {@link OnMouseScrollEventProperty}
 	 */
-	public static Property eventScrollStarted(final SUIEventListener<ScrollEventData> listener) {
-		return new OnScrollStartedEventProperty(listener);
+	public static Property eventMouseScrollStarted(final SUIEventListener<MouseScrollEventData> listener) {
+		return new OnMouseScrollStartedEventProperty(listener);
 	}
 
 
@@ -232,12 +239,180 @@ public final class EventProperties {
 	/**
 	 * When a scrolling gesture ends.
 	 *
-	 * @param listener the listener for events with {@link ScrollEventData}.
-	 * @return a {@link OnScrollEventProperty}
+	 * @param listener the listener for events with {@link MouseScrollEventData}.
+	 * @return a {@link OnMouseScrollEventProperty}
 	 */
-	public static Property eventScrollFinished(final SUIEventListener<ScrollEventData> listener) {
-		return new OnScrollFinishedEventProperty(listener);
+	public static Property eventMouseScrollFinished(final SUIEventListener<MouseScrollEventData> listener) {
+		return new OnMouseScrollFinishedEventProperty(listener);
 	}
 
+
+
+
+	/**
+	 * When the input focus of a node changed.
+	 *
+	 * @param listener the listener for events with {@link FocusEventData}.
+	 * @return a {@link OnFocusChangedEventProperty}
+	 */
+	public static Property eventFocusChanged(final SUIEventListener<FocusEventData> listener) {
+		return new OnFocusChangedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node now has the input focus.
+	 *
+	 * @param listener the listener for events with {@link FocusEventData}.
+	 * @return a {@link OnFocusReceivedEventProperty}
+	 */
+	public static Property eventFocusReceived(final SUIEventListener<FocusEventData> listener) {
+		return new OnFocusReceivedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node lost the input focus.
+	 *
+	 * @param listener the listener for events with {@link FocusEventData}.
+	 * @return a {@link OnFocusLostEventProperty}
+	 */
+	public static Property eventFocusLost(final SUIEventListener<FocusEventData> listener) {
+		return new OnFocusLostEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When the hover over a node changes.
+	 *
+	 * @param listener the listener for events with {@link HoverEventData}.
+	 * @return a {@link OnHoverChangedEventProperty}
+	 */
+	public static Property eventHoverChanged(final SUIEventListener<HoverEventData> listener) {
+		return new OnHoverChangedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node is now being hovered over.
+	 *
+	 * @param listener the listener for events with {@link HoverEventData}.
+	 * @return a {@link OnHoverStartedEventProperty}
+	 */
+	public static Property eventHoverStarted(final SUIEventListener<HoverEventData> listener) {
+		return new OnHoverStartedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node is no longer being hovered over.
+	 *
+	 * @param listener the listener for events with {@link HoverEventData}.
+	 * @return a {@link OnHoverStoppedEventProperty}
+	 */
+	public static Property eventHoverStopped(final SUIEventListener<HoverEventData> listener) {
+		return new OnHoverStoppedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node is no longer being hovered over.
+	 *
+	 * @param listener the listener for events with {@link ActionEventData}.
+	 * @return a {@link OnActionEventProperty}
+	 */
+	public static Property eventAction(final SUIEventListener<ActionEventData> listener) {
+		return new OnActionEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a selection changed. Contains only the items.
+	 *
+	 * @param listener the listener for events with {@link SelectedItemEventData}.
+	 * @return a {@link OnSelectedItemEventProperty}
+	 */
+	public static <T> Property eventSelectedItem(final SUIEventListener<SelectedItemEventData<T>> listener) {
+		return new OnSelectedItemEventProperty<>(listener);
+	}
+
+
+
+
+	/**
+	 * When a selection changed. Contains only the indices.
+	 *
+	 * @param listener the listener for events with {@link SelectedIndexEventData}.
+	 * @return a {@link OnSelectedIndexEventProperty}
+	 */
+	public static Property eventSelectedIndex(final SUIEventListener<SelectedIndexEventData> listener) {
+		return new OnSelectedIndexEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node (for example a scroll pane) was scroll vertically.
+	 *
+	 * @param listener the listener for events with {@link ScrollEventData}.
+	 * @return a {@link OnScrollVerticalEventProperty}
+	 */
+	public static Property eventScrollVertical(final SUIEventListener<ScrollEventData> listener) {
+		return new OnScrollVerticalEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a node (for example a scroll pane) was scroll horizontally.
+	 *
+	 * @param listener the listener for events with {@link ScrollEventData}.
+	 * @return a {@link OnScrollHorizontalEventProperty}
+	 */
+	public static Property eventScrollHorizontal(final SUIEventListener<ScrollEventData> listener) {
+		return new OnScrollHorizontalEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a box (for example a check box) was checked / selected.
+	 *
+	 * @param listener the listener for events with {@link CheckedEventData}.
+	 * @return a {@link OnCheckedEventProperty}
+	 */
+	public static Property eventChecked(final SUIEventListener<CheckedEventData> listener) {
+		return new OnCheckedEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When a box (for example a check box) was unchecked / deselected.
+	 *
+	 * @param listener the listener for events with {@link CheckedEventData}.
+	 * @return a {@link OnUncheckedEventProperty}
+	 */
+	public static Property eventUnchecked(final SUIEventListener<CheckedEventData> listener) {
+		return new OnUncheckedEventProperty(listener);
+	}
 
 }

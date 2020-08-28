@@ -4,15 +4,18 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedIndexEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
 import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 public class ChoicesProperty<T> extends Property {
 
@@ -90,11 +93,11 @@ public class ChoicesProperty<T> extends Property {
 									 final SUINode node, final ChoiceBox<T> fxNode) {
 			final Object prevValue = fxNode.getSelectionModel().getSelectedItem();
 			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
-			removeListener(node, fxNode);
+			removeListeners(node, fxNode);
 			fxNode.getItems().clear();
 			addListener(node, fxNode);
 			if (prevValue != null) {
-				callListener(node, prevIndex, -1, prevValue, null);
+				callListeners(node, prevIndex, -1, prevValue, null);
 			}
 			return MutationResult.MUTATED;
 		}
@@ -114,7 +117,7 @@ public class ChoicesProperty<T> extends Property {
 			final T prevValue = fxNode.getSelectionModel().getSelectedItem();
 			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
 
-			removeListener(node, fxNode);
+			removeListeners(node, fxNode);
 			fxNode.getItems().setAll(property.getChoices());
 			if (fxNode.getItems().contains(prevValue)) {
 				fxNode.setValue(prevValue);
@@ -124,7 +127,7 @@ public class ChoicesProperty<T> extends Property {
 			final int nextIndex = fxNode.getSelectionModel().getSelectedIndex();
 			final Object nextValue = nextIndex != -1 ? fxNode.getSelectionModel().getSelectedItem() : null;
 			if (prevIndex != nextIndex || !Objects.equals(prevValue, nextValue)) {
-				callListener(node, prevIndex, nextIndex, prevValue, nextValue);
+				callListeners(node, prevIndex, nextIndex, prevValue, nextValue);
 			}
 
 		}
@@ -133,37 +136,43 @@ public class ChoicesProperty<T> extends Property {
 
 
 		/**
-		 * Removes the listener from the choicebox if one exists
+		 * Removes the listeners from the choicebox if any exist
 		 *
 		 * @param node   the simpleui node
 		 * @param fxNode the javafx choicebox
 		 */
-		private void removeListener(final SUINode node, final ChoiceBox<T> fxNode) {
-			final Optional<ChoiceBoxListenerProperty> listenerProperty = node.getPropertySafe(ChoiceBoxListenerProperty.class);
-			listenerProperty.ifPresent(listenerProp ->
-					fxNode.getSelectionModel().selectedIndexProperty().removeListener(listenerProp.getIndexListener()));
+		private void removeListeners(final SUINode node, final ChoiceBox<T> fxNode) {
+			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
+				fxNode.getSelectionModel().selectedIndexProperty().removeListener(property.getChangeListener());
+			});
+			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				fxNode.getSelectionModel().selectedItemProperty().removeListener(property.getChangeListener());
+			});
 		}
 
 
 
 
 		/**
-		 * Adds the listener back to the choicebox if one existed
+		 * Adds the listener back to the choicebox if any existed
 		 *
 		 * @param node   the simpleui node
 		 * @param fxNode the javafx choicebox
 		 */
 		private void addListener(final SUINode node, final ChoiceBox<T> fxNode) {
-			final Optional<ChoiceBoxListenerProperty> listenerProperty = node.getPropertySafe(ChoiceBoxListenerProperty.class);
-			listenerProperty.ifPresent(listenerProp ->
-					fxNode.getSelectionModel().selectedIndexProperty().addListener(listenerProp.getIndexListener()));
+			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
+				fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+			});
+			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
+			});
 		}
 
 
 
 
 		/**
-		 * Manually call the listener of the choicebox if one exists
+		 * Manually calls the listeners of the choicebox if any exist
 		 *
 		 * @param node      the simpleui node
 		 * @param prevIndex the previous index
@@ -171,12 +180,21 @@ public class ChoicesProperty<T> extends Property {
 		 * @param prevItem  the previous selected item
 		 * @param nextItem  the new selected item
 		 */
-		private void callListener(final SUINode node,
-								  final int prevIndex, final int nextIndex,
-								  final Object prevItem, final Object nextItem) {
-			final Optional<ChoiceBoxListenerProperty> listenerProperty = node.getPropertySafe(ChoiceBoxListenerProperty.class);
-			listenerProperty.ifPresent(listenerProp ->
-					listenerProp.getListener().onSelection(prevIndex, nextIndex, prevItem, nextItem));
+		private void callListeners(final SUINode node,
+								   final int prevIndex, final int nextIndex,
+								   final Object prevItem, final Object nextItem) {
+			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
+				property.getListener().onEvent(new SUIEvent<>(
+						OnSelectedIndexEventProperty.EVENT_ID,
+						new SelectedIndexEventData(nextIndex, prevIndex)
+				));
+			});
+			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				property.getListener().onEvent(new SUIEvent<>(
+						OnSelectedItemEventProperty.EVENT_ID,
+						new SelectedItemEventData<>(nextItem, prevItem)
+				));
+			});
 		}
 
 
@@ -184,6 +202,3 @@ public class ChoicesProperty<T> extends Property {
 
 
 }
-
-
-

@@ -12,6 +12,10 @@ import lombok.Getter;
 
 public class OnMouseDragExitedEventProperty extends AbstractEventListenerProperty<MouseDragEventData> {
 
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "mouse.drag.exited";
 
 	/**
 	 * The listener for events with {@link MouseDragEventData}.
@@ -73,7 +77,7 @@ public class OnMouseDragExitedEventProperty extends AbstractEventListenerPropert
 		 */
 		private void setListener(final Node fxNode, final OnMouseDragExitedEventProperty property) {
 			fxNode.setOnMouseDragExited(e -> property.getListener().onEvent(new SUIEvent<>(
-					"mouse.drag.exited",
+					EVENT_ID,
 					MouseDragEventData.builder()
 							.x(e.getX())
 							.y(e.getY())

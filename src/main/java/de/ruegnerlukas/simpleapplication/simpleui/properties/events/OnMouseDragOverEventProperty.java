@@ -12,6 +12,10 @@ import lombok.Getter;
 
 public class OnMouseDragOverEventProperty extends AbstractEventListenerProperty<MouseDragEventData> {
 
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "mouse.drag.over";
 
 	/**
 	 * The listener for events with {@link MouseDragEventData}.
@@ -73,7 +77,7 @@ public class OnMouseDragOverEventProperty extends AbstractEventListenerProperty<
 		 */
 		private void setListener(final Node fxNode, final OnMouseDragOverEventProperty property) {
 			fxNode.setOnMouseDragOver(e -> property.getListener().onEvent(new SUIEvent<>(
-					"mouse.drag.over",
+					EVENT_ID,
 					MouseDragEventData.builder()
 							.x(e.getX())
 							.y(e.getY())

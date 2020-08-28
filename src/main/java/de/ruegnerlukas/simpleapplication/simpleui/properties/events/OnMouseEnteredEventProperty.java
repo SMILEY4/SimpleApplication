@@ -12,6 +12,10 @@ import lombok.Getter;
 
 public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<MouseMoveEventData> {
 
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "mouse.move.entered";
 
 	/**
 	 * The listener for events with {@link MouseMoveEventData}.
@@ -73,7 +77,7 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 		 */
 		private void setListener(final Node fxNode, final OnMouseEnteredEventProperty property) {
 			fxNode.setOnMouseEntered(e -> property.getListener().onEvent(new SUIEvent<>(
-					"mouse.move.entered",
+					EVENT_ID,
 					MouseMoveEventData.builder()
 							.x(e.getX())
 							.y(e.getY())

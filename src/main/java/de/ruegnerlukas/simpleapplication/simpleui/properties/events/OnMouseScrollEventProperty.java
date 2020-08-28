@@ -5,39 +5,43 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
-import de.ruegnerlukas.simpleapplication.simpleui.events.ScrollEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.MouseScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
 
-public class OnScrollEventProperty extends AbstractEventListenerProperty<ScrollEventData> {
-
+public class OnMouseScrollEventProperty extends AbstractEventListenerProperty<MouseScrollEventData> {
 
 	/**
-	 * The listener for events with {@link ScrollEventData}.
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "mousescroll.scrolled";
+
+	/**
+	 * The listener for events with {@link MouseScrollEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<ScrollEventData> listener;
+	private final SUIEventListener<MouseScrollEventData> listener;
 
 
 
 
 	/**
-	 * @param listener the listener for events with {@link ScrollEventData}.
+	 * @param listener the listener for events with {@link MouseScrollEventData}.
 	 */
-	public OnScrollEventProperty(final SUIEventListener<ScrollEventData> listener) {
-		super(OnScrollEventProperty.class);
+	public OnMouseScrollEventProperty(final SUIEventListener<MouseScrollEventData> listener) {
+		super(OnMouseScrollEventProperty.class);
 		this.listener = listener;
 	}
 
 
 
 
-	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<OnScrollEventProperty, Node> {
+	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<OnMouseScrollEventProperty, Node> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnScrollEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnMouseScrollEventProperty property,
 						  final Node fxNode) {
 			setListener(fxNode, property);
 		}
@@ -46,7 +50,7 @@ public class OnScrollEventProperty extends AbstractEventListenerProperty<ScrollE
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnScrollEventProperty property,
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnMouseScrollEventProperty property,
 									 final SUINode node, final Node fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
@@ -56,7 +60,7 @@ public class OnScrollEventProperty extends AbstractEventListenerProperty<ScrollE
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnScrollEventProperty property,
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnMouseScrollEventProperty property,
 									 final SUINode node, final Node fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;
@@ -71,10 +75,10 @@ public class OnScrollEventProperty extends AbstractEventListenerProperty<ScrollE
 		 * @param fxNode   the fx node to listen to
 		 * @param property the property with the listener to add
 		 */
-		private void setListener(final Node fxNode, final OnScrollEventProperty property) {
+		private void setListener(final Node fxNode, final OnMouseScrollEventProperty property) {
 			fxNode.setOnScroll(e -> property.getListener().onEvent(new SUIEvent<>(
-					"scroll.scrolled",
-					ScrollEventData.builder()
+					EVENT_ID,
+					MouseScrollEventData.builder()
 							.dx(e.getDeltaX())
 							.dy(e.getDeltaY())
 							.pixelMultiplierX(e.getMultiplierY())

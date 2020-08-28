@@ -31,11 +31,6 @@ public class FxTestUtils {
 		assertThat(button.isWrapText()).isEqualTo(info.isWrap());
 		assertThat(button.isDisabled()).isEqualTo(info.isDisabled());
 		assertThat(button.getStyle()).isEqualTo(info.getStyle());
-		if (info.hasOnActionListener) {
-			assertThat(button.getOnAction()).isNotNull();
-		} else {
-			assertThat(button.getOnAction()).isNull();
-		}
 	}
 
 
@@ -61,8 +56,6 @@ public class FxTestUtils {
 		private boolean wrap;
 
 		private boolean disabled;
-
-		private boolean hasOnActionListener;
 
 		private String style;
 

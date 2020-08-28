@@ -1,13 +1,12 @@
-package de.ruegnerlukas.simpleapplication.simpleui.elements;
+package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NoOpUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.DisabledProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMaxProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeMinProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizePreferredProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.SizeProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.StyleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnFocusChangedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnFocusLostEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnFocusReceivedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnHoverChangedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnHoverStartedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnHoverStoppedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnKeyPressedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnKeyReleasedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnKeyTypedEventProperty;
@@ -22,9 +21,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseExite
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseMovedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMousePressedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseReleasedEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnScrollEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnScrollFinishedEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnScrollStartedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseScrollEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseScrollFinishedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseScrollStartedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
 
 import java.util.List;
@@ -79,9 +78,17 @@ public final class PropertyGroups {
 				PropertyEntry.of(OnMouseExitedEventProperty.class, new OnMouseExitedEventProperty.UpdatingBuilder()),
 				PropertyEntry.of(OnMouseMovedEventProperty.class, new OnMouseMovedEventProperty.UpdatingBuilder()),
 
-				PropertyEntry.of(OnScrollEventProperty.class, new OnScrollEventProperty.UpdatingBuilder()),
-				PropertyEntry.of(OnScrollStartedEventProperty.class, new OnScrollStartedEventProperty.UpdatingBuilder()),
-				PropertyEntry.of(OnScrollFinishedEventProperty.class, new OnScrollFinishedEventProperty.UpdatingBuilder())
+				PropertyEntry.of(OnMouseScrollEventProperty.class, new OnMouseScrollEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnMouseScrollStartedEventProperty.class, new OnMouseScrollStartedEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnMouseScrollFinishedEventProperty.class, new OnMouseScrollFinishedEventProperty.UpdatingBuilder()),
+
+				PropertyEntry.of(OnFocusChangedEventProperty.class, new OnFocusChangedEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnFocusReceivedEventProperty.class, new OnFocusReceivedEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnFocusLostEventProperty.class, new OnFocusLostEventProperty.UpdatingBuilder()),
+
+				PropertyEntry.of(OnHoverChangedEventProperty.class, new OnHoverChangedEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnHoverStartedEventProperty.class, new OnHoverStartedEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnHoverStoppedEventProperty.class, new OnHoverStoppedEventProperty.UpdatingBuilder())
 		);
 	}
 

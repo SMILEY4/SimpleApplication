@@ -94,17 +94,6 @@ public final class Properties {
 
 
 	/**
-	 * @param listener the listener
-	 * @return an {@link ActionListenerProperty}.
-	 */
-	public static Property buttonListener(final ActionListenerProperty.ActionListener listener) {
-		return new ActionListenerProperty(listener);
-	}
-
-
-
-
-	/**
 	 * @param minWidth        the minimum width.
 	 * @param minHeight       the minimum height.
 	 * @param preferredWidth  the preferred width.
@@ -390,33 +379,11 @@ public final class Properties {
 
 
 	/**
-	 * @param selected whether it is selected
-	 * @return an {@link SelectedProperty}
-	 */
-	public static Property selected(final boolean selected) {
-		return new SelectedProperty(selected);
-	}
-
-
-
-
-	/**
 	 * @param choices the list of possible choices
 	 * @return an {@link ChoicesProperty}
 	 */
 	public static <T> Property choices(final List<T> choices) {
 		return new ChoicesProperty<>(List.copyOf(choices));
-	}
-
-
-
-
-	/**
-	 * @param listener the listener
-	 * @return an {@link ChoiceBoxListenerProperty.ChoiceBoxListener}
-	 */
-	public static <T> Property choiceListener(final Class<T> type, final ChoiceBoxListenerProperty.ChoiceBoxListener<T> listener) {
-		return new ChoiceBoxListenerProperty<T>(listener);
 	}
 
 
@@ -484,7 +451,6 @@ public final class Properties {
 	public static Property mutationBehaviour(final MutationBehaviourProperty.MutationBehaviour behaviour) {
 		return new MutationBehaviourProperty(behaviour);
 	}
-
 
 
 }

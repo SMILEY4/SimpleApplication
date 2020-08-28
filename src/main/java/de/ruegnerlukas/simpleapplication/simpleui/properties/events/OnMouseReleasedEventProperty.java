@@ -12,6 +12,10 @@ import lombok.Getter;
 
 public class OnMouseReleasedEventProperty extends AbstractEventListenerProperty<MouseButtonEventData> {
 
+	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "mouse.released";
 
 	/**
 	 * The listener for events with {@link MouseButtonEventData}.
@@ -73,7 +77,7 @@ public class OnMouseReleasedEventProperty extends AbstractEventListenerProperty<
 		 */
 		private void setListener(final Node fxNode, final OnMouseReleasedEventProperty property) {
 			fxNode.setOnMouseReleased(e -> property.getListener().onEvent(new SUIEvent<>(
-					"mouse.released",
+					EVENT_ID,
 					MouseButtonEventData.builder()
 							.x(e.getX())
 							.y(e.getY())

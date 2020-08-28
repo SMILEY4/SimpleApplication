@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import java.io.File;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -702,16 +703,7 @@ public class Validator {
 	 * @return the result of the validation
 	 */
 	public <T> ValidationResult isEqual(final T object, final T other) {
-		if (object == null) {
-			if (other != null) {
-				return validated(true);
-			}
-		} else {
-			if (!object.equals(other)) {
-				return validated(true);
-			}
-		}
-		return validated(false);
+		return validated(!Objects.equals(object, other));
 	}
 
 
@@ -726,16 +718,7 @@ public class Validator {
 	 * @return the result of the validation
 	 */
 	public <T> ValidationResult notEqual(final T object, final T other) {
-		if (object == null) {
-			if (other == null) {
-				return validated(true);
-			}
-		} else {
-			if (object.equals(other)) {
-				return validated(true);
-			}
-		}
-		return validated(false);
+		return validated(Objects.equals(object, other));
 	}
 
 

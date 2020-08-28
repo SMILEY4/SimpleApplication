@@ -367,9 +367,12 @@ public class ValidationsTest {
 
 		assertFalse(Validations.STATE.isEqual(2, 2).failed());
 		assertFalse(Validations.STATE.isEqual(objA, objA).failed());
+		assertFalse(Validations.STATE.isEqual(null, null).failed());
 		assertTrue(Validations.STATE.isEqual(1, 2).failed());
 		assertTrue(Validations.STATE.isEqual("a", "b").failed());
 		assertTrue(Validations.STATE.isEqual(objA, objB).failed());
+		assertTrue(Validations.STATE.isEqual(objA, null).failed());
+		assertTrue(Validations.STATE.isEqual(null, objB).failed());
 	}
 
 
@@ -384,6 +387,9 @@ public class ValidationsTest {
 		assertFalse(Validations.STATE.notEqual(1, 2).failed());
 		assertFalse(Validations.STATE.notEqual("a", "b").failed());
 		assertFalse(Validations.STATE.notEqual(objA, objB).failed());
+		assertFalse(Validations.STATE.notEqual(objA, null).failed());
+		assertFalse(Validations.STATE.notEqual(null, objA).failed());
+		assertTrue(Validations.STATE.notEqual(null, null).failed());
 		assertTrue(Validations.STATE.notEqual(2, 2).failed());
 		assertTrue(Validations.STATE.notEqual(objA, objA).failed());
 	}

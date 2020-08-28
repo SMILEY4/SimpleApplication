@@ -14,6 +14,11 @@ public class OnKeyReleasedEventProperty extends AbstractEventListenerProperty<Ke
 
 
 	/**
+	 * The identifying string of the event.
+	 */
+	public static final String EVENT_ID = "key.released";
+
+	/**
 	 * The listener for events with {@link KeyEventData}.
 	 */
 	@Getter
@@ -73,7 +78,7 @@ public class OnKeyReleasedEventProperty extends AbstractEventListenerProperty<Ke
 		 */
 		private void setListener(final Node fxNode, final OnKeyReleasedEventProperty property) {
 			fxNode.setOnKeyReleased(e -> property.getListener().onEvent(new SUIEvent<>(
-					"key.released",
+					EVENT_ID,
 					KeyEventData.builder()
 							.keyCode(e.getCode())
 							.character(e.getCharacter())

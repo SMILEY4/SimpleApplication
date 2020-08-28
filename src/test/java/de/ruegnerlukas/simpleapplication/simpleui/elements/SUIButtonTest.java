@@ -43,9 +43,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.disabled(false),
 				Properties.style("-fx-background-color: red"),
 				Properties.alignment(Pos.CENTER),
-				Properties.defaultMutationBehaviour(),
-				Properties.buttonListener(() -> {
-				})
+				Properties.defaultMutationBehaviour()
 		);
 
 		SUINode node = button.create(state);
@@ -59,7 +57,6 @@ public class SUIButtonTest extends ApplicationTest {
 		PropertyTestUtils.assertTextContentProperty(node, "My Text");
 		PropertyTestUtils.assertWrapTextProperty(node, true);
 		PropertyTestUtils.assertDisabledProperty(node, false);
-		PropertyTestUtils.assertActionListenerProperty(node);
 		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
 	}
 
@@ -80,9 +77,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.textContent("My Text"),
 				Properties.wrapText(),
 				Properties.disabled(false),
-				Properties.style("-fx-background-color: red"),
-				Properties.buttonListener(() -> {
-				})
+				Properties.style("-fx-background-color: red")
 		);
 
 		NodeFactory buttonTarget = SUIButton.button(
@@ -94,9 +89,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.textContent("My New Text"),
 				Properties.wrapText(),
 				Properties.disabled(true),
-				Properties.style("-fx-background-color: blue"),
-				Properties.buttonListener(() -> {
-				})
+				Properties.style("-fx-background-color: blue")
 		);
 
 		SUISceneContext context = new SUISceneContext(state, button);
@@ -115,7 +108,6 @@ public class SUIButtonTest extends ApplicationTest {
 		PropertyTestUtils.assertTextContentProperty(mutatedNode, "My New Text");
 		PropertyTestUtils.assertWrapTextProperty(mutatedNode, true);
 		PropertyTestUtils.assertDisabledProperty(mutatedNode, true);
-		PropertyTestUtils.assertActionListenerProperty(mutatedNode);
 		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 
 	}
@@ -137,9 +129,7 @@ public class SUIButtonTest extends ApplicationTest {
 				Properties.textContent("My Text"),
 				Properties.wrapText(),
 				Properties.disabled(false),
-				Properties.style("-fx-background-color: red"),
-				Properties.buttonListener(() -> {
-				})
+				Properties.style("-fx-background-color: red")
 		);
 
 		SUISceneContext context = new SUISceneContext(state, button);
@@ -152,7 +142,6 @@ public class SUIButtonTest extends ApplicationTest {
 				.text("My Text")
 				.wrap(true)
 				.disabled(false)
-				.hasOnActionListener(true)
 				.style("-fx-background-color: red")
 				.build());
 
