@@ -18,7 +18,7 @@ public class StreamSource<T> extends PipelineImpl<T, T> {
 
 	@Override
 	protected void process(final T element) {
-		// do nothing
+		// do nothing here
 	}
 
 }

@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
@@ -56,8 +58,40 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
+	public <R> Stream<R> mapIgnoreNulls(final Function<OUT, R> mapping) {
+		return new MapIgnoreNullsStream<>(this, mapping);
+	}
+
+
+
+
+	@Override
+	public Stream<OUT> mapNulls(final Supplier<OUT> mapping) {
+		return new MapNullsStream<>(this, mapping);
+	}
+
+
+
+
+	@Override
 	public <R> Stream<R> flatMap(final Function<OUT, List<R>> mapping) {
 		return new FlatMapStream<>(this, mapping);
+	}
+
+
+
+
+	@Override
+	public <R> Stream<R> flatMapIgnoreNulls(final Function<OUT, List<R>> mapping) {
+		return new FlatMapIgnoreNullStream<>(this, mapping);
+	}
+
+
+
+
+	@Override
+	public Stream<OUT> flatMapNulls(final Supplier<List<OUT>> mapping) {
+		return new FlatMapNullsStream<>(this, mapping);
 	}
 
 
@@ -74,6 +108,22 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 	@Override
 	public Stream<OUT> peek(final Consumer<OUT> consumer) {
 		return new PeekStream<>(this, consumer);
+	}
+
+
+
+
+	@Override
+	public Stream<OUT> onJavaFxThread() {
+		return new OnJFXStream<>(this);
+	}
+
+
+
+
+	@Override
+	public void collectInto(final Collection<OUT> collection) {
+		new CollectIntoStream<>(this, collection);
 	}
 
 }
