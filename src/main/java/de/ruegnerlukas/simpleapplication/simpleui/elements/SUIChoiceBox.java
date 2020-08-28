@@ -6,11 +6,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoiceBoxConverterProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoiceBoxListenerProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedIndexEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import javafx.scene.control.ChoiceBox;
 
@@ -58,10 +60,10 @@ public final class SUIChoiceBox {
 		registry.registerProperties(SUIChoiceBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUIChoiceBox.class, List.of(
 				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ChoicesPropertyUpdatingBuilder<>()),
-				PropertyEntry.of(ChoiceBoxListenerProperty.class,
-						new ChoiceBoxListenerProperty.CBListenerUpdatingBuilder<>()),
-				PropertyEntry.of(ChoiceBoxConverterProperty.class,
-						new ChoiceBoxConverterProperty.CBConverterUpdatingBuilder<>())
+				PropertyEntry.of(ChoiceBoxConverterProperty.class, new ChoiceBoxConverterProperty.CBConverterUpdatingBuilder<>()),
+				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.ChoiceBoxUpdatingBuilder<>()),
+				PropertyEntry.of(OnSelectedIndexEventProperty.class, new OnSelectedIndexEventProperty.ChoiceBoxUpdatingBuilder()),
+				PropertyEntry.of(OnSelectedEventProperty.class, new OnSelectedEventProperty.ChoiceBoxUpdatingBuilder<>())
 		));
 	}
 

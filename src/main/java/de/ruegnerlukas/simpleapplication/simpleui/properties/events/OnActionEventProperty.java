@@ -33,7 +33,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 
 
-	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<OnActionEventProperty, ButtonBase> {
+	public static class ButtonBaseUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnActionEventProperty, ButtonBase> {
 
 
 		@Override
@@ -73,7 +73,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 		 */
 		private void setListener(final ButtonBase fxNode, final OnActionEventProperty property) {
 			fxNode.setOnAction(e -> property.getListener().onEvent(new SUIEvent<>(
-					"action",
+					"action.buttonbase",
 					ActionEventData.builder()
 							.source(e)
 							.build()

@@ -64,7 +64,7 @@ public final class SUICheckbox {
 				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.WrapTextUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledAlignmentUpdatingBuilder()),
 				// button base
-				PropertyEntry.of(OnActionEventProperty.class, new OnActionEventProperty.UpdatingBuilder()),
+				PropertyEntry.of(OnActionEventProperty.class, new OnActionEventProperty.ButtonBaseUpdatingBuilder()),
 				// special
 				PropertyEntry.of(SelectedProperty.class, new SelectedProperty.SelectedPropertyUpdatingBuilder())
 		));

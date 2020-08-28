@@ -9,6 +9,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.MouseDragEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseMoveEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ScrollEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SelectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 
 public final class EventProperties {
@@ -333,5 +336,43 @@ public final class EventProperties {
 		return new OnActionEventProperty(listener);
 	}
 
+
+
+
+	/**
+	 * When a selection changed. Contains the items and indices.
+	 *
+	 * @param listener the listener for events with {@link SelectionEventData}.
+	 * @return a {@link OnSelectedEventProperty}
+	 */
+	public static <T> Property eventSelection(final SUIEventListener<SelectionEventData<T>> listener) {
+		return new OnSelectedEventProperty<>(listener);
+	}
+
+
+
+
+	/**
+	 * When a selection changed. Contains only the items.
+	 *
+	 * @param listener the listener for events with {@link SelectionEventData}.
+	 * @return a {@link OnSelectedItemEventProperty}
+	 */
+	public static <T> Property eventSelectedItem(final SUIEventListener<SelectedItemEventData<T>> listener) {
+		return new OnSelectedItemEventProperty<>(listener);
+	}
+
+
+
+
+	/**
+	 * When a selection changed. Contains only the indices.
+	 *
+	 * @param listener the listener for events with {@link SelectedIndexEventData}.
+	 * @return a {@link OnSelectedIndexEventProperty}
+	 */
+	public static Property eventSelectedIndex(final SUIEventListener<SelectedIndexEventData> listener) {
+		return new OnSelectedIndexEventProperty(listener);
+	}
 
 }
