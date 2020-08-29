@@ -153,7 +153,10 @@ public class SUINode {
 	 * @param property the item property
 	 */
 	private List<SUINode> createChildNodesFromItemProperty(final SUIState state, final ItemProperty property) {
-		return List.of(property.getFactory().create(state));
+		return Optional.ofNullable(property.getFactory())
+				.map(factory -> factory.create(state))
+				.map(List::of)
+				.orElse(List.of());
 	}
 
 

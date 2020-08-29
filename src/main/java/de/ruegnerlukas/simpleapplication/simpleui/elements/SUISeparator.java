@@ -56,7 +56,7 @@ public final class SUISeparator {
 	 * @return the factory for a separator node
 	 */
 	public static NodeFactory separator(final Property... properties) {
-		Properties.checkIllegal(SUISeparator.class, get().getEntry(SUISeparator.class).getProperties(), properties);
+		Properties.validate(SUISeparator.class, get().getEntry(SUISeparator.class).getProperties(), properties);
 		return state -> new SUINode(SUISeparator.class, List.of(properties), state, null);
 	}
 

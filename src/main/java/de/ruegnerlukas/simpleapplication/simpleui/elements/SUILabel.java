@@ -36,7 +36,7 @@ public final class SUILabel {
 	 * @return the factory for a label node
 	 */
 	public static NodeFactory label(final Property... properties) {
-		Properties.checkIllegal(SUILabel.class, get().getEntry(SUILabel.class).getProperties(), properties);
+		Properties.validate(SUILabel.class, get().getEntry(SUILabel.class).getProperties(), properties);
 		return state -> new SUINode(SUILabel.class, List.of(properties), state, null);
 	}
 

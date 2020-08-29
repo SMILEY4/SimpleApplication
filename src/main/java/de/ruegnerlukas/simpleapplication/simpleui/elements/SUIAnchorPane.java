@@ -41,7 +41,7 @@ public final class SUIAnchorPane {
 	 * @return the factory for an anchor-pane node
 	 */
 	public static NodeFactory anchorPane(final Property... properties) {
-		Properties.checkIllegal(SUIAnchorPane.class, SUIRegistry.get().getEntry(SUIAnchorPane.class).getProperties(), properties);
+		Properties.validate(SUIAnchorPane.class, SUIRegistry.get().getEntry(SUIAnchorPane.class).getProperties(), properties);
 		return state -> new SUINode(
 				SUIAnchorPane.class,
 				List.of(properties),

@@ -42,7 +42,7 @@ public final class SUIScrollPane {
 	 * @return the factory for an scroll-pane node
 	 */
 	public static NodeFactory scrollPane(final Property... properties) {
-		Properties.checkIllegal(SUIScrollPane.class, get().getEntry(SUIScrollPane.class).getProperties(), properties);
+		Properties.validate(SUIScrollPane.class, get().getEntry(SUIScrollPane.class).getProperties(), properties);
 		return state -> new SUINode(SUIScrollPane.class, List.of(properties), state, SUIScrollPane::handleChildrenChange);
 	}
 

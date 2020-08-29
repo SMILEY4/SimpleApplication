@@ -41,7 +41,7 @@ public final class SUIVBox {
 	 * @return the factory for a vbox node
 	 */
 	public static NodeFactory vbox(final Property... properties) {
-		Properties.checkIllegal(SUIVBox.class, get().getEntry(SUIVBox.class).getProperties(), properties);
+		Properties.validate(SUIVBox.class, get().getEntry(SUIVBox.class).getProperties(), properties);
 		return state -> new SUINode(
 				SUIVBox.class,
 				List.of(properties),

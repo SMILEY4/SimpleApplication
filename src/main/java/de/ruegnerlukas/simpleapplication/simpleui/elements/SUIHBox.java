@@ -42,7 +42,7 @@ public final class SUIHBox {
 	 * @return the factory for a hbox node
 	 */
 	public static NodeFactory hbox(final Property... properties) {
-		Properties.checkIllegal(SUIHBox.class, get().getEntry(SUIHBox.class).getProperties(), properties);
+		Properties.validate(SUIHBox.class, get().getEntry(SUIHBox.class).getProperties(), properties);
 		return state -> new SUINode(
 				SUIHBox.class,
 				List.of(properties),

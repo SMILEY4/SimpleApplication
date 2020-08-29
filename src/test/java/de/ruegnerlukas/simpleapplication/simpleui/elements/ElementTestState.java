@@ -5,5 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 
 public class ElementTestState extends SUIState {
 
+	public String text;
+
 
 }

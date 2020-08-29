@@ -193,14 +193,43 @@ public class SUIRegistry {
 
 
 	/**
+	 * Registers the given node factories at an injection point with the given id.
+	 *
+	 * @param injectionPointId the id of the injection point
+	 * @param factories        the node factories to inject
+	 */
+	public void inject(final String injectionPointId, final List<NodeFactory> factories) {
+		factories.forEach(factory -> inject(injectionPointId, factory));
+	}
+
+
+
+
+	/**
+	 * Registers the given node factories at an injection point with the given id.
+	 *
+	 * @param injectionPointId the id of the injection point
+	 * @param factories        the node factories to inject
+	 */
+	public void inject(final String injectionPointId, final NodeFactory... factories) {
+		for (NodeFactory factory : factories) {
+			inject(injectionPointId, factory);
+		}
+	}
+
+
+
+
+	/**
 	 * Register the given node factory at an injection point with the given id.
 	 *
 	 * @param injectionPointId the id of the injection point
 	 * @param factory          the node factory to inject
 	 */
 	public void inject(final String injectionPointId, final NodeFactory factory) {
-		List<NodeFactory> factories = injectedFactories.computeIfAbsent(injectionPointId, k -> new ArrayList<>());
-		factories.add(factory);
+		injectedFactories
+				.computeIfAbsent(injectionPointId, k -> new ArrayList<>())
+				.add(factory);
 	}
 
 
@@ -210,7 +239,7 @@ public class SUIRegistry {
 	 * @param injectionPointId the id of the injection point
 	 * @return the factories registered to be injection into the point with the given id
 	 */
-	public List<NodeFactory> get(final String injectionPointId) {
+	public List<NodeFactory> getInjected(final String injectionPointId) {
 		return injectedFactories.getOrDefault(injectionPointId, List.of());
 	}
 

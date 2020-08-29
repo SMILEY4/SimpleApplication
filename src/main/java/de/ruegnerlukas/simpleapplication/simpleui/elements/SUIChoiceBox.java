@@ -40,7 +40,7 @@ public final class SUIChoiceBox {
 	 * @return the factory for a choicebox node
 	 */
 	public static NodeFactory choiceBox(final Property... properties) {
-		Properties.checkIllegal(SUIChoiceBox.class, get().getEntry(SUIChoiceBox.class).getProperties(), properties);
+		Properties.validate(SUIChoiceBox.class, get().getEntry(SUIChoiceBox.class).getProperties(), properties);
 		return state -> new SUINode(SUIChoiceBox.class, List.of(properties), state, null);
 	}
 

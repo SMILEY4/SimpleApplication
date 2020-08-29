@@ -28,16 +28,17 @@ public final class Properties {
 
 
 	/**
-	 * Checks whether the given properties are allowed.
+	 * Checks whether the given properties are valid.
 	 * Throws an {@link IllegalPropertiesException} for if the list contains illegal properties (not contained in allowed list)
 	 *
 	 * @param nodeType          the type of the node
 	 * @param allowedProperties the list of allowed properties
 	 * @param properties        the given properties to check
 	 */
-	public static void checkIllegal(final Class<?> nodeType, final Set<Class<? extends Property>> allowedProperties,
-									final Property... properties) {
+	public static void validate(final Class<?> nodeType, final Set<Class<? extends Property>> allowedProperties,
+								final Property... properties) {
 		checkIllegal(nodeType, allowedProperties, List.of(properties));
+		checkConflicting(List.of(properties));
 	}
 
 
@@ -56,6 +57,34 @@ public final class Properties {
 		List<Property> illegal = findIllegal(allowedProperties, properties);
 		if (!illegal.isEmpty()) {
 			throw new IllegalPropertiesException(nodeType, illegal);
+		}
+	}
+
+
+
+
+	/**
+	 * Checks whether the given properties do not conflict with each other, for example when a property type was added more than once.
+	 * Throws an {@link IllegalPropertiesException} for if the list contains conflicting properties.
+	 *
+	 * @param properties the given properties to check
+	 */
+	public static void checkConflicting(final List<Property> properties) {
+		final List<Property> duplicates = new ArrayList<>();
+		for (Property property : properties) {
+			final Class<? extends Property> key = property.getKey();
+			int count = 0;
+			for (Property p : properties) {
+				if (p.getKey().equals(key)) {
+					count++;
+				}
+			}
+			if (count > 1) {
+				duplicates.add(property);
+			}
+		}
+		if (!duplicates.isEmpty()) {
+			throw new DuplicatePropertiesException(duplicates);
 		}
 	}
 
@@ -202,7 +231,7 @@ public final class Properties {
 
 	/**
 	 * @param items the factories for child items.
-	 * @return a {@link ItemListProperty}.
+	 * @return an {@link ItemListProperty}.
 	 */
 	public static Property items(final NodeFactory... items) {
 		return new ItemListProperty(items);
@@ -213,7 +242,7 @@ public final class Properties {
 
 	/**
 	 * @param items the factories for child items.
-	 * @return a {@link ItemListProperty}.
+	 * @return an {@link ItemListProperty}.
 	 */
 	public static Property items(final Collection<NodeFactory> items) {
 		return new ItemListProperty(items);
@@ -224,7 +253,7 @@ public final class Properties {
 
 	/**
 	 * @param items the factories for child items.
-	 * @return a {@link ItemListProperty}.
+	 * @return an {@link ItemListProperty}.
 	 */
 	public static Property items(final Stream<NodeFactory> items) {
 		return new ItemListProperty(items);
@@ -234,8 +263,8 @@ public final class Properties {
 
 
 	/**
-	 * @param factory the factoriy for the factories for child items.
-	 * @return a {@link ItemListProperty}.
+	 * @param factory the factory for the factories for child items.
+	 * @return an {@link ItemListProperty}.
 	 */
 	public static Property items(final ItemListProperty.ItemListFactory factory) {
 		return new ItemListProperty(factory);
@@ -245,11 +274,105 @@ public final class Properties {
 
 
 	/**
+	 * @param injectionPointId the unique id of this injection point.
+	 * @return an {@link InjectableItemListProperty}.
+	 */
+	public static Property itemsInjectable(final String injectionPointId) {
+		return new InjectableItemListProperty(injectionPointId);
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the unique id of this injection point.
+	 * @param indexMarker      the marker defining at what position to inject items into
+	 * @param items            factories for default items
+	 * @return an {@link InjectableItemListProperty}.
+	 */
+	public static Property itemsInjectable(final String injectionPointId,
+										   final InjectionIndexMarker indexMarker,
+										   final NodeFactory... items) {
+		return new InjectableItemListProperty(injectionPointId, indexMarker, items);
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the unique id of this injection point.
+	 * @param indexMarker      the marker defining at what position to inject items into
+	 * @param items            factories for default items
+	 * @return an {@link InjectableItemListProperty}.
+	 */
+	public static Property itemsInjectable(final String injectionPointId,
+										   final InjectionIndexMarker indexMarker,
+										   final Collection<NodeFactory> items) {
+		return new InjectableItemListProperty(injectionPointId, indexMarker, items);
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the unique id of this injection point.
+	 * @param indexMarker      the marker defining at what position to inject items into
+	 * @param items            factories for default items
+	 * @return an {@link InjectableItemListProperty}.
+	 */
+	public static Property itemsInjectable(final String injectionPointId,
+										   final InjectionIndexMarker indexMarker,
+										   final Stream<NodeFactory> items) {
+		return new InjectableItemListProperty(injectionPointId, indexMarker, items);
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the unique id of this injection point.
+	 * @param indexMarker      the marker defining at what position to inject items into
+	 * @param factory          the factory for the factories for default child items.
+	 * @return an {@link InjectableItemListProperty}.
+	 */
+	public static Property itemsInjectable(final String injectionPointId,
+										   final InjectionIndexMarker indexMarker,
+										   final ItemListProperty.ItemListFactory factory) {
+		return new InjectableItemListProperty(injectionPointId, indexMarker, factory);
+	}
+
+
+
+
+	/**
 	 * @param item the factory for the child item.
-	 * @return a {@link ItemProperty}.
+	 * @return an {@link ItemProperty}.
 	 */
 	public static Property item(final NodeFactory item) {
 		return new ItemProperty(item);
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the unique id of this injection point.
+	 * @return an {@link InjectableItemProperty}.
+	 */
+	public static Property itemInjectable(final String injectionPointId) {
+		return new InjectableItemProperty(injectionPointId);
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the unique id of this injection point.
+	 * @param item             factory for default the default item
+	 * @return an {@link InjectableItemProperty}.
+	 */
+	public static Property itemInjectable(final String injectionPointId, final NodeFactory item) {
+		return new InjectableItemProperty(injectionPointId, item);
 	}
 
 

@@ -22,6 +22,17 @@ public class ItemProperty extends Property {
 
 
 	/**
+	 * Creates an item property without a factory.
+	 */
+	protected ItemProperty() {
+		super(ItemProperty.class);
+		this.factory = null;
+	}
+
+
+
+
+	/**
 	 * @param item the factory for creating the item/node.
 	 */
 	public ItemProperty(final NodeFactory item) {
