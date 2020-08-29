@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.Stri
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
+import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.core.application.Application;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfiguration;
 import de.ruegnerlukas.simpleapplication.core.application.EventPresentationInitialized;
@@ -20,8 +21,10 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.SUIStream;
 import javafx.geometry.Dimension2D;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,8 +33,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPane;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPaneItem;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIChoiceBox.choiceBox;
 
 @Slf4j
 public class TestApplication {
@@ -155,30 +161,34 @@ public class TestApplication {
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
 							anchorPane(
-									EventProperties.eventMouseClicked(System.out::println)
-//									Properties.items(
-//											anchorPaneItem(
-//													choiceBox(
-//															Properties.choices(state.strings),
-//															Properties.choiceBoxConverter(String.class,
-//																	s -> s.split(":")[1],
-//																	s -> "item:" + s
-//															),
-//															Properties.choiceListener(String.class, ((index, item) -> {
-//																if (item == null) {
-//																	System.out.println("selected null");
-//																	return;
-//																}
-//																state.update(TestUIState.class, s -> {
-//																	s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
-//																	s.strings.remove(item);
-//																});
-//																System.out.println(index + "  " + item);
-//															}))
-//													),
-//													Properties.anchor(0, 0, 0, 0)
-//											)
-//									)
+
+									EventProperties.eventMouseEntered(SUIStream.eventStream(bridge ->
+											SUIStream.from(bridge)
+													.mapIgnoreNulls(e -> Pair.of(e.getX(), e.getY()))
+													.forEach(e -> System.out.println("entered at " + e.getLeft() + "," + e.getRight()))
+									)),
+
+									Properties.items(
+											anchorPaneItem(
+													choiceBox(
+															Properties.choices(state.strings),
+															Properties.choiceBoxConverter(String.class,
+																	s -> s.split(":")[1],
+																	s -> "item:" + s
+															),
+															EventProperties.eventSelectedItem(String.class, e -> {
+																System.out.println(e.getPrevItem() + " -> " + e.getItem());
+																if (e.getItem() != null) {
+																	state.update(TestUIState.class, s -> {
+																		s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
+																		s.strings.remove(e.getItem());
+																	});
+																}
+															})
+													),
+													Properties.anchor(0, 0, 0, 0)
+											)
+									)
 							)
 
 					)))

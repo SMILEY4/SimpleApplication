@@ -39,6 +39,9 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.simpleui.properties;
 	exports de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 	exports de.ruegnerlukas.simpleapplication.simpleui.registry;
+	exports de.ruegnerlukas.simpleapplication.simpleui.streams;
+	exports de.ruegnerlukas.simpleapplication.simpleui.streams.sources;
+	exports de.ruegnerlukas.simpleapplication.simpleui.streams.operations;
 	exports de.ruegnerlukas.simpleapplication.simpleui.utils;
 
 }
