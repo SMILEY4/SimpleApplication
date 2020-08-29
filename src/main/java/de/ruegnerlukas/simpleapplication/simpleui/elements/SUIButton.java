@@ -40,7 +40,7 @@ public final class SUIButton {
 	 * @return the factory for a button node
 	 */
 	public static NodeFactory button(final Property... properties) {
-		Properties.checkIllegal(SUIButton.class, get().getEntry(SUIButton.class).getProperties(), properties);
+		Properties.validate(SUIButton.class, get().getEntry(SUIButton.class).getProperties(), properties);
 		return state -> new SUINode(SUIButton.class, List.of(properties), state, null);
 	}
 

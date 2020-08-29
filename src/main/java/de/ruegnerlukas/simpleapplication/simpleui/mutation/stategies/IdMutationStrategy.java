@@ -118,7 +118,7 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	 */
 	private List<String> extractChildIds(final SUINode parent) {
 		return parent.streamChildren()
-				.map(child -> child.getIdUnsafe())
+				.map(SUINode::getIdUnsafe)
 				.collect(Collectors.toList());
 	}
 

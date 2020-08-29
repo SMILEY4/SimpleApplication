@@ -41,7 +41,7 @@ public final class SUICheckbox {
 	 * @return the factory for a checkbox node
 	 */
 	public static NodeFactory checkbox(final Property... properties) {
-		Properties.checkIllegal(SUICheckbox.class, get().getEntry(SUICheckbox.class).getProperties(), properties);
+		Properties.validate(SUICheckbox.class, get().getEntry(SUICheckbox.class).getProperties(), properties);
 		return state -> new SUINode(SUICheckbox.class, List.of(properties), state, null);
 	}
 
