@@ -21,11 +21,13 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.SUIStream;
 import javafx.geometry.Dimension2D;
+import javafx.scene.Node;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,11 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPaneItem;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIChoiceBox.choiceBox;
 
 @Slf4j
 public class TestApplication {
@@ -170,22 +170,43 @@ public class TestApplication {
 
 									Properties.items(
 											anchorPaneItem(
-													choiceBox(
-															Properties.choices(state.strings),
-															Properties.choiceBoxConverter(String.class,
-																	s -> s.split(":")[1],
-																	s -> "item:" + s
-															),
-															EventProperties.eventSelectedItem(String.class, e -> {
-																System.out.println(e.getPrevItem() + " -> " + e.getItem());
-																if (e.getItem() != null) {
-																	state.update(TestUIState.class, s -> {
-																		s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
-																		s.strings.remove(e.getItem());
-																	});
-																}
-															})
+													SUIContainer.container(
+															Properties.id("myContainer"),
+															Properties.layout("myLayout", ((parent, nodes) -> {
+																final double width = parent.getWidth();
+																final double height = parent.getHeight();
+																final Node node0 = nodes.get(0);
+																final Node node1 = nodes.get(1);
+																node0.resizeRelocate(0, 0, width, height / 2);
+																node1.resizeRelocate(0, height / 2, width, height / 2);
+															})),
+															Properties.items(
+																	SUIButton.button(
+																			Properties.id("btn1"),
+																			Properties.textContent("Child Button 1")
+																	),
+																	SUIButton.button(
+																			Properties.id("btn2"),
+																			Properties.textContent("Child Button 2")
+																	)
+															)
 													),
+//													choiceBox(
+//															Properties.choices(state.strings),
+//															Properties.choiceBoxConverter(String.class,
+//																	s -> s.split(":")[1],
+//																	s -> "item:" + s
+//															),
+//															EventProperties.eventSelectedItem(String.class, e -> {
+//																System.out.println(e.getPrevItem() + " -> " + e.getItem());
+//																if (e.getItem() != null) {
+//																	state.update(TestUIState.class, s -> {
+//																		s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
+//																		s.strings.remove(e.getItem());
+//																	});
+//																}
+//															})
+//													),
 													Properties.anchor(0, 0, 0, 0)
 											)
 									)

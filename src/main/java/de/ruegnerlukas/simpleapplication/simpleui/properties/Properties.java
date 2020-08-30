@@ -576,4 +576,16 @@ public final class Properties {
 	}
 
 
+
+
+	/**
+	 * @param layoutId       the id of the layout. This property will only be mutated, when this id changes.
+	 * @param layoutFunction the function used to calculate the layout of the child nodes
+	 * @return a {@link MutationBehaviourProperty}
+	 */
+	public static Property layout(final String layoutId, final LayoutProperty.LayoutFunction layoutFunction) {
+		return new LayoutProperty(layoutId, layoutFunction);
+	}
+
+
 }
