@@ -74,6 +74,7 @@ public final class SUIScrollPane {
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUIScrollPane.class, new SUIScrollPane.ScrollPaneNodeBuilder());
 		registry.registerProperties(SUIScrollPane.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SUIScrollPane.class, PropertyGroups.commonNodeProperties());
 		registry.registerProperties(SUIScrollPane.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUIScrollPane.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUIScrollPane.class, List.of(

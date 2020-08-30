@@ -71,6 +71,7 @@ public final class SUISeparator {
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUISeparator.class, new SUISeparator.SeperatorNodeBuilder());
 		registry.registerProperties(SUISeparator.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SUISeparator.class, PropertyGroups.commonNodeProperties());
 		registry.registerProperties(SUISeparator.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUISeparator.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUISeparator.class, List.of(

@@ -64,6 +64,7 @@ public final class SUIVBox {
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUIVBox.class, new SUIVBox.VBoxNodeBuilder());
 		registry.registerProperties(SUIVBox.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SUIVBox.class, PropertyGroups.commonNodeProperties());
 		registry.registerProperties(SUIVBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUIVBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUIVBox.class, List.of(

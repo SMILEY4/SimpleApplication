@@ -46,7 +46,18 @@ public final class PropertyGroups {
 	 */
 	public static List<PropertyEntry> commonProperties() {
 		return List.of(
-				PropertyEntry.of(MutationBehaviourProperty.class, new NoOpUpdatingBuilder()),
+				PropertyEntry.of(MutationBehaviourProperty.class, new NoOpUpdatingBuilder())
+		);
+	}
+
+
+
+
+	/**
+	 * Common properties for all nodes.
+	 */
+	public static List<PropertyEntry> commonNodeProperties() {
+		return List.of(
 				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder())
 		);

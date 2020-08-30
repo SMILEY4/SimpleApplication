@@ -62,6 +62,7 @@ public final class SUIAnchorPane {
 
 		registry.registerBaseFxNodeBuilder(SUIAnchorPane.class, new AnchorPaneNodeBuilder());
 		registry.registerProperties(SUIAnchorPane.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SUIAnchorPane.class, PropertyGroups.commonNodeProperties());
 		registry.registerProperties(SUIAnchorPane.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUIAnchorPane.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUIAnchorPane.class, List.of(

@@ -55,6 +55,7 @@ public final class SUIButton {
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUIButton.class, new ButtonNodeBuilder());
 		registry.registerProperties(SUIButton.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SUIButton.class, PropertyGroups.commonNodeProperties());
 		registry.registerProperties(SUIButton.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUIButton.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUIButton.class, List.of(

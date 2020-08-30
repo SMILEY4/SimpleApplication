@@ -56,6 +56,7 @@ public final class SUICheckbox {
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUICheckbox.class, new CheckboxNodeBuilder());
 		registry.registerProperties(SUICheckbox.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SUICheckbox.class, PropertyGroups.commonNodeProperties());
 		registry.registerProperties(SUICheckbox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUICheckbox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUICheckbox.class, List.of(

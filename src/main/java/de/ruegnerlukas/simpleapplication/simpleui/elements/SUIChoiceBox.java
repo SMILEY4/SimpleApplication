@@ -55,6 +55,7 @@ public final class SUIChoiceBox {
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUIChoiceBox.class, new ChoiceBoxNodeBuilder<>());
 		registry.registerProperties(SUIChoiceBox.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SUIChoiceBox.class, PropertyGroups.commonNodeProperties());
 		registry.registerProperties(SUIChoiceBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUIChoiceBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUIChoiceBox.class, List.of(

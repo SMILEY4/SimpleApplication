@@ -48,6 +48,7 @@ public final class SUILabel {
 	public static void register(final SUIRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SUILabel.class, new SUILabel.LabelNodeBuilder());
 		registry.registerProperties(SUILabel.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SUILabel.class, PropertyGroups.commonNodeProperties());
 		registry.registerProperties(SUILabel.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUILabel.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SUILabel.class, List.of(

@@ -11,6 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUILabel;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIRaw;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUISeparator;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIVBox;
@@ -86,6 +87,7 @@ public class SUIRegistry {
 		SUISeparator.register(this);
 		SUILabel.register(this);
 		SUIChoiceBox.register(this);
+		SUIRaw.register(this);
 	}
 
 
