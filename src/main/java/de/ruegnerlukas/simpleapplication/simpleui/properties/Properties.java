@@ -245,6 +245,18 @@ public final class Properties {
 
 
 	/**
+	 * @param text the prompt text.
+	 * @return a {@link TextContentProperty}.
+	 */
+	public static Property promptText(final String text) {
+		Validations.INPUT.notNull(text).exception("The prompt text can not be null.");
+		return new PromptTextProperty(text);
+	}
+
+
+
+
+	/**
 	 * @param items the factories for child items.
 	 * @return an {@link ItemListProperty}.
 	 */
@@ -640,6 +652,17 @@ public final class Properties {
 		Validations.INPUT.notEmpty(layoutId).exception("The layout id can not be null or empty.");
 		Validations.INPUT.notNull(layoutFunction).exception("The layout function can not be null.");
 		return new LayoutProperty(layoutId, layoutFunction);
+	}
+
+
+
+
+	/**
+	 * @param editable whether the control is editable
+	 * @return a {@link MutationBehaviourProperty}
+	 */
+	public static Property editable(final boolean editable) {
+		return new EditableProperty(editable);
 	}
 
 

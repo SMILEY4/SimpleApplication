@@ -15,6 +15,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiSeparator;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;
@@ -87,6 +88,7 @@ public class SuiRegistry {
 		SuiLabel.register(this);
 		SuiChoiceBox.register(this);
 		SuiContainer.register(this);
+		SuiTextField.register(this);
 	}
 
 
@@ -197,6 +199,7 @@ public class SuiRegistry {
 	 * @return the entry or null
 	 */
 	public RegistryEntry getEntry(final Class<?> nodeType) {
+		Validations.PRESENCE.containsKey(entries, nodeType).exception("The node type {} is unknown.", nodeType);
 		return entries.get(nodeType);
 	}
 

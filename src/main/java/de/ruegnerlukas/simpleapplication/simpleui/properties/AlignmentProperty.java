@@ -2,15 +2,15 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.geometry.Pos;
 import javafx.scene.control.Labeled;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
-
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 public class AlignmentProperty extends Property {
 
@@ -84,6 +84,9 @@ public class AlignmentProperty extends Property {
 
 
 
+
+
+
 	public static class HBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, HBox> {
 
 
@@ -117,6 +120,9 @@ public class AlignmentProperty extends Property {
 
 
 
+
+
+
 	public static class LabeledUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, Labeled> {
 
 
@@ -147,6 +153,43 @@ public class AlignmentProperty extends Property {
 		}
 
 	}
+
+
+
+
+
+
+	public static class TextFieldUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, TextField> {
+
+
+		@Override
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final AlignmentProperty property,
+						  final TextField fxNode) {
+			fxNode.setAlignment(property.getAlignment());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
+									 final SuiNode node, final TextField fxNode) {
+			fxNode.setAlignment(property.getAlignment());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
+									 final SuiNode node, final TextField fxNode) {
+			fxNode.setAlignment(Pos.TOP_LEFT);
+			return MutationResult.MUTATED;
+		}
+
+	}
+
 
 }
 
