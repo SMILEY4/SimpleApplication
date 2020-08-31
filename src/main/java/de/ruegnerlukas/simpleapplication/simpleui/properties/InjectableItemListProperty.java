@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -109,7 +109,7 @@ public class InjectableItemListProperty extends ItemListProperty {
 
 	@Override
 	public List<NodeFactory> getFactories() {
-		List<NodeFactory> injected = SUIRegistry.get().getInjected(injectionPointId);
+		List<NodeFactory> injected = SuiRegistry.get().getInjected(injectionPointId);
 		List<NodeFactory> factories = new ArrayList<>(injected.size() + defaultFactories.size());
 		factories.addAll(defaultFactories);
 		factories.addAll(injectionIndexMarker.getIndex(factories), injected);

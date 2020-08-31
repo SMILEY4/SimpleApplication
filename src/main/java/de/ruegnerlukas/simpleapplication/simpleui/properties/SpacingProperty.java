@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.layout.HBox;
@@ -48,11 +48,11 @@ public class SpacingProperty extends Property {
 
 
 
-	public static class VBoxSpacingUpdatingBuilder implements PropFxNodeUpdatingBuilder<SpacingProperty, VBox> {
+	public static class VBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<SpacingProperty, VBox> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final SpacingProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SpacingProperty property,
 						  final VBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 		}
@@ -62,7 +62,7 @@ public class SpacingProperty extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SpacingProperty property,
-									 final SUINode node, final VBox fxNode) {
+									 final SuiNode node, final VBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 			return MutationResult.MUTATED;
 		}
@@ -72,7 +72,7 @@ public class SpacingProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SpacingProperty property,
-									 final SUINode node, final VBox fxNode) {
+									 final SuiNode node, final VBox fxNode) {
 			fxNode.setSpacing(0);
 			return MutationResult.MUTATED;
 		}
@@ -84,11 +84,11 @@ public class SpacingProperty extends Property {
 
 
 
-	public static class HBoxSpacingUpdatingBuilder implements PropFxNodeUpdatingBuilder<SpacingProperty, HBox> {
+	public static class HBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<SpacingProperty, HBox> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final SpacingProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SpacingProperty property,
 						  final HBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 		}
@@ -98,7 +98,7 @@ public class SpacingProperty extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SpacingProperty property,
-									 final SUINode node, final HBox fxNode) {
+									 final SuiNode node, final HBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 			return MutationResult.MUTATED;
 		}
@@ -108,7 +108,7 @@ public class SpacingProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SpacingProperty property,
-									 final SUINode node, final HBox fxNode) {
+									 final SuiNode node, final HBox fxNode) {
 			fxNode.setSpacing(0);
 			return MutationResult.MUTATED;
 		}

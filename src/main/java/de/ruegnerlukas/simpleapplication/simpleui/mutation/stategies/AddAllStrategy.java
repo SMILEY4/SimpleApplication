@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class AddAllStrategy implements ChildNodesMutationStrategy {
 	 * @return the result of the decision.
 	 */
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SUINode original, final SUINode target, final boolean allChildrenHaveId) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
 		if (!original.hasChildren() && target.hasChildren()) {
 			return StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA;
 		} else {
@@ -40,12 +40,12 @@ public class AddAllStrategy implements ChildNodesMutationStrategy {
 
 	@Override
 	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
-								 final SUINode original,
-								 final SUINode target,
+								 final SuiNode original,
+								 final SuiNode target,
 								 final StrategyDecisionResult decisionData) {
-		final List<SUINode> newChildList = new ArrayList<>();
+		final List<SuiNode> newChildList = new ArrayList<>();
 		for (int i = 0; i < target.childCount(); i++) {
-			final SUINode childTarget = target.getChild(i);
+			final SuiNode childTarget = target.getChild(i);
 			nodeHandlers.getFxNodeBuilder().build(childTarget);
 			newChildList.add(childTarget);
 		}

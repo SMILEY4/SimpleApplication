@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseMoveEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
@@ -41,7 +41,7 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnMouseEnteredEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnMouseEnteredEventProperty property,
 						  final Node fxNode) {
 			setListener(fxNode, property);
 		}
@@ -51,7 +51,7 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnMouseEnteredEventProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -61,7 +61,7 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnMouseEnteredEventProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;
 		}
@@ -76,7 +76,7 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 		 * @param property the property with the listener to add
 		 */
 		private void setListener(final Node fxNode, final OnMouseEnteredEventProperty property) {
-			fxNode.setOnMouseEntered(e -> property.getListener().onEvent(new SUIEvent<>(
+			fxNode.setOnMouseEntered(e -> property.getListener().onEvent(new SuiEvent<>(
 					EVENT_ID,
 					MouseMoveEventData.builder()
 							.x(e.getX())

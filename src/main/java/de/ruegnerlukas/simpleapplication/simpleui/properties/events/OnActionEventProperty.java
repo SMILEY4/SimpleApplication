@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ActionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ButtonBase;
@@ -42,7 +42,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnActionEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnActionEventProperty property,
 						  final ButtonBase fxNode) {
 			setListener(fxNode, property);
 		}
@@ -52,7 +52,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnActionEventProperty property,
-									 final SUINode node, final ButtonBase fxNode) {
+									 final SuiNode node, final ButtonBase fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -62,7 +62,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnActionEventProperty property,
-									 final SUINode node, final ButtonBase fxNode) {
+									 final SuiNode node, final ButtonBase fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;
 		}
@@ -77,7 +77,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 		 * @param property the property with the listener to add
 		 */
 		private void setListener(final ButtonBase fxNode, final OnActionEventProperty property) {
-			fxNode.setOnAction(e -> property.getListener().onEvent(new SUIEvent<>(
+			fxNode.setOnAction(e -> property.getListener().onEvent(new SuiEvent<>(
 					EVENT_ID,
 					ActionEventData.builder()
 							.source(e)

@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
@@ -76,11 +76,11 @@ public class LayoutProperty extends Property {
 
 
 
-	public static class LayoutUpdatingBuilder implements PropFxNodeUpdatingBuilder<LayoutProperty, Node> {
+	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<LayoutProperty, Node> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final LayoutProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final LayoutProperty property,
 						  final Node fxNode) {
 			// do nothing, layout was added to jfx-node during during creation of the jfx-node.
 		}
@@ -90,7 +90,7 @@ public class LayoutProperty extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final LayoutProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
 
@@ -99,7 +99,7 @@ public class LayoutProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final LayoutProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
 

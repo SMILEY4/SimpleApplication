@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 
 public interface BaseNodeMutator {
 
@@ -17,7 +17,7 @@ public interface BaseNodeMutator {
 	 * @param nodeHandlers the primary node handlers
 	 * @return whether the node was mutated or has to be rebuild completely
 	 */
-	MutationResult mutateNode(SUINode original, SUINode target, MasterNodeHandlers nodeHandlers);
+	MutationResult mutateNode(SuiNode original, SuiNode target, MasterNodeHandlers nodeHandlers);
 
 
 }

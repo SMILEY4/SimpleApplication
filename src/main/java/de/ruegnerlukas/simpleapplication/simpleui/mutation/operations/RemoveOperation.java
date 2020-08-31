@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.operations;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -28,7 +28,7 @@ public class RemoveOperation extends BaseOperation {
 	/**
 	 * The node to remove
 	 */
-	private final SUINode node;
+	private final SuiNode node;
 
 
 
@@ -37,7 +37,7 @@ public class RemoveOperation extends BaseOperation {
 	 * @param index the index of the node to remove
 	 * @param node  the node to remove
 	 */
-	public RemoveOperation(final int index, final SUINode node) {
+	public RemoveOperation(final int index, final SuiNode node) {
 		super(REMOVE_COST, OperationType.REMOVE);
 		this.index = index;
 		this.node = node;
@@ -47,7 +47,7 @@ public class RemoveOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final List<SUINode> list) {
+	public void applyTo(final List<SuiNode> list) {
 		list.remove(index);
 	}
 
@@ -55,7 +55,7 @@ public class RemoveOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final Map<String, SUINode> map) {
+	public void applyTo(final Map<String, SuiNode> map) {
 		map.remove(node.getIdUnsafe());
 	}
 

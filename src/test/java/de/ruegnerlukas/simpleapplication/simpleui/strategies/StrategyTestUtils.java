@@ -1,12 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.strategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.ElementTestState;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.TextContentProperty;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +28,11 @@ public class StrategyTestUtils {
 
 
 
-	public static void assertChildren(SUINode expected, SUINode actual) {
+	public static void assertChildren(SuiNode expected, SuiNode actual) {
 		assertThat(actual.childCount()).isEqualTo(expected.childCount());
 		for (int i = 0; i < expected.childCount(); i++) {
-			final SUINode childActual = actual.getChild(i);
-			final SUINode childExpected = expected.getChild(i);
+			final SuiNode childActual = actual.getChild(i);
+			final SuiNode childExpected = expected.getChild(i);
 			assertThat(childActual.getProperty(TextContentProperty.class).getText())
 					.isEqualTo(childExpected.getProperty(TextContentProperty.class).getText());
 		}
@@ -41,20 +41,20 @@ public class StrategyTestUtils {
 
 
 
-	public static Triplet<SUISceneContext, SUINode, SUINode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
+	public static Triplet<SuiSceneContext, SuiNode, SuiNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
 		ElementTestState state = new ElementTestState();
-		SUISceneContext context = new SUISceneContext(state, factoryOriginal);
-		SUINode original = context.getRootNode();
-		SUINode target = factoryTarget.create(state);
+		SuiSceneContext context = new SuiSceneContext(state, factoryOriginal);
+		SuiNode original = context.getRootNode();
+		SuiNode target = factoryTarget.create(state);
 		return Triplet.of(context, original, target);
 	}
 
 
 
 
-	public static void removeChildNodes(final SUINode node, final int n) {
+	public static void removeChildNodes(final SuiNode node, final int n) {
 		Random random = new Random(SEED);
-		List<SUINode> children = new ArrayList<>(node.getChildrenUnmodifiable());
+		List<SuiNode> children = new ArrayList<>(node.getChildrenUnmodifiable());
 		for (int i = 0; i < n; i++) {
 			children.remove(random.nextInt(children.size()));
 		}
@@ -64,9 +64,9 @@ public class StrategyTestUtils {
 
 
 
-	public static void shuffleChildNodes(final SUINode node, final int n) {
+	public static void shuffleChildNodes(final SuiNode node, final int n) {
 		Random random = new Random(SEED);
-		List<SUINode> children = new ArrayList<>(node.getChildrenUnmodifiable());
+		List<SuiNode> children = new ArrayList<>(node.getChildrenUnmodifiable());
 		if (n == node.childCount()) {
 			Collections.shuffle(children, random);
 		} else {
@@ -86,7 +86,7 @@ public class StrategyTestUtils {
 
 
 
-	public static void printChildButtons(String nodeName, SUINode node) {
+	public static void printChildButtons(String nodeName, SuiNode node) {
 		log.info("{}-{}: childCount={}, {}",
 				nodeName,
 				Integer.toHexString(node.hashCode()),
@@ -107,7 +107,7 @@ public class StrategyTestUtils {
 	}
 
 	public static NodeFactory buildVBox(int nChildren, String buttonPrefix, boolean withIds) {
-		return SUIVBox.vbox(
+		return SuiVBox.vbox(
 				Properties.items(buildButtons(nChildren, buttonPrefix, withIds))
 		);
 	}
@@ -126,14 +126,14 @@ public class StrategyTestUtils {
 		final List<NodeFactory> items = new ArrayList<>(n);
 		if (withId) {
 			for (int i = 0; i < n; i++) {
-				items.add(SUIButton.button(
+				items.add(SuiButton.button(
 						Properties.id("btn" + i),
 						Properties.textContent(namePrefix + " " + i)
 				));
 			}
 		} else {
 			for (int i = 0; i < n; i++) {
-				items.add(SUIButton.button(
+				items.add(SuiButton.button(
 						Properties.textContent(namePrefix + " " + i)
 				));
 			}

@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.ReplaceOperation;
@@ -40,7 +40,7 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 * @return the result of the decision.
 	 */
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SUINode original, final SUINode target, final boolean allChildrenHaveId) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
 		if (!allChildrenHaveId || original.childCount() != target.childCount()) {
 			return StrategyDecisionResult.NOT_APPLICABLE;
 		} else {
@@ -70,7 +70,7 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 * @param target   the target node
 	 * @return the number of differences
 	 */
-	private int countDiffs(final SUINode original, final SUINode target) {
+	private int countDiffs(final SuiNode original, final SuiNode target) {
 		int count = 0;
 		for (int i = 0, n = original.childCount(); i < n; i++) {
 			final String idOriginal = original.getChild(i).getIdUnsafe();
@@ -117,8 +117,8 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 
 	@Override
 	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
-								 final SUINode original,
-								 final SUINode target,
+								 final SuiNode original,
+								 final SuiNode target,
 								 final StrategyDecisionResult decisionData) {
 		final IdShuffleDecisionResult decision = (IdShuffleDecisionResult) decisionData;
 		if (decision.diffCount == 0) {
@@ -140,12 +140,12 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 * @param original     the original node to mutate
 	 * @param target       the target node
 	 */
-	private void mutateNoDiffs(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+	private void mutateNoDiffs(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
 		final List<ReplaceOperation> replaceOperations = new ArrayList<>(original.childCount());
 		for (int i = 0; i < target.childCount(); i++) {
-			final SUINode originalNode = original.getChild(i);
-			final SUINode targetNode = target.getChild(i);
-			final SUINode childNode = nodeHandlers.getMutator().mutate(originalNode, targetNode);
+			final SuiNode originalNode = original.getChild(i);
+			final SuiNode targetNode = target.getChild(i);
+			final SuiNode childNode = nodeHandlers.getMutator().mutate(originalNode, targetNode);
 			if (childNode.getFxNode() == null) {
 				nodeHandlers.getFxNodeBuilder().build(childNode);
 			}
@@ -166,13 +166,13 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 * @param original     the original node to mutate
 	 * @param target       the target node
 	 */
-	private void mutateWithDiffs(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
-		final List<SUINode> newChildList = new ArrayList<>(original.childCount());
+	private void mutateWithDiffs(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
+		final List<SuiNode> newChildList = new ArrayList<>(original.childCount());
 		for (int i = 0, n = target.childCount(); i < n; i++) {
-			final SUINode targetChild = target.getChild(i);
+			final SuiNode targetChild = target.getChild(i);
 			final String targetChildId = targetChild.getIdUnsafe();
-			final SUINode originalChild = original.findChildUnsafe(targetChildId);
-			final SUINode newChildNode = nodeHandlers.getMutator().mutate(originalChild, targetChild);
+			final SuiNode originalChild = original.findChildUnsafe(targetChildId);
+			final SuiNode newChildNode = nodeHandlers.getMutator().mutate(originalChild, targetChild);
 			newChildList.add(newChildNode);
 		}
 		original.setChildren(newChildList, true);

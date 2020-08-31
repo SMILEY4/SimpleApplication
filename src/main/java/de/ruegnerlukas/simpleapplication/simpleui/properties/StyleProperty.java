@@ -2,8 +2,8 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -111,11 +111,11 @@ public class StyleProperty extends Property {
 
 
 
-	public static class StyleUpdatingBuilder implements PropFxNodeUpdatingBuilder<StyleProperty, Node> {
+	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<StyleProperty, Node> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final StyleProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final StyleProperty property,
 						  final Node fxNode) {
 			setStyle(property, fxNode);
 		}
@@ -125,7 +125,7 @@ public class StyleProperty extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final StyleProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			setStyle(property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -135,7 +135,7 @@ public class StyleProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final StyleProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			if (property.usesResourceStyle()) {
 				((Parent) fxNode).getStylesheets().clear();
 			} else {

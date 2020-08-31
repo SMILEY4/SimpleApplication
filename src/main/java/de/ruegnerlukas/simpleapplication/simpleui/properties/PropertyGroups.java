@@ -24,7 +24,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseRelea
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseScrollEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseScrollFinishedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseScrollStartedEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry.PropertyEntry;
 
 import java.util.List;
 
@@ -47,8 +47,8 @@ public final class PropertyGroups {
 	public static List<PropertyEntry> commonProperties() {
 		return List.of(
 				PropertyEntry.of(MutationBehaviourProperty.class, new NoOpUpdatingBuilder()),
-				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.DisabledUpdatingBuilder()),
-				PropertyEntry.of(StyleProperty.class, new StyleProperty.StyleUpdatingBuilder())
+				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.UpdatingBuilder()),
+				PropertyEntry.of(StyleProperty.class, new StyleProperty.UpdatingBuilder())
 		);
 	}
 
@@ -100,10 +100,10 @@ public final class PropertyGroups {
 	 */
 	public static List<PropertyEntry> commonRegionProperties() {
 		return List.of(
-				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.SizeMinUpdatingBuilder()),
-				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.SizePreferredUpdatingBuilder()),
-				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.SizeMaxUpdatingBuilder()),
-				PropertyEntry.of(SizeProperty.class, new SizeProperty.SizeUpdatingBuilder())
+				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.RegionUpdatingBuilder()),
+				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.RegionUpdatingBuilder()),
+				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.RegionUpdatingBuilder()),
+				PropertyEntry.of(SizeProperty.class, new SizeProperty.RegionUpdatingBuilder())
 		);
 	}
 

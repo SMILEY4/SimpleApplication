@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.events.KeyEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
@@ -42,7 +42,7 @@ public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEv
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnKeyTypedEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnKeyTypedEventProperty property,
 						  final Node fxNode) {
 			setListener(fxNode, property);
 		}
@@ -52,7 +52,7 @@ public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEv
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnKeyTypedEventProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -62,7 +62,7 @@ public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEv
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnKeyTypedEventProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			fxNode.setOnKeyPressed(null);
 			return MutationResult.MUTATED;
 		}
@@ -77,7 +77,7 @@ public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEv
 		 * @param property the property with the listener to add
 		 */
 		private void setListener(final Node fxNode, final OnKeyTypedEventProperty property) {
-			fxNode.setOnKeyTyped(e -> property.getListener().onEvent(new SUIEvent<>(
+			fxNode.setOnKeyTyped(e -> property.getListener().onEvent(new SuiEvent<>(
 					EVENT_ID,
 					KeyEventData.builder()
 							.keyCode(e.getCode())

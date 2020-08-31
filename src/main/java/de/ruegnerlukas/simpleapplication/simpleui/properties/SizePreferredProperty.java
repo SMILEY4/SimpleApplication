@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.layout.Region;
 import lombok.Getter;
@@ -58,11 +58,11 @@ public class SizePreferredProperty extends Property {
 
 
 
-	public static class SizePreferredUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizePreferredProperty, Region> {
+	public static class RegionUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizePreferredProperty, Region> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final SizePreferredProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SizePreferredProperty property,
 						  final Region fxNode) {
 			fxNode.setPrefSize(property.getWidth(), property.getHeight());
 		}
@@ -72,7 +72,7 @@ public class SizePreferredProperty extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SizePreferredProperty property,
-									 final SUINode node, final Region fxNode) {
+									 final SuiNode node, final Region fxNode) {
 			fxNode.setPrefSize(property.getWidth(), property.getHeight());
 			return MutationResult.MUTATED;
 		}
@@ -82,7 +82,7 @@ public class SizePreferredProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SizePreferredProperty property,
-									 final SUINode node, final Region fxNode) {
+									 final SuiNode node, final Region fxNode) {
 			if (node.hasProperty(SizeProperty.class)) {
 				SizeProperty sizeProp = node.getProperty(SizeProperty.class);
 				fxNode.setPrefSize(sizeProp.getPreferredWidth(), sizeProp.getPreferredHeight());

@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.events.CheckedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.CheckBox;
@@ -33,7 +33,7 @@ public class OnUncheckedEventProperty extends AbstractObservableListenerProperty
 	public OnUncheckedEventProperty(final SUIEventListener<CheckedEventData> listener) {
 		super(OnUncheckedEventProperty.class, (value, prev, next) -> {
 			if (next != null && !next) {
-				listener.onEvent(new SUIEvent<>(
+				listener.onEvent(new SuiEvent<>(
 						EVENT_ID,
 						CheckedEventData.builder()
 								.checked(false)
@@ -51,7 +51,7 @@ public class OnUncheckedEventProperty extends AbstractObservableListenerProperty
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OnUncheckedEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnUncheckedEventProperty property,
 						  final CheckBox fxNode) {
 			fxNode.selectedProperty().addListener(property.getChangeListener());
 		}
@@ -61,7 +61,7 @@ public class OnUncheckedEventProperty extends AbstractObservableListenerProperty
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnUncheckedEventProperty property,
-									 final SUINode node, final CheckBox fxNode) {
+									 final SuiNode node, final CheckBox fxNode) {
 			node.getPropertySafe(OnUncheckedEventProperty.class).ifPresent(prop -> {
 				fxNode.selectedProperty().removeListener(prop.getChangeListener());
 			});
@@ -74,7 +74,7 @@ public class OnUncheckedEventProperty extends AbstractObservableListenerProperty
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnUncheckedEventProperty property,
-									 final SUINode node, final CheckBox fxNode) {
+									 final SuiNode node, final CheckBox fxNode) {
 			fxNode.selectedProperty().removeListener(property.getChangeListener());
 			return MutationResult.MUTATED;
 		}

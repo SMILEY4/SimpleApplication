@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
@@ -49,11 +49,11 @@ public class FitToHeightProperty extends Property {
 
 
 
-	public static class ScrollPaneFitToHeightUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, ScrollPane> {
+	public static class ScrollPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, ScrollPane> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final FitToHeightProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final FitToHeightProperty property,
 						  final ScrollPane fxNode) {
 			fxNode.setFitToHeight(property.isFitToHeight());
 		}
@@ -63,7 +63,7 @@ public class FitToHeightProperty extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final FitToHeightProperty property,
-									 final SUINode node, final ScrollPane fxNode) {
+									 final SuiNode node, final ScrollPane fxNode) {
 			fxNode.setFitToHeight(property.isFitToHeight());
 			return MutationResult.MUTATED;
 		}
@@ -73,7 +73,7 @@ public class FitToHeightProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final FitToHeightProperty property,
-									 final SUINode node, final ScrollPane fxNode) {
+									 final SuiNode node, final ScrollPane fxNode) {
 			fxNode.setFitToHeight(false);
 			return MutationResult.MUTATED;
 		}
@@ -82,11 +82,11 @@ public class FitToHeightProperty extends Property {
 
 
 
-	public static class HBoxFitToHeightUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, HBox> {
+	public static class HBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, HBox> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final FitToHeightProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final FitToHeightProperty property,
 						  final HBox fxNode) {
 			fxNode.setFillHeight(property.isFitToHeight());
 		}
@@ -95,7 +95,7 @@ public class FitToHeightProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final FitToHeightProperty property, final SUINode node,
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final FitToHeightProperty property, final SuiNode node,
 									 final HBox fxNode) {
 			fxNode.setFillHeight(property.isFitToHeight());
 			return MutationResult.MUTATED;
@@ -105,7 +105,7 @@ public class FitToHeightProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final FitToHeightProperty property, final SUINode node,
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final FitToHeightProperty property, final SuiNode node,
 									 final HBox fxNode) {
 			fxNode.setFillHeight(false);
 			return MutationResult.MUTATED;

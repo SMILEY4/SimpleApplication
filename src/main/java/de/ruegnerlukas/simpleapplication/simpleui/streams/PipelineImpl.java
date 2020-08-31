@@ -59,7 +59,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> suppressErrors() {
+	public SuiStream<OUT, OUT> suppressErrors() {
 		return handleErrors(e -> {
 			// do nothing
 		});
@@ -69,7 +69,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> handleErrors(final Consumer<Exception> handler) {
+	public SuiStream<OUT, OUT> handleErrors(final Consumer<Exception> handler) {
 		return new HandleErrorStream<>(this, handler);
 	}
 
@@ -77,7 +77,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> filter(final Predicate<OUT> predicate) {
+	public SuiStream<OUT, OUT> filter(final Predicate<OUT> predicate) {
 		return new FilterStream<>(this, predicate);
 	}
 
@@ -85,7 +85,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> filterNulls() {
+	public SuiStream<OUT, OUT> filterNulls() {
 		return new FilterStream<>(this, Objects::nonNull);
 	}
 
@@ -93,7 +93,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public <R> SUIStream<OUT, R> map(final Function<OUT, R> mapping) {
+	public <R> SuiStream<OUT, R> map(final Function<OUT, R> mapping) {
 		return new MapStream<>(this, mapping);
 	}
 
@@ -101,7 +101,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public <R> SUIStream<OUT, R> mapIgnoreNulls(final Function<OUT, R> mapping) {
+	public <R> SuiStream<OUT, R> mapIgnoreNulls(final Function<OUT, R> mapping) {
 		return new MapIgnoreNullsStream<>(this, mapping);
 	}
 
@@ -109,7 +109,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> mapNulls(final Supplier<OUT> mapping) {
+	public SuiStream<OUT, OUT> mapNulls(final Supplier<OUT> mapping) {
 		return new MapNullsStream<>(this, mapping);
 	}
 
@@ -117,7 +117,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, String> mapToString() {
+	public SuiStream<OUT, String> mapToString() {
 		return new ToStringStream<>(this);
 	}
 
@@ -125,7 +125,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public <R> SUIStream<OUT, R> flatMap(final Function<OUT, List<R>> mapping) {
+	public <R> SuiStream<OUT, R> flatMap(final Function<OUT, List<R>> mapping) {
 		return new FlatMapStream<>(this, mapping);
 	}
 
@@ -133,7 +133,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public <R> SUIStream<OUT, R> flatMapIgnoreNulls(final Function<OUT, List<R>> mapping) {
+	public <R> SuiStream<OUT, R> flatMapIgnoreNulls(final Function<OUT, List<R>> mapping) {
 		return new FlatMapIgnoreNullStream<>(this, mapping);
 	}
 
@@ -141,7 +141,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> flatMapNulls(final Supplier<List<OUT>> mapping) {
+	public SuiStream<OUT, OUT> flatMapNulls(final Supplier<List<OUT>> mapping) {
 		return new FlatMapNullsStream<>(this, mapping);
 	}
 
@@ -157,7 +157,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> peek(final Consumer<OUT> consumer) {
+	public SuiStream<OUT, OUT> peek(final Consumer<OUT> consumer) {
 		return new PeekStream<>(this, consumer);
 	}
 
@@ -165,7 +165,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> onJavaFxThread() {
+	public SuiStream<OUT, OUT> onJavaFxThread() {
 		return new OnJFXStream<>(this);
 	}
 
@@ -189,7 +189,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> distinct() {
+	public SuiStream<OUT, OUT> distinct() {
 		return new DistinctStream<>(this);
 	}
 
@@ -197,7 +197,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> waitFor(final boolean includeMatching, final Predicate<OUT> predicate) {
+	public SuiStream<OUT, OUT> waitFor(final boolean includeMatching, final Predicate<OUT> predicate) {
 		return new WaitForStream<>(this, predicate, includeMatching);
 	}
 
@@ -205,7 +205,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, List<OUT>> waitForAndPack(final boolean includeMatching, final Predicate<OUT> predicate) {
+	public SuiStream<OUT, List<OUT>> waitForAndPack(final boolean includeMatching, final Predicate<OUT> predicate) {
 		return new WaitForAndPackStream<>(this, predicate, includeMatching);
 	}
 
@@ -213,7 +213,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> async() {
+	public SuiStream<OUT, OUT> async() {
 		return async(-1);
 	}
 
@@ -221,7 +221,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> async(final int poolSize) {
+	public SuiStream<OUT, OUT> async(final int poolSize) {
 		return new AsyncStream<>(this, poolSize);
 	}
 
@@ -229,7 +229,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, OUT> skip(final Supplier<Boolean> skipFlag) {
+	public SuiStream<OUT, OUT> skip(final Supplier<Boolean> skipFlag) {
 		return new SkipStream<>(this, skipFlag);
 	}
 
@@ -237,7 +237,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, List<OUT>> lastN(final int n) {
+	public SuiStream<OUT, List<OUT>> lastN(final int n) {
 		return new LastNStream<>(this, n);
 	}
 
@@ -245,7 +245,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public <R> SUIStream<OUT, R> unpack(final Class<R> expectedType) {
+	public <R> SuiStream<OUT, R> unpack(final Class<R> expectedType) {
 		return new UnpackStream<>(this);
 	}
 
@@ -253,7 +253,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, List<OUT>> accumulate(final int maxAmount) {
+	public SuiStream<OUT, List<OUT>> accumulate(final int maxAmount) {
 		return accumulate(maxAmount, Duration.millis(Long.MAX_VALUE));
 	}
 
@@ -261,7 +261,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, List<OUT>> accumulate(final Duration timeout) {
+	public SuiStream<OUT, List<OUT>> accumulate(final Duration timeout) {
 		return accumulate(Integer.MAX_VALUE, timeout);
 	}
 
@@ -269,7 +269,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 
 	@Override
-	public SUIStream<OUT, List<OUT>> accumulate(final int maxAmount, final Duration timeout) {
+	public SuiStream<OUT, List<OUT>> accumulate(final int maxAmount, final Duration timeout) {
 		return new AccumulateStream<>(this, maxAmount, timeout);
 	}
 

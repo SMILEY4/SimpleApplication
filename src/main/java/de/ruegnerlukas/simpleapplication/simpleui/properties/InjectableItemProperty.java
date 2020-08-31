@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class InjectableItemProperty extends ItemProperty {
 
 	@Override
 	public NodeFactory getFactory() {
-		List<NodeFactory> injected = SUIRegistry.get().getInjected(injectionPointId);
+		List<NodeFactory> injected = SuiRegistry.get().getInjected(injectionPointId);
 		if (!injected.isEmpty()) {
 			return injected.get(injected.size() - 1);
 		} else {

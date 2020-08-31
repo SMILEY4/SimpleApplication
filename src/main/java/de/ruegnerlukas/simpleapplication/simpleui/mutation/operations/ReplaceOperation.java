@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.operations;
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -27,12 +27,12 @@ public class ReplaceOperation extends BaseOperation {
 	/**
 	 * The new node
 	 */
-	private final SUINode nextNode;
+	private final SuiNode nextNode;
 
 	/**
 	 * The original node
 	 */
-	private final SUINode prevNode;
+	private final SuiNode prevNode;
 
 
 
@@ -42,7 +42,7 @@ public class ReplaceOperation extends BaseOperation {
 	 * @param nextNode the new node
 	 * @param prevNode the original node
 	 */
-	public ReplaceOperation(final int index, final SUINode nextNode, final SUINode prevNode) {
+	public ReplaceOperation(final int index, final SuiNode nextNode, final SuiNode prevNode) {
 		super(REPLACE_COST, OperationType.REPLACE);
 		this.index = index;
 		this.nextNode = nextNode;
@@ -53,7 +53,7 @@ public class ReplaceOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final List<SUINode> list) {
+	public void applyTo(final List<SuiNode> list) {
 		list.set(index, nextNode);
 	}
 
@@ -61,7 +61,7 @@ public class ReplaceOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final Map<String, SUINode> map) {
+	public void applyTo(final Map<String, SuiNode> map) {
 		map.remove(prevNode.getIdUnsafe());
 		map.put(nextNode.getIdUnsafe(), nextNode);
 	}

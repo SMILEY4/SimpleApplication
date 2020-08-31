@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SUINode original, final SUINode target, final boolean allChildrenHaveId) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
 		return StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA;
 	}
 
@@ -25,16 +25,16 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 	@Override
 	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
-								 final SUINode original,
-								 final SUINode target,
+								 final SuiNode original,
+								 final SuiNode target,
 								 final StrategyDecisionResult decisionData) {
 
-		final List<SUINode> newChildList = new ArrayList<>();
+		final List<SuiNode> newChildList = new ArrayList<>();
 
 		boolean childrenChanged = false;
 		for (int i = 0; i < Math.max(original.childCount(), target.childCount()); i++) {
-			final SUINode childTarget = target.childCount() <= i ? null : target.getChild(i);
-			final SUINode childOriginal = original.childCount() <= i ? null : original.getChild(i);
+			final SuiNode childTarget = target.childCount() <= i ? null : target.getChild(i);
+			final SuiNode childOriginal = original.childCount() <= i ? null : original.getChild(i);
 
 
 			if (isRemoved(childOriginal, childTarget)) {
@@ -50,7 +50,7 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 			}
 
 			if (notAddedOrRemoved(childOriginal, childTarget)) {
-				SUINode childMutated = nodeHandlers.getMutator().mutate(childOriginal, childTarget);
+				SuiNode childMutated = nodeHandlers.getMutator().mutate(childOriginal, childTarget);
 				newChildList.add(childMutated);
 				childrenChanged = true;
 			}

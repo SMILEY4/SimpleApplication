@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.simpleui;
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 
 public interface SUISceneContextFactory {
 
@@ -8,6 +8,6 @@ public interface SUISceneContextFactory {
 	/**
 	 * @return the created simpleui scene context
 	 */
-	SUISceneContext build();
+	SuiSceneContext build();
 
 }
