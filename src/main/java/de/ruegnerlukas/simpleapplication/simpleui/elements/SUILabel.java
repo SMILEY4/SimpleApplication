@@ -46,7 +46,7 @@ public final class SUILabel {
 	 * @param registry the registry
 	 */
 	public static void register(final SUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SUILabel.class, new SUILabel.LabelNodeBuilder());
+		registry.registerBaseFxNodeBuilder(SUILabel.class, new FxNodeBuilder());
 		registry.registerProperties(SUILabel.class, PropertyGroups.commonProperties());
 		registry.registerProperties(SUILabel.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUILabel.class, PropertyGroups.commonEventProperties());
@@ -58,7 +58,7 @@ public final class SUILabel {
 	}
 
 
-	private static class LabelNodeBuilder implements BaseFxNodeBuilder<Label> {
+	private static class FxNodeBuilder implements BaseFxNodeBuilder<Label> {
 
 
 		@Override

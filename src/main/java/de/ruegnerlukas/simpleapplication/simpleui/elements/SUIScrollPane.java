@@ -72,7 +72,7 @@ public final class SUIScrollPane {
 	 * @param registry the registry
 	 */
 	public static void register(final SUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SUIScrollPane.class, new SUIScrollPane.ScrollPaneNodeBuilder());
+		registry.registerBaseFxNodeBuilder(SUIScrollPane.class, new FxNodeBuilder());
 		registry.registerProperties(SUIScrollPane.class, PropertyGroups.commonProperties());
 		registry.registerProperties(SUIScrollPane.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUIScrollPane.class, PropertyGroups.commonEventProperties());
@@ -89,7 +89,7 @@ public final class SUIScrollPane {
 
 
 
-	private static class ScrollPaneNodeBuilder implements BaseFxNodeBuilder<ScrollPane> {
+	private static class FxNodeBuilder implements BaseFxNodeBuilder<ScrollPane> {
 
 
 		@Override

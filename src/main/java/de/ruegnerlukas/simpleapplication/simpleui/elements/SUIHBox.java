@@ -61,7 +61,7 @@ public final class SUIHBox {
 	 * @param registry the registry
 	 */
 	public static void register(final SUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SUIHBox.class, new SUIHBox.HBoxNodeBuilder());
+		registry.registerBaseFxNodeBuilder(SUIHBox.class, new FxNodeBuilder());
 		registry.registerProperties(SUIHBox.class, PropertyGroups.commonProperties());
 		registry.registerProperties(SUIHBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUIHBox.class, PropertyGroups.commonEventProperties());
@@ -76,7 +76,7 @@ public final class SUIHBox {
 
 
 
-	private static class HBoxNodeBuilder implements BaseFxNodeBuilder<HBox> {
+	private static class FxNodeBuilder implements BaseFxNodeBuilder<HBox> {
 
 
 		@Override

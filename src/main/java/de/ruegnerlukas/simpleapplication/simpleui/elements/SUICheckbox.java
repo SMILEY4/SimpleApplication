@@ -54,7 +54,7 @@ public final class SUICheckbox {
 	 * @param registry the registry
 	 */
 	public static void register(final SUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SUICheckbox.class, new CheckboxNodeBuilder());
+		registry.registerBaseFxNodeBuilder(SUICheckbox.class, new FxNodeBuilder());
 		registry.registerProperties(SUICheckbox.class, PropertyGroups.commonProperties());
 		registry.registerProperties(SUICheckbox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUICheckbox.class, PropertyGroups.commonEventProperties());
@@ -70,7 +70,7 @@ public final class SUICheckbox {
 
 
 
-	private static class CheckboxNodeBuilder implements BaseFxNodeBuilder<CheckBox> {
+	private static class FxNodeBuilder implements BaseFxNodeBuilder<CheckBox> {
 
 
 		@Override

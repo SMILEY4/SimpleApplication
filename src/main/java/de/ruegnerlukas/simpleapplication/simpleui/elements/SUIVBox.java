@@ -62,7 +62,7 @@ public final class SUIVBox {
 	 * @param registry the registry
 	 */
 	public static void register(final SUIRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SUIVBox.class, new SUIVBox.VBoxNodeBuilder());
+		registry.registerBaseFxNodeBuilder(SUIVBox.class, new FxNodeBuilder());
 		registry.registerProperties(SUIVBox.class, PropertyGroups.commonProperties());
 		registry.registerProperties(SUIVBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUIVBox.class, PropertyGroups.commonEventProperties());
@@ -81,7 +81,7 @@ public final class SUIVBox {
 
 
 
-	private static class VBoxNodeBuilder implements BaseFxNodeBuilder<VBox> {
+	private static class FxNodeBuilder implements BaseFxNodeBuilder<VBox> {
 
 
 		@Override

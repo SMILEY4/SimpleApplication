@@ -58,7 +58,7 @@ public final class SUIContainer {
 	 */
 	public static void register(final SUIRegistry registry) {
 
-		registry.registerBaseFxNodeBuilder(SUIContainer.class, new ContainerNodeBuilder());
+		registry.registerBaseFxNodeBuilder(SUIContainer.class, new FxNodeBuilder());
 		registry.registerProperties(SUIContainer.class, PropertyGroups.commonProperties());
 		registry.registerProperties(SUIContainer.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SUIContainer.class, PropertyGroups.commonEventProperties());
@@ -71,7 +71,7 @@ public final class SUIContainer {
 
 
 
-	private static class ContainerNodeBuilder implements BaseFxNodeBuilder<Pane> {
+	private static class FxNodeBuilder implements BaseFxNodeBuilder<Pane> {
 
 
 		@Override
