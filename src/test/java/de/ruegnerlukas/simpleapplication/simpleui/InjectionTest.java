@@ -2,14 +2,15 @@ package de.ruegnerlukas.simpleapplication.simpleui;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.ElementTestState;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIComponent;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIScrollPane;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DuplicatePropertiesException;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.InjectionIndexMarker;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -32,7 +33,7 @@ public class InjectionTest extends ApplicationTest {
 
 	@Before
 	public void setup() {
-		SUIRegistry.initialize();
+		SuiRegistry.initialize();
 	}
 
 
@@ -44,29 +45,29 @@ public class InjectionTest extends ApplicationTest {
 		final String INJECTION_POINT_ID = "injection_point";
 		final ElementTestState state = new ElementTestState();
 
-		NodeFactory vbox = SUIVBox.vbox(
+		NodeFactory vbox = SuiVBox.vbox(
 				Properties.itemsInjectable(INJECTION_POINT_ID)
 		);
 
-		SUIRegistry.get().inject(INJECTION_POINT_ID,
-				SUIButton.button(
+		SuiRegistry.get().inject(INJECTION_POINT_ID,
+				SuiButton.button(
 						Properties.id("ij_btn1"),
 						Properties.textContent("Injected Button 1")
 				),
-				SUIButton.button(
+				SuiButton.button(
 						Properties.id("ij_btn2"),
 						Properties.textContent("Injected Button 2")
 				)
 		);
-		SUIRegistry.get().inject(INJECTION_POINT_ID,
-				SUIButton.button(
+		SuiRegistry.get().inject(INJECTION_POINT_ID,
+				SuiButton.button(
 						Properties.id("ij_btn3"),
 						Properties.textContent("Injected Button 3")
 				)
 		);
 
 
-		SUISceneContext context = new SUISceneContext(state, vbox);
+		SuiSceneContext context = new SuiSceneContext(state, vbox);
 		VBox fxNode = (VBox) context.getRootNode().getFxNode();
 
 		assertThat(fxNode.getChildren()).hasSize(3);
@@ -90,11 +91,11 @@ public class InjectionTest extends ApplicationTest {
 		final String INJECTION_POINT_ID = "injection_point";
 		final ElementTestState state = new ElementTestState();
 
-		NodeFactory vbox = SUIVBox.vbox(
+		NodeFactory vbox = SuiVBox.vbox(
 				Properties.itemsInjectable(INJECTION_POINT_ID)
 		);
 
-		SUISceneContext context = new SUISceneContext(state, vbox);
+		SuiSceneContext context = new SuiSceneContext(state, vbox);
 		VBox fxNode = (VBox) context.getRootNode().getFxNode();
 		assertThat(fxNode.getChildren()).isEmpty();
 	}
@@ -108,33 +109,33 @@ public class InjectionTest extends ApplicationTest {
 		final String INJECTION_POINT_ID = "injection_point";
 		final ElementTestState state = new ElementTestState();
 
-		NodeFactory vbox = SUIVBox.vbox(
+		NodeFactory vbox = SuiVBox.vbox(
 				Properties.itemsInjectable(
 						INJECTION_POINT_ID,
 						InjectionIndexMarker.injectAt(1),
-						SUIButton.button(
+						SuiButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						),
-						SUIButton.button(
+						SuiButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						))
 		);
 
-		SUIRegistry.get().inject(INJECTION_POINT_ID,
-				SUIButton.button(
+		SuiRegistry.get().inject(INJECTION_POINT_ID,
+				SuiButton.button(
 						Properties.id("ij_btn1"),
 						Properties.textContent("Injected Button 1")
 				),
-				SUIButton.button(
+				SuiButton.button(
 						Properties.id("ij_btn2"),
 						Properties.textContent("Injected Button 2")
 				)
 		);
 
 
-		SUISceneContext context = new SUISceneContext(state, vbox);
+		SuiSceneContext context = new SuiSceneContext(state, vbox);
 		VBox fxNode = (VBox) context.getRootNode().getFxNode();
 
 		assertThat(fxNode.getChildren()).hasSize(4);
@@ -155,8 +156,8 @@ public class InjectionTest extends ApplicationTest {
 
 	@Test (expected = DuplicatePropertiesException.class)
 	public void testVBoxPropertiesConflict() {
-		SUIVBox.vbox(
-				Properties.items(SUIButton.button(
+		SuiVBox.vbox(
+				Properties.items(SuiButton.button(
 						Properties.id("btn"),
 						Properties.textContent("Button")
 				)),
@@ -173,19 +174,19 @@ public class InjectionTest extends ApplicationTest {
 		final String INJECTION_POINT_ID = "injection_point";
 		final ElementTestState state = new ElementTestState();
 
-		NodeFactory scrollPane = SUIScrollPane.scrollPane(
+		NodeFactory scrollPane = SuiScrollPane.scrollPane(
 				Properties.itemInjectable(INJECTION_POINT_ID)
 		);
 
-		SUIRegistry.get().inject(INJECTION_POINT_ID,
-				SUIButton.button(
+		SuiRegistry.get().inject(INJECTION_POINT_ID,
+				SuiButton.button(
 						Properties.id("ij_btn"),
 						Properties.textContent("Injected Button")
 				)
 		);
 
 
-		SUISceneContext context = new SUISceneContext(state, scrollPane);
+		SuiSceneContext context = new SuiSceneContext(state, scrollPane);
 		ScrollPane fxNode = (ScrollPane) context.getRootNode().getFxNode();
 
 		assertThat(fxNode.getContent()).isNotNull();
@@ -202,16 +203,16 @@ public class InjectionTest extends ApplicationTest {
 		final String INJECTION_POINT_ID = "injection_point";
 		final ElementTestState state = new ElementTestState();
 
-		NodeFactory scrollPane = SUIScrollPane.scrollPane(
+		NodeFactory scrollPane = SuiScrollPane.scrollPane(
 				Properties.itemInjectable(INJECTION_POINT_ID,
-						SUIButton.button(
+						SuiButton.button(
 								Properties.id("btn"),
 								Properties.textContent("Button")
 						))
 		);
 
 
-		SUISceneContext context = new SUISceneContext(state, scrollPane);
+		SuiSceneContext context = new SuiSceneContext(state, scrollPane);
 		ScrollPane fxNode = (ScrollPane) context.getRootNode().getFxNode();
 
 		assertThat(fxNode.getContent()).isNotNull();
@@ -229,31 +230,31 @@ public class InjectionTest extends ApplicationTest {
 		final ElementTestState state = new ElementTestState();
 		state.text = "Text 1";
 
-		NodeFactory vbox = SUIVBox.vbox(
+		NodeFactory vbox = SuiVBox.vbox(
 				Properties.itemsInjectable(
 						INJECTION_POINT_ID,
 						InjectionIndexMarker.injectAt(1),
-						SUIButton.button(
+						SuiButton.button(
 								Properties.id("btn1"),
 								Properties.textContent("Button 1")
 						),
-						SUIButton.button(
+						SuiButton.button(
 								Properties.id("btn2"),
 								Properties.textContent("Button 2")
 						))
 		);
 
-		SUIRegistry.get().inject(INJECTION_POINT_ID,
-				new SUIComponent<ElementTestState>(
-						localState -> SUIButton.button(
+		SuiRegistry.get().inject(INJECTION_POINT_ID,
+				new SuiComponent<ElementTestState>(
+						localState -> SuiButton.button(
 								Properties.id("ij_btn1"),
 								Properties.textContent(localState.text)
 						))
 		);
 
 
-		SUISceneContext context = new SUISceneContext(state, vbox);
-		SUINode node = context.getRootNode();
+		SuiSceneContext context = new SuiSceneContext(state, vbox);
+		SuiNode node = context.getRootNode();
 		VBox fxNode = (VBox) node.getFxNode();
 
 		assertThat(fxNode.getChildren()).hasSize(3);
@@ -266,7 +267,7 @@ public class InjectionTest extends ApplicationTest {
 
 		state.text = "Text 2";
 
-		SUINode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(node, vbox.create(state));
+		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(node, vbox.create(state));
 		VBox fxNodeMutated = (VBox) mutatedNode.getFxNode();
 
 		assertThat(fxNodeMutated.getChildren()).hasSize(3);

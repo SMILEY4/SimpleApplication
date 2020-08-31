@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
@@ -53,7 +53,7 @@ public class OrientationProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final OrientationProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OrientationProperty property,
 						  final Separator fxNode) {
 			fxNode.setOrientation(property.getOrientation());
 		}
@@ -63,7 +63,7 @@ public class OrientationProperty extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OrientationProperty property,
-									 final SUINode node, final Separator fxNode) {
+									 final SuiNode node, final Separator fxNode) {
 			fxNode.setOrientation(property.getOrientation());
 			return MutationResult.MUTATED;
 		}
@@ -73,7 +73,7 @@ public class OrientationProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OrientationProperty property,
-									 final SUINode node, final Separator fxNode) {
+									 final SuiNode node, final Separator fxNode) {
 			fxNode.setOrientation(Orientation.HORIZONTAL);
 			return MutationResult.MUTATED;
 		}

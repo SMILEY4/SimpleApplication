@@ -8,7 +8,7 @@ public interface SUIEventListener<T> {
 	 *
 	 * @param event the event
 	 */
-	default void onEvent(final SUIEvent<T> event) {
+	default void onEvent(final SuiEvent<T> event) {
 		onEvent(event.getData());
 	}
 

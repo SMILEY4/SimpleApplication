@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -81,7 +81,7 @@ public class AnchorProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final AnchorProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final AnchorProperty property,
 						  final Node fxNode) {
 			setAnchors(property, fxNode);
 		}
@@ -91,7 +91,7 @@ public class AnchorProperty extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final AnchorProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			setAnchors(property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -117,7 +117,7 @@ public class AnchorProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final AnchorProperty property,
-									 final SUINode node, final Node fxNode) {
+									 final SuiNode node, final Node fxNode) {
 			AnchorPane.setTopAnchor(fxNode, null);
 			AnchorPane.setBottomAnchor(fxNode, null);
 			AnchorPane.setLeftAnchor(fxNode, null);

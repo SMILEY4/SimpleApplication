@@ -2,8 +2,8 @@ package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Loop;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.AddOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.BaseOperation;
@@ -45,7 +45,7 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	 * @return the result of the decision.
 	 */
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SUINode original, final SUINode target, final boolean allChildrenHaveId) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
 		if (allChildrenHaveId) {
 			return StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA;
 		} else {
@@ -58,8 +58,8 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 
 	@Override
 	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
-								 final SUINode original,
-								 final SUINode target,
+								 final SuiNode original,
+								 final SuiNode target,
 								 final StrategyDecisionResult decisionData) {
 
 		final List<String> idsOriginal = extractChildIds(original);
@@ -116,9 +116,9 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	 * @param parent the parent node
 	 * @return the list of all ids
 	 */
-	private List<String> extractChildIds(final SUINode parent) {
+	private List<String> extractChildIds(final SuiNode parent) {
 		return parent.streamChildren()
-				.map(SUINode::getIdUnsafe)
+				.map(SuiNode::getIdUnsafe)
 				.collect(Collectors.toList());
 	}
 
@@ -135,14 +135,14 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	 * @return the replace transformations required if a child node is rebuild
 	 */
 	private List<ReplaceTransformation> mutatePermanentChildren(final MasterNodeHandlers nodeHandlers,
-																final SUINode original,
-																final SUINode target,
+																final SuiNode original,
+																final SuiNode target,
 																final Set<Pair<String, Integer>> permanents) {
 		return Loop.asyncCollectingLoop(new ArrayList<>(permanents), true, permanent -> {
 			final String nodeId = permanent.getLeft();
 			final int index = permanent.getRight();
-			final SUINode childOriginal = original.findChildUnsafe(nodeId);
-			final SUINode childTarget = target.getChild(index);
+			final SuiNode childOriginal = original.findChildUnsafe(nodeId);
+			final SuiNode childTarget = target.getChild(index);
 			final MutationResult result = nodeHandlers.getMutator().mutateNode(childOriginal, childTarget, nodeHandlers);
 			if (result == MutationResult.REQUIRES_REBUILD) {
 				return new ReplaceTransformation(index, nodeId);

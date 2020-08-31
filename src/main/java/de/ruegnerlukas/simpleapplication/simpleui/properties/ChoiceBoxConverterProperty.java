@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
@@ -77,7 +77,7 @@ public class ChoiceBoxConverterProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ChoiceBoxConverterProperty<T> property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ChoiceBoxConverterProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 		}
@@ -87,7 +87,7 @@ public class ChoiceBoxConverterProperty<T> extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoiceBoxConverterProperty<T> property,
-									 final SUINode node, final ChoiceBox<T> fxNode) {
+									 final SuiNode node, final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 			return MutationResult.MUTATED;
 		}
@@ -97,7 +97,7 @@ public class ChoiceBoxConverterProperty<T> extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoiceBoxConverterProperty<T> property,
-									 final SUINode node, final ChoiceBox<T> fxNode) {
+									 final SuiNode node, final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(null);
 			return MutationResult.MUTATED;
 		}

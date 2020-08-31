@@ -1,15 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ChildNodesMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.scene.Node;
 
 import java.util.HashSet;
@@ -42,7 +42,7 @@ public class NodeMutator implements BaseNodeMutator {
 
 
 	@Override
-	public MutationResult mutateNode(final SUINode original, final SUINode target, final MasterNodeHandlers nodeHandlers) {
+	public MutationResult mutateNode(final SuiNode original, final SuiNode target, final MasterNodeHandlers nodeHandlers) {
 		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
 		if (mutationBehaviour == MutationBehaviour.DEFAULT) {
 			if (mutateProperties(nodeHandlers, original, target) == REQUIRES_REBUILD) {
@@ -70,7 +70,7 @@ public class NodeMutator implements BaseNodeMutator {
 	 * @param original     the original node
 	 * @param target       the target node to match
 	 */
-	private MutationResult mutateProperties(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+	private MutationResult mutateProperties(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
 
 		final Set<Class<? extends Property>> commonProperties = getCommonProperties(original, target);
 
@@ -119,7 +119,7 @@ public class NodeMutator implements BaseNodeMutator {
 	 * @param target       the target node to match
 	 * @return the result of the mutation
 	 */
-	private MutationResult mutateChildren(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+	private MutationResult mutateChildren(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
 		return strategyDecider.mutate(nodeHandlers, original, target);
 	}
 
@@ -131,7 +131,7 @@ public class NodeMutator implements BaseNodeMutator {
 	 * @param b the other node
 	 * @return the set of property-key the two given nodes have in common.
 	 */
-	private Set<Class<? extends Property>> getCommonProperties(final SUINode a, final SUINode b) {
+	private Set<Class<? extends Property>> getCommonProperties(final SuiNode a, final SuiNode b) {
 		final Set<Class<? extends Property>> properties = new HashSet<>(a.getProperties().keySet());
 		properties.addAll(b.getProperties().keySet());
 		return properties;
@@ -158,7 +158,7 @@ public class NodeMutator implements BaseNodeMutator {
 	 * @param node the node
 	 * @return the {@link MutationBehaviour}.
 	 */
-	private MutationBehaviour getMutationBehaviour(final SUINode node) {
+	private MutationBehaviour getMutationBehaviour(final SuiNode node) {
 		return node.getPropertySafe(MutationBehaviourProperty.class)
 				.map(MutationBehaviourProperty::getBehaviour)
 				.orElse(MutationBehaviour.DEFAULT);
@@ -173,7 +173,7 @@ public class NodeMutator implements BaseNodeMutator {
 	 * @return the {@link PropFxNodeUpdater} for the given property and given node type
 	 */
 	private PropFxNodeUpdater<Property, Node> getPropNodeUpdater(final Class<?> nodeType, final Class<? extends Property> propType) {
-		return (PropFxNodeUpdater<Property, Node>) SUIRegistry.get()
+		return (PropFxNodeUpdater<Property, Node>) SuiRegistry.get()
 				.getEntry(nodeType)
 				.getPropFxNodeUpdaters().get(propType);
 	}

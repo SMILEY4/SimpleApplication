@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.operations;
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -27,7 +27,7 @@ public class AddOperation extends BaseOperation {
 	/**
 	 * The node to add
 	 */
-	private final SUINode node;
+	private final SuiNode node;
 
 
 
@@ -36,7 +36,7 @@ public class AddOperation extends BaseOperation {
 	 * @param index the index
 	 * @param node  the node to add
 	 */
-	public AddOperation(final int index, final SUINode node) {
+	public AddOperation(final int index, final SuiNode node) {
 		super(ADD_COST, OperationType.ADD);
 		this.index = index;
 		this.node = node;
@@ -46,7 +46,7 @@ public class AddOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final List<SUINode> list) {
+	public void applyTo(final List<SuiNode> list) {
 		list.add(index, node);
 	}
 
@@ -54,7 +54,7 @@ public class AddOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final Map<String, SUINode> map) {
+	public void applyTo(final Map<String, SuiNode> map) {
 		map.put(node.getIdUnsafe(), node);
 	}
 

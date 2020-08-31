@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.AddOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.BaseOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.RemoveOperation;
@@ -303,8 +303,8 @@ public class ListTransformer {
 
 
 		@Override
-		public BaseOperation toOperation(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
-			final SUINode addNode = target.findChildUnsafe(this.getElement());
+		public BaseOperation toOperation(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
+			final SuiNode addNode = target.findChildUnsafe(this.getElement());
 			nodeHandlers.getFxNodeBuilder().build(addNode);
 			return new AddOperation(this.getIndex(), addNode);
 		}
@@ -333,7 +333,7 @@ public class ListTransformer {
 
 
 		@Override
-		public RemoveOperation toOperation(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+		public RemoveOperation toOperation(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
 			return new RemoveOperation(this.getIndex(), original.getChild(this.getIndex()));
 		}
 
@@ -377,7 +377,7 @@ public class ListTransformer {
 
 
 		@Override
-		public SwapOperation toOperation(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+		public SwapOperation toOperation(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
 			return new SwapOperation(this.getIndexMin(), this.getIndexMax());
 		}
 
@@ -411,8 +411,8 @@ public class ListTransformer {
 
 
 		@Override
-		public ReplaceOperation toOperation(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
-			final SUINode replacementNode = target.findChildUnsafe(this.getElement());
+		public ReplaceOperation toOperation(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
+			final SuiNode replacementNode = target.findChildUnsafe(this.getElement());
 			nodeHandlers.getFxNodeBuilder().build(replacementNode);
 			return new ReplaceOperation(this.getIndex(), replacementNode, original.getChild(this.getIndex()));
 		}
@@ -438,7 +438,7 @@ public class ListTransformer {
 		 * @param target       the target node
 		 * @return the created operation
 		 */
-		BaseOperation toOperation(MasterNodeHandlers nodeHandlers, SUINode original, SUINode target);
+		BaseOperation toOperation(MasterNodeHandlers nodeHandlers, SuiNode original, SuiNode target);
 
 	}
 

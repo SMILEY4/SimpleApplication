@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
@@ -70,7 +70,7 @@ public class ChoicesProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ChoicesProperty<T> property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ChoicesProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			setItems(node, property, fxNode);
 		}
@@ -80,7 +80,7 @@ public class ChoicesProperty<T> extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<T> property,
-									 final SUINode node, final ChoiceBox<T> fxNode) {
+									 final SuiNode node, final ChoiceBox<T> fxNode) {
 			setItems(node, property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -90,7 +90,7 @@ public class ChoicesProperty<T> extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<T> property,
-									 final SUINode node, final ChoiceBox<T> fxNode) {
+									 final SuiNode node, final ChoiceBox<T> fxNode) {
 			final Object prevValue = fxNode.getSelectionModel().getSelectedItem();
 			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
 			removeListeners(node, fxNode);
@@ -112,7 +112,7 @@ public class ChoicesProperty<T> extends Property {
 		 * @param property the choices-property
 		 * @param fxNode   the javafx choicebox
 		 */
-		private void setItems(final SUINode node, final ChoicesProperty<T> property, final ChoiceBox<T> fxNode) {
+		private void setItems(final SuiNode node, final ChoicesProperty<T> property, final ChoiceBox<T> fxNode) {
 
 			final T prevValue = fxNode.getSelectionModel().getSelectedItem();
 			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
@@ -141,7 +141,7 @@ public class ChoicesProperty<T> extends Property {
 		 * @param node   the simpleui node
 		 * @param fxNode the javafx choicebox
 		 */
-		private void removeListeners(final SUINode node, final ChoiceBox<T> fxNode) {
+		private void removeListeners(final SuiNode node, final ChoiceBox<T> fxNode) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
 				fxNode.getSelectionModel().selectedIndexProperty().removeListener(property.getChangeListener());
 			});
@@ -159,7 +159,7 @@ public class ChoicesProperty<T> extends Property {
 		 * @param node   the simpleui node
 		 * @param fxNode the javafx choicebox
 		 */
-		private void addListener(final SUINode node, final ChoiceBox<T> fxNode) {
+		private void addListener(final SuiNode node, final ChoiceBox<T> fxNode) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
 				fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
 			});
@@ -180,17 +180,17 @@ public class ChoicesProperty<T> extends Property {
 		 * @param prevItem  the previous selected item
 		 * @param nextItem  the new selected item
 		 */
-		private void callListeners(final SUINode node,
+		private void callListeners(final SuiNode node,
 								   final int prevIndex, final int nextIndex,
 								   final Object prevItem, final Object nextItem) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
-				property.getListener().onEvent(new SUIEvent<>(
+				property.getListener().onEvent(new SuiEvent<>(
 						OnSelectedIndexEventProperty.EVENT_ID,
 						new SelectedIndexEventData(nextIndex, prevIndex)
 				));
 			});
 			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
-				property.getListener().onEvent(new SUIEvent<>(
+				property.getListener().onEvent(new SuiEvent<>(
 						OnSelectedItemEventProperty.EVENT_ID,
 						new SelectedItemEventData<>(nextItem, prevItem)
 				));

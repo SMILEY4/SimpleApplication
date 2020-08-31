@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ChildNodesMutationStrategy;
 
@@ -20,7 +20,7 @@ public class MasterNodeMutator implements BaseNodeMutator {
 	/**
 	 * The scene context.
 	 */
-	private final SUISceneContext context;
+	private final SuiSceneContext context;
 
 	/**
 	 * The actual node mutator.
@@ -36,7 +36,7 @@ public class MasterNodeMutator implements BaseNodeMutator {
 	 * @param mutationStrategies the strategies for mutating child nodes
 	 */
 	public MasterNodeMutator(final MasterFxNodeBuilder fxNodeBuilder,
-							 final SUISceneContext context,
+							 final SuiSceneContext context,
 							 final List<ChildNodesMutationStrategy> mutationStrategies) {
 		this.fxNodeBuilder = fxNodeBuilder;
 		this.context = context;
@@ -55,7 +55,7 @@ public class MasterNodeMutator implements BaseNodeMutator {
 	 * @param target   the target node to match
 	 * @return the mutated or newly created node.
 	 */
-	public SUINode mutate(final SUINode original, final SUINode target) {
+	public SuiNode mutate(final SuiNode original, final SuiNode target) {
 		if (mutateNode(original, target, context.getMasterNodeHandlers()) == MutationResult.REQUIRES_REBUILD) {
 			fxNodeBuilder.build(target, context.getMasterNodeHandlers());
 			return target;
@@ -68,7 +68,7 @@ public class MasterNodeMutator implements BaseNodeMutator {
 
 
 	@Override
-	public MutationResult mutateNode(final SUINode original, final SUINode target, final MasterNodeHandlers nodeHandlers) {
+	public MutationResult mutateNode(final SuiNode original, final SuiNode target, final MasterNodeHandlers nodeHandlers) {
 		return mutator.mutateNode(original, target, nodeHandlers);
 	}
 

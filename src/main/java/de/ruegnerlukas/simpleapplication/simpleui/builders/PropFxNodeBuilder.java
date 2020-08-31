@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.builders;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;
 
@@ -16,7 +15,7 @@ public interface PropFxNodeBuilder<P extends Property, T extends Node> {
 	 * @param property     the property to add to the fx-node
 	 * @param fxNode       the fx-node to modify
 	 */
-	void build(MasterNodeHandlers nodeHandlers, SUINode node, P property, T fxNode);
+	void build(MasterNodeHandlers nodeHandlers, SuiNode node, P property, T fxNode);
 
 
 }

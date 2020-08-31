@@ -18,14 +18,14 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHan
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
-import de.ruegnerlukas.simpleapplication.simpleui.streams.SUIStream;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.SuiStream;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import lombok.AllArgsConstructor;
@@ -36,16 +36,16 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPane;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane.anchorPaneItem;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPane;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPaneItem;
 
 @Slf4j
 public class TestApplication {
 
 
 	public static void main(String[] args) {
-		SUIRegistry.initialize();
-		SUIRegistry.get().registerProperty(SUIButton.class, ManagedStyleProperty.class, new ManagedStyleProperty.ManagedStyleUpdatingBuilder());
+		SuiRegistry.initialize();
+		SuiRegistry.get().registerProperty(SuiButton.class, ManagedStyleProperty.class, new ManagedStyleProperty.ManagedStyleUpdatingBuilder());
 
 		final ApplicationConfiguration configuration = new ApplicationConfiguration();
 		configuration.getPlugins().add(new LoggingPlugin());
@@ -83,7 +83,7 @@ public class TestApplication {
 
 		@Getter
 		@Setter
-		private static class TestUIState extends SUIState {
+		private static class TestUIState extends SuiState {
 
 
 			private List<String> strings = new ArrayList<>(List.of("A", "B", "C"));
@@ -159,18 +159,18 @@ public class TestApplication {
 					.maxSize(new Dimension2D(300, 300))
 					.title(applicationName + " - View A")
 					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SUISceneContext(testUIState, TestUIState.class, state ->
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneContext(testUIState, TestUIState.class, state ->
 							anchorPane(
 
-									EventProperties.eventMouseEntered(SUIStream.eventStream(bridge ->
-											SUIStream.from(bridge)
+									EventProperties.eventMouseEntered(SuiStream.eventStream(bridge ->
+											SuiStream.from(bridge)
 													.mapIgnoreNulls(e -> Pair.of(e.getX(), e.getY()))
 													.forEach(e -> System.out.println("entered at " + e.getLeft() + "," + e.getRight()))
 									)),
 
 									Properties.items(
 											anchorPaneItem(
-													SUIContainer.container(
+													SuiContainer.container(
 															Properties.id("myContainer"),
 															Properties.layout("myLayout", ((parent, nodes) -> {
 																final double width = parent.getWidth();
@@ -181,11 +181,11 @@ public class TestApplication {
 																node1.resizeRelocate(0, height / 2, width, height / 2);
 															})),
 															Properties.items(
-																	SUIButton.button(
+																	SuiButton.button(
 																			Properties.id("btn1"),
 																			Properties.textContent("Child Button 1")
 																	),
-																	SUIButton.button(
+																	SuiButton.button(
 																			Properties.id("btn2"),
 																			Properties.textContent("Child Button 2")
 																	)

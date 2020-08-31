@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.control.Labeled;
 import lombok.Getter;
@@ -51,7 +51,7 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final WrapTextProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final WrapTextProperty property,
 						  final Labeled fxNode) {
 			fxNode.setWrapText(property.isWrap());
 		}
@@ -61,7 +61,7 @@ public class WrapTextProperty extends Property {
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final WrapTextProperty property,
-									 final SUINode node, final Labeled fxNode) {
+									 final SuiNode node, final Labeled fxNode) {
 			fxNode.setWrapText(property.isWrap());
 			return MutationResult.MUTATED;
 		}
@@ -71,7 +71,7 @@ public class WrapTextProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final WrapTextProperty property,
-									 final SUINode node, final Labeled fxNode) {
+									 final SuiNode node, final Labeled fxNode) {
 			fxNode.setWrapText(false);
 			return MutationResult.MUTATED;
 		}

@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.operations;
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -47,9 +47,9 @@ public class SwapOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final List<SUINode> list) {
-		SUINode elementMax = list.remove(indexMax);
-		SUINode elementMin = list.set(indexMin, elementMax);
+	public void applyTo(final List<SuiNode> list) {
+		SuiNode elementMax = list.remove(indexMax);
+		SuiNode elementMin = list.set(indexMin, elementMax);
 		list.add(indexMax, elementMin);
 	}
 
@@ -57,7 +57,7 @@ public class SwapOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final Map<String, SUINode> map) {
+	public void applyTo(final Map<String, SuiNode> map) {
 		// do nothing here
 	}
 

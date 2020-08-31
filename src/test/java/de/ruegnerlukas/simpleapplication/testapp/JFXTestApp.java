@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -16,11 +16,11 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIContainer.container;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIHBox.hbox;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIScrollPane.scrollPane;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIVBox.vbox;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiContainer.container;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiHBox.hbox;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane.scrollPane;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox.vbox;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.fitToWidth;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.id;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.item;
@@ -47,11 +47,11 @@ public class JFXTestApp extends Application {
 	@Override
 	public void start(final Stage stage) throws Exception {
 
-		SUIRegistry.initialize();
+		SuiRegistry.initialize();
 
 		TestState testUIState = new TestState();
 
-		SUISceneContext context = new SUISceneContext(testUIState, TestState.class, state -> customLayout());
+		SuiSceneContext context = new SuiSceneContext(testUIState, TestState.class, state -> customLayout());
 
 		Scene scene = new Scene((Parent) context.getRootFxNode(), 500, 600);
 		stage.setScene(scene);
@@ -167,7 +167,7 @@ public class JFXTestApp extends Application {
 
 
 
-	static class TestState extends SUIState {
+	static class TestState extends SuiState {
 
 
 		public int counter = 2;

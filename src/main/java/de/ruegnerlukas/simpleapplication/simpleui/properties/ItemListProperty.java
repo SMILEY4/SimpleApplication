@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeBuilder;
 import javafx.scene.Node;
@@ -91,7 +91,7 @@ public class ItemListProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SUINode node, final ItemListProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ItemListProperty property,
 						  final Pane fxNode) {
 			List<Node> childFxNodes = node.streamChildren()
 					.map(child -> nodeHandlers.getFxNodeBuilder().build(child))

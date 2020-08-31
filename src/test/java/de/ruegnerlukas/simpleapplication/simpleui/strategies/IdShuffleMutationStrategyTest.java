@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.strategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdShuffleMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.StrategyDecisionResult;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -25,7 +25,7 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) {
-		SUIRegistry.initialize();
+		SuiRegistry.initialize();
 	}
 
 
@@ -37,10 +37,10 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUISceneContext context = testData.getLeft();
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneContext context = testData.getLeft();
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
@@ -70,9 +70,9 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		removeChildNodes(nodeTarget, 5);
 
@@ -95,9 +95,9 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		removeChildNodes(nodeTarget, 15);
 
@@ -120,9 +120,9 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(0, "Btn Target", true);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
@@ -143,9 +143,9 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		removeChildNodes(nodeOriginal, 5);
 
@@ -168,9 +168,9 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		removeChildNodes(nodeOriginal, 15);
 
@@ -193,9 +193,9 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(0, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
@@ -216,9 +216,9 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		shuffleChildNodes(nodeTarget, 3);
 
@@ -241,10 +241,10 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUISceneContext context = testData.getLeft();
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneContext context = testData.getLeft();
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		shuffleChildNodes(nodeTarget, 20);
 
@@ -275,9 +275,9 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", false);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", false);
 
-		final Triplet<SUISceneContext, SUINode, SUINode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SUINode nodeOriginal = testData.getMiddle();
-		final SUINode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		final IdShuffleMutationStrategy strategy = new IdShuffleMutationStrategy();
 

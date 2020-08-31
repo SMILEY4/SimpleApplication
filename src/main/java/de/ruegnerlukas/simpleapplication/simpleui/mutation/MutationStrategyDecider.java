@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.AddAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ChildNodesMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy;
@@ -53,7 +53,7 @@ public class MutationStrategyDecider {
 	 * @param target       the target node to match
 	 * @return the result of the mutation
 	 */
-	public MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SUINode original, final SUINode target) {
+	public MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
 		if (!original.hasChildren() && !target.hasChildren()) {
 			return MutationResult.MUTATED;
 		}
@@ -80,7 +80,7 @@ public class MutationStrategyDecider {
 	 * @return the mutation result or 'null', if the strategy could not be applied.
 	 */
 	private MutationResult runStrategy(final ChildNodesMutationStrategy strategy, final MasterNodeHandlers nodeHandlers,
-									   final SUINode original, final SUINode target, final boolean allHaveId) {
+									   final SuiNode original, final SuiNode target, final boolean allHaveId) {
 		StrategyDecisionResult decisionData = strategy.canBeAppliedTo(original, target, allHaveId);
 		if (decisionData.isApplicable()) {
 			return strategy.mutate(nodeHandlers, original, target, decisionData);
@@ -98,7 +98,7 @@ public class MutationStrategyDecider {
 	 * @param parent the parent to check
 	 * @return whether all nodes have a valid id
 	 */
-	private boolean allChildrenHaveId(final SUINode parent) {
+	private boolean allChildrenHaveId(final SuiNode parent) {
 		return parent.streamChildren().allMatch(node -> node.hasProperty(IdProperty.class));
 	}
 

@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.builders;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 
 public interface NodeFactory {
 
@@ -13,7 +13,7 @@ public interface NodeFactory {
 	 * @param state the current state
 	 * @return the created node
 	 */
-	SUINode create(SUIState state);
+	SuiNode create(SuiState state);
 
 
 }

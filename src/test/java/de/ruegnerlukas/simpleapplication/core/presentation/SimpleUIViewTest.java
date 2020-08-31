@@ -14,9 +14,9 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
-import de.ruegnerlukas.simpleapplication.simpleui.SUISceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.application.Platform;
 import javafx.geometry.Dimension2D;
 import javafx.scene.control.Button;
@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton.button;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +42,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) {
-		SUIRegistry.initialize();
+		SuiRegistry.initialize();
 
 		eventService = eventService();
 		styleService = styleService();
@@ -73,7 +73,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 	public void testShowView() {
 		Platform.runLater(() -> {
 
-			final SUIState state = new SUIState();
+			final SuiState state = new SuiState();
 			final View view = view("test.view.show.primary", state, "A Button");
 			viewService.registerView(view);
 
@@ -83,7 +83,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle.getCurrentRootNode()).getText()).isEqualTo("A Button");
 
-			final SUISceneContext context = ((SUIWindowHandleData) handle.getData()).getSceneContext();
+			final SuiSceneContext context = ((SUIWindowHandleData) handle.getData()).getSceneContext();
 			assertThat(context).isNotNull();
 			assertThat(context.getState()).isEqualTo(state);
 			assertThat(state.getListeners()).hasSize(1);
@@ -98,7 +98,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 	public void testReplaceView() {
 		Platform.runLater(() -> {
 
-			final SUIState state = new SUIState();
+			final SuiState state = new SuiState();
 			final View view1 = view("test.view.replace.primary.1", state, "Button 1");
 			final View view2 = view("test.view.replace.primary.2", state, "Button 2");
 			viewService.registerView(view1);
@@ -114,10 +114,10 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle2.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle2.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			final SUISceneContext context = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			final SuiSceneContext context = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
 			assertThat(context.getState()).isEqualTo(state);
 			assertThat(state.getListeners()).hasSize(1);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContext) context);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneContext) context);
 		});
 	}
 
@@ -128,7 +128,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 	public void testOpenPopup() {
 		Platform.runLater(() -> {
 
-			final SUIState state = new SUIState();
+			final SuiState state = new SuiState();
 			final View view1 = view("test.view.open.popup.1", state, "Button 1");
 			final View view2 = view("test.view.open.popup.2", state, "Button 2");
 			viewService.registerView(view1);
@@ -148,15 +148,15 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle2.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle2.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			final SUISceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
-			final SUISceneContext context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			final SuiSceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			final SuiSceneContext context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
 			assertThat(context1).isNotEqualTo(context2);
 
 			assertThat(context1.getState()).isEqualTo(state);
 			assertThat(context2.getState()).isEqualTo(state);
 
 			assertThat(state.getListeners()).hasSize(2);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContext) context1, (SUISceneContext) context2);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneContext) context1, (SuiSceneContext) context2);
 		});
 	}
 
@@ -167,7 +167,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 	public void testOpenPopupMultiple() {
 		Platform.runLater(() -> {
 
-			final SUIState state = new SUIState();
+			final SuiState state = new SuiState();
 			final View view1 = view("test.view.open.popup.1", state, "Button 1");
 			final View view2 = view("test.view.open.popup.2", state, "Button 2");
 			viewService.registerView(view1);
@@ -199,10 +199,10 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle4.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle4.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			final SUISceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
-			final SUISceneContext context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
-			final SUISceneContext context3 = ((SUIWindowHandleData) handle3.getData()).getSceneContext();
-			final SUISceneContext context4 = ((SUIWindowHandleData) handle4.getData()).getSceneContext();
+			final SuiSceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			final SuiSceneContext context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			final SuiSceneContext context3 = ((SUIWindowHandleData) handle3.getData()).getSceneContext();
+			final SuiSceneContext context4 = ((SUIWindowHandleData) handle4.getData()).getSceneContext();
 			assertThat(context1).isNotEqualTo(context2);
 			assertThat(context1).isNotEqualTo(context3);
 			assertThat(context1).isNotEqualTo(context4);
@@ -214,10 +214,10 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 			assertThat(state.getListeners()).hasSize(4);
 			assertThat(state.getListeners()).containsExactlyInAnyOrder(
-					(SUISceneContext) context1,
-					(SUISceneContext) context2,
-					(SUISceneContext) context3,
-					(SUISceneContext) context4
+					(SuiSceneContext) context1,
+					(SuiSceneContext) context2,
+					(SuiSceneContext) context3,
+					(SuiSceneContext) context4
 			);
 		});
 	}
@@ -229,7 +229,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 	public void testClosePopup() {
 		Platform.runLater(() -> {
 
-			final SUIState state = new SUIState();
+			final SuiState state = new SuiState();
 			final View view1 = view("test.view.close.popup.1", state, "Button 1");
 			final View view2 = view("test.view.close.popup.2", state, "Button 2");
 			viewService.registerView(view1);
@@ -242,12 +242,12 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(viewService.isWindowHandleActive(handle1)).isTrue();
 			assertThat(viewService.isWindowHandleActive(handle2)).isFalse();
 
-			final SUISceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			final SuiSceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
 			assertThat(handle2.getData()).isNull();
 			assertThat(context1.getState()).isEqualTo(state);
 
 			assertThat(state.getListeners()).hasSize(1);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SUISceneContext) context1);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneContext) context1);
 		});
 	}
 
@@ -269,7 +269,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 
 	private View view(final String id) {
-		return view(id, new SUIWindowHandleDataFactory(() -> new SUISceneContext(
+		return view(id, new SUIWindowHandleDataFactory(() -> new SuiSceneContext(
 				button(
 						textContent("A Button")
 				)
@@ -279,8 +279,8 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 
 
-	private View view(final String id, final SUIState state, final String btnText) {
-		return view(id, new SUIWindowHandleDataFactory(() -> new SUISceneContext(state,
+	private View view(final String id, final SuiState state, final String btnText) {
+		return view(id, new SUIWindowHandleDataFactory(() -> new SuiSceneContext(state,
 				button(
 						textContent(btnText)
 				)

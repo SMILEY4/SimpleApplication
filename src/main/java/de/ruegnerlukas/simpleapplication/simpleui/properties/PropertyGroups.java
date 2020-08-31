@@ -24,7 +24,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseRelea
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseScrollEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseScrollFinishedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnMouseScrollStartedEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SUIRegistry.PropertyEntry;
+import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry.PropertyEntry;
 
 import java.util.List;
 

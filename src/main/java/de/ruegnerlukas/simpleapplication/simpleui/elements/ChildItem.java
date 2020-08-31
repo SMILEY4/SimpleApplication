@@ -1,16 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
-import de.ruegnerlukas.simpleapplication.simpleui.SUIState;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;
 
 import java.util.List;
 
-public class ChildItem extends SUINode {
+public class ChildItem extends SuiNode {
 
 
 	/**
@@ -20,7 +19,7 @@ public class ChildItem extends SUINode {
 	 * @param childListener the child listener
 	 */
 	public ChildItem(final Class<?> nodeType, final List<Property> propertyList,
-					 final SUIState state, final ChildListener childListener) {
+					 final SuiState state, final ChildListener childListener) {
 		super(nodeType, propertyList, state, childListener);
 	}
 
@@ -31,7 +30,7 @@ public class ChildItem extends SUINode {
 
 
 		@Override
-		public Node build(final MasterNodeHandlers nodeHandlers, final SUINode node) {
+		public Node build(final MasterNodeHandlers nodeHandlers, final SuiNode node) {
 			if (node.hasChildren()) {
 				return nodeHandlers.getFxNodeBuilder().build(node.getChild(0));
 			} else {

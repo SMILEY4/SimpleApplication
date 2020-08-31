@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.builders;
 
-import de.ruegnerlukas.simpleapplication.simpleui.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.SUINode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;
@@ -19,7 +18,7 @@ public interface PropFxNodeUpdater<P extends Property, T extends Node> {
 	 * @param fxNode       the fx-node to modify
 	 * @return whether the fx-node could be mutated or has to be rebuild completely.
 	 */
-	MutationResult update(MasterNodeHandlers nodeHandlers, P property, SUINode node, T fxNode);
+	MutationResult update(MasterNodeHandlers nodeHandlers, P property, SuiNode node, T fxNode);
 
 	/**
 	 * Removes the given property of the given node by modifying the given fx-node
@@ -30,7 +29,7 @@ public interface PropFxNodeUpdater<P extends Property, T extends Node> {
 	 * @param fxNode       the fx-node to modify
 	 * @return whether the fx-node could be mutated or has to be rebuild completely.
 	 */
-	MutationResult remove(MasterNodeHandlers nodeHandlers, P property, SUINode node, T fxNode);
+	MutationResult remove(MasterNodeHandlers nodeHandlers, P property, SuiNode node, T fxNode);
 
 
 }
