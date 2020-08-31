@@ -41,8 +41,9 @@ public class SuiState {
 	 * @param silent    true, to not notify listeners and this not modifying the interface.
 	 * @param update    the update to apply to this state
 	 */
-	public synchronized <T extends SuiState> void update(
-			final Class<T> stateType, final boolean silent, final SuiStateUpdate<T> update) {
+	public synchronized <T extends SuiState> void update(final Class<T> stateType,
+														 final boolean silent,
+														 final SuiStateUpdate<T> update) {
 		Validations.INPUT.notNull(update).exception("The state update may not be null.");
 		Platform.runLater(() -> updateUnsafe(stateType, silent, update));
 	}

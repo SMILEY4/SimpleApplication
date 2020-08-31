@@ -19,10 +19,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextField;
+import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.SuiStream;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Pos;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +35,7 @@ import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.a
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.editable;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.promptText;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventTextChanged;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventTextEntered;
 
 @Slf4j
@@ -79,7 +83,6 @@ public class SUITestApplication {
 		private static class TestUIState extends SuiState {
 
 
-
 			private String text = "Sample Text";
 
 
@@ -114,7 +117,18 @@ public class SUITestApplication {
 													SuiTextField.textField(
 															textContent(state.getText()),
 															promptText("Text Field"),
-															eventTextEntered(e -> state.update(TestUIState.class, updateState -> updateState.setText(e.getText())))
+															eventTextEntered(SuiStream.eventStream(TextContentEventData.class,
+																	stream -> stream
+																			.map(TextContentEventData::getText)
+																			.updateState(TestUIState.class, state, TestUIState::setText))
+															),
+															eventTextChanged(SuiStream.eventStream(TextContentEventData.class,
+																	stream -> stream
+																			.accumulate(4, Duration.seconds(1))
+																			.map(batch -> batch.get(batch.size()-1))
+																			.map(TextContentEventData::getText)
+																			.updateStateSilent(TestUIState.class, state, TestUIState::setText))
+															)
 													),
 													Properties.anchor(100, null, 100, null)
 											),

@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
+import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.sources.EventStreamSource;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.sources.ObservableStreamSource;
@@ -9,6 +10,7 @@ import javafx.util.Duration;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -26,6 +28,20 @@ public interface SuiStream<IN, OUT> {
 		return new ObservableStreamSource<>(observable);
 	}
 
+
+	/**
+	 * Used to create a stream that can listen to simpleui-events.
+	 *
+	 * @param sourceType the type of the source elements
+	 * @param stream     the consumer providing the created stream for further actions.
+	 * @param <T>        the generic type of the event data
+	 * @return the event listener to add to the event property.
+	 */
+	static <T> SUIEventListener<T> eventStream(final Class<T> sourceType, final Consumer<SuiStream<T, T>> stream) {
+		return eventStreamBridge(bridge -> stream.accept(SuiStream.from(bridge)));
+	}
+
+
 	/**
 	 * Used to create a stream that can listen to simpleui-events.
 	 *
@@ -34,9 +50,10 @@ public interface SuiStream<IN, OUT> {
 	 * @param <T>    the generic type of the event data
 	 * @return the event listener to add to the event property.
 	 */
-	static <T> SUIEventListener<T> eventStream(final Consumer<ObservableValue<T>> bridge) {
+	static <T> SUIEventListener<T> eventStreamBridge(final Consumer<ObservableValue<T>> bridge) {
 		return new EventStreamSource<>(bridge);
 	}
+
 
 	/**
 	 * Suppresses all unhandled exceptions that are thrown in all following steps.
@@ -226,6 +243,26 @@ public interface SuiStream<IN, OUT> {
 	 * @return a new stream
 	 */
 	SuiStream<OUT, List<OUT>> accumulate(int maxAmount, Duration timeout);
+
+	/**
+	 * Updates the state for each element in this stream.
+	 *
+	 * @param stateType      the marker for the type of the state
+	 * @param state          the state to update
+	 * @param updateFunction the function updating the state
+	 * @param <T>            the generic type of the state
+	 */
+	<T extends SuiState> void updateState(Class<T> stateType, T state, BiConsumer<T, OUT> updateFunction);
+
+	/**
+	 * Updates the state silently for each element in this stream.
+	 *
+	 * @param stateType      the marker for the type of the state
+	 * @param state          the state to update
+	 * @param updateFunction the function updating the state
+	 * @param <T>            the generic type of the state
+	 */
+	<T extends SuiState> void updateStateSilent(Class<T> stateType, T state, BiConsumer<T, OUT> updateFunction);
 
 
 }
