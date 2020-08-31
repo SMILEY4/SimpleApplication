@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBui
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIChoiceBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUILabel;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SUIScrollPane;
@@ -86,6 +87,7 @@ public class SUIRegistry {
 		SUISeparator.register(this);
 		SUILabel.register(this);
 		SUIChoiceBox.register(this);
+		SUIContainer.register(this);
 	}
 
 
