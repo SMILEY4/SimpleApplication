@@ -87,7 +87,7 @@ public class ItemListProperty extends Property {
 
 
 
-	public static class ItemListBuilder implements PropFxNodeBuilder<ItemListProperty, Pane> {
+	public static class Builder implements PropFxNodeBuilder<ItemListProperty, Pane> {
 
 
 		@Override

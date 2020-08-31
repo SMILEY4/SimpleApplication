@@ -121,7 +121,7 @@ public class SizeProperty extends Property {
 
 
 
-	public static class SizeUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizeProperty, Region> {
+	public static class RegionUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizeProperty, Region> {
 
 
 		@Override

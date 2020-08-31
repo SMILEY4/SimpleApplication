@@ -49,7 +49,7 @@ public class FitToWidthProperty extends Property {
 
 
 
-	public static class ScrollPaneFitToWidthUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToWidthProperty, ScrollPane> {
+	public static class ScrollPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToWidthProperty, ScrollPane> {
 
 
 		@Override
@@ -85,7 +85,7 @@ public class FitToWidthProperty extends Property {
 
 
 
-	public static class VBoxFitToWidthUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToWidthProperty, VBox> {
+	public static class VBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToWidthProperty, VBox> {
 
 
 		@Override

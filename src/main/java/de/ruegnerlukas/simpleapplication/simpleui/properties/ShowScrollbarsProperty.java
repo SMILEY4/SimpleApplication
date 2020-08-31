@@ -57,7 +57,7 @@ public class ShowScrollbarsProperty extends Property {
 
 
 
-	public static class ShowScrollbarUpdatingBuilder implements PropFxNodeUpdatingBuilder<ShowScrollbarsProperty, ScrollPane> {
+	public static class ScrollPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<ShowScrollbarsProperty, ScrollPane> {
 
 
 		@Override

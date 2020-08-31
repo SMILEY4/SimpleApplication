@@ -58,7 +58,7 @@ public class SizePreferredProperty extends Property {
 
 
 
-	public static class SizePreferredUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizePreferredProperty, Region> {
+	public static class RegionUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizePreferredProperty, Region> {
 
 
 		@Override

@@ -48,7 +48,7 @@ public class TextContentProperty extends Property {
 
 
 
-	public static class TextContentUpdatingBuilder implements PropFxNodeUpdatingBuilder<TextContentProperty, Labeled> {
+	public static class LabeledUpdatingBuilder implements PropFxNodeUpdatingBuilder<TextContentProperty, Labeled> {
 
 
 		@Override

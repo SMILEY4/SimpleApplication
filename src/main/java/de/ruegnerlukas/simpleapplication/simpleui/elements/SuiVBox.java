@@ -66,10 +66,10 @@ public final class SuiVBox {
 		registry.registerProperties(SuiVBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiVBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiVBox.class, List.of(
-				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.VBoxFitToWidthUpdatingBuilder()),
-				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.VBoxSpacingUpdatingBuilder()),
-				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.VBoxAlignmentUpdatingBuilder()),
-				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null)
+				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.VBoxUpdatingBuilder()),
+				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.VBoxUpdatingBuilder()),
+				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.VBoxUpdatingBuilder()),
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null)
 		));
 	}
 

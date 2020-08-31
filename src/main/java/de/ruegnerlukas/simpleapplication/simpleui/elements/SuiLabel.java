@@ -50,9 +50,9 @@ public final class SuiLabel {
 		registry.registerProperties(SuiLabel.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiLabel.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiLabel.class, List.of(
-				PropertyEntry.of(TextContentProperty.class, new TextContentProperty.TextContentUpdatingBuilder()),
-				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.WrapTextUpdatingBuilder()),
-				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledAlignmentUpdatingBuilder())
+				PropertyEntry.of(TextContentProperty.class, new TextContentProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledUpdatingBuilder())
 		));
 	}
 

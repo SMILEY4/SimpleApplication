@@ -111,7 +111,7 @@ public class StyleProperty extends Property {
 
 
 
-	public static class StyleUpdatingBuilder implements PropFxNodeUpdatingBuilder<StyleProperty, Node> {
+	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<StyleProperty, Node> {
 
 
 		@Override

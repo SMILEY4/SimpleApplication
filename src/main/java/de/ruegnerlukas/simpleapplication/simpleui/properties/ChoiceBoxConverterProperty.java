@@ -72,8 +72,7 @@ public class ChoiceBoxConverterProperty<T> extends Property {
 
 
 
-	public static class CBConverterUpdatingBuilder<T>
-			implements PropFxNodeUpdatingBuilder<ChoiceBoxConverterProperty<T>, ChoiceBox<T>> {
+	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoiceBoxConverterProperty<T>, ChoiceBox<T>> {
 
 
 		@Override

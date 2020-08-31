@@ -66,7 +66,7 @@ public class ChoicesProperty<T> extends Property {
 
 
 
-	public static class ChoicesPropertyUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoicesProperty<T>, ChoiceBox<T>> {
+	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoicesProperty<T>, ChoiceBox<T>> {
 
 
 		@Override

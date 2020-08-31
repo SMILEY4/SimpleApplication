@@ -48,7 +48,7 @@ public class DisabledProperty extends Property {
 
 
 
-	public static class DisabledUpdatingBuilder implements PropFxNodeUpdatingBuilder<DisabledProperty, Node> {
+	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<DisabledProperty, Node> {
 
 
 		@Override

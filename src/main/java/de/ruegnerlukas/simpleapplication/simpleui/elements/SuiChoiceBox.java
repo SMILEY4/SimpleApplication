@@ -57,8 +57,8 @@ public final class SuiChoiceBox {
 		registry.registerProperties(SuiChoiceBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiChoiceBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiChoiceBox.class, List.of(
-				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ChoicesPropertyUpdatingBuilder<>()),
-				PropertyEntry.of(ChoiceBoxConverterProperty.class, new ChoiceBoxConverterProperty.CBConverterUpdatingBuilder<>()),
+				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ChoiceBoxUpdatingBuilder<>()),
+				PropertyEntry.of(ChoiceBoxConverterProperty.class, new ChoiceBoxConverterProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(OnSelectedIndexEventProperty.class, new OnSelectedIndexEventProperty.ChoiceBoxUpdatingBuilder())
 		));

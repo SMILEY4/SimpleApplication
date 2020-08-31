@@ -47,7 +47,7 @@ public class WrapTextProperty extends Property {
 
 
 
-	public static class WrapTextUpdatingBuilder implements PropFxNodeUpdatingBuilder<WrapTextProperty, Labeled> {
+	public static class LabeledUpdatingBuilder implements PropFxNodeUpdatingBuilder<WrapTextProperty, Labeled> {
 
 
 		@Override

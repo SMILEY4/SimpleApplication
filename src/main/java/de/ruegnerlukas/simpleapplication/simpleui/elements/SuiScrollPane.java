@@ -76,10 +76,10 @@ public final class SuiScrollPane {
 		registry.registerProperties(SuiScrollPane.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiScrollPane.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiScrollPane.class, List.of(
-				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.ScrollPaneFitToWidthUpdatingBuilder()),
-				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.ScrollPaneFitToHeightUpdatingBuilder()),
-				PropertyEntry.of(ShowScrollbarsProperty.class, new ShowScrollbarsProperty.ShowScrollbarUpdatingBuilder()),
-				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneContentBuilder(), null),
+				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.ScrollPaneUpdatingBuilder()),
+				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.ScrollPaneUpdatingBuilder()),
+				PropertyEntry.of(ShowScrollbarsProperty.class, new ShowScrollbarsProperty.ScrollPaneUpdatingBuilder()),
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneBuilder(), null),
 				PropertyEntry.of(OnScrollHorizontalEventProperty.class, new OnScrollHorizontalEventProperty.ScrollPaneUpdatingBuilder()),
 				PropertyEntry.of(OnScrollVerticalEventProperty.class, new OnScrollVerticalEventProperty.ScrollPaneUpdatingBuilder())
 		));

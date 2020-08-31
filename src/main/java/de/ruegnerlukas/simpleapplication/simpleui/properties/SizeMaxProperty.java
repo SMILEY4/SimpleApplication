@@ -58,7 +58,7 @@ public class SizeMaxProperty extends Property {
 
 
 
-	public static class SizeMaxUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizeMaxProperty, Region> {
+	public static class RegionUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizeMaxProperty, Region> {
 
 
 		@Override

@@ -64,13 +64,13 @@ public final class SuiAnchorPane {
 		registry.registerProperties(SuiAnchorPane.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiAnchorPane.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiAnchorPane.class, List.of(
-				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null)
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null)
 		));
 
 		registry.registerBaseFxNodeBuilder(AnchorPaneChildItem.class, new ChildItem.ChildItemNodeBuilder());
 		registry.registerProperties(AnchorPaneChildItem.class, List.of(
 				PropertyEntry.of(ItemListProperty.class, new NoOpUpdatingBuilder()),
-				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.AnchorUpdatingBuilder())
+				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder())
 		));
 	}
 

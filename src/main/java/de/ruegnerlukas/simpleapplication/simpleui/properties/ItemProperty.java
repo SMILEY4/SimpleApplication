@@ -60,7 +60,7 @@ public class ItemProperty extends Property {
 
 
 
-	public static class ScrollPaneContentBuilder implements PropFxNodeBuilder<ItemProperty, ScrollPane> {
+	public static class ScrollPaneBuilder implements PropFxNodeBuilder<ItemProperty, ScrollPane> {
 
 
 		@Override

@@ -48,7 +48,7 @@ public class SpacingProperty extends Property {
 
 
 
-	public static class VBoxSpacingUpdatingBuilder implements PropFxNodeUpdatingBuilder<SpacingProperty, VBox> {
+	public static class VBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<SpacingProperty, VBox> {
 
 
 		@Override
@@ -84,7 +84,7 @@ public class SpacingProperty extends Property {
 
 
 
-	public static class HBoxSpacingUpdatingBuilder implements PropFxNodeUpdatingBuilder<SpacingProperty, HBox> {
+	public static class HBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<SpacingProperty, HBox> {
 
 
 		@Override

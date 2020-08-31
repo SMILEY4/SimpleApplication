@@ -65,10 +65,10 @@ public final class SuiHBox {
 		registry.registerProperties(SuiHBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiHBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiHBox.class, List.of(
-				PropertyEntry.of(FitToWidthProperty.class, new FitToHeightProperty.HBoxFitToHeightUpdatingBuilder()),
-				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.HBoxSpacingUpdatingBuilder()),
-				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.HBoxAlignmentUpdatingBuilder()),
-				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.ItemListBuilder(), null)
+				PropertyEntry.of(FitToWidthProperty.class, new FitToHeightProperty.HBoxUpdatingBuilder()),
+				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.HBoxUpdatingBuilder()),
+				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.HBoxUpdatingBuilder()),
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null)
 		));
 	}
 

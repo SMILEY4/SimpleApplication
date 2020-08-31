@@ -58,7 +58,7 @@ public class SizeMinProperty extends Property {
 
 
 
-	public static class SizeMinUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizeMinProperty, Region> {
+	public static class RegionUpdatingBuilder implements PropFxNodeUpdatingBuilder<SizeMinProperty, Region> {
 
 
 		@Override

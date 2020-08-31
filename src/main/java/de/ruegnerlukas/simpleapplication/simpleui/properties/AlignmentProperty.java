@@ -51,7 +51,7 @@ public class AlignmentProperty extends Property {
 
 
 
-	public static class VBoxAlignmentUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, VBox> {
+	public static class VBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, VBox> {
 
 
 		@Override
@@ -84,7 +84,7 @@ public class AlignmentProperty extends Property {
 
 
 
-	public static class HBoxAlignmentUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, HBox> {
+	public static class HBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, HBox> {
 
 
 		@Override
@@ -117,7 +117,7 @@ public class AlignmentProperty extends Property {
 
 
 
-	public static class LabeledAlignmentUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, Labeled> {
+	public static class LabeledUpdatingBuilder implements PropFxNodeUpdatingBuilder<AlignmentProperty, Labeled> {
 
 
 		@Override

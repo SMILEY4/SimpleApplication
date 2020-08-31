@@ -2,16 +2,15 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 
 import java.util.Objects;
 import java.util.Optional;
-
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 @Getter
 public class AnchorProperty extends Property {
@@ -77,7 +76,7 @@ public class AnchorProperty extends Property {
 
 
 
-	public static class AnchorUpdatingBuilder implements PropFxNodeUpdatingBuilder<AnchorProperty, Node> {
+	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<AnchorProperty, Node> {
 
 
 		@Override

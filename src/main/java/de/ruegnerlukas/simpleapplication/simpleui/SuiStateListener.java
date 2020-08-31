@@ -1,8 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiStateUpdate;
-
 public interface SuiStateListener {
 
 

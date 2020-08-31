@@ -76,7 +76,7 @@ public class LayoutProperty extends Property {
 
 
 
-	public static class LayoutUpdatingBuilder implements PropFxNodeUpdatingBuilder<LayoutProperty, Node> {
+	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<LayoutProperty, Node> {
 
 
 		@Override

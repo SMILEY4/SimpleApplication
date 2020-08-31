@@ -49,7 +49,7 @@ public class FitToHeightProperty extends Property {
 
 
 
-	public static class ScrollPaneFitToHeightUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, ScrollPane> {
+	public static class ScrollPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, ScrollPane> {
 
 
 		@Override
@@ -82,7 +82,7 @@ public class FitToHeightProperty extends Property {
 
 
 
-	public static class HBoxFitToHeightUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, HBox> {
+	public static class HBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, HBox> {
 
 
 		@Override

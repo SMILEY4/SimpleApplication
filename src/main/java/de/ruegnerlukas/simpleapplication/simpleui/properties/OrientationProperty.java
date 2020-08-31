@@ -49,7 +49,7 @@ public class OrientationProperty extends Property {
 
 
 
-	public static class SeparatorOrientationUpdatingBuilder implements PropFxNodeUpdatingBuilder<OrientationProperty, Separator> {
+	public static class SeparatorUpdatingBuilder implements PropFxNodeUpdatingBuilder<OrientationProperty, Separator> {
 
 
 		@Override

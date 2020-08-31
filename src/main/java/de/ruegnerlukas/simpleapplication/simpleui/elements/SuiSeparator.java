@@ -73,7 +73,7 @@ public final class SuiSeparator {
 		registry.registerProperties(SuiSeparator.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiSeparator.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiSeparator.class, List.of(
-				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.SeparatorOrientationUpdatingBuilder())
+				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.SeparatorUpdatingBuilder())
 		));
 	}
 
