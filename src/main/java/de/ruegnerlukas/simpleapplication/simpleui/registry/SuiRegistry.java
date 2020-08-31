@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.registry;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeBuilder;
@@ -52,9 +53,7 @@ public class SuiRegistry {
 	 * @return the singleton instance of this registry after initialisation.
 	 */
 	public static SuiRegistry get() {
-		if (instance == null) {
-			log.warn("SUIRegistry not initialized. Returning null.");
-		}
+		Validations.PRESENCE.notNull(instance).exception("SuiRegistry is not initialized. Call SuiRegistry#initialize() first.");
 		return instance;
 	}
 
@@ -100,6 +99,8 @@ public class SuiRegistry {
 	 * @param fxNodeBuilder the builder of a base fx-node
 	 */
 	public void registerBaseFxNodeBuilder(final Class<?> nodeType, final BaseFxNodeBuilder<? extends Node> fxNodeBuilder) {
+		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
+		Validations.INPUT.notNull(fxNodeBuilder).exception("The fx node builder can not be null");
 		RegistryEntry entry = new RegistryEntry(nodeType, fxNodeBuilder);
 		entries.put(entry.getNodeType(), entry);
 	}
@@ -117,6 +118,8 @@ public class SuiRegistry {
 	public void registerProperty(final Class<?> nodeType,
 								 final Class<? extends Property> property,
 								 final PropFxNodeUpdatingBuilder<? extends Property, ? extends Node> ub) {
+		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
+		Validations.INPUT.notNull(property).exception("The property type can not be null");
 		registerProperty(nodeType, property, ub, ub);
 	}
 
@@ -133,6 +136,8 @@ public class SuiRegistry {
 	public void registerProperty(final Class<?> nodeType,
 								 final Class<? extends Property> property,
 								 final PropFxNodeBuilder<? extends Property, ? extends Node> builder) {
+		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
+		Validations.INPUT.notNull(property).exception("The property type can not be null");
 		final RegistryEntry entry = getEntry(nodeType);
 		if (entry != null && builder != null) {
 			entry.getPropFxNodeBuilders().put(property, builder);
@@ -154,6 +159,8 @@ public class SuiRegistry {
 								 final Class<? extends Property> property,
 								 final PropFxNodeBuilder<? extends Property, ? extends Node> builder,
 								 final PropFxNodeUpdater<? extends Property, ? extends Node> updater) {
+		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
+		Validations.INPUT.notNull(property).exception("The property type can not be null");
 		final RegistryEntry entry = getEntry(nodeType);
 		if (entry != null) {
 			if (builder != null) {
@@ -175,6 +182,8 @@ public class SuiRegistry {
 	 * @param properties the list of property data
 	 */
 	public void registerProperties(final Class<?> nodeType, final List<PropertyEntry> properties) {
+		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
+		Validations.INPUT.notNull(properties).exception("The property-list can not be null");
 		properties.forEach(entry -> registerProperty(nodeType, entry.getType(), entry.getBuilder(), entry.getUpdater()));
 	}
 
@@ -201,6 +210,9 @@ public class SuiRegistry {
 	 * @param factories        the node factories to inject
 	 */
 	public void inject(final String injectionPointId, final List<NodeFactory> factories) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null");
+		Validations.INPUT.notNull(factories).exception("The factory-list can not be null");
+		Validations.INPUT.containsNoNull(factories).exception("The factory-list can not contain null-entries");
 		factories.forEach(factory -> inject(injectionPointId, factory));
 	}
 
@@ -214,6 +226,9 @@ public class SuiRegistry {
 	 * @param factories        the node factories to inject
 	 */
 	public void inject(final String injectionPointId, final NodeFactory... factories) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null");
+		Validations.INPUT.notNull(factories).exception("The factories can not be null");
+		Validations.INPUT.containsNoNull(factories).exception("The factory-list can not contain null-entries");
 		for (NodeFactory factory : factories) {
 			inject(injectionPointId, factory);
 		}
@@ -229,6 +244,8 @@ public class SuiRegistry {
 	 * @param factory          the node factory to inject
 	 */
 	public void inject(final String injectionPointId, final NodeFactory factory) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null");
+		Validations.INPUT.notNull(factory).exception("The factory can not be null");
 		injectedFactories
 				.computeIfAbsent(injectionPointId, k -> new ArrayList<>())
 				.add(factory);

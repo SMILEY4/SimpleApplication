@@ -1,8 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -39,6 +40,8 @@ public final class SuiButton {
 	 * @return the factory for a button node
 	 */
 	public static NodeFactory button(final Property... properties) {
+		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
+		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiButton.class, get().getEntry(SuiButton.class).getProperties(), properties);
 		return state -> new SuiNode(SuiButton.class, List.of(properties), state, null);
 	}

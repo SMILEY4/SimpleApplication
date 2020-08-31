@@ -1,8 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.OrientationProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -39,6 +40,9 @@ public final class SuiSeparator {
 	 * @return the factory for a separator node
 	 */
 	public static NodeFactory separator(final Orientation orientation, final Property... properties) {
+		Validations.INPUT.notNull(orientation).exception("The orientation may not be null.");
+		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
+		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		final List<Property> propList = new ArrayList<>(List.of(properties));
 		propList.add(new OrientationProperty(orientation));
 		Properties.checkIllegal(SuiSeparator.class, get().getEntry(SuiSeparator.class).getProperties(), propList);
