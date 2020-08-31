@@ -61,8 +61,8 @@ public class PropertyTestUtils {
 	public static void assertSizeMinProperty(SuiNode node, Double width, Double height) {
 		assertThat(node.getProperties()).containsKey(SizeMinProperty.class);
 		final SizeMinProperty property = node.getProperty(SizeMinProperty.class);
-		assertThat(property.getWidth()).isCloseTo(width, Percentage.withPercentage(0.01));
-		assertThat(property.getHeight()).isCloseTo(height, Percentage.withPercentage(0.01));
+		assertThat(property.getWidth().doubleValue()).isCloseTo(width, Percentage.withPercentage(0.01));
+		assertThat(property.getHeight().doubleValue()).isCloseTo(height, Percentage.withPercentage(0.01));
 	}
 
 
@@ -71,8 +71,8 @@ public class PropertyTestUtils {
 	public static void assertSizePreferredProperty(SuiNode node, Double width, Double height) {
 		assertThat(node.getProperties()).containsKey(SizePreferredProperty.class);
 		final SizePreferredProperty property = node.getProperty(SizePreferredProperty.class);
-		assertThat(property.getWidth()).isCloseTo(width, Percentage.withPercentage(0.01));
-		assertThat(property.getHeight()).isCloseTo(height, Percentage.withPercentage(0.01));
+		assertThat(property.getWidth().doubleValue()).isCloseTo(width, Percentage.withPercentage(0.01));
+		assertThat(property.getHeight().doubleValue()).isCloseTo(height, Percentage.withPercentage(0.01));
 	}
 
 
@@ -81,8 +81,8 @@ public class PropertyTestUtils {
 	public static void assertSizeMaxProperty(SuiNode node, Double width, Double height) {
 		assertThat(node.getProperties()).containsKey(SizeMaxProperty.class);
 		final SizeMaxProperty property = node.getProperty(SizeMaxProperty.class);
-		assertThat(property.getWidth()).isCloseTo(width, Percentage.withPercentage(0.01));
-		assertThat(property.getHeight()).isCloseTo(height, Percentage.withPercentage(0.01));
+		assertThat(property.getWidth().doubleValue()).isCloseTo(width, Percentage.withPercentage(0.01));
+		assertThat(property.getHeight().doubleValue()).isCloseTo(height, Percentage.withPercentage(0.01));
 	}
 
 
@@ -91,12 +91,12 @@ public class PropertyTestUtils {
 	public static void assertSizeProperty(SuiNode node, Double minWidth, Double minHeight, Double prefWidth, Double prefHeight, Double maxWidth, Double maxHeight) {
 		assertThat(node.getProperties()).containsKey(SizeProperty.class);
 		final SizeProperty property = node.getProperty(SizeProperty.class);
-		assertThat(property.getMinWidth()).isCloseTo(minWidth, Percentage.withPercentage(0.01));
-		assertThat(property.getMinHeight()).isCloseTo(minHeight, Percentage.withPercentage(0.01));
-		assertThat(property.getPreferredWidth()).isCloseTo(prefWidth, Percentage.withPercentage(0.01));
-		assertThat(property.getPreferredHeight()).isCloseTo(prefHeight, Percentage.withPercentage(0.01));
-		assertThat(property.getMaxWidth()).isCloseTo(maxWidth, Percentage.withPercentage(0.01));
-		assertThat(property.getMaxHeight()).isCloseTo(maxHeight, Percentage.withPercentage(0.01));
+		assertThat(property.getMinWidth().doubleValue()).isCloseTo(minWidth, Percentage.withPercentage(0.01));
+		assertThat(property.getMinHeight().doubleValue()).isCloseTo(minHeight, Percentage.withPercentage(0.01));
+		assertThat(property.getPreferredWidth().doubleValue()).isCloseTo(prefWidth, Percentage.withPercentage(0.01));
+		assertThat(property.getPreferredHeight().doubleValue()).isCloseTo(prefHeight, Percentage.withPercentage(0.01));
+		assertThat(property.getMaxWidth().doubleValue()).isCloseTo(maxWidth, Percentage.withPercentage(0.01));
+		assertThat(property.getMaxHeight().doubleValue()).isCloseTo(maxHeight, Percentage.withPercentage(0.01));
 	}
 
 

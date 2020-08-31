@@ -16,13 +16,13 @@ public class SizePreferredProperty extends Property {
 	/**
 	 * The preferred width.
 	 */
-	private final Double width;
+	private final Number width;
 
 
 	/**
 	 * The preferred height.
 	 */
-	private final Double height;
+	private final Number height;
 
 
 
@@ -31,7 +31,7 @@ public class SizePreferredProperty extends Property {
 	 * @param width  the preferred width.
 	 * @param height the preferred height.
 	 */
-	public SizePreferredProperty(final Double width, final Double height) {
+	public SizePreferredProperty(final Number width, final Number height) {
 		super(SizePreferredProperty.class);
 		this.width = width;
 		this.height = height;
@@ -64,7 +64,7 @@ public class SizePreferredProperty extends Property {
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SizePreferredProperty property,
 						  final Region fxNode) {
-			fxNode.setPrefSize(property.getWidth(), property.getHeight());
+			fxNode.setPrefSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 		}
 
 
@@ -73,7 +73,7 @@ public class SizePreferredProperty extends Property {
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SizePreferredProperty property,
 									 final SuiNode node, final Region fxNode) {
-			fxNode.setPrefSize(property.getWidth(), property.getHeight());
+			fxNode.setPrefSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 			return MutationResult.MUTATED;
 		}
 
@@ -85,7 +85,7 @@ public class SizePreferredProperty extends Property {
 									 final SuiNode node, final Region fxNode) {
 			if (node.hasProperty(SizeProperty.class)) {
 				SizeProperty sizeProp = node.getProperty(SizeProperty.class);
-				fxNode.setPrefSize(sizeProp.getPreferredWidth(), sizeProp.getPreferredHeight());
+				fxNode.setPrefSize(sizeProp.getPreferredWidth().doubleValue(), sizeProp.getPreferredHeight().doubleValue());
 				return MutationResult.MUTATED;
 			} else {
 				return MutationResult.REQUIRES_REBUILD;

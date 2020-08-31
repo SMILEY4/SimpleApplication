@@ -1,8 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoiceBoxConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesProperty;
@@ -39,6 +40,8 @@ public final class SuiChoiceBox {
 	 * @return the factory for a choicebox node
 	 */
 	public static NodeFactory choiceBox(final Property... properties) {
+		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
+		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiChoiceBox.class, get().getEntry(SuiChoiceBox.class).getProperties(), properties);
 		return state -> new SuiNode(SuiChoiceBox.class, List.of(properties), state, null);
 	}

@@ -1,8 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -40,6 +41,8 @@ public final class SuiCheckbox {
 	 * @return the factory for a checkbox node
 	 */
 	public static NodeFactory checkbox(final Property... properties) {
+		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
+		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiCheckbox.class, get().getEntry(SuiCheckbox.class).getProperties(), properties);
 		return state -> new SuiNode(SuiCheckbox.class, List.of(properties), state, null);
 	}

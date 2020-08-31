@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.AccumulateStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.AsyncStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.CollectIntoStream;
@@ -23,8 +24,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.UnpackStrea
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.WaitForAndPackStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.WaitForStream;
 import javafx.beans.value.WritableValue;
-
 import javafx.util.Duration;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -70,6 +71,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, OUT> handleErrors(final Consumer<Exception> handler) {
+		Validations.INPUT.notNull(handler).exception("The handler may not be null.");
 		return new HandleErrorStream<>(this, handler);
 	}
 
@@ -78,6 +80,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, OUT> filter(final Predicate<OUT> predicate) {
+		Validations.INPUT.notNull(predicate).exception("The predicate may not be null.");
 		return new FilterStream<>(this, predicate);
 	}
 
@@ -94,6 +97,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public <R> SuiStream<OUT, R> map(final Function<OUT, R> mapping) {
+		Validations.INPUT.notNull(mapping).exception("The mapping may not be null.");
 		return new MapStream<>(this, mapping);
 	}
 
@@ -102,6 +106,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public <R> SuiStream<OUT, R> mapIgnoreNulls(final Function<OUT, R> mapping) {
+		Validations.INPUT.notNull(mapping).exception("The mapping may not be null.");
 		return new MapIgnoreNullsStream<>(this, mapping);
 	}
 
@@ -110,6 +115,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, OUT> mapNulls(final Supplier<OUT> mapping) {
+		Validations.INPUT.notNull(mapping).exception("The mapping may not be null.");
 		return new MapNullsStream<>(this, mapping);
 	}
 
@@ -126,6 +132,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public <R> SuiStream<OUT, R> flatMap(final Function<OUT, List<R>> mapping) {
+		Validations.INPUT.notNull(mapping).exception("The mapping may not be null.");
 		return new FlatMapStream<>(this, mapping);
 	}
 
@@ -134,6 +141,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public <R> SuiStream<OUT, R> flatMapIgnoreNulls(final Function<OUT, List<R>> mapping) {
+		Validations.INPUT.notNull(mapping).exception("The mapping may not be null.");
 		return new FlatMapIgnoreNullStream<>(this, mapping);
 	}
 
@@ -142,6 +150,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, OUT> flatMapNulls(final Supplier<List<OUT>> mapping) {
+		Validations.INPUT.notNull(mapping).exception("The mapping may not be null.");
 		return new FlatMapNullsStream<>(this, mapping);
 	}
 
@@ -150,6 +159,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public void forEach(final Consumer<OUT> consumer) {
+		Validations.INPUT.notNull(consumer).exception("The consumer may not be null.");
 		new ForEachStream<>(this, consumer);
 	}
 
@@ -158,6 +168,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, OUT> peek(final Consumer<OUT> consumer) {
+		Validations.INPUT.notNull(consumer).exception("The consumer may not be null.");
 		return new PeekStream<>(this, consumer);
 	}
 
@@ -174,6 +185,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public void collectInto(final Collection<OUT> collection) {
+		Validations.INPUT.notNull(collection).exception("The target collection may not be null.");
 		new CollectIntoStream<>(this, collection);
 	}
 
@@ -182,6 +194,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public void collectInto(final WritableValue<OUT> value) {
+		Validations.INPUT.notNull(value).exception("The target value may not be null.");
 		new CollectIntoValueStream<>(this, value);
 	}
 
@@ -198,6 +211,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, OUT> waitFor(final boolean includeMatching, final Predicate<OUT> predicate) {
+		Validations.INPUT.notNull(predicate).exception("The predicate may not be null.");
 		return new WaitForStream<>(this, predicate, includeMatching);
 	}
 
@@ -206,6 +220,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, List<OUT>> waitForAndPack(final boolean includeMatching, final Predicate<OUT> predicate) {
+		Validations.INPUT.notNull(predicate).exception("The predicate may not be null.");
 		return new WaitForAndPackStream<>(this, predicate, includeMatching);
 	}
 
@@ -230,6 +245,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, OUT> skip(final Supplier<Boolean> skipFlag) {
+		Validations.INPUT.notNull(skipFlag).exception("The supplier for the skip-flag may not be null.");
 		return new SkipStream<>(this, skipFlag);
 	}
 
@@ -262,6 +278,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, List<OUT>> accumulate(final Duration timeout) {
+		Validations.INPUT.notNull(timeout).exception("The timeout may not be null.");
 		return accumulate(Integer.MAX_VALUE, timeout);
 	}
 
@@ -270,6 +287,7 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 
 	@Override
 	public SuiStream<OUT, List<OUT>> accumulate(final int maxAmount, final Duration timeout) {
+		Validations.INPUT.notNull(timeout).exception("The timeout may not be null.");
 		return new AccumulateStream<>(this, maxAmount, timeout);
 	}
 

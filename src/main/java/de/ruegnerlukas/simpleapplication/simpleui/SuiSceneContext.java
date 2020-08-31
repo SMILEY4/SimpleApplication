@@ -157,7 +157,7 @@ public class SuiSceneContext implements SuiStateListener {
 	 * @param listener the listener to add
 	 */
 	public void addListener(final SuiSceneContextListener listener) {
-		Validations.INPUT.notNull(listener).exception("The context listener to add may not be null.");
+		Validations.INPUT.notNull(listener).exception("The context listener may not be null.");
 		if (!listeners.contains(listener)) {
 			listeners.add(listener);
 		}

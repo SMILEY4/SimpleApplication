@@ -85,6 +85,32 @@ public class Validator {
 
 
 	/**
+	 * Checks if the value of the given {@link Optional} is present (is not null).
+	 *
+	 * @param optional the object to examine
+	 * @return the result of the validation
+	 */
+	public ValidationResult isPresent(@SuppressWarnings ("OptionalUsedAsFieldOrParameterType") final Optional<?> optional) {
+		return validated(optional.isEmpty());
+	}
+
+
+
+
+	/**
+	 * Checks if the value of the given {@link Optional} is not present (is null).
+	 *
+	 * @param optional the object to examine
+	 * @return the result of the validation
+	 */
+	public ValidationResult isNotPresent(@SuppressWarnings ("OptionalUsedAsFieldOrParameterType") final Optional<?> optional) {
+		return validated(optional.isPresent());
+	}
+
+
+
+
+	/**
 	 * Assert that the given string is neither null nor empty
 	 *
 	 * @param string the string to examine
@@ -256,7 +282,7 @@ public class Validator {
 	 * @param <T>        Generic type
 	 * @return the result of the validation
 	 */
-	public <T> ValidationResult containsExactly(final Collection<T> collection, final int n) {
+	public <T> ValidationResult hasSize(final Collection<T> collection, final int n) {
 		return validated(collection == null || collection.size() != n);
 	}
 
@@ -271,7 +297,7 @@ public class Validator {
 	 * @param <T>   Generic type
 	 * @return the result of the validation
 	 */
-	public <T> ValidationResult containsExactly(final T[] array, final int n) {
+	public <T> ValidationResult hasSize(final T[] array, final int n) {
 		return validated(array == null || array.length != n);
 	}
 
@@ -505,6 +531,35 @@ public class Validator {
 
 
 	/**
+	 * Asserts that the given index is valid for the given collection.
+	 *
+	 * @param index      the index into the given collection  to examine
+	 * @param collection the collection
+	 * @param <T>        Generic type of the collection
+	 * @return the result of the validation
+	 */
+	public <T> ValidationResult isValidIndex(final int index, final Collection<T> collection) {
+		return isValidIndex(index, collection.size());
+	}
+
+
+
+
+	/**
+	 * Asserts that the given index is valid for the given size of a list/array/... .
+	 *
+	 * @param index the index to examine
+	 * @param size  the size of a list/array/...
+	 * @return the result of the validation
+	 */
+	public ValidationResult isValidIndex(final int index, final int size) {
+		return inRange(index, 0, size - 1);
+	}
+
+
+
+
+	/**
 	 * Assert that the given boolean is true.
 	 *
 	 * @param bool the boolean to examine
@@ -668,8 +723,8 @@ public class Validator {
 	 * Assert that the given number is equal or in between the min and max values.
 	 *
 	 * @param value the value to examine
-	 * @param min   the minimum value
-	 * @param max   the maximum value
+	 * @param min   the minimum value (including)
+	 * @param max   the maximum value (including)
 	 * @return the result of the validation
 	 */
 	public ValidationResult inRange(final long value, final long min, final long max) {
@@ -683,8 +738,8 @@ public class Validator {
 	 * Assert that the given number is equal or in between the min and max values.
 	 *
 	 * @param value the value to examine
-	 * @param min   the minimum value
-	 * @param max   the maximum value
+	 * @param min   the minimum value (including)
+	 * @param max   the maximum value (including)
 	 * @return the result of the validation
 	 */
 	public ValidationResult inRange(final double value, final double min, final double max) {
@@ -803,32 +858,6 @@ public class Validator {
 			}
 		}
 		return validated(!canBeCast);
-	}
-
-
-
-
-	/**
-	 * Checks if the value of the given {@link Optional} is present (is not null).
-	 *
-	 * @param optional the object to examine
-	 * @return the result of the validation
-	 */
-	public ValidationResult isPresent(@SuppressWarnings ("OptionalUsedAsFieldOrParameterType") final Optional<?> optional) {
-		return validated(optional.isEmpty());
-	}
-
-
-
-
-	/**
-	 * Checks if the value of the given {@link Optional} is not present (is null).
-	 *
-	 * @param optional the object to examine
-	 * @return the result of the validation
-	 */
-	public ValidationResult isNotPresent(@SuppressWarnings ("OptionalUsedAsFieldOrParameterType") final Optional<?> optional) {
-		return validated(optional.isPresent());
 	}
 
 

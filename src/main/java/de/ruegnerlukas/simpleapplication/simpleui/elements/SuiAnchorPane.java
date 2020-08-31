@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.SuiUtils;
@@ -40,6 +41,8 @@ public final class SuiAnchorPane {
 	 * @return the factory for an anchor-pane node
 	 */
 	public static NodeFactory anchorPane(final Property... properties) {
+		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
+		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiAnchorPane.class, SuiRegistry.get().getEntry(SuiAnchorPane.class).getProperties(), properties);
 		return state -> new SuiNode(
 				SuiAnchorPane.class,

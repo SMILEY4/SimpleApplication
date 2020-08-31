@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -116,6 +117,7 @@ public final class Properties {
 	 * @return an {@link IdProperty}.
 	 */
 	public static Property id(final String id) {
+		Validations.INPUT.notEmpty(id).exception("Id can not be null or empty.");
 		return new IdProperty(id);
 	}
 
@@ -131,9 +133,15 @@ public final class Properties {
 	 * @param maxHeight       the maximum height.
 	 * @return a {@link SizeProperty}. Has lower priority than the other size properties.
 	 */
-	public static Property size(final Double minWidth, final Double minHeight,
-								final Double preferredWidth, final Double preferredHeight,
-								final Double maxWidth, final Double maxHeight) {
+	public static Property size(final Number minWidth, final Number minHeight,
+								final Number preferredWidth, final Number preferredHeight,
+								final Number maxWidth, final Number maxHeight) {
+		Validations.INPUT.notNull(minWidth).exception("The min width can not be null.");
+		Validations.INPUT.notNull(minHeight).exception("The min height can not be null.");
+		Validations.INPUT.notNull(preferredWidth).exception("The preferred width can not be null.");
+		Validations.INPUT.notNull(preferredHeight).exception("The preferred height can not be null.");
+		Validations.INPUT.notNull(maxWidth).exception("The max width can not be null.");
+		Validations.INPUT.notNull(maxHeight).exception("The max height can not be null.");
 		return new SizeProperty(minWidth, minHeight, preferredWidth, preferredHeight, maxWidth, maxHeight);
 	}
 
@@ -145,7 +153,9 @@ public final class Properties {
 	 * @param height the minimum height.
 	 * @return a {@link SizeMinProperty}. Has higher priority than {@link SizeProperty}.
 	 */
-	public static Property minSize(final Double width, final Double height) {
+	public static Property minSize(final Number width, final Number height) {
+		Validations.INPUT.notNull(width).exception("The min width can not be null.");
+		Validations.INPUT.notNull(height).exception("The min height can not be null.");
 		return new SizeMinProperty(width, height);
 	}
 
@@ -157,7 +167,9 @@ public final class Properties {
 	 * @param height the preferred height.
 	 * @return a {@link SizePreferredProperty}. Has higher priority than {@link SizeProperty}.
 	 */
-	public static Property preferredSize(final Double width, final Double height) {
+	public static Property preferredSize(final Number width, final Number height) {
+		Validations.INPUT.notNull(width).exception("The preferred width can not be null.");
+		Validations.INPUT.notNull(height).exception("The preferred height can not be null.");
 		return new SizePreferredProperty(width, height);
 	}
 
@@ -169,7 +181,9 @@ public final class Properties {
 	 * @param height the maximum height.
 	 * @return a {@link SizeMaxProperty}. Has higher priority than {@link SizeProperty}.
 	 */
-	public static Property maxSize(final Double width, final Double height) {
+	public static Property maxSize(final Number width, final Number height) {
+		Validations.INPUT.notNull(width).exception("The max width can not be null.");
+		Validations.INPUT.notNull(height).exception("The max height can not be null.");
 		return new SizeMaxProperty(width, height);
 	}
 
@@ -223,6 +237,7 @@ public final class Properties {
 	 * @return a {@link TextContentProperty}.
 	 */
 	public static Property textContent(final String text) {
+		Validations.INPUT.notNull(text).exception("The text can not be null.");
 		return new TextContentProperty(text);
 	}
 
@@ -234,6 +249,8 @@ public final class Properties {
 	 * @return an {@link ItemListProperty}.
 	 */
 	public static Property items(final NodeFactory... items) {
+		Validations.INPUT.notNull(items).exception("The items can not be null.");
+		Validations.INPUT.containsNoNull(items).exception("The items can not contains null-values.");
 		return new ItemListProperty(items);
 	}
 
@@ -245,6 +262,8 @@ public final class Properties {
 	 * @return an {@link ItemListProperty}.
 	 */
 	public static Property items(final Collection<NodeFactory> items) {
+		Validations.INPUT.notNull(items).exception("The items can not be null.");
+		Validations.INPUT.containsNoNull(items).exception("The items can not contains null-values.");
 		return new ItemListProperty(items);
 	}
 
@@ -256,6 +275,7 @@ public final class Properties {
 	 * @return an {@link ItemListProperty}.
 	 */
 	public static Property items(final Stream<NodeFactory> items) {
+		Validations.INPUT.notNull(items).exception("The items can not be null.");
 		return new ItemListProperty(items);
 	}
 
@@ -267,6 +287,7 @@ public final class Properties {
 	 * @return an {@link ItemListProperty}.
 	 */
 	public static Property items(final ItemListProperty.ItemListFactory factory) {
+		Validations.INPUT.notNull(factory).exception("The factory can not be null.");
 		return new ItemListProperty(factory);
 	}
 
@@ -278,6 +299,7 @@ public final class Properties {
 	 * @return an {@link InjectableItemListProperty}.
 	 */
 	public static Property itemsInjectable(final String injectionPointId) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null.");
 		return new InjectableItemListProperty(injectionPointId);
 	}
 
@@ -293,6 +315,10 @@ public final class Properties {
 	public static Property itemsInjectable(final String injectionPointId,
 										   final InjectionIndexMarker indexMarker,
 										   final NodeFactory... items) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null.");
+		Validations.INPUT.notNull(indexMarker).exception("The index marker can not be null.");
+		Validations.INPUT.notNull(items).exception("The items can not be null.");
+		Validations.INPUT.containsNoNull(items).exception("The items can not contains null-values.");
 		return new InjectableItemListProperty(injectionPointId, indexMarker, items);
 	}
 
@@ -308,6 +334,10 @@ public final class Properties {
 	public static Property itemsInjectable(final String injectionPointId,
 										   final InjectionIndexMarker indexMarker,
 										   final Collection<NodeFactory> items) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null.");
+		Validations.INPUT.notNull(indexMarker).exception("The index marker can not be null.");
+		Validations.INPUT.notNull(items).exception("The items can not be null.");
+		Validations.INPUT.containsNoNull(items).exception("The items can not contains null-values.");
 		return new InjectableItemListProperty(injectionPointId, indexMarker, items);
 	}
 
@@ -323,6 +353,9 @@ public final class Properties {
 	public static Property itemsInjectable(final String injectionPointId,
 										   final InjectionIndexMarker indexMarker,
 										   final Stream<NodeFactory> items) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null.");
+		Validations.INPUT.notNull(indexMarker).exception("The index marker can not be null.");
+		Validations.INPUT.notNull(items).exception("The items can not be null.");
 		return new InjectableItemListProperty(injectionPointId, indexMarker, items);
 	}
 
@@ -338,6 +371,9 @@ public final class Properties {
 	public static Property itemsInjectable(final String injectionPointId,
 										   final InjectionIndexMarker indexMarker,
 										   final ItemListProperty.ItemListFactory factory) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null.");
+		Validations.INPUT.notNull(indexMarker).exception("The index marker can not be null.");
+		Validations.INPUT.notNull(factory).exception("The factory can not be null.");
 		return new InjectableItemListProperty(injectionPointId, indexMarker, factory);
 	}
 
@@ -349,6 +385,7 @@ public final class Properties {
 	 * @return an {@link ItemProperty}.
 	 */
 	public static Property item(final NodeFactory item) {
+		Validations.INPUT.notNull(item).exception("The item can not be null.");
 		return new ItemProperty(item);
 	}
 
@@ -360,6 +397,7 @@ public final class Properties {
 	 * @return an {@link InjectableItemProperty}.
 	 */
 	public static Property itemInjectable(final String injectionPointId) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null.");
 		return new InjectableItemProperty(injectionPointId);
 	}
 
@@ -372,6 +410,8 @@ public final class Properties {
 	 * @return an {@link InjectableItemProperty}.
 	 */
 	public static Property itemInjectable(final String injectionPointId, final NodeFactory item) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null.");
+		Validations.INPUT.notNull(item).exception("The item can not be null.");
 		return new InjectableItemProperty(injectionPointId, item);
 	}
 
@@ -440,6 +480,8 @@ public final class Properties {
 	 * @return a {@link ShowScrollbarsProperty}
 	 */
 	public static Property showScrollbars(final ScrollPane.ScrollBarPolicy horizontal, final ScrollPane.ScrollBarPolicy vertical) {
+		Validations.INPUT.notNull(horizontal).exception("The horizontal scrollbar policy can not be null.");
+		Validations.INPUT.notNull(vertical).exception("The vertical scrollbar policy can not be null.");
 		return new ShowScrollbarsProperty(horizontal, vertical);
 	}
 
@@ -462,6 +504,7 @@ public final class Properties {
 	 * @return an {@link AlignmentProperty}
 	 */
 	public static Property alignment(final Pos alignment) {
+		Validations.INPUT.notNull(alignment).exception("The alignment can not be null.");
 		return new AlignmentProperty(alignment);
 	}
 
@@ -473,6 +516,7 @@ public final class Properties {
 	 * @return an {@link OrientationProperty}
 	 */
 	public static Property orientation(final Orientation orientation) {
+		Validations.INPUT.notNull(orientation).exception("The orientation can not be null.");
 		return new OrientationProperty(orientation);
 	}
 
@@ -484,6 +528,7 @@ public final class Properties {
 	 * @return an {@link StyleProperty}
 	 */
 	public static Property style(final String style) {
+		Validations.INPUT.notNull(style).exception("The style can not be null.");
 		return new StyleProperty(style);
 	}
 
@@ -495,6 +540,7 @@ public final class Properties {
 	 * @return an {@link StyleProperty}
 	 */
 	public static Property style(final Resource style) {
+		Validations.INPUT.notNull(style).exception("The style can not be null.");
 		return new StyleProperty(style);
 	}
 
@@ -506,6 +552,7 @@ public final class Properties {
 	 * @return an {@link ChoicesProperty}
 	 */
 	public static <T> Property choices(final List<T> choices) {
+		Validations.INPUT.notNull(choices).exception("The choices can not be null.");
 		return new ChoicesProperty<>(List.copyOf(choices));
 	}
 
@@ -517,6 +564,8 @@ public final class Properties {
 	 * @return an {@link ChoiceBoxConverterProperty}
 	 */
 	public static <T> Property choiceBoxConverter(final Class<T> type, final StringConverter<T> converter) {
+		Validations.INPUT.notNull(type).exception("The type can not be null.");
+		Validations.INPUT.notNull(converter).exception("The converter can not be null.");
 		return new ChoiceBoxConverterProperty<>(converter);
 	}
 
@@ -531,6 +580,9 @@ public final class Properties {
 	public static <T> Property choiceBoxConverter(final Class<T> type,
 												  final ChoiceBoxConverterProperty.FromStringConverter<T> fromString,
 												  final ChoiceBoxConverterProperty.ToStringConverter<T> toString) {
+		Validations.INPUT.notNull(type).exception("The type can not be null.");
+		Validations.INPUT.notNull(fromString).exception("The converter from strings can not be null.");
+		Validations.INPUT.notNull(toString).exception("The converter to strings can not be null.");
 		return new ChoiceBoxConverterProperty<>(fromString, toString);
 	}
 
@@ -572,6 +624,7 @@ public final class Properties {
 	 * @return a {@link MutationBehaviourProperty}
 	 */
 	public static Property mutationBehaviour(final MutationBehaviourProperty.MutationBehaviour behaviour) {
+		Validations.INPUT.notNull(behaviour).exception("The mutation behaviour can not be null.");
 		return new MutationBehaviourProperty(behaviour);
 	}
 
@@ -584,6 +637,8 @@ public final class Properties {
 	 * @return a {@link MutationBehaviourProperty}
 	 */
 	public static Property layout(final String layoutId, final LayoutProperty.LayoutFunction layoutFunction) {
+		Validations.INPUT.notEmpty(layoutId).exception("The layout id can not be null or empty.");
+		Validations.INPUT.notNull(layoutFunction).exception("The layout function can not be null.");
 		return new LayoutProperty(layoutId, layoutFunction);
 	}
 
