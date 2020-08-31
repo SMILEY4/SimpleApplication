@@ -159,9 +159,9 @@ public class ValidationsTest {
 
 	@Test
 	public void testContainsExactlyCollection() {
-		assertFalse(Validations.STATE.containsExactly(List.of("a", "b"), 2).failed());
-		assertTrue(Validations.STATE.containsExactly(List.of("a", "b"), 4).failed());
-		assertTrue(Validations.STATE.containsExactly((ArrayList) null, 2).failed());
+		assertFalse(Validations.STATE.hasSize(List.of("a", "b"), 2).failed());
+		assertTrue(Validations.STATE.hasSize(List.of("a", "b"), 4).failed());
+		assertTrue(Validations.STATE.hasSize((ArrayList) null, 2).failed());
 	}
 
 
@@ -169,9 +169,9 @@ public class ValidationsTest {
 
 	@Test
 	public void testContainsExactlyArray() {
-		assertFalse(Validations.STATE.containsExactly(new String[]{"a", "b"}, 2).failed());
-		assertTrue(Validations.STATE.containsExactly(new String[]{"a", "b"}, 4).failed());
-		assertTrue(Validations.STATE.containsExactly((String[]) null, 2).failed());
+		assertFalse(Validations.STATE.hasSize(new String[]{"a", "b"}, 2).failed());
+		assertTrue(Validations.STATE.hasSize(new String[]{"a", "b"}, 4).failed());
+		assertTrue(Validations.STATE.hasSize((String[]) null, 2).failed());
 	}
 
 
@@ -286,6 +286,18 @@ public class ValidationsTest {
 		assertFalse(Validations.STATE.containsNotValue(Map.of("a", 1, "b", 2, "c", 3), 0).failed());
 		assertFalse(Validations.STATE.containsNotValue(Map.of(), 0).failed());
 		assertTrue(Validations.STATE.containsNotValue((HashMap) null, 0).failed());
+	}
+
+
+
+
+	@Test
+	public void testIsValidIndex() {
+		assertTrue(Validations.STATE.isValidIndex(-3, List.of(1, 2, 3, 4, 5)).failed());
+		assertTrue(Validations.STATE.isValidIndex(10, List.of(1, 2, 3, 4, 5)).failed());
+		assertTrue(Validations.STATE.isValidIndex(5, List.of(1, 2, 3, 4, 5)).failed());
+		assertTrue(Validations.STATE.isValidIndex(0, List.of(1, 2, 3, 4, 5)).successful());
+		assertTrue(Validations.STATE.isValidIndex(3, List.of(1, 2, 3, 4, 5)).successful());
 	}
 
 
