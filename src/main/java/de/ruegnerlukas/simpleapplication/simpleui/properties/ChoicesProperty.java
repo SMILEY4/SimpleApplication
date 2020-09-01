@@ -144,10 +144,10 @@ public class ChoicesProperty<T> extends Property {
 		 */
 		private void removeListeners(final SuiNode node, final ChoiceBox<T> fxNode) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
-				fxNode.getSelectionModel().selectedIndexProperty().removeListener(property.getChangeListener());
+				property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedIndexProperty());
 			});
 			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
-				fxNode.getSelectionModel().selectedItemProperty().removeListener(property.getChangeListener());
+				property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
 			});
 		}
 
@@ -162,23 +162,10 @@ public class ChoicesProperty<T> extends Property {
 		 */
 		private void addListener(final SuiNode node, final ChoiceBox<T> fxNode) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
-				fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+				property.addChangeListenerTo(fxNode.getSelectionModel().selectedIndexProperty());
 			});
 			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
-				/* TODO bug !!!
-				situation: sui choice box with properties: "choices" and "onSelectedItemEvent"
-				1. build node on app startup
-				2. thisProp.build
-				3. thisProp.setItems
-						- ...
-						- remove listeners (removes nothing, none yet added)
-						- ...
-						- add listeners (BUG: ADDS the onEvent change listener to the fxnode !!!)
-				4. onEventProp.build
-						- adds change listener to fxNode for the second time !!!
-				=> listener is called twice for one change
-				 */
-				fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
+				property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
 			});
 		}
 
@@ -296,10 +283,10 @@ public class ChoicesProperty<T> extends Property {
 		 */
 		private void removeListeners(final SuiNode node, final ComboBox<String> fxNode) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
-				fxNode.getSelectionModel().selectedIndexProperty().removeListener(property.getChangeListener());
+				property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedIndexProperty());
 			});
 			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
-				fxNode.getSelectionModel().selectedItemProperty().removeListener(property.getChangeListener());
+				property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
 			});
 		}
 
@@ -314,10 +301,10 @@ public class ChoicesProperty<T> extends Property {
 		 */
 		private void addListener(final SuiNode node, final ComboBox<String> fxNode) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
-				fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+				property.addChangeListenerTo(fxNode.getSelectionModel().selectedIndexProperty());
 			});
 			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
-				fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
+				property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
 			});
 		}
 

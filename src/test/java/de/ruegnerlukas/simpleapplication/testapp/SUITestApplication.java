@@ -21,7 +21,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.geometry.Dimension2D;
 import lombok.Getter;
@@ -33,6 +32,7 @@ import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.c
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.id;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.maxSize;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.preferredSize;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventSelectedItem;
 
 @Slf4j
 public class SUITestApplication {
@@ -114,7 +114,7 @@ public class SUITestApplication {
 															id("cb1"),
 															preferredSize(150, 25),
 															maxSize(150, 100000),
-															EventProperties.eventSelectedItem(e -> {
+															eventSelectedItem(e -> {
 																state.update(TestUIState.class, s -> {
 																	s.setText((String) e.getItem());
 																});
@@ -128,10 +128,12 @@ public class SUITestApplication {
 															id("cb2"),
 															preferredSize(150, 25),
 															maxSize(150, 100000),
-															EventProperties.eventSelectedItem(String.class, e -> {
-																state.update(TestUIState.class, s -> {
-																	s.setText(e.getItem());
-																});
+															eventSelectedItem(String.class, e -> {
+																if (e.getItem() != null) {
+																	state.update(TestUIState.class, s -> {
+																		s.setText(e.getItem());
+																	});
+																}
 															}),
 															choices(Countries.getAllStartingWith(state.getText() == null || state.getText().isEmpty() ? null : "" + state.getText().charAt(0)))
 													),
@@ -156,6 +158,8 @@ public class SUITestApplication {
 			viewService.showView(view.getId());
 
 		}
+
+
 
 
 

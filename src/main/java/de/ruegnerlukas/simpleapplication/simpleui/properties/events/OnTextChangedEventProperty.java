@@ -53,7 +53,7 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnTextChangedEventProperty property,
 						  final TextField fxNode) {
-			fxNode.textProperty().addListener(property.getChangeListener());
+			property.addChangeListenerTo(fxNode.textProperty());
 		}
 
 
@@ -63,9 +63,9 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnTextChangedEventProperty property,
 									 final SuiNode node, final TextField fxNode) {
 			node.getPropertySafe(OnTextChangedEventProperty.class).ifPresent(prop -> {
-				fxNode.textProperty().removeListener(prop.getChangeListener());
+				prop.removeChangeListenerFrom(fxNode.textProperty());
 			});
-			fxNode.textProperty().addListener(property.getChangeListener());
+			property.addChangeListenerTo(fxNode.textProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -75,7 +75,7 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnTextChangedEventProperty property,
 									 final SuiNode node, final TextField fxNode) {
-			fxNode.textProperty().removeListener(property.getChangeListener());
+			property.removeChangeListenerFrom(fxNode.textProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -92,7 +92,7 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnTextChangedEventProperty property,
 						  final TextArea fxNode) {
-			fxNode.textProperty().addListener(property.getChangeListener());
+			property.addChangeListenerTo(fxNode.textProperty());
 		}
 
 
@@ -102,9 +102,9 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnTextChangedEventProperty property,
 									 final SuiNode node, final TextArea fxNode) {
 			node.getPropertySafe(OnTextChangedEventProperty.class).ifPresent(prop -> {
-				fxNode.textProperty().removeListener(prop.getChangeListener());
+				prop.removeChangeListenerFrom(fxNode.textProperty());
 			});
-			fxNode.textProperty().addListener(property.getChangeListener());
+			property.addChangeListenerTo(fxNode.textProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -114,7 +114,7 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnTextChangedEventProperty property,
 									 final SuiNode node, final TextArea fxNode) {
-			fxNode.textProperty().removeListener(property.getChangeListener());
+			property.removeChangeListenerFrom(fxNode.textProperty());
 			return MutationResult.MUTATED;
 		}
 

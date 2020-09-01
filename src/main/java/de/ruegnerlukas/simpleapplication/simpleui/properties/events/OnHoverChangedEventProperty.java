@@ -50,7 +50,7 @@ public class OnHoverChangedEventProperty extends AbstractObservableListenerPrope
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnHoverChangedEventProperty property,
 						  final Node fxNode) {
-			fxNode.hoverProperty().addListener(property.getChangeListener());
+			property.addChangeListenerTo(fxNode.hoverProperty());
 		}
 
 
@@ -60,9 +60,9 @@ public class OnHoverChangedEventProperty extends AbstractObservableListenerPrope
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnHoverChangedEventProperty property,
 									 final SuiNode node, final Node fxNode) {
 			node.getPropertySafe(OnHoverChangedEventProperty.class).ifPresent(prop -> {
-				fxNode.hoverProperty().removeListener(prop.getChangeListener());
+				prop.removeChangeListenerFrom(fxNode.hoverProperty());
 			});
-			fxNode.hoverProperty().addListener(property.getChangeListener());
+			property.addChangeListenerTo(fxNode.hoverProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -72,7 +72,7 @@ public class OnHoverChangedEventProperty extends AbstractObservableListenerPrope
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnHoverChangedEventProperty property,
 									 final SuiNode node, final Node fxNode) {
-			fxNode.hoverProperty().removeListener(property.getChangeListener());
+			property.removeChangeListenerFrom(fxNode.hoverProperty());
 			return MutationResult.MUTATED;
 		}
 
