@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import lombok.Getter;
 
@@ -74,6 +75,45 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnTextChangedEventProperty property,
 									 final SuiNode node, final TextField fxNode) {
+			fxNode.textProperty().removeListener(property.getChangeListener());
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class TextAreaUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnTextChangedEventProperty, TextArea> {
+
+
+		@Override
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnTextChangedEventProperty property,
+						  final TextArea fxNode) {
+			fxNode.textProperty().addListener(property.getChangeListener());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnTextChangedEventProperty property,
+									 final SuiNode node, final TextArea fxNode) {
+			node.getPropertySafe(OnTextChangedEventProperty.class).ifPresent(prop -> {
+				fxNode.textProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.textProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnTextChangedEventProperty property,
+									 final SuiNode node, final TextArea fxNode) {
 			fxNode.textProperty().removeListener(property.getChangeListener());
 			return MutationResult.MUTATED;
 		}

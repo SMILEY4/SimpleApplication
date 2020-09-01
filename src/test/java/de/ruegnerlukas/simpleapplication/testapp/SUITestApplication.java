@@ -18,23 +18,22 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextField;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.SuiStream;
 import javafx.geometry.Dimension2D;
-import javafx.geometry.Pos;
 import javafx.util.Duration;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPaneItem;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.alignment;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.editable;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.promptText;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.wrapText;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventTextChanged;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventTextEntered;
 
@@ -114,29 +113,26 @@ public class SUITestApplication {
 							anchorPane(
 									Properties.items(
 											anchorPaneItem(
-													SuiTextField.textField(
+													SuiTextArea.textArea(
 															textContent(state.getText()),
-															promptText("Text Field"),
-															eventTextEntered(SuiStream.eventStream(TextContentEventData.class,
-																	stream -> stream
-																			.map(TextContentEventData::getText)
-																			.updateState(TestUIState.class, state, TestUIState::setText))
-															),
+															promptText("Text Area"),
+															eventTextEntered(e -> log.info("enter: \n\"{}\"", e.getText())),
 															eventTextChanged(SuiStream.eventStream(TextContentEventData.class,
 																	stream -> stream
 																			.accumulate(4, Duration.seconds(1))
-																			.map(batch -> batch.get(batch.size()-1))
+																			.map(batch -> batch.get(batch.size() - 1))
 																			.map(TextContentEventData::getText)
-																			.updateStateSilent(TestUIState.class, state, TestUIState::setText))
+																			.updateStateSilent(TestUIState.class, state, TestUIState::setText)
+																	)
 															)
 													),
 													Properties.anchor(100, null, 100, null)
 											),
 											anchorPaneItem(
-													SuiTextField.textField(
+													SuiTextArea.textArea(
 															textContent(state.getText()),
-															alignment(Pos.CENTER),
-															editable(false)
+															editable(false),
+															wrapText()
 													),
 													Properties.anchor(160, null, 100, null)
 											)

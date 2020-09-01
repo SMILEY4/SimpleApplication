@@ -15,6 +15,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiSeparator;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
@@ -89,6 +90,7 @@ public class SuiRegistry {
 		SuiChoiceBox.register(this);
 		SuiContainer.register(this);
 		SuiTextField.register(this);
+		SuiTextArea.register(this);
 	}
 
 

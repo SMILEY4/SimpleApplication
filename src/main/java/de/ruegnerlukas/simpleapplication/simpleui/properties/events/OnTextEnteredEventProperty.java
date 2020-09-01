@@ -7,7 +7,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
+import javafx.event.EventHandler;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import lombok.Getter;
 
 public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<TextContentEventData> {
@@ -25,6 +29,13 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 	@Getter
 	private final SUIEventListener<TextContentEventData> listener;
 
+	/**
+	 * The event handler for listening to key events of text areas
+	 * without reserving {@link javafx.scene.Node#setOnKeyReleased(EventHandler)}.
+	 */
+	@Getter
+	private final EventHandler<KeyEvent> textAreaEventHandler;
+
 
 
 
@@ -34,6 +45,18 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 	public OnTextEnteredEventProperty(final SUIEventListener<TextContentEventData> listener) {
 		super(OnTextEnteredEventProperty.class);
 		this.listener = listener;
+		this.textAreaEventHandler = e -> {
+			if (e.getCode() == KeyCode.ENTER && e.isShortcutDown()) {
+				TextArea area = (TextArea) e.getSource();
+				listener.onEvent(new SuiEvent<>(
+						EVENT_ID,
+						TextContentEventData.builder()
+								.text(area.getText())
+								.prevText(area.getText())
+								.build()
+				));
+			}
+		};
 	}
 
 
@@ -86,6 +109,46 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 							.build()
 			)));
 		}
+
+	}
+
+
+
+
+
+
+	public static class TextAreaUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnTextEnteredEventProperty, TextArea> {
+
+
+		@Override
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnTextEnteredEventProperty property,
+						  final TextArea fxNode) {
+			fxNode.addEventHandler(KeyEvent.KEY_RELEASED, property.getTextAreaEventHandler());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnTextEnteredEventProperty property,
+									 final SuiNode node, final TextArea fxNode) {
+			node.getPropertySafe(OnTextEnteredEventProperty.class).ifPresent(prop -> {
+				fxNode.removeEventHandler(KeyEvent.KEY_RELEASED, prop.getTextAreaEventHandler());
+			});
+			fxNode.addEventHandler(KeyEvent.KEY_RELEASED, property.getTextAreaEventHandler());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnTextEnteredEventProperty property,
+									 final SuiNode node, final TextArea fxNode) {
+			fxNode.removeEventHandler(KeyEvent.KEY_RELEASED, property.getTextAreaEventHandler());
+			return MutationResult.MUTATED;
+		}
+
 
 	}
 
