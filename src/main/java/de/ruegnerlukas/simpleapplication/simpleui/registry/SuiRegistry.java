@@ -15,6 +15,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiSeparator;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
@@ -80,17 +81,18 @@ public class SuiRegistry {
 	 * Default constructor. Registers the pre-build nodes.
 	 */
 	public SuiRegistry() {
+		SuiSeparator.register(this);
+		SuiLabel.register(this);
 		SuiButton.register(this);
+		SuiChoiceBox.register(this);
+		SuiTextComboBox.register(this);
+		SuiTextField.register(this);
+		SuiTextArea.register(this);
+		SuiContainer.register(this);
 		SuiAnchorPane.register(this);
 		SuiScrollPane.register(this);
 		SuiVBox.register(this);
 		SuiHBox.register(this);
-		SuiSeparator.register(this);
-		SuiLabel.register(this);
-		SuiChoiceBox.register(this);
-		SuiContainer.register(this);
-		SuiTextField.register(this);
-		SuiTextArea.register(this);
 	}
 
 

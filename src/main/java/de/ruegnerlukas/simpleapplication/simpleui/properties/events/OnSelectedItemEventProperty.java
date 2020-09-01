@@ -1,13 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import lombok.Getter;
 
 public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerProperty<SelectedItemEventData<T>, T> {
@@ -77,5 +78,43 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 	}
 
+
+
+
+
+
+	public static class TextComboBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedItemEventProperty<String>, ComboBox<String>> {
+
+
+		@Override
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedItemEventProperty<String> property,
+						  final ComboBox<String> fxNode) {
+			fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<String> property,
+									 final SuiNode node, final ComboBox<String> fxNode) {
+			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
+				fxNode.getSelectionModel().selectedItemProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<String> property,
+									 final SuiNode node, final ComboBox<String> fxNode) {
+			fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
+		}
+
+	}
 
 }

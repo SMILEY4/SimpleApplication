@@ -18,24 +18,21 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextArea;
-import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiChoiceBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.simpleui.streams.SuiStream;
 import javafx.geometry.Dimension2D;
-import javafx.util.Duration;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPaneItem;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.editable;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.promptText;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.wrapText;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventTextChanged;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventTextEntered;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.choices;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.id;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.maxSize;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.preferredSize;
 
 @Slf4j
 public class SUITestApplication {
@@ -82,7 +79,7 @@ public class SUITestApplication {
 		private static class TestUIState extends SuiState {
 
 
-			private String text = "Sample Text";
+			private String text = "";
 
 
 
@@ -113,29 +110,41 @@ public class SUITestApplication {
 							anchorPane(
 									Properties.items(
 											anchorPaneItem(
-													SuiTextArea.textArea(
-															textContent(state.getText()),
-															promptText("Text Area"),
-															eventTextEntered(e -> log.info("enter: \n\"{}\"", e.getText())),
-															eventTextChanged(SuiStream.eventStream(TextContentEventData.class,
-																	stream -> stream
-																			.accumulate(4, Duration.seconds(1))
-																			.map(batch -> batch.get(batch.size() - 1))
-																			.map(TextContentEventData::getText)
-																			.updateStateSilent(TestUIState.class, state, TestUIState::setText)
-																	)
-															)
+													SuiChoiceBox.choiceBox(
+															id("cb1"),
+															preferredSize(150, 25),
+															maxSize(150, 100000),
+															EventProperties.eventSelectedItem(e -> {
+																state.update(TestUIState.class, s -> {
+																	s.setText((String) e.getItem());
+																});
+															}),
+															choices(Countries.getAll())
 													),
 													Properties.anchor(100, null, 100, null)
 											),
 											anchorPaneItem(
-													SuiTextArea.textArea(
-															textContent(state.getText()),
-															editable(false),
-															wrapText()
+													SuiTextComboBox.textComboBox(
+															id("cb2"),
+															preferredSize(150, 25),
+															maxSize(150, 100000),
+															EventProperties.eventSelectedItem(String.class, e -> {
+																state.update(TestUIState.class, s -> {
+																	s.setText(e.getItem());
+																});
+															}),
+															choices(Countries.getAllStartingWith(state.getText() == null || state.getText().isEmpty() ? null : "" + state.getText().charAt(0)))
 													),
-													Properties.anchor(160, null, 100, null)
+													Properties.anchor(170, null, 100, null)
 											)
+//											anchorPaneItem(
+//													SuiTextComboBox.textComboBox(
+//															maxSize(150, 100000),
+//															choices(Countries.getAll()),
+//															EventProperties.eventSelectedItem(String.class, System.out::println)
+//													),
+//													Properties.anchor(100, null, 260, null)
+//											)
 									)
 							)
 

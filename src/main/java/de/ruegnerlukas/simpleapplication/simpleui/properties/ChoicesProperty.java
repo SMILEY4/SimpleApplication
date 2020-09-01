@@ -2,15 +2,16 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedIndexEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import lombok.Getter;
 
 import java.util.List;
@@ -164,6 +165,19 @@ public class ChoicesProperty<T> extends Property {
 				fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
 			});
 			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				/* TODO bug !!!
+				situation: sui choice box with properties: "choices" and "onSelectedItemEvent"
+				1. build node on app startup
+				2. thisProp.build
+				3. thisProp.setItems
+						- ...
+						- remove listeners (removes nothing, none yet added)
+						- ...
+						- add listeners (BUG: ADDS the onEvent change listener to the fxnode !!!)
+				4. onEventProp.build
+						- adds change listener to fxNode for the second time !!!
+				=> listener is called twice for one change
+				 */
 				fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
 			});
 		}
@@ -183,6 +197,145 @@ public class ChoicesProperty<T> extends Property {
 		private void callListeners(final SuiNode node,
 								   final int prevIndex, final int nextIndex,
 								   final Object prevItem, final Object nextItem) {
+			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
+				property.getListener().onEvent(new SuiEvent<>(
+						OnSelectedIndexEventProperty.EVENT_ID,
+						new SelectedIndexEventData(nextIndex, prevIndex)
+				));
+			});
+			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				property.getListener().onEvent(new SuiEvent<>(
+						OnSelectedItemEventProperty.EVENT_ID,
+						new SelectedItemEventData<>(nextItem, prevItem)
+				));
+			});
+		}
+
+
+	}
+
+
+
+
+
+
+	public static class TextComboBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<ChoicesProperty<String>, ComboBox<String>> {
+
+
+		@Override
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ChoicesProperty<String> property,
+						  final ComboBox<String> fxNode) {
+			setItems(node, property, fxNode);
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<String> property,
+									 final SuiNode node, final ComboBox<String> fxNode) {
+			setItems(node, property, fxNode);
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<String> property,
+									 final SuiNode node, final ComboBox<String> fxNode) {
+			final String prevValue = fxNode.getSelectionModel().getSelectedItem();
+			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
+			removeListeners(node, fxNode);
+			fxNode.getItems().clear();
+			addListener(node, fxNode);
+			if (prevValue != null) {
+				callListeners(node, prevIndex, -1, prevValue, null);
+			}
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		/**
+		 * Set the items without triggering the listeners or changing the currently selected value.
+		 *
+		 * @param node     the simpleui node
+		 * @param property the choices-property
+		 * @param fxNode   the javafx choicebox
+		 */
+		private void setItems(final SuiNode node, final ChoicesProperty<String> property, final ComboBox<String> fxNode) {
+
+			final String prevValue = fxNode.getSelectionModel().getSelectedItem();
+			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
+
+			removeListeners(node, fxNode);
+			fxNode.getItems().setAll(property.getChoices());
+			if (fxNode.getItems().contains(prevValue)) {
+				fxNode.setValue(prevValue);
+			}
+			addListener(node, fxNode);
+
+			final int nextIndex = fxNode.getSelectionModel().getSelectedIndex();
+			final String nextValue = nextIndex != -1 ? fxNode.getSelectionModel().getSelectedItem() : null;
+			if (prevIndex != nextIndex || !Objects.equals(prevValue, nextValue)) {
+				callListeners(node, prevIndex, nextIndex, prevValue, nextValue);
+			}
+
+		}
+
+
+
+
+		/**
+		 * Removes the listeners from the combobox if any exist
+		 *
+		 * @param node   the simpleui node
+		 * @param fxNode the javafx combobox
+		 */
+		private void removeListeners(final SuiNode node, final ComboBox<String> fxNode) {
+			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
+				fxNode.getSelectionModel().selectedIndexProperty().removeListener(property.getChangeListener());
+			});
+			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				fxNode.getSelectionModel().selectedItemProperty().removeListener(property.getChangeListener());
+			});
+		}
+
+
+
+
+		/**
+		 * Adds the listener back to the choicebox if any existed
+		 *
+		 * @param node   the simpleui node
+		 * @param fxNode the javafx choicebox
+		 */
+		private void addListener(final SuiNode node, final ComboBox<String> fxNode) {
+			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
+				fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+			});
+			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				fxNode.getSelectionModel().selectedItemProperty().addListener(property.getChangeListener());
+			});
+		}
+
+
+
+
+		/**
+		 * Manually calls the listeners of the choicebox if any exist
+		 *
+		 * @param node      the simpleui node
+		 * @param prevIndex the previous index
+		 * @param nextIndex the new index
+		 * @param prevItem  the previous selected item
+		 * @param nextItem  the new selected item
+		 */
+		private void callListeners(final SuiNode node,
+								   final int prevIndex, final int nextIndex,
+								   final String prevItem, final String nextItem) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
 				property.getListener().onEvent(new SuiEvent<>(
 						OnSelectedIndexEventProperty.EVENT_ID,

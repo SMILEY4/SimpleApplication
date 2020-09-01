@@ -1,13 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import lombok.Getter;
 
 import java.util.Optional;
@@ -80,5 +81,40 @@ public class OnSelectedIndexEventProperty extends AbstractObservableListenerProp
 
 	}
 
+
+
+	public static class TextComboBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedIndexEventProperty, ComboBox<String>> {
+
+
+		@Override
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedIndexEventProperty property,
+						  final ComboBox<String> fxNode) {
+			fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
+									 final SuiNode node, final ComboBox<String> fxNode) {
+			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(prop -> {
+				fxNode.getSelectionModel().selectedIndexProperty().removeListener(prop.getChangeListener());
+			});
+			fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
+									 final SuiNode node, final ComboBox<String> fxNode) {
+			fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+			return MutationResult.MUTATED;
+		}
+
+	}
 
 }
