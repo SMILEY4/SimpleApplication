@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.common.utils.Loop;
+import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
@@ -138,7 +138,7 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 																final SuiNode original,
 																final SuiNode target,
 																final Set<Pair<String, Integer>> permanents) {
-		return Loop.asyncCollectingLoop(new ArrayList<>(permanents), true, permanent -> {
+		return LoopUtils.asyncCollectingLoop(new ArrayList<>(permanents), true, permanent -> {
 			final String nodeId = permanent.getLeft();
 			final int index = permanent.getRight();
 			final SuiNode childOriginal = original.findChildUnsafe(nodeId);

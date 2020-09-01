@@ -4,20 +4,23 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public final class Loop {
+public final class LoopUtils {
 
-
-	/**
-	 * Hidden constructor.
-	 */
-	private Loop() {
-		// hide constructor
-	}
 
 	/**
 	 * The number of available processors.
 	 */
 	private static final int CORE_COUNT = Runtime.getRuntime().availableProcessors();
+
+
+
+
+	/**
+	 * Hidden constructor.
+	 */
+	private LoopUtils() {
+		// hide constructor
+	}
 
 
 
@@ -57,7 +60,6 @@ public final class Loop {
 		);
 		return processor.get();
 	}
-
 
 
 }

@@ -9,6 +9,9 @@ import java.util.function.BiConsumer;
 public class StateUpdateStream<S extends SuiState, T> extends PipelineImpl<T, T> {
 
 
+	/**
+	 * Whether to update the state silently.
+	 */
 	private final boolean updateSilent;
 
 	/**
@@ -16,15 +19,25 @@ public class StateUpdateStream<S extends SuiState, T> extends PipelineImpl<T, T>
 	 */
 	private final BiConsumer<S, T> consumer;
 
+	/**
+	 * The type of the state.
+	 */
 	private final Class<S> stateType;
 
+	/**
+	 * The state to update.
+	 */
 	private final S state;
 
 
 
 
 	/**
-	 * @param source the source pipeline
+	 * @param source       the source pipeline
+	 * @param updateSilent whether to update the state silently
+	 * @param stateType    the type of the state
+	 * @param state        the state to update
+	 * @param consumer     the function to run for each element
 	 */
 	public StateUpdateStream(final Pipeline<?, T> source,
 							 final boolean updateSilent,

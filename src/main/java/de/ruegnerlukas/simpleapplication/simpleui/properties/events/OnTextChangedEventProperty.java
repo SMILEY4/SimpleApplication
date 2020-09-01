@@ -3,7 +3,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
@@ -20,7 +19,7 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 	public static final String EVENT_ID = "text.changed";
 
 	/**
-	 * The listener for events with {@link FocusEventData}.
+	 * The listener for events with {@link TextContentEventData}.
 	 */
 	@Getter
 	private final SUIEventListener<TextContentEventData> listener;
