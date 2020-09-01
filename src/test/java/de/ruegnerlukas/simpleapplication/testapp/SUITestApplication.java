@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
+import de.ruegnerlukas.simpleapplication.Countries;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
@@ -32,6 +33,7 @@ import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.c
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.id;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.maxSize;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.preferredSize;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.searchable;
 import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventSelectedItem;
 
 @Slf4j
@@ -114,12 +116,12 @@ public class SUITestApplication {
 															id("cb1"),
 															preferredSize(150, 25),
 															maxSize(150, 100000),
+															choices(Countries.getAll()),
 															eventSelectedItem(e -> {
 																state.update(TestUIState.class, s -> {
 																	s.setText((String) e.getItem());
 																});
-															}),
-															choices(Countries.getAll())
+															})
 													),
 													Properties.anchor(100, null, 100, null)
 											),
@@ -128,25 +130,18 @@ public class SUITestApplication {
 															id("cb2"),
 															preferredSize(150, 25),
 															maxSize(150, 100000),
+															searchable(),
+															choices(Countries.getAllStartingWith(state.getText() == null || state.getText().isEmpty() ? null : "" + state.getText().charAt(0))),
 															eventSelectedItem(String.class, e -> {
 																if (e.getItem() != null) {
 																	state.update(TestUIState.class, s -> {
 																		s.setText(e.getItem());
 																	});
 																}
-															}),
-															choices(Countries.getAllStartingWith(state.getText() == null || state.getText().isEmpty() ? null : "" + state.getText().charAt(0)))
+															})
 													),
 													Properties.anchor(170, null, 100, null)
 											)
-//											anchorPaneItem(
-//													SuiTextComboBox.textComboBox(
-//															maxSize(150, 100000),
-//															choices(Countries.getAll()),
-//															EventProperties.eventSelectedItem(String.class, System.out::println)
-//													),
-//													Properties.anchor(100, null, 260, null)
-//											)
 									)
 							)
 
@@ -158,8 +153,6 @@ public class SUITestApplication {
 			viewService.showView(view.getId());
 
 		}
-
-
 
 
 

@@ -10,6 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedIndexEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
+import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import lombok.Getter;
@@ -258,7 +259,7 @@ public class ChoicesProperty<T> extends Property {
 			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
 
 			removeListeners(node, fxNode);
-			fxNode.getItems().setAll(property.getChoices());
+			setItems(node, fxNode, property.getChoices());
 			if (fxNode.getItems().contains(prevValue)) {
 				fxNode.setValue(prevValue);
 			}
@@ -268,6 +269,28 @@ public class ChoicesProperty<T> extends Property {
 			final String nextValue = nextIndex != -1 ? fxNode.getSelectionModel().getSelectedItem() : null;
 			if (prevIndex != nextIndex || !Objects.equals(prevValue, nextValue)) {
 				callListeners(node, prevIndex, nextIndex, prevValue, nextValue);
+			}
+
+		}
+
+
+
+
+		/**
+		 * Sets the items of the combobox to the given items
+		 *
+		 * @param node   the sui node
+		 * @param fxNode the combobox
+		 * @param items  the items to set
+		 */
+		private void setItems(final SuiNode node, final ComboBox<String> fxNode, final List<String> items) {
+			final boolean searchable = node.getPropertySafe(SearchableProperty.class)
+					.map(SearchableProperty::isSearchable)
+					.orElse(false);
+			if (searchable) {
+				((FilteredList) fxNode.getItems()).getSource().setAll(items);
+			} else {
+				fxNode.getItems().setAll(items);
 			}
 
 		}

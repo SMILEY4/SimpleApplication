@@ -1,107 +1,27 @@
-package de.ruegnerlukas.simpleapplication.testapp;
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.ListView;
-import javafx.scene.control.skin.ComboBoxListViewSkin;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
+package de.ruegnerlukas.simpleapplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@SuppressWarnings ("ALL")
-public class SearchableComboboxTest extends Application {
-
-
-	/*
-	SOURCE:
-	https://stackoverflow.com/questions/19924852/autocomplete-combobox-in-javafx
-	 */
-
-	public static class HideableItem<T> {
+public class Countries {
 
 
-		private final ObjectProperty<T> object = new SimpleObjectProperty<>();
-		private final BooleanProperty hidden = new SimpleBooleanProperty();
-
-
-
-
-		private HideableItem(T object) {
-			setObject(object);
+	public static List<String> getAllStartingWith(final String str) {
+		if (str == null || str.isEmpty()) {
+			return getAll();
+		} else {
+			return getAll().stream()
+					.filter(s -> s.startsWith(str))
+					.collect(Collectors.toList());
 		}
-
-
-
-
-		private ObjectProperty<T> objectProperty() {
-			return this.object;
-		}
-
-
-
-
-		private T getObject() {
-			return this.objectProperty().get();
-		}
-
-
-
-
-		private void setObject(T object) {
-			this.objectProperty().set(object);
-		}
-
-
-
-
-		private BooleanProperty hiddenProperty() {
-			return this.hidden;
-		}
-
-
-
-
-		private boolean isHidden() {
-			return this.hiddenProperty().get();
-		}
-
-
-
-
-		private void setHidden(boolean hidden) {
-			this.hiddenProperty().set(hidden);
-		}
-
-
-
-
-		@Override
-		public String toString() {
-			return getObject() == null ? null : getObject().toString();
-		}
-
 	}
 
 
 
 
-	public void start(Stage stage) {
+	public static List<String> getAll() {
 		List<String> countries = new ArrayList<>();
-
 		countries.add("Afghanistan");
 		countries.add("Albania");
 		countries.add("Algeria");
@@ -299,112 +219,8 @@ public class SearchableComboboxTest extends Application {
 		countries.add("Yemen");
 		countries.add("Zambia");
 		countries.add("Zimbabwe");
-
-		ComboBox<HideableItem<String>> comboBox = createComboBoxWithAutoCompletionSupport(countries);
-		comboBox.setMaxWidth(Double.MAX_VALUE);
-
-		HBox root = new HBox();
-		root.getChildren().add(comboBox);
-
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-
-		comboBox.setMinWidth(comboBox.getWidth());
-		comboBox.setPrefWidth(comboBox.getWidth());
+		return countries;
 	}
 
-
-
-
-	public static void main(String[] args) {
-		launch();
-	}
-
-
-
-
-	private static <T> ComboBox<HideableItem<T>> createComboBoxWithAutoCompletionSupport(List<T> items) {
-		ObservableList<HideableItem<T>> hideableHideableItems = FXCollections.observableArrayList(hideableItem -> new Observable[]{hideableItem.hiddenProperty()});
-
-		items.forEach(item ->
-		{
-			HideableItem<T> hideableItem = new HideableItem<>(item);
-			hideableHideableItems.add(hideableItem);
-		});
-
-		FilteredList<HideableItem<T>> filteredHideableItems = new FilteredList<>(hideableHideableItems, t -> !t.isHidden());
-
-		ComboBox<HideableItem<T>> comboBox = new ComboBox<>();
-		comboBox.setItems(filteredHideableItems);
-
-		@SuppressWarnings ("unchecked")
-		HideableItem<T>[] selectedItem = (HideableItem<T>[]) new HideableItem[1];
-
-		comboBox.addEventHandler(KeyEvent.KEY_PRESSED, event ->
-		{
-			if (!comboBox.isShowing()) return;
-
-			comboBox.setEditable(true);
-			comboBox.getEditor().clear();
-		});
-
-		comboBox.showingProperty().addListener((observable, oldValue, newValue) ->
-		{
-			if (newValue) {
-				@SuppressWarnings ("unchecked")
-				ListView<HideableItem> lv = (ListView<HideableItem>) ((ComboBoxListViewSkin<?>) comboBox.getSkin()).getPopupContent();
-
-				Platform.runLater(() ->
-				{
-					if (selectedItem[0] == null) // first use
-					{
-						double cellHeight = ((Control) lv.lookup(".list-cell")).getHeight();
-						lv.setFixedCellSize(cellHeight);
-					}
-				});
-
-				lv.scrollTo(comboBox.getValue());
-			} else {
-				HideableItem<T> value = comboBox.getValue();
-				if (value != null) selectedItem[0] = value;
-
-				comboBox.setEditable(false);
-
-				Platform.runLater(() ->
-				{
-					comboBox.getSelectionModel().select(selectedItem[0]);
-					comboBox.setValue(selectedItem[0]);
-				});
-			}
-		});
-
-		comboBox.setOnHidden(event -> hideableHideableItems.forEach(item -> item.setHidden(false)));
-
-		comboBox.getEditor().textProperty().addListener((obs, oldValue, newValue) ->
-		{
-			if (!comboBox.isShowing()) return;
-
-			Platform.runLater(() ->
-			{
-				if (comboBox.getSelectionModel().getSelectedItem() == null) {
-					hideableHideableItems.forEach(item -> item.setHidden(!item.getObject().toString().toLowerCase().contains(newValue.toLowerCase())));
-				} else {
-					boolean validText = false;
-
-					for (HideableItem hideableItem : hideableHideableItems) {
-						if (hideableItem.getObject().toString().equals(newValue)) {
-							validText = true;
-							break;
-						}
-					}
-
-					if (!validText) comboBox.getSelectionModel().select(null);
-				}
-			});
-		});
-
-		return comboBox;
-	}
 
 }

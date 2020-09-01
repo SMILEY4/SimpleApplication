@@ -601,8 +601,6 @@ public final class Properties {
 
 
 
-
-
 	/**
 	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#DEFAULT}
 	 */
@@ -660,11 +658,38 @@ public final class Properties {
 
 
 	/**
+	 * @return a {@link EditableProperty}
+	 */
+	public static Property editable() {
+		return editable(true);
+	}
+
+
+	/**
 	 * @param editable whether the control is editable
-	 * @return a {@link MutationBehaviourProperty}
+	 * @return a {@link EditableProperty}
 	 */
 	public static Property editable(final boolean editable) {
 		return new EditableProperty(editable);
+	}
+
+
+	/**
+	 * @return a {@link SearchableProperty}
+	 */
+	public static Property searchable() {
+		return searchable(true);
+	}
+
+
+
+
+	/**
+	 * @param searchable whether the control is searchable
+	 * @return a {@link SearchableProperty}
+	 */
+	public static Property searchable(final boolean searchable) {
+		return new SearchableProperty(searchable);
 	}
 
 
