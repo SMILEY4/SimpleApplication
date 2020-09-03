@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
+import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
@@ -73,12 +74,12 @@ public class SizeProperty extends Property {
 	@Override
 	protected boolean isPropertyEqual(final Property other) {
 		final SizeProperty sizeOther = (SizeProperty) other;
-		return isEqual(this.getMinWidth(), sizeOther.getMinWidth())
-				&& isEqual(this.getMinHeight(), sizeOther.getMinHeight())
-				&& isEqual(this.getPreferredWidth(), sizeOther.getPreferredWidth())
-				&& isEqual(this.getPreferredHeight(), sizeOther.getPreferredHeight())
-				&& isEqual(this.getMaxWidth(), sizeOther.getMaxWidth())
-				&& isEqual(this.getMaxHeight(), sizeOther.getMaxHeight());
+		return NumberUtils.isEqual(this.getMinWidth(), sizeOther.getMinWidth())
+				&& NumberUtils.isEqual(this.getMinHeight(), sizeOther.getMinHeight())
+				&& NumberUtils.isEqual(this.getPreferredWidth(), sizeOther.getPreferredWidth())
+				&& NumberUtils.isEqual(this.getPreferredHeight(), sizeOther.getPreferredHeight())
+				&& NumberUtils.isEqual(this.getMaxWidth(), sizeOther.getMaxWidth())
+				&& NumberUtils.isEqual(this.getMaxHeight(), sizeOther.getMaxHeight());
 	}
 
 
@@ -89,52 +90,6 @@ public class SizeProperty extends Property {
 		return "min=" + getMinWidth() + "x" + getMinHeight()
 				+ " preferred=" + getPreferredWidth() + "x" + getPreferredHeight()
 				+ " max=" + getMaxWidth() + "x" + getMaxHeight();
-	}
-
-
-
-
-	/**
-	 * Null-Safe check to see if the two given values are equal.
-	 *
-	 * @param a the first number or null
-	 * @param b the second number or null
-	 * @return whether the two numbers are equal.
-	 */
-	protected static boolean isEqual(final Number a, final Number b) {
-		if (a == null && b == null) {
-			return true;
-		} else {
-			if (a != null) {
-				if (b == null) {
-					return false;
-				} else {
-					return compare(a, b) == 0;
-				}
-			} else {
-				return false;
-			}
-		}
-	}
-
-
-
-
-	/**
-	 * Compares the two given numbers.
-	 *
-	 * @param a the first number
-	 * @param b the second number
-	 * @return the value 0 if a is numerically equal to b;
-	 * a value less than 0 if a is numerically less than b;
-	 * and a value greater than 0 if a is numerically greater than b.
-	 */
-	private static int compare(final Number a, final Number b) {
-		if (a instanceof Double || a instanceof Float || b instanceof Double || b instanceof Float) {
-			return Double.compare(a.doubleValue(), b.doubleValue());
-		} else {
-			return Long.compare(a.longValue(), b.longValue());
-		}
 	}
 
 

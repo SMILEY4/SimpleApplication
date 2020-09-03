@@ -10,6 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Slider;
 import lombok.Getter;
 
 public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerProperty<SelectedItemEventData<T>, T> {
@@ -128,6 +129,42 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 			} else {
 				property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
 			}
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class SliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedItemEventProperty<Double>, Slider> {
+
+
+		@Override
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedItemEventProperty<Double> property,
+						  final Slider fxNode) {
+			// TODO
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<Double> property,
+									 final SuiNode node, final Slider fxNode) {
+			// TODO
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<Double> property,
+									 final SuiNode node, final Slider fxNode) {
+			// TODO
 			return MutationResult.MUTATED;
 		}
 

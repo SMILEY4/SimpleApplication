@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
+import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.layout.Region;
 import lombok.Getter;
-
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 @Getter
 public class SizePreferredProperty extends Property {
@@ -43,8 +43,8 @@ public class SizePreferredProperty extends Property {
 	@Override
 	protected boolean isPropertyEqual(final Property other) {
 		final SizePreferredProperty sizeOther = (SizePreferredProperty) other;
-		return SizeProperty.isEqual(this.getWidth(), sizeOther.getWidth())
-				&& SizeProperty.isEqual(this.getHeight(), sizeOther.getHeight());
+		return NumberUtils.isEqual(this.getWidth(), sizeOther.getWidth())
+				&& NumberUtils.isEqual(this.getHeight(), sizeOther.getHeight());
 	}
 
 

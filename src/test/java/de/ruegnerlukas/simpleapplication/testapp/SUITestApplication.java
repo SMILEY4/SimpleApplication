@@ -18,9 +18,9 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiDatePicker;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.geometry.Dimension2D;
 import lombok.Getter;
@@ -105,11 +105,11 @@ public class SUITestApplication {
 							anchorPane(
 									Properties.items(
 											anchorPaneItem(
-													SuiDatePicker.datePicker(
-															Properties.promptText("Some Date"),
-															EventProperties.eventAction(e -> {
-																System.out.println("selected: " + e.getData());
-															})
+													SuiSlider.slider(
+															Properties.minMax(-100, 100),
+															Properties.tickMarks(TickMarkProperty.TickMarkStyle.LABELED_TICKS, 50, 1, true),
+															Properties.labelFormatter(value -> value.intValue() + "m"),
+															Properties.blockIncrement(50)
 													),
 													Properties.anchor(100, null, 100, null)
 											)
