@@ -22,6 +22,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.events.MouseMoveEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
@@ -162,8 +163,8 @@ public class TestApplication {
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneContext(testUIState, TestUIState.class, state ->
 							anchorPane(
 
-									EventProperties.eventMouseEntered(SuiStream.eventStream(bridge ->
-											SuiStream.from(bridge)
+									EventProperties.eventMouseEntered(SuiStream.eventStream(MouseMoveEventData.class,
+											stream -> stream
 													.mapIgnoreNulls(e -> Pair.of(e.getX(), e.getY()))
 													.forEach(e -> System.out.println("entered at " + e.getLeft() + "," + e.getRight()))
 									)),

@@ -20,14 +20,14 @@ public class SuiState {
 
 	/**
 	 * Modifies this state via the given update.
-	 * The update will always be executed on the main javafx-thread (via {@link javafx.application.Platform#runLater(Runnable)}).
+	 * The update will always be executed on the main javafx-thread.
 	 *
 	 * @param stateType the type of this state (used to infer generic type)
 	 * @param update    the update to apply to this state
 	 */
 	public synchronized <T extends SuiState> void update(final Class<T> stateType, final SuiStateUpdate<T> update) {
 		Validations.INPUT.notNull(update).exception("The state update may not be null.");
-		Platform.runLater(() -> updateUnsafe(stateType, update));
+		runOnJFXThread(() -> updateUnsafe(stateType, update));
 	}
 
 
@@ -35,16 +35,34 @@ public class SuiState {
 
 	/**
 	 * Modifies this state via the given update.
-	 * The update will always be executed on the main javafx-thread (via {@link javafx.application.Platform#runLater(Runnable)}).
+	 * The update will always be executed on the main javafx-thread.
 	 *
 	 * @param stateType the type of this state (used to infer generic type)
 	 * @param silent    true, to not notify listeners and this not modifying the interface.
 	 * @param update    the update to apply to this state
 	 */
-	public synchronized <T extends SuiState> void update(
-			final Class<T> stateType, final boolean silent, final SuiStateUpdate<T> update) {
+	public synchronized <T extends SuiState> void update(final Class<T> stateType,
+														 final boolean silent,
+														 final SuiStateUpdate<T> update) {
 		Validations.INPUT.notNull(update).exception("The state update may not be null.");
-		Platform.runLater(() -> updateUnsafe(stateType, silent, update));
+		runOnJFXThread(() -> updateUnsafe(stateType, silent, update));
+	}
+
+
+
+
+	/**
+	 * Runs the given runnable on the javafx application thread.
+	 * Either immediately if we already are on the correct thread or later via {@code Platform.runLater}.
+	 *
+	 * @param runnable the action to run
+	 */
+	private void runOnJFXThread(final Runnable runnable) {
+		if (Platform.isFxApplicationThread()) {
+			runnable.run();
+		} else {
+			Platform.runLater(runnable);
+		}
 	}
 
 

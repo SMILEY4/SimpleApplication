@@ -9,10 +9,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.util.StringConverter;
 
+import java.time.chrono.Chronology;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public final class Properties {
@@ -239,6 +242,18 @@ public final class Properties {
 	public static Property textContent(final String text) {
 		Validations.INPUT.notNull(text).exception("The text can not be null.");
 		return new TextContentProperty(text);
+	}
+
+
+
+
+	/**
+	 * @param text the prompt text.
+	 * @return a {@link TextContentProperty}.
+	 */
+	public static Property promptText(final String text) {
+		Validations.INPUT.notNull(text).exception("The prompt text can not be null.");
+		return new PromptTextProperty(text);
 	}
 
 
@@ -548,7 +563,7 @@ public final class Properties {
 
 
 	/**
-	 * @param choices the list of possible choices
+	 * @param choices the list of possible choices. The class of the choice should have an implementation of the equals-method.
 	 * @return an {@link ChoicesProperty}
 	 */
 	public static <T> Property choices(final List<T> choices) {
@@ -561,12 +576,12 @@ public final class Properties {
 
 	/**
 	 * @param converter the converter for the displayed choice box items
-	 * @return an {@link ChoiceBoxConverterProperty}
+	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> Property choiceBoxConverter(final Class<T> type, final StringConverter<T> converter) {
+	public static <T> Property choicesConverter(final Class<T> type, final StringConverter<T> converter) {
 		Validations.INPUT.notNull(type).exception("The type can not be null.");
 		Validations.INPUT.notNull(converter).exception("The converter can not be null.");
-		return new ChoiceBoxConverterProperty<>(converter);
+		return new ChoicesConverterProperty<>(converter);
 	}
 
 
@@ -575,15 +590,15 @@ public final class Properties {
 	/**
 	 * @param fromString converter from a string to an object
 	 * @param toString   converter from an object to a string
-	 * @return an {@link ChoiceBoxConverterProperty}
+	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> Property choiceBoxConverter(final Class<T> type,
-												  final ChoiceBoxConverterProperty.FromStringConverter<T> fromString,
-												  final ChoiceBoxConverterProperty.ToStringConverter<T> toString) {
+	public static <T> Property choicesConverter(final Class<T> type,
+												final ChoicesConverterProperty.FromStringConverter<T> fromString,
+												final ChoicesConverterProperty.ToStringConverter<T> toString) {
 		Validations.INPUT.notNull(type).exception("The type can not be null.");
 		Validations.INPUT.notNull(fromString).exception("The converter from strings can not be null.");
 		Validations.INPUT.notNull(toString).exception("The converter to strings can not be null.");
-		return new ChoiceBoxConverterProperty<>(fromString, toString);
+		return new ChoicesConverterProperty<>(fromString, toString);
 	}
 
 
@@ -642,5 +657,160 @@ public final class Properties {
 		return new LayoutProperty(layoutId, layoutFunction);
 	}
 
+
+
+
+	/**
+	 * @return a {@link EditableProperty}
+	 */
+	public static Property editable() {
+		return editable(true);
+	}
+
+
+
+
+	/**
+	 * @param editable whether the control is editable
+	 * @return a {@link EditableProperty}
+	 */
+	public static Property editable(final boolean editable) {
+		return new EditableProperty(editable);
+	}
+
+
+
+
+	/**
+	 * @return a {@link SearchableProperty}
+	 */
+	public static Property searchable() {
+		return searchable(true);
+	}
+
+
+
+
+	/**
+	 * @param searchable whether the control is searchable
+	 * @return a {@link SearchableProperty}
+	 */
+	public static Property searchable(final boolean searchable) {
+		return new SearchableProperty(searchable);
+	}
+
+
+
+
+	/**
+	 * @param locale the locale to use
+	 * @return a {@link ChronologyProperty}
+	 */
+	public static Property chronology(final Locale locale) {
+		Validations.INPUT.notNull(locale).exception("The locale may not be null.");
+		return chronology(Chronology.ofLocale(locale));
+	}
+
+
+
+
+	/**
+	 * @param chronology the {@link Chronology} to use
+	 * @return a {@link ChronologyProperty}
+	 */
+	public static Property chronology(final Chronology chronology) {
+		Validations.INPUT.notNull(chronology).exception("The chronology may not be null.");
+		return new ChronologyProperty(chronology);
+	}
+
+
+
+
+	/**
+	 * @param min the min value (inclusive) (set to null to use the default min value)
+	 * @param max the max value (inclusive) (set to null to use the default max value)
+	 * @return a {@link MinMaxProperty}
+	 */
+	public static Property minMax(final Number min, final Number max) {
+		return new MinMaxProperty(
+				min == null ? -Double.MAX_VALUE : min,
+				max == null ? +Double.MAX_VALUE : max);
+	}
+
+
+
+
+	/**
+	 * @param increment the increment value
+	 * @return a {@link BlockIncrementProperty}
+	 */
+	public static Property blockIncrement(final Number increment) {
+		Validations.INPUT.notNull(increment).exception("The increment-value may not be null.");
+		Validations.INPUT.isNotNegative(increment.doubleValue()).exception("The increment-value may not be negative.");
+		return new BlockIncrementProperty(increment);
+	}
+
+
+
+
+	/**
+	 * @param formatter the formatting function
+	 * @return a {@link LabelFormatterProperty}
+	 */
+	public static Property labelFormatter(final Function<Double, String> formatter) {
+		Validations.INPUT.notNull(formatter).exception("The formatting-function may not be null.");
+		return new LabelFormatterProperty(formatter);
+	}
+
+
+
+
+	/**
+	 * @param tickMarkStyle the style of the tick marks
+	 * @return a {@link TickMarkProperty}
+	 */
+	public static Property tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle) {
+		return tickMarks(
+				tickMarkStyle,
+				TickMarkProperty.DEFAULT_MAJOR_TICK_UNIT,
+				TickMarkProperty.DEFAULT_MINOR_TICK_COUNT,
+				TickMarkProperty.DEFAULT_SNAP_TO_TICKS);
+	}
+
+
+
+
+	/**
+	 * @param tickMarkStyle  the style of the tick marks
+	 * @param majorTickUnit  the unit of the major tick marks
+	 * @param minorTickCount how many minor tick marks for each major mark
+	 * @return a {@link TickMarkProperty}
+	 */
+	public static Property tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle,
+									 final Number majorTickUnit,
+									 final int minorTickCount) {
+		return tickMarks(tickMarkStyle, majorTickUnit, minorTickCount, TickMarkProperty.DEFAULT_SNAP_TO_TICKS);
+	}
+
+
+
+
+	/**
+	 * @param tickMarkStyle  the style of the tick marks
+	 * @param majorTickUnit  the unit of the major tick marks
+	 * @param minorTickCount how many minor tick marks for each major mark
+	 * @param snapToTicks    whether to snap to the tick marks
+	 * @return a {@link TickMarkProperty}
+	 */
+	public static Property tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle,
+									 final Number majorTickUnit,
+									 final int minorTickCount,
+									 final boolean snapToTicks) {
+		Validations.INPUT.notNull(tickMarkStyle).exception("The tick-mark style may not be null.");
+		Validations.INPUT.notNull(majorTickUnit).exception("The major tick unit may not be null.");
+		Validations.INPUT.isNotNegative(majorTickUnit.doubleValue()).exception("The major tick unit may not be negative.");
+		Validations.INPUT.isNotNegative(minorTickCount).exception("The minor tick count may not be negative.");
+		return new TickMarkProperty(tickMarkStyle, majorTickUnit, minorTickCount, snapToTicks);
+	}
 
 }

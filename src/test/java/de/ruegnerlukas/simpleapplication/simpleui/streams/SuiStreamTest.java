@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.JFXTimer;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -24,7 +24,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 		final List<String> collectedValues = new ArrayList<>();
 
-		SUIEventListener<String> eventListener = SuiStream.eventStream(bridge -> SuiStream.from(bridge).forEach(collectedValues::add));
+		SUIEventListener<String> eventListener = SuiStream.eventStream(String.class, stream -> stream.forEach(collectedValues::add));
 
 		assertThat(collectedValues).isEmpty();
 		eventListener.onEvent(new SuiEvent<>("test", "a"));

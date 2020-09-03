@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
-import de.ruegnerlukas.simpleapplication.common.utils.Loop;
+import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.BaseOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.OperationType;
@@ -140,7 +140,7 @@ public class SuiNode {
 					.map(factory -> factory.create(state))
 					.collect(Collectors.toList());
 		} else {
-			return Loop.asyncCollectingLoop(property.getFactories(), factory -> factory.create(state));
+			return LoopUtils.asyncCollectingLoop(property.getFactories(), factory -> factory.create(state));
 		}
 	}
 

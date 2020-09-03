@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
@@ -52,7 +52,7 @@ public class OnSelectedIndexEventProperty extends AbstractObservableListenerProp
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedIndexEventProperty property,
 						  final ChoiceBox<?> fxNode) {
-			fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+			property.addChangeListenerTo(fxNode.getSelectionModel().selectedIndexProperty());
 		}
 
 
@@ -62,9 +62,9 @@ public class OnSelectedIndexEventProperty extends AbstractObservableListenerProp
 		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
 									 final SuiNode node, final ChoiceBox<?> fxNode) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(prop -> {
-				fxNode.getSelectionModel().selectedIndexProperty().removeListener(prop.getChangeListener());
+				prop.removeChangeListenerFrom(fxNode.getSelectionModel().selectedIndexProperty());
 			});
-			fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+			property.addChangeListenerTo(fxNode.getSelectionModel().selectedIndexProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -74,7 +74,7 @@ public class OnSelectedIndexEventProperty extends AbstractObservableListenerProp
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
 									 final SuiNode node, final ChoiceBox<?> fxNode) {
-			fxNode.getSelectionModel().selectedIndexProperty().addListener(property.getChangeListener());
+			property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedIndexProperty());
 			return MutationResult.MUTATED;
 		}
 

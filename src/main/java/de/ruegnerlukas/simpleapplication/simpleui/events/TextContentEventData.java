@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.events;
 
-import javafx.event.ActionEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,17 +9,18 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @ToString
-public class ActionEventData<T> {
+public class TextContentEventData {
 
 
 	/**
-	 * The data associated with the action.
+	 * The text content,
 	 */
-	private final T data;
+	private final String text;
+
 
 	/**
-	 * The original javafx event.
+	 * The text content before the event,
 	 */
-	private final ActionEvent source;
+	private final String prevText;
 
 }

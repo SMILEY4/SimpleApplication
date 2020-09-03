@@ -5,11 +5,12 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoiceBoxConverterProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.SelectedItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedIndexEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
@@ -61,7 +62,8 @@ public final class SuiChoiceBox {
 		registry.registerProperties(SuiChoiceBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiChoiceBox.class, List.of(
 				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ChoiceBoxUpdatingBuilder<>()),
-				PropertyEntry.of(ChoiceBoxConverterProperty.class, new ChoiceBoxConverterProperty.ChoiceBoxUpdatingBuilder<>()),
+				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ChoiceBoxUpdatingBuilder<>()),
+				PropertyEntry.of(SelectedItemProperty.class, new SelectedItemProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(OnSelectedIndexEventProperty.class, new OnSelectedIndexEventProperty.ChoiceBoxUpdatingBuilder())
 		));

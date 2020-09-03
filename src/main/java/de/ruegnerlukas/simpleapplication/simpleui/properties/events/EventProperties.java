@@ -14,6 +14,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 
 public final class EventProperties {
@@ -461,5 +462,34 @@ public final class EventProperties {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnUncheckedEventProperty(listener);
 	}
+
+
+
+
+	/**
+	 * When the text of an input (e.g. text field) was entered i.e. accepted.
+	 *
+	 * @param listener the listener for events with {@link CheckedEventData}.
+	 * @return a {@link OnUncheckedEventProperty}
+	 */
+	public static Property eventTextEntered(final SUIEventListener<TextContentEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnTextEnteredEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When the text of an input changed.
+	 *
+	 * @param listener the listener for events with {@link CheckedEventData}.
+	 * @return a {@link OnTextChangedEventProperty}
+	 */
+	public static Property eventTextChanged(final SUIEventListener<TextContentEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnTextChangedEventProperty(listener);
+	}
+
 
 }

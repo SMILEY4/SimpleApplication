@@ -222,7 +222,7 @@ public class EventServiceImpl implements EventService {
 		try {
 			subscriber.getGenericListener().onEvent(publishable);
 		} catch (ClassCastException e) {
-			log.warn("Cannot cast event listener '{}' to type of received event '{}'", subscriber.getListener(), publishable);
+			log.warn("Cannot cast event listener '{}' to type of received event '{}'", subscriber.getListener(), publishable, e);
 			successful = false;
 		}
 		return successful;

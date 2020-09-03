@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.AccumulateStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.AsyncStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.CollectIntoStream;
@@ -19,6 +20,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.MapStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.OnJFXStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.PeekStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.SkipStream;
+import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.StateUpdateStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.ToStringStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.UnpackStream;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.WaitForAndPackStream;
@@ -29,6 +31,7 @@ import javafx.util.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -289,6 +292,28 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 	public SuiStream<OUT, List<OUT>> accumulate(final int maxAmount, final Duration timeout) {
 		Validations.INPUT.notNull(timeout).exception("The timeout may not be null.");
 		return new AccumulateStream<>(this, maxAmount, timeout);
+	}
+
+
+
+
+	@Override
+	public <T extends SuiState> void updateState(final Class<T> stateType, final T state, final BiConsumer<T, OUT> updateFunction) {
+		Validations.INPUT.notNull(stateType).exception("The state type may not be null.");
+		Validations.INPUT.notNull(state).exception("The state may not be null.");
+		Validations.INPUT.notNull(updateFunction).exception("The update function may not be null.");
+		new StateUpdateStream<>(this, false, stateType, state, updateFunction);
+	}
+
+
+
+
+	@Override
+	public <T extends SuiState> void updateStateSilent(final Class<T> stateType, final T state, final BiConsumer<T, OUT> updateFunction) {
+		Validations.INPUT.notNull(stateType).exception("The state type may not be null.");
+		Validations.INPUT.notNull(state).exception("The state may not be null.");
+		Validations.INPUT.notNull(updateFunction).exception("The update function may not be null.");
+		new StateUpdateStream<>(this, true, stateType, state, updateFunction);
 	}
 
 }

@@ -40,6 +40,7 @@ public interface ModuleController {
 
 		@Override
 		public void initialize(final ListenableEventSourceGroup events, final TriggerableEventSourceGroup commands) {
+			// does nothing
 		}
 
 	}

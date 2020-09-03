@@ -10,11 +10,16 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBui
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiChoiceBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiDatePicker;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiSeparator;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextArea;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;
@@ -78,15 +83,20 @@ public class SuiRegistry {
 	 * Default constructor. Registers the pre-build nodes.
 	 */
 	public SuiRegistry() {
+		SuiSeparator.register(this);
+		SuiLabel.register(this);
 		SuiButton.register(this);
+		SuiChoiceBox.register(this);
+		SuiComboBox.register(this);
+		SuiTextField.register(this);
+		SuiTextArea.register(this);
+		SuiDatePicker.register(this);
+		SuiSlider.register(this);
+		SuiContainer.register(this);
 		SuiAnchorPane.register(this);
 		SuiScrollPane.register(this);
 		SuiVBox.register(this);
 		SuiHBox.register(this);
-		SuiSeparator.register(this);
-		SuiLabel.register(this);
-		SuiChoiceBox.register(this);
-		SuiContainer.register(this);
 	}
 
 
@@ -197,6 +207,7 @@ public class SuiRegistry {
 	 * @return the entry or null
 	 */
 	public RegistryEntry getEntry(final Class<?> nodeType) {
+		Validations.PRESENCE.containsKey(entries, nodeType).exception("The node type {} is unknown.", nodeType);
 		return entries.get(nodeType);
 	}
 
