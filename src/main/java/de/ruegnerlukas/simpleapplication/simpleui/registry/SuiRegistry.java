@@ -12,6 +12,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiDatePicker;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane;
@@ -88,6 +89,7 @@ public class SuiRegistry {
 		SuiComboBox.register(this);
 		SuiTextField.register(this);
 		SuiTextArea.register(this);
+		SuiDatePicker.register(this);
 		SuiContainer.register(this);
 		SuiAnchorPane.register(this);
 		SuiScrollPane.register(this);

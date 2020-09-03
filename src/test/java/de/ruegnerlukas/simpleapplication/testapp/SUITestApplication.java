@@ -18,9 +18,9 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiChoiceBox;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiDatePicker;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.geometry.Dimension2D;
 import lombok.Getter;
@@ -28,12 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPaneItem;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.choices;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.id;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.maxSize;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.preferredSize;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.searchable;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventSelectedItem;
 
 @Slf4j
 public class SUITestApplication {
@@ -111,51 +105,13 @@ public class SUITestApplication {
 							anchorPane(
 									Properties.items(
 											anchorPaneItem(
-													SuiChoiceBox.choiceBox(
-															id("cb1"),
-															preferredSize(150, 25),
-															maxSize(150, 100000),
-															choices(Countries.getAll()),
-															eventSelectedItem(e -> {
-																state.update(TestUIState.class, s -> {
-																	s.setText((String) e.getItem());
-																});
+													SuiDatePicker.datePicker(
+															Properties.promptText("Some Date"),
+															EventProperties.eventAction(e -> {
+																System.out.println("selected: " + e.getData());
 															})
 													),
 													Properties.anchor(100, null, 100, null)
-											),
-											anchorPaneItem(
-//													SuiTextComboBox.textComboBox(
-//															id("cb2"),
-//															preferredSize(150, 25),
-//															maxSize(150, 100000),
-//															searchable(),
-//															choices(Countries.getAllStartingWith(state.getText() == null || state.getText().isEmpty() ? null : "" + state.getText().charAt(0))),
-//															eventSelectedItem(String.class, e -> {
-//																if (e.getItem() != null) {
-//																	state.update(TestUIState.class, s -> {
-//																		s.setText(e.getItem());
-//																	});
-//																}
-//															})
-//													),
-													SuiComboBox.comboBox(
-															id("cb2"),
-															preferredSize(150, 25),
-															maxSize(150, 100000),
-															searchable(),
-															choices(Countries.getAllStartingWith(state.getText() == null || state.getText().isEmpty() ? null : "" + state.getText().charAt(0)))
-//															eventSelectedItem(Countries.Country.class, e -> {
-//																Platform.runLater(() -> {
-//																	if (e.getItem() != null) {
-//																		state.update(TestUIState.class, s -> {
-//																			s.setText(e.getItem().getName() + " (" + e.getItem().getRandomNumber() + ")");
-//																		});
-//																	}
-//																});
-//															})
-													),
-													Properties.anchor(170, null, 100, null)
 											)
 									)
 							)

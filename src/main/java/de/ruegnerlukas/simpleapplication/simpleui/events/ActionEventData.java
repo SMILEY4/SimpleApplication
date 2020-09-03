@@ -10,8 +10,13 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @ToString
-public class ActionEventData {
+public class ActionEventData<T> {
 
+
+	/**
+	 * The data associated with the action.
+	 */
+	private final T data;
 
 	/**
 	 * The original javafx event.

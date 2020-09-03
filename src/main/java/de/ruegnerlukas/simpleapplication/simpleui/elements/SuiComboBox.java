@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.jfxelements.Searchabl
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.EditableProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
@@ -84,7 +85,8 @@ public final class SuiComboBox {
 				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxBaseUpdatingBuilder()),
-				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.UpdatingBuilder())
+				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.UpdatingBuilder()),
+				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ComboBoxBaseUpdatingBuilder<>())
 		));
 	}
 

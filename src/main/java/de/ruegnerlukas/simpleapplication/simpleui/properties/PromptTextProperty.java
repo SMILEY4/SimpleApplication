@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
+import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
 
@@ -72,6 +73,42 @@ public class PromptTextProperty extends Property {
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final PromptTextProperty property,
 									 final SuiNode node, final TextInputControl fxNode) {
+			fxNode.setPromptText("");
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class ComboBoxBaseUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<PromptTextProperty, ComboBoxBase<T>> {
+
+
+		@Override
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final PromptTextProperty property,
+						  final ComboBoxBase<T> fxNode) {
+			fxNode.setPromptText(property.getText());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final PromptTextProperty property,
+									 final SuiNode node, final ComboBoxBase<T> fxNode) {
+			fxNode.setPromptText(property.getText());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final PromptTextProperty property,
+									 final SuiNode node, final ComboBoxBase<T> fxNode) {
 			fxNode.setPromptText("");
 			return MutationResult.MUTATED;
 		}
