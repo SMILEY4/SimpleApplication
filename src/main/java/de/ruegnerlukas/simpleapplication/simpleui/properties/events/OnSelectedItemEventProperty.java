@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.jfxelements.SearchableComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
@@ -83,25 +84,36 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 
-	public static class TextComboBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedItemEventProperty<String>, ComboBox<String>> {
+	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnSelectedItemEventProperty<T>, ComboBox<T>> {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedItemEventProperty<String> property,
-						  final ComboBox<String> fxNode) {
-			property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
+		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedItemEventProperty<T> property,
+						  final ComboBox<T> fxNode) {
+			if (fxNode instanceof SearchableComboBox) {
+				property.addChangeListenerTo(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
+			} else {
+				property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
+			}
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<String> property,
-									 final SuiNode node, final ComboBox<String> fxNode) {
-			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
-				prop.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
-			});
-			property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
+		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<T> property,
+									 final SuiNode node, final ComboBox<T> fxNode) {
+			if (fxNode instanceof SearchableComboBox) {
+				node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
+					prop.removeChangeListenerFrom(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
+				});
+				property.addChangeListenerTo(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
+			} else {
+				node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
+					prop.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
+				});
+				property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
+			}
 			return MutationResult.MUTATED;
 		}
 
@@ -109,9 +121,13 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<String> property,
-									 final SuiNode node, final ComboBox<String> fxNode) {
-			property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<T> property,
+									 final SuiNode node, final ComboBox<T> fxNode) {
+			if (fxNode instanceof SearchableComboBox) {
+				property.removeChangeListenerFrom(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
+			} else {
+				property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
+			}
 			return MutationResult.MUTATED;
 		}
 

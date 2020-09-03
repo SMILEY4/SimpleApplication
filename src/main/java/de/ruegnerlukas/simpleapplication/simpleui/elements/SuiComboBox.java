@@ -4,13 +4,14 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.jfxelements.SearchableComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SearchableProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedIndexEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.scene.control.ComboBox;
@@ -21,13 +22,13 @@ import java.util.List;
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry.PropertyEntry;
 import static de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry.get;
 
-public final class SuiTextComboBox {
+public final class SuiComboBox {
 
 
 	/**
 	 * Hidden constructor for utility classes
 	 */
-	private SuiTextComboBox() {
+	private SuiComboBox() {
 		// do nothing
 	}
 
@@ -35,17 +36,17 @@ public final class SuiTextComboBox {
 
 
 	/**
-	 * Creates a new text combobox
+	 * Creates a new combobox
 	 *
 	 * @param properties the properties
-	 * @return the factory for a text combobox
+	 * @return the factory for a combobox
 	 */
-	public static NodeFactory textComboBox(final Property... properties) {
+	public static NodeFactory comboBox(final Property... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		validateConflictSearchableEditable(properties);
-		Properties.validate(SuiTextComboBox.class, get().getEntry(SuiTextComboBox.class).getProperties(), properties);
-		return state -> new SuiNode(SuiTextComboBox.class, List.of(properties), state, null);
+		Properties.validate(SuiComboBox.class, get().getEntry(SuiComboBox.class).getProperties(), properties);
+		return state -> new SuiNode(SuiComboBox.class, List.of(properties), state, null);
 	}
 
 
@@ -74,32 +75,29 @@ public final class SuiTextComboBox {
 	 * @param registry the registry
 	 */
 	public static void register(final SuiRegistry registry) {
-		registry.registerBaseFxNodeBuilder(SuiTextComboBox.class, new FxNodeBuilder());
-		registry.registerProperties(SuiTextComboBox.class, PropertyGroups.commonProperties());
-		registry.registerProperties(SuiTextComboBox.class, PropertyGroups.commonRegionProperties());
-		registry.registerProperties(SuiTextComboBox.class, PropertyGroups.commonEventProperties());
-		registry.registerProperties(SuiTextComboBox.class, List.of(
-				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.TextComboBoxUpdatingBuilder()),
-				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.TextComboBoxUpdatingBuilder()),
-				PropertyEntry.of(OnSelectedIndexEventProperty.class, new OnSelectedIndexEventProperty.TextComboBoxUpdatingBuilder()),
+		registry.registerBaseFxNodeBuilder(SuiComboBox.class, new FxNodeBuilder<>());
+		registry.registerProperties(SuiComboBox.class, PropertyGroups.commonProperties());
+		registry.registerProperties(SuiComboBox.class, PropertyGroups.commonRegionProperties());
+		registry.registerProperties(SuiComboBox.class, PropertyGroups.commonEventProperties());
+		registry.registerProperties(SuiComboBox.class, List.of(
+				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ComboBoxUpdatingBuilder<>()),
+				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ComboBoxUpdatingBuilder<>()),
+				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxBaseUpdatingBuilder()),
-				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.ComboBoxBaseUpdatingBuilder())
+				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.UpdatingBuilder())
 		));
 	}
 
 
 
 
-	private static class FxNodeBuilder implements BaseFxNodeBuilder<ComboBox<String>> {
+	private static class FxNodeBuilder<T> implements BaseFxNodeBuilder<ComboBox<T>> {
 
 
 		@Override
-		public ComboBox<String> build(final MasterNodeHandlers nodeHandlers, final SuiNode node) {
-			final boolean searchable = node.getPropertySafe(SearchableProperty.class)
-					.map(SearchableProperty::isSearchable)
-					.orElse(false);
-			if (searchable) {
-				return SearchableStringComboBox.create();
+		public ComboBox<T> build(final MasterNodeHandlers nodeHandlers, final SuiNode node) {
+			if (SearchableProperty.isSearchable(node)) {
+				return new SearchableComboBox<>();
 			} else {
 				return new ComboBox<>();
 			}

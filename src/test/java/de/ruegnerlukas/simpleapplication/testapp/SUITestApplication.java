@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
-import de.ruegnerlukas.simpleapplication.Countries;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
@@ -20,7 +19,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiChoiceBox;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.geometry.Dimension2D;
@@ -126,19 +125,35 @@ public class SUITestApplication {
 													Properties.anchor(100, null, 100, null)
 											),
 											anchorPaneItem(
-													SuiTextComboBox.textComboBox(
+//													SuiTextComboBox.textComboBox(
+//															id("cb2"),
+//															preferredSize(150, 25),
+//															maxSize(150, 100000),
+//															searchable(),
+//															choices(Countries.getAllStartingWith(state.getText() == null || state.getText().isEmpty() ? null : "" + state.getText().charAt(0))),
+//															eventSelectedItem(String.class, e -> {
+//																if (e.getItem() != null) {
+//																	state.update(TestUIState.class, s -> {
+//																		s.setText(e.getItem());
+//																	});
+//																}
+//															})
+//													),
+													SuiComboBox.comboBox(
 															id("cb2"),
 															preferredSize(150, 25),
 															maxSize(150, 100000),
 															searchable(),
-															choices(Countries.getAllStartingWith(state.getText() == null || state.getText().isEmpty() ? null : "" + state.getText().charAt(0))),
-															eventSelectedItem(String.class, e -> {
-																if (e.getItem() != null) {
-																	state.update(TestUIState.class, s -> {
-																		s.setText(e.getItem());
-																	});
-																}
-															})
+															choices(Countries.getAllStartingWith(state.getText() == null || state.getText().isEmpty() ? null : "" + state.getText().charAt(0)))
+//															eventSelectedItem(Countries.Country.class, e -> {
+//																Platform.runLater(() -> {
+//																	if (e.getItem() != null) {
+//																		state.update(TestUIState.class, s -> {
+//																			s.setText(e.getItem().getName() + " (" + e.getItem().getRandomNumber() + ")");
+//																		});
+//																	}
+//																});
+//															})
 													),
 													Properties.anchor(170, null, 100, null)
 											)

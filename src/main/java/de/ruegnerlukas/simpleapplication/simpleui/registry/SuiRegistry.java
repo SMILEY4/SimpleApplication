@@ -10,12 +10,12 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBui
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiChoiceBox;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiSeparator;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
@@ -85,7 +85,7 @@ public class SuiRegistry {
 		SuiLabel.register(this);
 		SuiButton.register(this);
 		SuiChoiceBox.register(this);
-		SuiTextComboBox.register(this);
+		SuiComboBox.register(this);
 		SuiTextField.register(this);
 		SuiTextArea.register(this);
 		SuiContainer.register(this);

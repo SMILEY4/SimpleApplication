@@ -8,7 +8,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import lombok.Getter;
 
 import java.util.Optional;
@@ -81,40 +80,5 @@ public class OnSelectedIndexEventProperty extends AbstractObservableListenerProp
 
 	}
 
-
-
-	public static class TextComboBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedIndexEventProperty, ComboBox<String>> {
-
-
-		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedIndexEventProperty property,
-						  final ComboBox<String> fxNode) {
-			property.addChangeListenerTo(fxNode.getSelectionModel().selectedIndexProperty());
-		}
-
-
-
-
-		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
-									 final SuiNode node, final ComboBox<String> fxNode) {
-			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(prop -> {
-				prop.removeChangeListenerFrom(fxNode.getSelectionModel().selectedIndexProperty());
-			});
-			property.addChangeListenerTo(fxNode.getSelectionModel().selectedIndexProperty());
-			return MutationResult.MUTATED;
-		}
-
-
-
-
-		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
-									 final SuiNode node, final ComboBox<String> fxNode) {
-			property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedIndexProperty());
-			return MutationResult.MUTATED;
-		}
-
-	}
 
 }

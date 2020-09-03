@@ -1,10 +1,77 @@
-package de.ruegnerlukas.simpleapplication;
+package de.ruegnerlukas.simpleapplication.testapp;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Countries {
+
+
+	@Getter
+	@AllArgsConstructor
+	public static class Country {
+
+
+		private final String name;
+
+		private final int randomNumber;
+
+
+
+
+		@Override
+		public boolean equals(final Object o) {
+			if (o instanceof Country) {
+				Country other = (Country) o;
+				return other.getRandomNumber() == getRandomNumber() && other.getName().equals(getName());
+			} else {
+				return false;
+			}
+		}
+
+
+
+
+		@Override
+		public int hashCode() {
+			int result = getName() != null ? getName().hashCode() : 0;
+			result = 31 * result + getRandomNumber();
+			return result;
+		}
+
+
+
+
+	}
+
+
+
+
+	public static List<Country> getAllAsObjStartingWith(final String str) {
+		if (str == null || str.isEmpty()) {
+			return getAllAsObj();
+		} else {
+			return getAllAsObj().stream()
+					.filter(s -> s.getName().startsWith(str))
+					.collect(Collectors.toList());
+		}
+	}
+
+
+
+
+	public static List<Country> getAllAsObj() {
+		final Random random = new Random(125);
+		return getAll().stream()
+				.map(name -> new Country(name, random.nextInt(10000)))
+				.collect(Collectors.toList());
+	}
+
+
 
 
 	public static List<String> getAllStartingWith(final String str) {
