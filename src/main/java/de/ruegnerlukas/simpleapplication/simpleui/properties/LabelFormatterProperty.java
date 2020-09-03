@@ -54,7 +54,9 @@ public class LabelFormatterProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final LabelFormatterProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final LabelFormatterProperty property,
 						  final Slider fxNode) {
 			setFormatter(fxNode, property);
 		}
@@ -63,8 +65,10 @@ public class LabelFormatterProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final LabelFormatterProperty property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final LabelFormatterProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			setFormatter(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -97,8 +101,10 @@ public class LabelFormatterProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final LabelFormatterProperty property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final LabelFormatterProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			fxNode.setLabelFormatter(null);
 			return MutationResult.MUTATED;
 		}

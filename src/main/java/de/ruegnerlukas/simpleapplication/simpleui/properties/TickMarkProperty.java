@@ -159,7 +159,9 @@ public class TickMarkProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final TickMarkProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final TickMarkProperty property,
 						  final Slider fxNode) {
 			fxNode.setShowTickMarks(property.getTickMarkStyle().isShowTickMarks());
 			fxNode.setShowTickLabels(property.getTickMarkStyle().isShowLabels());
@@ -172,8 +174,10 @@ public class TickMarkProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final TickMarkProperty property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final TickMarkProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			fxNode.setShowTickMarks(property.getTickMarkStyle().isShowTickMarks());
 			fxNode.setShowTickLabels(property.getTickMarkStyle().isShowLabels());
 			fxNode.setMajorTickUnit(property.getMajorTickUnit().doubleValue());
@@ -186,8 +190,10 @@ public class TickMarkProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final TickMarkProperty property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final TickMarkProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			fxNode.setShowTickMarks(DEFAULT_STYLE.isShowTickMarks());
 			fxNode.setShowTickLabels(DEFAULT_STYLE.isShowLabels());
 			fxNode.setMajorTickUnit(DEFAULT_MAJOR_TICK_UNIT);

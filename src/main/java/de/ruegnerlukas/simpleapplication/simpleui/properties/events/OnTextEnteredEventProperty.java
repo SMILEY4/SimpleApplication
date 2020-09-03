@@ -66,7 +66,9 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnTextEnteredEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnTextEnteredEventProperty property,
 						  final TextField fxNode) {
 			setListener(fxNode, property);
 		}
@@ -75,8 +77,10 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnTextEnteredEventProperty property,
-									 final SuiNode node, final TextField fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnTextEnteredEventProperty property,
+									 final SuiNode node,
+									 final TextField fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -85,8 +89,10 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnTextEnteredEventProperty property,
-									 final SuiNode node, final TextField fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnTextEnteredEventProperty property,
+									 final SuiNode node,
+									 final TextField fxNode) {
 			fxNode.setOnAction(null);
 			return MutationResult.MUTATED;
 		}
@@ -121,7 +127,9 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnTextEnteredEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnTextEnteredEventProperty property,
 						  final TextArea fxNode) {
 			fxNode.addEventHandler(KeyEvent.KEY_RELEASED, property.getTextAreaEventHandler());
 		}
@@ -130,8 +138,10 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnTextEnteredEventProperty property,
-									 final SuiNode node, final TextArea fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnTextEnteredEventProperty property,
+									 final SuiNode node,
+									 final TextArea fxNode) {
 			node.getPropertySafe(OnTextEnteredEventProperty.class).ifPresent(prop -> {
 				fxNode.removeEventHandler(KeyEvent.KEY_RELEASED, prop.getTextAreaEventHandler());
 			});
@@ -143,8 +153,10 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnTextEnteredEventProperty property,
-									 final SuiNode node, final TextArea fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnTextEnteredEventProperty property,
+									 final SuiNode node,
+									 final TextArea fxNode) {
 			fxNode.removeEventHandler(KeyEvent.KEY_RELEASED, property.getTextAreaEventHandler());
 			return MutationResult.MUTATED;
 		}

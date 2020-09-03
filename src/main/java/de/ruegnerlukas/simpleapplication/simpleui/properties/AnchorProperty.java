@@ -80,7 +80,9 @@ public class AnchorProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final AnchorProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final AnchorProperty property,
 						  final Node fxNode) {
 			setAnchors(property, fxNode);
 		}
@@ -89,8 +91,10 @@ public class AnchorProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final AnchorProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final AnchorProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			setAnchors(property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -115,8 +119,10 @@ public class AnchorProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final AnchorProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final AnchorProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			AnchorPane.setTopAnchor(fxNode, null);
 			AnchorPane.setBottomAnchor(fxNode, null);
 			AnchorPane.setLeftAnchor(fxNode, null);

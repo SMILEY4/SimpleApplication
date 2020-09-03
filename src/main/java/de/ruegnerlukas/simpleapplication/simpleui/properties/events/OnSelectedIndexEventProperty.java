@@ -50,7 +50,9 @@ public class OnSelectedIndexEventProperty extends AbstractObservableListenerProp
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedIndexEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnSelectedIndexEventProperty property,
 						  final ChoiceBox<?> fxNode) {
 			property.addChangeListenerTo(fxNode.getSelectionModel().selectedIndexProperty());
 		}
@@ -59,8 +61,10 @@ public class OnSelectedIndexEventProperty extends AbstractObservableListenerProp
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
-									 final SuiNode node, final ChoiceBox<?> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnSelectedIndexEventProperty property,
+									 final SuiNode node,
+									 final ChoiceBox<?> fxNode) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(prop -> {
 				prop.removeChangeListenerFrom(fxNode.getSelectionModel().selectedIndexProperty());
 			});
@@ -72,8 +76,10 @@ public class OnSelectedIndexEventProperty extends AbstractObservableListenerProp
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedIndexEventProperty property,
-									 final SuiNode node, final ChoiceBox<?> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnSelectedIndexEventProperty property,
+									 final SuiNode node,
+									 final ChoiceBox<?> fxNode) {
 			property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedIndexProperty());
 			return MutationResult.MUTATED;
 		}

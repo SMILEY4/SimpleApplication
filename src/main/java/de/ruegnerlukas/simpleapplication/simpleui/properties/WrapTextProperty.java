@@ -51,7 +51,9 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final WrapTextProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final WrapTextProperty property,
 						  final Labeled fxNode) {
 			fxNode.setWrapText(property.isWrap());
 		}
@@ -60,8 +62,10 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final WrapTextProperty property,
-									 final SuiNode node, final Labeled fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final WrapTextProperty property,
+									 final SuiNode node,
+									 final Labeled fxNode) {
 			fxNode.setWrapText(property.isWrap());
 			return MutationResult.MUTATED;
 		}
@@ -70,8 +74,10 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final WrapTextProperty property,
-									 final SuiNode node, final Labeled fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final WrapTextProperty property,
+									 final SuiNode node,
+									 final Labeled fxNode) {
 			fxNode.setWrapText(false);
 			return MutationResult.MUTATED;
 		}
@@ -87,7 +93,9 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final WrapTextProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final WrapTextProperty property,
 						  final TextArea fxNode) {
 			fxNode.setWrapText(property.isWrap());
 		}
@@ -96,8 +104,10 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final WrapTextProperty property,
-									 final SuiNode node, final TextArea fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final WrapTextProperty property,
+									 final SuiNode node,
+									 final TextArea fxNode) {
 			fxNode.setWrapText(property.isWrap());
 			return MutationResult.MUTATED;
 		}
@@ -106,8 +116,10 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final WrapTextProperty property,
-									 final SuiNode node, final TextArea fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final WrapTextProperty property,
+									 final SuiNode node,
+									 final TextArea fxNode) {
 			fxNode.setWrapText(false);
 			return MutationResult.MUTATED;
 		}

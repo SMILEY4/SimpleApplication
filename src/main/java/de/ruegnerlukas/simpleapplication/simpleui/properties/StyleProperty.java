@@ -115,7 +115,9 @@ public class StyleProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final StyleProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final StyleProperty property,
 						  final Node fxNode) {
 			setStyle(property, fxNode);
 		}
@@ -124,8 +126,10 @@ public class StyleProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final StyleProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final StyleProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			setStyle(property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -134,8 +138,10 @@ public class StyleProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final StyleProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final StyleProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			if (property.usesResourceStyle()) {
 				((Parent) fxNode).getStylesheets().clear();
 			} else {

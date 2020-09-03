@@ -62,7 +62,9 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SizeMaxProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final SizeMaxProperty property,
 						  final Region fxNode) {
 			fxNode.setMaxSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 		}
@@ -71,8 +73,10 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SizeMaxProperty property,
-									 final SuiNode node, final Region fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final SizeMaxProperty property,
+									 final SuiNode node,
+									 final Region fxNode) {
 			fxNode.setMaxSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 			return MutationResult.MUTATED;
 		}
@@ -81,8 +85,10 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SizeMaxProperty property,
-									 final SuiNode node, final Region fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final SizeMaxProperty property,
+									 final SuiNode node,
+									 final Region fxNode) {
 			if (node.hasProperty(SizeProperty.class)) {
 				SizeProperty sizeProp = node.getProperty(SizeProperty.class);
 				fxNode.setMaxSize(sizeProp.getMaxWidth().doubleValue(), sizeProp.getMaxHeight().doubleValue());

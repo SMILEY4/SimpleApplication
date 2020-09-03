@@ -53,7 +53,9 @@ public class SelectedItemProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SelectedItemProperty<T> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final SelectedItemProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			if (!Objects.equals(fxNode.getSelectionModel().getSelectedItem(), property.getSelected())) {
 				fxNode.getSelectionModel().select(property.getSelected());
@@ -64,8 +66,10 @@ public class SelectedItemProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SelectedItemProperty<T> property,
-									 final SuiNode node, final ChoiceBox<T> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final SelectedItemProperty<T> property,
+									 final SuiNode node,
+									 final ChoiceBox<T> fxNode) {
 			if (!Objects.equals(fxNode.getSelectionModel().getSelectedItem(), property.getSelected())) {
 				fxNode.getSelectionModel().select(property.getSelected());
 			}
@@ -76,8 +80,10 @@ public class SelectedItemProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SelectedItemProperty<T> property,
-									 final SuiNode node, final ChoiceBox<T> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final SelectedItemProperty<T> property,
+									 final SuiNode node,
+									 final ChoiceBox<T> fxNode) {
 			return MutationResult.MUTATED;
 		}
 

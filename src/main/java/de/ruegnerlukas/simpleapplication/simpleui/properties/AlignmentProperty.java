@@ -55,7 +55,9 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final AlignmentProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final AlignmentProperty property,
 						  final VBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 		}
@@ -64,8 +66,10 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
-									 final SuiNode node, final VBox fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final AlignmentProperty property,
+									 final SuiNode node,
+									 final VBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 			return MutationResult.MUTATED;
 		}
@@ -74,8 +78,10 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
-									 final SuiNode node, final VBox fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final AlignmentProperty property,
+									 final SuiNode node,
+									 final VBox fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
 			return MutationResult.MUTATED;
 		}
@@ -91,7 +97,9 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final AlignmentProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final AlignmentProperty property,
 						  final HBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 		}
@@ -100,8 +108,10 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
-									 final SuiNode node, final HBox fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final AlignmentProperty property,
+									 final SuiNode node,
+									 final HBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 			return MutationResult.MUTATED;
 		}
@@ -110,8 +120,10 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
-									 final SuiNode node, final HBox fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final AlignmentProperty property,
+									 final SuiNode node,
+									 final HBox fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
 			return MutationResult.MUTATED;
 		}
@@ -127,7 +139,9 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final AlignmentProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final AlignmentProperty property,
 						  final Labeled fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 		}
@@ -136,8 +150,10 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
-									 final SuiNode node, final Labeled fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final AlignmentProperty property,
+									 final SuiNode node,
+									 final Labeled fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 			return MutationResult.MUTATED;
 		}
@@ -146,8 +162,10 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
-									 final SuiNode node, final Labeled fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final AlignmentProperty property,
+									 final SuiNode node,
+									 final Labeled fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
 			return MutationResult.MUTATED;
 		}
@@ -163,7 +181,9 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final AlignmentProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final AlignmentProperty property,
 						  final TextField fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 		}
@@ -172,8 +192,10 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
-									 final SuiNode node, final TextField fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final AlignmentProperty property,
+									 final SuiNode node,
+									 final TextField fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 			return MutationResult.MUTATED;
 		}
@@ -182,8 +204,10 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final AlignmentProperty property,
-									 final SuiNode node, final TextField fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final AlignmentProperty property,
+									 final SuiNode node,
+									 final TextField fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
 			return MutationResult.MUTATED;
 		}

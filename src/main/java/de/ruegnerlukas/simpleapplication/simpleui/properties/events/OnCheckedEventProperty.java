@@ -52,7 +52,9 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnCheckedEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnCheckedEventProperty property,
 						  final CheckBox fxNode) {
 			property.addChangeListenerTo(fxNode.selectedProperty());
 		}
@@ -61,8 +63,10 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnCheckedEventProperty property,
-									 final SuiNode node, final CheckBox fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnCheckedEventProperty property,
+									 final SuiNode node,
+									 final CheckBox fxNode) {
 			node.getPropertySafe(OnCheckedEventProperty.class).ifPresent(prop -> {
 				prop.removeChangeListenerFrom(fxNode.selectedProperty());
 			});
@@ -74,8 +78,10 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnCheckedEventProperty property,
-									 final SuiNode node, final CheckBox fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnCheckedEventProperty property,
+									 final SuiNode node,
+									 final CheckBox fxNode) {
 			property.removeChangeListenerFrom(fxNode.selectedProperty());
 			return MutationResult.MUTATED;
 		}

@@ -62,7 +62,9 @@ public class SizeMinProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SizeMinProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final SizeMinProperty property,
 						  final Region fxNode) {
 			fxNode.setMinSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 		}
@@ -71,8 +73,10 @@ public class SizeMinProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SizeMinProperty property,
-									 final SuiNode node, final Region fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final SizeMinProperty property,
+									 final SuiNode node,
+									 final Region fxNode) {
 			fxNode.setMinSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 			return MutationResult.MUTATED;
 		}
@@ -81,8 +85,10 @@ public class SizeMinProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SizeMinProperty property,
-									 final SuiNode node, final Region fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final SizeMinProperty property,
+									 final SuiNode node,
+									 final Region fxNode) {
 			if (node.hasProperty(SizeProperty.class)) {
 				SizeProperty sizeProp = node.getProperty(SizeProperty.class);
 				fxNode.setMinSize(sizeProp.getMinWidth().doubleValue(), sizeProp.getMinHeight().doubleValue());

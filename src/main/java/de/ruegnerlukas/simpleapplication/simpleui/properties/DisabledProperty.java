@@ -52,7 +52,9 @@ public class DisabledProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final DisabledProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final DisabledProperty property,
 						  final Node fxNode) {
 			fxNode.setDisable(property.isDisabled());
 		}
@@ -61,8 +63,10 @@ public class DisabledProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final DisabledProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final DisabledProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			fxNode.setDisable(property.isDisabled());
 			return MutationResult.MUTATED;
 		}
@@ -71,8 +75,10 @@ public class DisabledProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final DisabledProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final DisabledProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			fxNode.setDisable(false);
 			return MutationResult.MUTATED;
 		}
@@ -81,6 +87,3 @@ public class DisabledProperty extends Property {
 
 
 }
-
-
-

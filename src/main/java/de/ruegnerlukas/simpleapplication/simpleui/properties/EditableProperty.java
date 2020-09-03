@@ -52,7 +52,9 @@ public class EditableProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final EditableProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final EditableProperty property,
 						  final TextInputControl fxNode) {
 			fxNode.setEditable(property.isEditable());
 		}
@@ -61,8 +63,10 @@ public class EditableProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final EditableProperty property,
-									 final SuiNode node, final TextInputControl fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final EditableProperty property,
+									 final SuiNode node,
+									 final TextInputControl fxNode) {
 			fxNode.setEditable(property.isEditable());
 			return MutationResult.MUTATED;
 		}
@@ -71,8 +75,10 @@ public class EditableProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final EditableProperty property,
-									 final SuiNode node, final TextInputControl fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final EditableProperty property,
+									 final SuiNode node,
+									 final TextInputControl fxNode) {
 			fxNode.setEditable(true);
 			return MutationResult.MUTATED;
 		}
@@ -88,7 +94,9 @@ public class EditableProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final EditableProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final EditableProperty property,
 						  final ComboBoxBase<?> fxNode) {
 			fxNode.setEditable(property.isEditable());
 		}
@@ -97,8 +105,10 @@ public class EditableProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final EditableProperty property,
-									 final SuiNode node, final ComboBoxBase<?> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final EditableProperty property,
+									 final SuiNode node,
+									 final ComboBoxBase<?> fxNode) {
 			fxNode.setEditable(property.isEditable());
 			return MutationResult.MUTATED;
 		}
@@ -107,8 +117,10 @@ public class EditableProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final EditableProperty property,
-									 final SuiNode node, final ComboBoxBase<?> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final EditableProperty property,
+									 final SuiNode node,
+									 final ComboBoxBase<?> fxNode) {
 			fxNode.setEditable(false);
 			return MutationResult.MUTATED;
 		}

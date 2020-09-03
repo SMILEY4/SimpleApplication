@@ -66,7 +66,9 @@ public class SearchableProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SearchableProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final SearchableProperty property,
 						  final Node fxNode) {
 			// do nothing, decision is made when building javafx node. For an example, see SuiComboBox.FxNodeBuilder
 		}
@@ -75,8 +77,10 @@ public class SearchableProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SearchableProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final SearchableProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
 
@@ -84,8 +88,10 @@ public class SearchableProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SearchableProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final SearchableProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
 

@@ -53,7 +53,9 @@ public class FitToWidthProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final FitToWidthProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final FitToWidthProperty property,
 						  final ScrollPane fxNode) {
 			fxNode.setFitToWidth(property.isFitToWidth());
 		}
@@ -62,8 +64,10 @@ public class FitToWidthProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final FitToWidthProperty property,
-									 final SuiNode node, final ScrollPane fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final FitToWidthProperty property,
+									 final SuiNode node,
+									 final ScrollPane fxNode) {
 			fxNode.setFitToWidth(property.isFitToWidth());
 			return MutationResult.MUTATED;
 		}
@@ -72,8 +76,10 @@ public class FitToWidthProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final FitToWidthProperty property,
-									 final SuiNode node, final ScrollPane fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final FitToWidthProperty property,
+									 final SuiNode node,
+									 final ScrollPane fxNode) {
 			fxNode.setFitToWidth(false);
 			return MutationResult.MUTATED;
 		}
@@ -89,7 +95,9 @@ public class FitToWidthProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final FitToWidthProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final FitToWidthProperty property,
 						  final VBox fxNode) {
 			fxNode.setFillWidth(property.isFitToWidth());
 		}
@@ -98,7 +106,9 @@ public class FitToWidthProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final FitToWidthProperty property, final SuiNode node,
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final FitToWidthProperty property,
+									 final SuiNode node,
 									 final VBox fxNode) {
 			fxNode.setFillWidth(property.isFitToWidth());
 			return MutationResult.MUTATED;
@@ -108,7 +118,9 @@ public class FitToWidthProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final FitToWidthProperty property, final SuiNode node,
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final FitToWidthProperty property,
+									 final SuiNode node,
 									 final VBox fxNode) {
 			fxNode.setFillWidth(false);
 			return MutationResult.MUTATED;

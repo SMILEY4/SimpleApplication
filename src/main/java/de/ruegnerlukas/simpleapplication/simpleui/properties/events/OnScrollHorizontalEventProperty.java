@@ -56,7 +56,9 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnScrollHorizontalEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnScrollHorizontalEventProperty property,
 						  final ScrollPane fxNode) {
 			property.addChangeListenerTo(fxNode.hvalueProperty());
 		}
@@ -65,8 +67,10 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnScrollHorizontalEventProperty property,
-									 final SuiNode node, final ScrollPane fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnScrollHorizontalEventProperty property,
+									 final SuiNode node,
+									 final ScrollPane fxNode) {
 			node.getPropertySafe(OnScrollHorizontalEventProperty.class).ifPresent(prop -> {
 				prop.removeChangeListenerFrom(fxNode.hvalueProperty());
 			});
@@ -78,8 +82,10 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnScrollHorizontalEventProperty property,
-									 final SuiNode node, final ScrollPane fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnScrollHorizontalEventProperty property,
+									 final SuiNode node,
+									 final ScrollPane fxNode) {
 			property.removeChangeListenerFrom(fxNode.hvalueProperty());
 			return MutationResult.MUTATED;
 		}

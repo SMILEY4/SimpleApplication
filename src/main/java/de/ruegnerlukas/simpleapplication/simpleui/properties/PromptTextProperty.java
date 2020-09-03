@@ -52,7 +52,9 @@ public class PromptTextProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final PromptTextProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final PromptTextProperty property,
 						  final TextInputControl fxNode) {
 			fxNode.setPromptText(property.getText());
 		}
@@ -61,8 +63,10 @@ public class PromptTextProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final PromptTextProperty property,
-									 final SuiNode node, final TextInputControl fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final PromptTextProperty property,
+									 final SuiNode node,
+									 final TextInputControl fxNode) {
 			fxNode.setPromptText(property.getText());
 			return MutationResult.MUTATED;
 		}
@@ -71,8 +75,10 @@ public class PromptTextProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final PromptTextProperty property,
-									 final SuiNode node, final TextInputControl fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final PromptTextProperty property,
+									 final SuiNode node,
+									 final TextInputControl fxNode) {
 			fxNode.setPromptText("");
 			return MutationResult.MUTATED;
 		}
@@ -88,7 +94,9 @@ public class PromptTextProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final PromptTextProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final PromptTextProperty property,
 						  final ComboBoxBase<T> fxNode) {
 			fxNode.setPromptText(property.getText());
 		}
@@ -97,8 +105,10 @@ public class PromptTextProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final PromptTextProperty property,
-									 final SuiNode node, final ComboBoxBase<T> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final PromptTextProperty property,
+									 final SuiNode node,
+									 final ComboBoxBase<T> fxNode) {
 			fxNode.setPromptText(property.getText());
 			return MutationResult.MUTATED;
 		}
@@ -107,8 +117,10 @@ public class PromptTextProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final PromptTextProperty property,
-									 final SuiNode node, final ComboBoxBase<T> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final PromptTextProperty property,
+									 final SuiNode node,
+									 final ComboBoxBase<T> fxNode) {
 			fxNode.setPromptText("");
 			return MutationResult.MUTATED;
 		}

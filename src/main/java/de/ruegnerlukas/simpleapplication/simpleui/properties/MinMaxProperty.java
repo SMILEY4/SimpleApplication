@@ -62,7 +62,9 @@ public class MinMaxProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final MinMaxProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final MinMaxProperty property,
 						  final Slider fxNode) {
 			fxNode.setMin(property.getMin().doubleValue());
 			fxNode.setMax(property.getMax().doubleValue());
@@ -72,8 +74,10 @@ public class MinMaxProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final MinMaxProperty property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final MinMaxProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			fxNode.setMin(property.getMin().doubleValue());
 			fxNode.setMax(property.getMax().doubleValue());
 			return MutationResult.MUTATED;
@@ -83,8 +87,10 @@ public class MinMaxProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final MinMaxProperty property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final MinMaxProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			fxNode.setMin(-Double.MAX_VALUE);
 			fxNode.setMax(+Double.MAX_VALUE);
 			return MutationResult.MUTATED;

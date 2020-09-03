@@ -64,7 +64,9 @@ public class ItemProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ItemProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final ItemProperty property,
 						  final ScrollPane fxNode) {
 			Node childNode = null;
 			if (node.hasChildren()) {

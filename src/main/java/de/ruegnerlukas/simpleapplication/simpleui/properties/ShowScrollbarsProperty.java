@@ -61,7 +61,9 @@ public class ShowScrollbarsProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ShowScrollbarsProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final ShowScrollbarsProperty property,
 						  final ScrollPane fxNode) {
 			fxNode.setHbarPolicy(property.getHorizontal());
 			fxNode.setVbarPolicy(property.getVertical());
@@ -71,8 +73,10 @@ public class ShowScrollbarsProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ShowScrollbarsProperty property,
-									 final SuiNode node, final ScrollPane fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final ShowScrollbarsProperty property,
+									 final SuiNode node,
+									 final ScrollPane fxNode) {
 			fxNode.setHbarPolicy(property.getHorizontal());
 			fxNode.setVbarPolicy(property.getVertical());
 			return MutationResult.MUTATED;
@@ -82,8 +86,10 @@ public class ShowScrollbarsProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ShowScrollbarsProperty property,
-									 final SuiNode node, final ScrollPane fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final ShowScrollbarsProperty property,
+									 final SuiNode node,
+									 final ScrollPane fxNode) {
 			fxNode.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 			fxNode.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 			return MutationResult.MUTATED;

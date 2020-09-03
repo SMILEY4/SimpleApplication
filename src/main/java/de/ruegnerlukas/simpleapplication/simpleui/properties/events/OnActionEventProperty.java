@@ -45,7 +45,9 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnActionEventProperty<?> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnActionEventProperty<?> property,
 						  final ButtonBase fxNode) {
 			setListener(fxNode, property);
 		}
@@ -54,8 +56,10 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnActionEventProperty<?> property,
-									 final SuiNode node, final ButtonBase fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnActionEventProperty<?> property,
+									 final SuiNode node,
+									 final ButtonBase fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -64,8 +68,10 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnActionEventProperty<?> property,
-									 final SuiNode node, final ButtonBase fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnActionEventProperty<?> property,
+									 final SuiNode node,
+									 final ButtonBase fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;
 		}
@@ -96,7 +102,9 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnActionEventProperty<LocalDate> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnActionEventProperty<LocalDate> property,
 						  final DatePicker fxNode) {
 			setListener(fxNode, property);
 		}
@@ -105,8 +113,10 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnActionEventProperty<LocalDate> property,
-									 final SuiNode node, final DatePicker fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnActionEventProperty<LocalDate> property,
+									 final SuiNode node,
+									 final DatePicker fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -115,8 +125,10 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnActionEventProperty<LocalDate> property,
-									 final SuiNode node, final DatePicker fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnActionEventProperty<LocalDate> property,
+									 final SuiNode node,
+									 final DatePicker fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;
 		}

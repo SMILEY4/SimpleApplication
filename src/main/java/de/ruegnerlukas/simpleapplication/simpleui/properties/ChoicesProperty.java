@@ -72,7 +72,9 @@ public class ChoicesProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ChoicesProperty<T> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final ChoicesProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			setItems(node, property, fxNode);
 		}
@@ -81,8 +83,10 @@ public class ChoicesProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<T> property,
-									 final SuiNode node, final ChoiceBox<T> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final ChoicesProperty<T> property,
+									 final SuiNode node,
+									 final ChoiceBox<T> fxNode) {
 			setItems(node, property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -91,8 +95,10 @@ public class ChoicesProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<T> property,
-									 final SuiNode node, final ChoiceBox<T> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final ChoicesProperty<T> property,
+									 final SuiNode node,
+									 final ChoiceBox<T> fxNode) {
 			final Object prevValue = fxNode.getSelectionModel().getSelectedItem();
 			final int prevIndex = fxNode.getSelectionModel().getSelectedIndex();
 			removeListeners(node, fxNode);
@@ -211,7 +217,9 @@ public class ChoicesProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ChoicesProperty<T> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final ChoicesProperty<T> property,
 						  final ComboBox<T> fxNode) {
 			setItems(node, property, fxNode);
 		}
@@ -220,8 +228,10 @@ public class ChoicesProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<T> property,
-									 final SuiNode node, final ComboBox<T> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final ChoicesProperty<T> property,
+									 final SuiNode node,
+									 final ComboBox<T> fxNode) {
 			setItems(node, property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -230,8 +240,10 @@ public class ChoicesProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoicesProperty<T> property,
-									 final SuiNode node, final ComboBox<T> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final ChoicesProperty<T> property,
+									 final SuiNode node,
+									 final ComboBox<T> fxNode) {
 			final T prevValue = fxNode.getSelectionModel().getSelectedItem();
 			removeListeners(node, fxNode);
 			fxNode.getItems().clear();

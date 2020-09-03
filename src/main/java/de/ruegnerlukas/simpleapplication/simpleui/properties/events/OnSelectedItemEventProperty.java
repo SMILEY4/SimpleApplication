@@ -50,7 +50,9 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedItemEventProperty<T> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnSelectedItemEventProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
 		}
@@ -59,8 +61,10 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<T> property,
-									 final SuiNode node, final ChoiceBox<T> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnSelectedItemEventProperty<T> property,
+									 final SuiNode node,
+									 final ChoiceBox<T> fxNode) {
 			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
 				prop.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
 			});
@@ -72,8 +76,10 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<T> property,
-									 final SuiNode node, final ChoiceBox<T> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnSelectedItemEventProperty<T> property,
+									 final SuiNode node,
+									 final ChoiceBox<T> fxNode) {
 			property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
 			return MutationResult.MUTATED;
 		}
@@ -89,7 +95,9 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedItemEventProperty<T> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnSelectedItemEventProperty<T> property,
 						  final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
 				property.addChangeListenerTo(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
@@ -102,8 +110,10 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<T> property,
-									 final SuiNode node, final ComboBox<T> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnSelectedItemEventProperty<T> property,
+									 final SuiNode node,
+									 final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
 				node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
 					prop.removeChangeListenerFrom(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
@@ -122,8 +132,10 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<T> property,
-									 final SuiNode node, final ComboBox<T> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnSelectedItemEventProperty<T> property,
+									 final SuiNode node,
+									 final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
 				property.removeChangeListenerFrom(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
 			} else {
@@ -143,7 +155,9 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnSelectedItemEventProperty<Double> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnSelectedItemEventProperty<Double> property,
 						  final Slider fxNode) {
 			// TODO
 		}
@@ -152,8 +166,10 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<Double> property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnSelectedItemEventProperty<Double> property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			// TODO
 			return MutationResult.MUTATED;
 		}
@@ -162,8 +178,10 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnSelectedItemEventProperty<Double> property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnSelectedItemEventProperty<Double> property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			// TODO
 			return MutationResult.MUTATED;
 		}

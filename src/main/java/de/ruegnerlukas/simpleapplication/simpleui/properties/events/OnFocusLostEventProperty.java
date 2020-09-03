@@ -50,7 +50,9 @@ public class OnFocusLostEventProperty extends AbstractObservableListenerProperty
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnFocusLostEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnFocusLostEventProperty property,
 						  final Node fxNode) {
 			property.addChangeListenerTo(fxNode.focusedProperty());
 		}
@@ -59,8 +61,10 @@ public class OnFocusLostEventProperty extends AbstractObservableListenerProperty
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnFocusLostEventProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnFocusLostEventProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			node.getPropertySafe(OnFocusLostEventProperty.class).ifPresent(prop -> {
 				prop.removeChangeListenerFrom(fxNode.focusedProperty());
 			});
@@ -72,8 +76,10 @@ public class OnFocusLostEventProperty extends AbstractObservableListenerProperty
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnFocusLostEventProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnFocusLostEventProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			property.removeChangeListenerFrom(fxNode.focusedProperty());
 			return MutationResult.MUTATED;
 		}

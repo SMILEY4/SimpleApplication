@@ -60,7 +60,9 @@ public class ChronologyProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ChronologyProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final ChronologyProperty property,
 						  final DatePicker fxNode) {
 			fxNode.setChronology(property.getChronology());
 		}
@@ -69,8 +71,10 @@ public class ChronologyProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChronologyProperty property,
-									 final SuiNode node, final DatePicker fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final ChronologyProperty property,
+									 final SuiNode node,
+									 final DatePicker fxNode) {
 			fxNode.setChronology(property.getChronology());
 			return MutationResult.MUTATED;
 		}
@@ -79,8 +83,10 @@ public class ChronologyProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChronologyProperty property,
-									 final SuiNode node, final DatePicker fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final ChronologyProperty property,
+									 final SuiNode node,
+									 final DatePicker fxNode) {
 			fxNode.setChronology(DEFAULT);
 			return MutationResult.MUTATED;
 		}

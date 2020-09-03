@@ -52,7 +52,9 @@ public class TextContentProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final TextContentProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final TextContentProperty property,
 						  final Labeled fxNode) {
 			fxNode.setText(property.getText());
 		}
@@ -61,8 +63,10 @@ public class TextContentProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final TextContentProperty property,
-									 final SuiNode node, final Labeled fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final TextContentProperty property,
+									 final SuiNode node,
+									 final Labeled fxNode) {
 			fxNode.setText(property.getText());
 			return MutationResult.MUTATED;
 		}
@@ -71,8 +75,10 @@ public class TextContentProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final TextContentProperty property,
-									 final SuiNode node, final Labeled fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final TextContentProperty property,
+									 final SuiNode node,
+									 final Labeled fxNode) {
 			fxNode.setText("");
 			return MutationResult.MUTATED;
 		}
@@ -88,7 +94,9 @@ public class TextContentProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final TextContentProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final TextContentProperty property,
 						  final TextInputControl fxNode) {
 			fxNode.setText(property.getText());
 		}
@@ -97,8 +105,10 @@ public class TextContentProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final TextContentProperty property,
-									 final SuiNode node, final TextInputControl fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final TextContentProperty property,
+									 final SuiNode node,
+									 final TextInputControl fxNode) {
 			fxNode.setText(property.getText());
 			return MutationResult.MUTATED;
 		}
@@ -107,8 +117,10 @@ public class TextContentProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final TextContentProperty property,
-									 final SuiNode node, final TextInputControl fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final TextContentProperty property,
+									 final SuiNode node,
+									 final TextInputControl fxNode) {
 			fxNode.setText("");
 			return MutationResult.MUTATED;
 		}

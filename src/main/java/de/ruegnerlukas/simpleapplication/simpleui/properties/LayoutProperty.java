@@ -80,7 +80,9 @@ public class LayoutProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final LayoutProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final LayoutProperty property,
 						  final Node fxNode) {
 			// do nothing, layout was added to jfx-node during during creation of the jfx-node.
 		}
@@ -89,8 +91,10 @@ public class LayoutProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final LayoutProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final LayoutProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
 
@@ -98,8 +102,10 @@ public class LayoutProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final LayoutProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final LayoutProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
 

@@ -99,7 +99,9 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SizeProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final SizeProperty property,
 						  final Region fxNode) {
 			setSize(node, property, fxNode);
 		}
@@ -108,8 +110,10 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SizeProperty property,
-									 final SuiNode node, final Region fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final SizeProperty property,
+									 final SuiNode node,
+									 final Region fxNode) {
 			setSize(node, property, fxNode);
 			return MutationResult.MUTATED;
 		}
@@ -141,8 +145,10 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SizeProperty property,
-									 final SuiNode node, final Region fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final SizeProperty property,
+									 final SuiNode node,
+									 final Region fxNode) {
 			if (!node.hasProperty(SizeMinProperty.class)) {
 				fxNode.setMinSize(0, 0);
 			}

@@ -41,7 +41,9 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnMouseEnteredEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnMouseEnteredEventProperty property,
 						  final Node fxNode) {
 			setListener(fxNode, property);
 		}
@@ -50,8 +52,10 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnMouseEnteredEventProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnMouseEnteredEventProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -60,8 +64,10 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnMouseEnteredEventProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnMouseEnteredEventProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;
 		}

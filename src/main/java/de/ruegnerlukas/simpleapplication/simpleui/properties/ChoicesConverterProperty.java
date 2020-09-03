@@ -77,7 +77,9 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ChoicesConverterProperty<T> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final ChoicesConverterProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 		}
@@ -86,8 +88,10 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoicesConverterProperty<T> property,
-									 final SuiNode node, final ChoiceBox<T> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final ChoicesConverterProperty<T> property,
+									 final SuiNode node,
+									 final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 			return MutationResult.MUTATED;
 		}
@@ -96,8 +100,10 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoicesConverterProperty<T> property,
-									 final SuiNode node, final ChoiceBox<T> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final ChoicesConverterProperty<T> property,
+									 final SuiNode node,
+									 final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(null);
 			return MutationResult.MUTATED;
 		}
@@ -113,7 +119,9 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final ChoicesConverterProperty<T> property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final ChoicesConverterProperty<T> property,
 						  final ComboBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 		}
@@ -122,8 +130,10 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final ChoicesConverterProperty<T> property,
-									 final SuiNode node, final ComboBox<T> fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final ChoicesConverterProperty<T> property,
+									 final SuiNode node,
+									 final ComboBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 			return MutationResult.MUTATED;
 		}
@@ -132,8 +142,10 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final ChoicesConverterProperty<T> property,
-									 final SuiNode node, final ComboBox<T> fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final ChoicesConverterProperty<T> property,
+									 final SuiNode node,
+									 final ComboBox<T> fxNode) {
 			fxNode.setConverter(null);
 			return MutationResult.MUTATED;
 		}

@@ -53,7 +53,9 @@ public class OrientationProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OrientationProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OrientationProperty property,
 						  final Separator fxNode) {
 			fxNode.setOrientation(property.getOrientation());
 		}
@@ -62,8 +64,10 @@ public class OrientationProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OrientationProperty property,
-									 final SuiNode node, final Separator fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OrientationProperty property,
+									 final SuiNode node,
+									 final Separator fxNode) {
 			fxNode.setOrientation(property.getOrientation());
 			return MutationResult.MUTATED;
 		}
@@ -72,8 +76,10 @@ public class OrientationProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OrientationProperty property,
-									 final SuiNode node, final Separator fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OrientationProperty property,
+									 final SuiNode node,
+									 final Separator fxNode) {
 			fxNode.setOrientation(Orientation.HORIZONTAL);
 			return MutationResult.MUTATED;
 		}

@@ -52,7 +52,9 @@ public class BlockIncrementProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final BlockIncrementProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final BlockIncrementProperty property,
 						  final Slider fxNode) {
 			fxNode.setBlockIncrement(property.getIncrement().doubleValue());
 		}
@@ -61,8 +63,10 @@ public class BlockIncrementProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final BlockIncrementProperty property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final BlockIncrementProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			fxNode.setBlockIncrement(property.getIncrement().doubleValue());
 			return MutationResult.MUTATED;
 		}
@@ -71,8 +75,10 @@ public class BlockIncrementProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final BlockIncrementProperty property,
-									 final SuiNode node, final Slider fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final BlockIncrementProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			fxNode.setBlockIncrement(1);
 			return MutationResult.MUTATED;
 		}

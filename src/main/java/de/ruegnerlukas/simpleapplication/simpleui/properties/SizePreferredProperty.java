@@ -62,7 +62,9 @@ public class SizePreferredProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final SizePreferredProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final SizePreferredProperty property,
 						  final Region fxNode) {
 			fxNode.setPrefSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 		}
@@ -71,8 +73,10 @@ public class SizePreferredProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final SizePreferredProperty property,
-									 final SuiNode node, final Region fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final SizePreferredProperty property,
+									 final SuiNode node,
+									 final Region fxNode) {
 			fxNode.setPrefSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 			return MutationResult.MUTATED;
 		}
@@ -81,8 +85,10 @@ public class SizePreferredProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final SizePreferredProperty property,
-									 final SuiNode node, final Region fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final SizePreferredProperty property,
+									 final SuiNode node,
+									 final Region fxNode) {
 			if (node.hasProperty(SizeProperty.class)) {
 				SizeProperty sizeProp = node.getProperty(SizeProperty.class);
 				fxNode.setPrefSize(sizeProp.getPreferredWidth().doubleValue(), sizeProp.getPreferredHeight().doubleValue());

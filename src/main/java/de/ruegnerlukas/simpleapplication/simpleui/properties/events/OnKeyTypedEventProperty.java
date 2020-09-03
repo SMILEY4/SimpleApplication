@@ -42,7 +42,9 @@ public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEv
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers, final SuiNode node, final OnKeyTypedEventProperty property,
+		public void build(final MasterNodeHandlers nodeHandlers,
+						  final SuiNode node,
+						  final OnKeyTypedEventProperty property,
 						  final Node fxNode) {
 			setListener(fxNode, property);
 		}
@@ -51,8 +53,10 @@ public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEv
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers, final OnKeyTypedEventProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult update(final MasterNodeHandlers nodeHandlers,
+									 final OnKeyTypedEventProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -61,8 +65,10 @@ public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEv
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers, final OnKeyTypedEventProperty property,
-									 final SuiNode node, final Node fxNode) {
+		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
+									 final OnKeyTypedEventProperty property,
+									 final SuiNode node,
+									 final Node fxNode) {
 			fxNode.setOnKeyPressed(null);
 			return MutationResult.MUTATED;
 		}
