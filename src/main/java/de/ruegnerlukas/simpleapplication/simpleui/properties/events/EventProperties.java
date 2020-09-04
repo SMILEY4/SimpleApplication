@@ -13,7 +13,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.MouseMoveEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ScrollEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
@@ -406,20 +405,6 @@ public final class EventProperties {
 	public static <T> Property eventSelectedItem(final Class<T> expectedType, final SUIEventListener<SelectedItemEventData<T>> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnSelectedItemEventProperty<>(listener);
-	}
-
-
-
-
-	/**
-	 * When a selection changed. Contains only the indices.
-	 *
-	 * @param listener the listener for events with {@link SelectedIndexEventData}.
-	 * @return a {@link OnSelectedIndexEventProperty}
-	 */
-	public static Property eventSelectedIndex(final SUIEventListener<SelectedIndexEventData> listener) {
-		Validations.INPUT.notNull(listener).exception("The listener can not be null");
-		return new OnSelectedIndexEventProperty(listener);
 	}
 
 
