@@ -89,8 +89,9 @@ public class StyleProperty extends Property {
 			return false;
 		}
 		if (usesResourceStyle()) {
-			return getResStyle().getPath().equals(otherProp.getResStyle().getPath())
-					&& getResStyle().isInternal() == otherProp.getResStyle().isInternal();
+			final String pathThis = getResStyle().getPath();
+			final String pathOther = otherProp.getResStyle().getPath();
+			return pathThis.equals(pathOther) && getResStyle().isInternal() == otherProp.getResStyle().isInternal();
 		} else {
 			return getStrStyle().equals(otherProp.getStrStyle());
 		}

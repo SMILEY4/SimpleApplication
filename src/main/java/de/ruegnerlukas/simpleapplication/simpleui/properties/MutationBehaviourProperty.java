@@ -12,17 +12,18 @@ public class MutationBehaviourProperty extends Property {
 	public enum MutationBehaviour {
 
 		/**
-		 * Node and its children will be mutated.
+		 * Node and its children nodes will be mutated.
 		 */
 		DEFAULT,
 
 		/**
-		 * This node will not be affected by mutations. Its children will still be mutated.
+		 * This node (i.e. the properties of this node) will not be affected by mutations.
+		 * Its children will still be mutated.
 		 */
 		STATIC_NODE,
 
 		/**
-		 * This and its children node will not be affected by mutations.
+		 * This node and its children nodes will not be affected by mutations.
 		 */
 		STATIC_SUBTREE;
 	}
