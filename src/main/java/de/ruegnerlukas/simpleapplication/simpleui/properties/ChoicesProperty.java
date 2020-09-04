@@ -5,9 +5,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.jfxelements.SearchableComboBox;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnValueChangedEventProperty;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import lombok.Getter;
@@ -147,7 +147,7 @@ public class ChoicesProperty<T> extends Property {
 		 * @param fxNode the javafx choicebox
 		 */
 		private void removeListeners(final SuiNode node, final ChoiceBox<T> fxNode) {
-			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+			node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(property -> {
 				property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
 			});
 		}
@@ -162,7 +162,7 @@ public class ChoicesProperty<T> extends Property {
 		 * @param fxNode the javafx choicebox
 		 */
 		private void addListener(final SuiNode node, final ChoiceBox<T> fxNode) {
-			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+			node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(property -> {
 				property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
 			});
 		}
@@ -182,8 +182,8 @@ public class ChoicesProperty<T> extends Property {
 		private void callListeners(final SuiNode node,
 								   final int prevIndex, final int nextIndex,
 								   final Object prevItem, final Object nextItem) {
-			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
-				property.getListener().onEvent(new SelectedItemEventData<>(nextItem, prevItem));
+			node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(property -> {
+				property.getListener().onEvent(new ValueChangedEventData<>(nextItem, prevItem));
 			});
 		}
 
@@ -295,11 +295,11 @@ public class ChoicesProperty<T> extends Property {
 		private void removeListeners(final SuiNode node, final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
 				final SearchableComboBox<T> searchableComboBox = (SearchableComboBox<T>) fxNode;
-				node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(property -> {
 					property.removeChangeListenerFrom(searchableComboBox.getSelectedValueProperty());
 				});
 			} else {
-				node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(property -> {
 					property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
 				});
 			}
@@ -318,11 +318,11 @@ public class ChoicesProperty<T> extends Property {
 		private void addListener(final SuiNode node, final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
 				final SearchableComboBox<T> searchableComboBox = (SearchableComboBox<T>) fxNode;
-				node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(property -> {
 					property.addChangeListenerTo(searchableComboBox.getSelectedValueProperty());
 				});
 			} else {
-				node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
+				node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(property -> {
 					property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
 				});
 			}
@@ -340,8 +340,8 @@ public class ChoicesProperty<T> extends Property {
 		 * @param nextItem the new selected item
 		 */
 		private void callListeners(final SuiNode node, final T prevItem, final T nextItem) {
-			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
-				property.getListener().onEvent(new SelectedItemEventData<>(nextItem, prevItem));
+			node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(property -> {
+				property.getListener().onEvent(new ValueChangedEventData<>(nextItem, prevItem));
 			});
 		}
 

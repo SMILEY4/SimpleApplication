@@ -11,7 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SelectedItemProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.scene.control.ChoiceBox;
 
@@ -63,7 +63,7 @@ public final class SuiChoiceBox {
 				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(SelectedItemProperty.class, new SelectedItemProperty.ChoiceBoxUpdatingBuilder<>()),
-				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.ChoiceBoxUpdatingBuilder<>())
+				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ChoiceBoxUpdatingBuilder<>())
 		));
 	}
 

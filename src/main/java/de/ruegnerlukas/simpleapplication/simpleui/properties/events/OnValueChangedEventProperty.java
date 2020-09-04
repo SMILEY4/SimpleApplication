@@ -5,14 +5,14 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBui
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.jfxelements.SearchableComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import lombok.Getter;
 
-public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerProperty<SelectedItemEventData<T>, T> {
+public class OnValueChangedEventProperty<T> extends AbstractObservableListenerProperty<ValueChangedEventData<T>, T> {
 
 
 	/**
@@ -21,21 +21,21 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 	public static final String EVENT_ID = "selection.item";
 
 	/**
-	 * The listener for events with {@link SelectedItemEventData}.
+	 * The listener for events with {@link ValueChangedEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<SelectedItemEventData<T>> listener;
+	private final SUIEventListener<ValueChangedEventData<T>> listener;
 
 
 
 
 	/**
-	 * @param listener the listener for events with {@link SelectedItemEventData}.
+	 * @param listener the listener for events with {@link ValueChangedEventData}.
 	 */
-	public OnSelectedItemEventProperty(final SUIEventListener<SelectedItemEventData<T>> listener) {
-		super(OnSelectedItemEventProperty.class, (value, prev, next) -> {
+	public OnValueChangedEventProperty(final SUIEventListener<ValueChangedEventData<T>> listener) {
+		super(OnValueChangedEventProperty.class, (value, prev, next) -> {
 			listener.onEvent(
-					new SelectedItemEventData<>(next, prev)
+					new ValueChangedEventData<>(next, prev)
 			);
 		});
 		this.listener = listener;
@@ -44,13 +44,13 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 
-	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnSelectedItemEventProperty<T>, ChoiceBox<T>> {
+	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ChoiceBox<T>> {
 
 
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers,
 						  final SuiNode node,
-						  final OnSelectedItemEventProperty<T> property,
+						  final OnValueChangedEventProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
 		}
@@ -60,10 +60,10 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnSelectedItemEventProperty<T> property,
+									 final OnValueChangedEventProperty<T> property,
 									 final SuiNode node,
 									 final ChoiceBox<T> fxNode) {
-			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
+			node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(prop -> {
 				prop.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
 			});
 			property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
@@ -75,7 +75,7 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnSelectedItemEventProperty<T> property,
+									 final OnValueChangedEventProperty<T> property,
 									 final SuiNode node,
 									 final ChoiceBox<T> fxNode) {
 			property.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
@@ -89,13 +89,13 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 
-	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnSelectedItemEventProperty<T>, ComboBox<T>> {
+	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ComboBox<T>> {
 
 
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers,
 						  final SuiNode node,
-						  final OnSelectedItemEventProperty<T> property,
+						  final OnValueChangedEventProperty<T> property,
 						  final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
 				property.addChangeListenerTo(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
@@ -109,16 +109,16 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnSelectedItemEventProperty<T> property,
+									 final OnValueChangedEventProperty<T> property,
 									 final SuiNode node,
 									 final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
-				node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
+				node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(prop -> {
 					prop.removeChangeListenerFrom(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
 				});
 				property.addChangeListenerTo(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
 			} else {
-				node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(prop -> {
+				node.getPropertySafe(OnValueChangedEventProperty.class).ifPresent(prop -> {
 					prop.removeChangeListenerFrom(fxNode.getSelectionModel().selectedItemProperty());
 				});
 				property.addChangeListenerTo(fxNode.getSelectionModel().selectedItemProperty());
@@ -131,7 +131,7 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnSelectedItemEventProperty<T> property,
+									 final OnValueChangedEventProperty<T> property,
 									 final SuiNode node,
 									 final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
@@ -149,13 +149,13 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 
 
-	public static class SliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedItemEventProperty<Double>, Slider> {
+	public static class SliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<Double>, Slider> {
 
 
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers,
 						  final SuiNode node,
-						  final OnSelectedItemEventProperty<Double> property,
+						  final OnValueChangedEventProperty<Double> property,
 						  final Slider fxNode) {
 			// TODO
 		}
@@ -165,7 +165,7 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnSelectedItemEventProperty<Double> property,
+									 final OnValueChangedEventProperty<Double> property,
 									 final SuiNode node,
 									 final Slider fxNode) {
 			// TODO
@@ -177,7 +177,7 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnSelectedItemEventProperty<Double> property,
+									 final OnValueChangedEventProperty<Double> property,
 									 final SuiNode node,
 									 final Slider fxNode) {
 			// TODO

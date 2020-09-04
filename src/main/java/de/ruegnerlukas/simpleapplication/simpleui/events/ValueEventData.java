@@ -9,17 +9,13 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @ToString
-public class SelectedItemEventData<T> {
+public class ValueEventData<T> {
 
 
 	/**
-	 * The now selected item.
+	 * The now selected value.
 	 */
-	private final T item;
+	private final T value;
 
-	/**
-	 * The previously selected item.
-	 */
-	private final T prevItem;
 
 }

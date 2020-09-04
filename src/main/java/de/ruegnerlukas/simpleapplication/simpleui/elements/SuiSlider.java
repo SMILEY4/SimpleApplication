@@ -11,7 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.TickMarkProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.scene.control.Slider;
 
@@ -63,7 +63,7 @@ public final class SuiSlider {
 				PropertyEntry.of(MinMaxProperty.class, new MinMaxProperty.SliderUpdatingBuilder()),
 				PropertyEntry.of(BlockIncrementProperty.class, new BlockIncrementProperty.SliderUpdatingBuilder()),
 				PropertyEntry.of(LabelFormatterProperty.class, new LabelFormatterProperty.SliderUpdatingBuilder()),
-				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.SliderUpdatingBuilder()),
+				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.SliderUpdatingBuilder()),
 				PropertyEntry.of(TickMarkProperty.class, new TickMarkProperty.SliderUpdatingBuilder())
 				/*
 				 * ticks (none, marks, labels, both) + minor,major tick unit + snap to ticks

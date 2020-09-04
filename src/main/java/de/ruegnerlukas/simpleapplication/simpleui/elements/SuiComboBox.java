@@ -13,7 +13,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.SearchableProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.scene.control.ComboBox;
 
@@ -83,7 +83,7 @@ public final class SuiComboBox {
 		registry.registerProperties(SuiComboBox.class, List.of(
 				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ComboBoxUpdatingBuilder<>()),
-				PropertyEntry.of(OnSelectedItemEventProperty.class, new OnSelectedItemEventProperty.ComboBoxUpdatingBuilder<>()),
+				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxBaseUpdatingBuilder()),
 				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.UpdatingBuilder()),
 				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ComboBoxBaseUpdatingBuilder<>())
