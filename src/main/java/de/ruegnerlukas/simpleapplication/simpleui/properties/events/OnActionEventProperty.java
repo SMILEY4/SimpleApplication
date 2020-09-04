@@ -7,12 +7,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ButtonBase;
-import javafx.scene.control.DatePicker;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
-public class OnActionEventProperty<T> extends AbstractEventListenerProperty<ActionEventData<T>> {
+public class OnActionEventProperty extends AbstractEventListenerProperty<ActionEventData> {
 
 
 	/**
@@ -24,7 +21,7 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 	 * The listener for events with {@link ActionEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<ActionEventData<T>> listener;
+	private final SUIEventListener<ActionEventData> listener;
 
 
 
@@ -32,7 +29,7 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 	/**
 	 * @param listener the listener for events with {@link ActionEventData}.
 	 */
-	public OnActionEventProperty(final SUIEventListener<ActionEventData<T>> listener) {
+	public OnActionEventProperty(final SUIEventListener<ActionEventData> listener) {
 		super(OnActionEventProperty.class);
 		this.listener = listener;
 	}
@@ -40,13 +37,13 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 
 
 
-	public static class ButtonBaseUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnActionEventProperty<?>, ButtonBase> {
+	public static class ButtonBaseUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnActionEventProperty, ButtonBase> {
 
 
 		@Override
 		public void build(final MasterNodeHandlers nodeHandlers,
 						  final SuiNode node,
-						  final OnActionEventProperty<?> property,
+						  final OnActionEventProperty property,
 						  final ButtonBase fxNode) {
 			setListener(fxNode, property);
 		}
@@ -56,7 +53,7 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 
 		@Override
 		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnActionEventProperty<?> property,
+									 final OnActionEventProperty property,
 									 final SuiNode node,
 									 final ButtonBase fxNode) {
 			setListener(fxNode, property);
@@ -68,7 +65,7 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 
 		@Override
 		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnActionEventProperty<?> property,
+									 final OnActionEventProperty property,
 									 final SuiNode node,
 									 final ButtonBase fxNode) {
 			fxNode.setOnMouseClicked(null);
@@ -84,65 +81,11 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 		 * @param fxNode   the fx node to listen to
 		 * @param property the property with the listener to add
 		 */
-		private void setListener(final ButtonBase fxNode, final OnActionEventProperty<?> property) {
-			fxNode.setOnAction(e -> property.getListener().onEvent(new ActionEventData<>(null, e)));
+		private void setListener(final ButtonBase fxNode, final OnActionEventProperty property) {
+			fxNode.setOnAction(e -> property.getListener().onEvent(new ActionEventData(e)));
 		}
 
 	}
 
-
-
-
-
-
-	public static class DatePickerUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnActionEventProperty<LocalDate>, DatePicker> {
-
-
-		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
-						  final OnActionEventProperty<LocalDate> property,
-						  final DatePicker fxNode) {
-			setListener(fxNode, property);
-		}
-
-
-
-
-		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnActionEventProperty<LocalDate> property,
-									 final SuiNode node,
-									 final DatePicker fxNode) {
-			setListener(fxNode, property);
-			return MutationResult.MUTATED;
-		}
-
-
-
-
-		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnActionEventProperty<LocalDate> property,
-									 final SuiNode node,
-									 final DatePicker fxNode) {
-			fxNode.setOnMouseClicked(null);
-			return MutationResult.MUTATED;
-		}
-
-
-
-
-		/**
-		 * Attaches the listener to the given fx node.
-		 *
-		 * @param fxNode   the fx node to listen to
-		 * @param property the property with the listener to add
-		 */
-		private void setListener(final DatePicker fxNode, final OnActionEventProperty<LocalDate> property) {
-			fxNode.setOnAction(e -> property.getListener().onEvent(new ActionEventData<>(fxNode.getValue(), e)));
-		}
-
-	}
 
 }

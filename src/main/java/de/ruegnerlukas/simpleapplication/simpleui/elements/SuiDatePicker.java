@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnActionEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedDateEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import javafx.scene.control.DatePicker;
 
@@ -61,7 +61,7 @@ public final class SuiDatePicker {
 		registry.registerProperties(SuiDatePicker.class, List.of(
 				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ComboBoxBaseUpdatingBuilder<>()),
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxBaseUpdatingBuilder()),
-				PropertyEntry.of(OnActionEventProperty.class, new OnActionEventProperty.DatePickerUpdatingBuilder()),
+				PropertyEntry.of(OnSelectedDateEventProperty.class, new OnSelectedDateEventProperty.DatePickerUpdatingBuilder()),
 				PropertyEntry.of(ChronologyProperty.class, new ChronologyProperty.DatePickerUpdatingBuilder())
 		));
 	}

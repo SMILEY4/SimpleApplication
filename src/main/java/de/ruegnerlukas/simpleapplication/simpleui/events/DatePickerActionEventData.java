@@ -6,12 +6,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @Getter
 @Builder
 @AllArgsConstructor
 @ToString
-public class ActionEventData {
+public class DatePickerActionEventData {
 
+
+	/**
+	 * The now selected date.
+	 */
+	private final LocalDate item;
 
 	/**
 	 * The original javafx event.

@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.CheckedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.DatePickerActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.HoverEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.KeyEventData;
@@ -353,14 +354,28 @@ public final class EventProperties {
 
 
 	/**
-	 * When a node is no longer being hovered over.
+	 * When an action of a node is performed.
 	 *
 	 * @param listener the listener for events with {@link ActionEventData}.
 	 * @return a {@link OnActionEventProperty}
 	 */
-	public static <T> Property eventAction(final SUIEventListener<ActionEventData<T>> listener) {
+	public static Property eventAction(final SUIEventListener<ActionEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
-		return new OnActionEventProperty<T>(listener);
+		return new OnActionEventProperty(listener);
+	}
+
+
+
+
+	/**
+	 * When an action of a date picker is performed.
+	 *
+	 * @param listener the listener for events with {@link DatePickerActionEventData}.
+	 * @return a {@link OnActionEventProperty}
+	 */
+	public static Property eventDatePickerAction(final SUIEventListener<DatePickerActionEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnSelectedDateEventProperty<>(listener);
 	}
 
 
