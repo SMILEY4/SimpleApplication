@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.HoverEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
@@ -33,12 +32,11 @@ public class OnHoverStoppedEventProperty extends AbstractObservableListenerPrope
 	public OnHoverStoppedEventProperty(final SUIEventListener<HoverEventData> listener) {
 		super(OnHoverStoppedEventProperty.class, (value, prev, next) -> {
 			if (!next) {
-				listener.onEvent(new SuiEvent<>(
-						EVENT_ID,
+				listener.onEvent(
 						HoverEventData.builder()
 								.hover(false)
 								.build()
-				));
+				);
 			}
 		});
 		this.listener = listener;

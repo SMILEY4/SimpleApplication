@@ -5,7 +5,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBui
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.DatePicker;
@@ -86,9 +85,7 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 		 * @param property the property with the listener to add
 		 */
 		private void setListener(final ButtonBase fxNode, final OnActionEventProperty<?> property) {
-			fxNode.setOnAction(e -> property.getListener().onEvent(new SuiEvent<>(
-					EVENT_ID, new ActionEventData<>(null, e)
-			)));
+			fxNode.setOnAction(e -> property.getListener().onEvent(new ActionEventData<>(null, e)));
 		}
 
 	}
@@ -143,9 +140,7 @@ public class OnActionEventProperty<T> extends AbstractEventListenerProperty<Acti
 		 * @param property the property with the listener to add
 		 */
 		private void setListener(final DatePicker fxNode, final OnActionEventProperty<LocalDate> property) {
-			fxNode.setOnAction(e -> property.getListener().onEvent(new SuiEvent<>(
-					EVENT_ID, new ActionEventData<>(fxNode.getValue(), e)
-			)));
+			fxNode.setOnAction(e -> property.getListener().onEvent(new ActionEventData<>(fxNode.getValue(), e)));
 		}
 
 	}

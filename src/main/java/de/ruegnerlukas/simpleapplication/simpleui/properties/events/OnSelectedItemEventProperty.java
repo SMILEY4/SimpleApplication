@@ -6,7 +6,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.jfxelements.SearchableComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -35,10 +34,9 @@ public class OnSelectedItemEventProperty<T> extends AbstractObservableListenerPr
 	 */
 	public OnSelectedItemEventProperty(final SUIEventListener<SelectedItemEventData<T>> listener) {
 		super(OnSelectedItemEventProperty.class, (value, prev, next) -> {
-			listener.onEvent(new SuiEvent<>(
-					EVENT_ID,
+			listener.onEvent(
 					new SelectedItemEventData<>(next, prev)
-			));
+			);
 		});
 		this.listener = listener;
 	}

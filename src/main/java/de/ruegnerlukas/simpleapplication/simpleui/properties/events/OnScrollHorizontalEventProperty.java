@@ -1,9 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
@@ -33,8 +32,7 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 	public OnScrollHorizontalEventProperty(final SUIEventListener<ScrollEventData> listener) {
 		super(OnScrollHorizontalEventProperty.class, (value, prev, next) -> {
 			if (prev != null && next != null) {
-				listener.onEvent(new SuiEvent<>(
-						EVENT_ID,
+				listener.onEvent(
 						ScrollEventData.builder()
 								.yPos(0)
 								.prevYPos(0)
@@ -43,7 +41,7 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 								.prevXPos(prev.doubleValue())
 								.dx(next.doubleValue() - prev.doubleValue())
 								.build()
-				));
+				);
 			}
 		});
 		this.listener = listener;

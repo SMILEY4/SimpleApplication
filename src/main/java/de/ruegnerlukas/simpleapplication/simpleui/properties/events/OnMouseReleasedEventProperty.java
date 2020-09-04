@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseButtonEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
@@ -82,8 +81,7 @@ public class OnMouseReleasedEventProperty extends AbstractEventListenerProperty<
 		 * @param property the property with the listener to add
 		 */
 		private void setListener(final Node fxNode, final OnMouseReleasedEventProperty property) {
-			fxNode.setOnMouseReleased(e -> property.getListener().onEvent(new SuiEvent<>(
-					EVENT_ID,
+			fxNode.setOnMouseReleased(e -> property.getListener().onEvent(
 					MouseButtonEventData.builder()
 							.x(e.getX())
 							.y(e.getY())
@@ -96,7 +94,7 @@ public class OnMouseReleasedEventProperty extends AbstractEventListenerProperty<
 							.shortcutDown(e.isShortcutDown())
 							.source(e)
 							.build()
-			)));
+			));
 		}
 
 	}

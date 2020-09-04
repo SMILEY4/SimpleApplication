@@ -1,11 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseScrollEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
@@ -82,8 +81,7 @@ public class OnMouseScrollEventProperty extends AbstractEventListenerProperty<Mo
 		 * @param property the property with the listener to add
 		 */
 		private void setListener(final Node fxNode, final OnMouseScrollEventProperty property) {
-			fxNode.setOnScroll(e -> property.getListener().onEvent(new SuiEvent<>(
-					EVENT_ID,
+			fxNode.setOnScroll(e -> property.getListener().onEvent(
 					MouseScrollEventData.builder()
 							.dx(e.getDeltaX())
 							.dy(e.getDeltaY())
@@ -91,7 +89,7 @@ public class OnMouseScrollEventProperty extends AbstractEventListenerProperty<Mo
 							.pixelMultiplierY(e.getMultiplierY())
 							.source(e)
 							.build()
-			)));
+			));
 		}
 
 	}

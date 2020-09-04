@@ -358,9 +358,9 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link ActionEventData}.
 	 * @return a {@link OnActionEventProperty}
 	 */
-	public static Property eventAction(final SUIEventListener<ActionEventData> listener) {
+	public static <T> Property eventAction(final SUIEventListener<ActionEventData<T>> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
-		return new OnActionEventProperty(listener);
+		return new OnActionEventProperty<T>(listener);
 	}
 
 

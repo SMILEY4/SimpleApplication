@@ -2,17 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.events;
 
 public interface SUIEventListener<T> {
 
-
-	/**
-	 * Called when the event is triggered.
-	 *
-	 * @param event the event
-	 */
-	default void onEvent(final SuiEvent<T> event) {
-		onEvent(event.getData());
-	}
-
-
 	/**
 	 * Called when the event is triggered.
 	 *

@@ -4,7 +4,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.event.EventHandler;
@@ -48,13 +47,12 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 		this.textAreaEventHandler = e -> {
 			if (e.getCode() == KeyCode.ENTER && e.isShortcutDown()) {
 				TextArea area = (TextArea) e.getSource();
-				listener.onEvent(new SuiEvent<>(
-						EVENT_ID,
+				listener.onEvent(
 						TextContentEventData.builder()
 								.text(area.getText())
 								.prevText(area.getText())
 								.build()
-				));
+				);
 			}
 		};
 	}
@@ -107,13 +105,12 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 		 * @param property the property with the listener to add
 		 */
 		private void setListener(final TextField fxNode, final OnTextEnteredEventProperty property) {
-			fxNode.setOnAction(e -> property.getListener().onEvent(new SuiEvent<>(
-					EVENT_ID,
+			fxNode.setOnAction(e -> property.getListener().onEvent(
 					TextContentEventData.builder()
 							.text(fxNode.getText())
 							.prevText(fxNode.getText())
 							.build()
-			)));
+			));
 		}
 
 	}

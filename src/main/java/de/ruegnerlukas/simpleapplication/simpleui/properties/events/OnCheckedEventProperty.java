@@ -5,7 +5,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBui
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.CheckBox;
 import lombok.Getter;
@@ -34,12 +33,11 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 	public OnCheckedEventProperty(final SUIEventListener<CheckedEventData> listener) {
 		super(OnCheckedEventProperty.class, (value, prev, next) -> {
 			if (next != null && next) {
-				listener.onEvent(new SuiEvent<>(
-						EVENT_ID,
+				listener.onEvent(
 						CheckedEventData.builder()
 								.checked(true)
 								.build()
-				));
+				);
 			}
 		});
 		this.listener = listener;

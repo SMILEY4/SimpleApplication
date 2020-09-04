@@ -5,7 +5,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBui
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
@@ -33,13 +32,12 @@ public class OnSelectedIndexEventProperty extends AbstractObservableListenerProp
 	 * @param listener the listener for events with {@link SelectedIndexEventData}.
 	 */
 	public OnSelectedIndexEventProperty(final SUIEventListener<SelectedIndexEventData> listener) {
-		super(OnSelectedIndexEventProperty.class, (value, prev, next) -> listener.onEvent(new SuiEvent<>(
-				EVENT_ID,
+		super(OnSelectedIndexEventProperty.class, (value, prev, next) -> listener.onEvent(
 				SelectedIndexEventData.builder()
 						.index(Optional.ofNullable(next).map(Number::intValue).orElse(null))
 						.prevIndex(Optional.ofNullable(prev).map(Number::intValue).orElse(null))
 						.build()
-		)));
+		));
 		this.listener = listener;
 	}
 

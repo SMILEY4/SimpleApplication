@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.streams;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.streams.operations.JFXTimer;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -27,13 +26,13 @@ public class SuiStreamTest extends ApplicationTest {
 		SUIEventListener<String> eventListener = SuiStream.eventStream(String.class, stream -> stream.forEach(collectedValues::add));
 
 		assertThat(collectedValues).isEmpty();
-		eventListener.onEvent(new SuiEvent<>("test", "a"));
-		eventListener.onEvent(new SuiEvent<>("test", "b"));
+		eventListener.onEvent("a");
+		eventListener.onEvent("b");
 		assertThat(collectedValues).containsExactly("a", "b");
-		eventListener.onEvent(new SuiEvent<>("test", "c"));
-		eventListener.onEvent(new SuiEvent<>("test", "d"));
+		eventListener.onEvent("c");
+		eventListener.onEvent("d");
 		assertThat(collectedValues).containsExactly("a", "b", "c", "d");
-		eventListener.onEvent(new SuiEvent<>("test", null));
+		eventListener.onEvent(null);
 		assertThat(collectedValues).containsExactly("a", "b", "c", "d", null);
 
 	}

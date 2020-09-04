@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.CheckedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.CheckBox;
@@ -33,12 +32,11 @@ public class OnUncheckedEventProperty extends AbstractObservableListenerProperty
 	public OnUncheckedEventProperty(final SUIEventListener<CheckedEventData> listener) {
 		super(OnUncheckedEventProperty.class, (value, prev, next) -> {
 			if (next != null && !next) {
-				listener.onEvent(new SuiEvent<>(
-						EVENT_ID,
+				listener.onEvent(
 						CheckedEventData.builder()
 								.checked(false)
 								.build()
-				));
+				);
 			}
 		});
 		this.listener = listener;

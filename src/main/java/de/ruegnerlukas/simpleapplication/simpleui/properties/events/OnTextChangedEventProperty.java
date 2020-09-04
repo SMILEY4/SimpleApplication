@@ -4,7 +4,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.TextArea;
@@ -33,13 +32,12 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 	 */
 	public OnTextChangedEventProperty(final SUIEventListener<TextContentEventData> listener) {
 		super(OnTextChangedEventProperty.class, (value, prev, next) -> {
-			listener.onEvent(new SuiEvent<>(
-					EVENT_ID,
+			listener.onEvent(
 					TextContentEventData.builder()
 							.text(next)
 							.prevText(prev)
 							.build()
-			));
+			);
 		});
 		this.listener = listener;
 	}

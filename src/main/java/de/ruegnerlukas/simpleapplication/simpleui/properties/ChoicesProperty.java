@@ -7,7 +7,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.jfxelements.SearchableComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedIndexEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SelectedItemEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedIndexEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.events.OnSelectedItemEventProperty;
@@ -192,16 +191,10 @@ public class ChoicesProperty<T> extends Property {
 								   final int prevIndex, final int nextIndex,
 								   final Object prevItem, final Object nextItem) {
 			node.getPropertySafe(OnSelectedIndexEventProperty.class).ifPresent(property -> {
-				property.getListener().onEvent(new SuiEvent<>(
-						OnSelectedIndexEventProperty.EVENT_ID,
-						new SelectedIndexEventData(nextIndex, prevIndex)
-				));
+				property.getListener().onEvent(new SelectedIndexEventData(nextIndex, prevIndex));
 			});
 			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
-				property.getListener().onEvent(new SuiEvent<>(
-						OnSelectedItemEventProperty.EVENT_ID,
-						new SelectedItemEventData<>(nextItem, prevItem)
-				));
+				property.getListener().onEvent(new SelectedItemEventData<>(nextItem, prevItem));
 			});
 		}
 
@@ -359,10 +352,7 @@ public class ChoicesProperty<T> extends Property {
 		 */
 		private void callListeners(final SuiNode node, final T prevItem, final T nextItem) {
 			node.getPropertySafe(OnSelectedItemEventProperty.class).ifPresent(property -> {
-				property.getListener().onEvent(new SuiEvent<>(
-						OnSelectedItemEventProperty.EVENT_ID,
-						new SelectedItemEventData<>(nextItem, prevItem)
-				));
+				property.getListener().onEvent(new SelectedItemEventData<>(nextItem, prevItem));
 			});
 		}
 

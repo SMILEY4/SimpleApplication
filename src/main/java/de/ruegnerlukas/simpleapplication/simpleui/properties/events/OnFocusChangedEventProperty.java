@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.events.FocusEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.SuiEvent;
 import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
@@ -32,12 +31,11 @@ public class OnFocusChangedEventProperty extends AbstractObservableListenerPrope
 	 */
 	public OnFocusChangedEventProperty(final SUIEventListener<FocusEventData> listener) {
 		super(OnFocusChangedEventProperty.class, (value, prev, next) -> {
-			listener.onEvent(new SuiEvent<>(
-					EVENT_ID,
+			listener.onEvent(
 					FocusEventData.builder()
 							.focused(next)
 							.build()
-			));
+			);
 		});
 		this.listener = listener;
 	}

@@ -36,7 +36,7 @@ public abstract class AbstractEventListenerProperty<T> extends Property {
 
 	@Override
 	public String printValue() {
-		return getListener() != null ? getListener().toString() : "null";
+		return String.valueOf(getListener());
 	}
 
 }
