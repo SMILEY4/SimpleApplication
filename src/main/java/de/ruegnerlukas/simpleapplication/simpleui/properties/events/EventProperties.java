@@ -15,7 +15,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.events.ValueChangedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.events.ValueEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 
 public final class EventProperties {
@@ -406,51 +405,6 @@ public final class EventProperties {
 	public static <T> Property eventValueChanged(final Class<T> expectedType, final SUIEventListener<ValueChangedEventData<T>> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnValueChangedEventProperty<>(listener);
-	}
-
-
-
-
-	/**
-	 * When a value was selected.
-	 *
-	 * @param listener the listener for events with {@link ValueEventData}.
-	 * @param <T>      generic type
-	 * @return a {@link OnValueChangedEventProperty}
-	 */
-	public static <T> Property eventValueSelected(final SUIEventListener<ValueEventData<T>> listener) {
-		Validations.INPUT.notNull(listener).exception("The listener can not be null");
-		return new OnValueSelectedEventProperty<>(listener);
-	}
-
-
-
-
-	/**
-	 * When a value was selected.
-	 *
-	 * @param expectedType the expected type of the selected items
-	 * @param listener     the listener for events with {@link ValueEventData}.
-	 * @param <T>          generic type
-	 * @return a {@link OnValueChangedEventProperty}
-	 */
-	public static <T> Property eventValueSelected(final Class<T> expectedType, final SUIEventListener<ValueEventData<T>> listener) {
-		Validations.INPUT.notNull(listener).exception("The listener can not be null");
-		return new OnValueSelectedEventProperty<>(listener);
-	}
-
-
-
-
-	/**
-	 * When a node (for example a scroll pane) was scroll vertically.
-	 *
-	 * @param listener the listener for events with {@link ScrollEventData}.
-	 * @return a {@link OnScrollVerticalEventProperty}
-	 */
-	public static Property eventScrollVertical(final SUIEventListener<ScrollEventData> listener) {
-		Validations.INPUT.notNull(listener).exception("The listener can not be null");
-		return new OnScrollVerticalEventProperty(listener);
 	}
 
 

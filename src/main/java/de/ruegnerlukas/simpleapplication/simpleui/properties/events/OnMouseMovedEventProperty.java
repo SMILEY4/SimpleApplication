@@ -12,11 +12,6 @@ import lombok.Getter;
 public class OnMouseMovedEventProperty extends AbstractEventListenerProperty<MouseMoveEventData> {
 
 	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "mouse.move.moved";
-
-	/**
 	 * The listener for events with {@link MouseMoveEventData}.
 	 */
 	@Getter

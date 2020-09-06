@@ -12,11 +12,6 @@ import lombok.Getter;
 public class OnMouseReleasedEventProperty extends AbstractEventListenerProperty<MouseButtonEventData> {
 
 	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "mouse.released";
-
-	/**
 	 * The listener for events with {@link MouseButtonEventData}.
 	 */
 	@Getter

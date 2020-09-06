@@ -9,19 +9,21 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
 
-public class OnHoverStoppedEventProperty extends AbstractObservableListenerProperty<HoverEventData, Boolean> {
+public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<HoverEventData> {
 
-
-	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "hover.stopped";
 
 	/**
 	 * The listener for events with {@link HoverEventData}.
 	 */
 	@Getter
 	private final SUIEventListener<HoverEventData> listener;
+
+	/**
+	 * The proxy for the actual change listener.
+	 */
+	@Getter
+	private final ChangeListenerProxy<Boolean> changeListenerProxy;
+
 
 
 
@@ -30,7 +32,9 @@ public class OnHoverStoppedEventProperty extends AbstractObservableListenerPrope
 	 * @param listener the listener for events with {@link HoverEventData}.
 	 */
 	public OnHoverStoppedEventProperty(final SUIEventListener<HoverEventData> listener) {
-		super(OnHoverStoppedEventProperty.class, (value, prev, next) -> {
+		super(OnHoverStoppedEventProperty.class);
+		this.listener = listener;
+		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {
 			if (!next) {
 				listener.onEvent(
 						HoverEventData.builder()
@@ -39,7 +43,6 @@ public class OnHoverStoppedEventProperty extends AbstractObservableListenerPrope
 				);
 			}
 		});
-		this.listener = listener;
 	}
 
 
@@ -53,7 +56,7 @@ public class OnHoverStoppedEventProperty extends AbstractObservableListenerPrope
 						  final SuiNode node,
 						  final OnHoverStoppedEventProperty property,
 						  final Node fxNode) {
-			property.addChangeListenerTo(fxNode.hoverProperty());
+			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
 		}
 
 
@@ -64,10 +67,10 @@ public class OnHoverStoppedEventProperty extends AbstractObservableListenerPrope
 									 final OnHoverStoppedEventProperty property,
 									 final SuiNode node,
 									 final Node fxNode) {
-			node.getPropertySafe(OnHoverStoppedEventProperty.class).ifPresent(prop -> {
-				prop.removeChangeListenerFrom(fxNode.hoverProperty());
-			});
-			property.addChangeListenerTo(fxNode.hoverProperty());
+			node.getPropertySafe(OnHoverStoppedEventProperty.class)
+					.map(OnHoverStoppedEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(fxNode.focusedProperty()));
+			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -79,7 +82,7 @@ public class OnHoverStoppedEventProperty extends AbstractObservableListenerPrope
 									 final OnHoverStoppedEventProperty property,
 									 final SuiNode node,
 									 final Node fxNode) {
-			property.removeChangeListenerFrom(fxNode.hoverProperty());
+			property.getChangeListenerProxy().removeFrom(fxNode.focusedProperty());
 			return MutationResult.MUTATED;
 		}
 

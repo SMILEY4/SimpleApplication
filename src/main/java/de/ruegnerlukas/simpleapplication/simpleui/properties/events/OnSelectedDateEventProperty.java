@@ -15,11 +15,6 @@ public class OnSelectedDateEventProperty<T> extends AbstractEventListenerPropert
 
 
 	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "selected.date";
-
-	/**
 	 * The listener for events with {@link DatePickerActionEventData}.
 	 */
 	@Getter

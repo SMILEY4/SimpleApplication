@@ -9,13 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.CheckBox;
 import lombok.Getter;
 
-public class OnCheckedEventProperty extends AbstractObservableListenerProperty<CheckedEventData, Boolean> {
-
-
-	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "check.checked";
+public class OnCheckedEventProperty extends AbstractEventListenerProperty<CheckedEventData> {
 
 
 	/**
@@ -24,6 +18,12 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 	@Getter
 	private final SUIEventListener<CheckedEventData> listener;
 
+	/**
+	 * The proxy for the actual change listener.
+	 */
+	@Getter
+	private final ChangeListenerProxy<Boolean> changeListenerProxy;
+
 
 
 
@@ -31,7 +31,9 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 	 * @param listener the listener for events with {@link CheckedEventData}.
 	 */
 	public OnCheckedEventProperty(final SUIEventListener<CheckedEventData> listener) {
-		super(OnCheckedEventProperty.class, (value, prev, next) -> {
+		super(OnCheckedEventProperty.class);
+		this.listener = listener;
+		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {
 			if (next != null && next) {
 				listener.onEvent(
 						CheckedEventData.builder()
@@ -40,7 +42,6 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 				);
 			}
 		});
-		this.listener = listener;
 	}
 
 
@@ -54,7 +55,7 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 						  final SuiNode node,
 						  final OnCheckedEventProperty property,
 						  final CheckBox fxNode) {
-			property.addChangeListenerTo(fxNode.selectedProperty());
+			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
 		}
 
 
@@ -65,10 +66,10 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 									 final OnCheckedEventProperty property,
 									 final SuiNode node,
 									 final CheckBox fxNode) {
-			node.getPropertySafe(OnCheckedEventProperty.class).ifPresent(prop -> {
-				prop.removeChangeListenerFrom(fxNode.selectedProperty());
-			});
-			property.addChangeListenerTo(fxNode.selectedProperty());
+			node.getPropertySafe(OnCheckedEventProperty.class)
+					.map(OnCheckedEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(fxNode.focusedProperty()));
+			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -80,7 +81,7 @@ public class OnCheckedEventProperty extends AbstractObservableListenerProperty<C
 									 final OnCheckedEventProperty property,
 									 final SuiNode node,
 									 final CheckBox fxNode) {
-			property.removeChangeListenerFrom(fxNode.selectedProperty());
+			property.getChangeListenerProxy().removeFrom(fxNode.focusedProperty());
 			return MutationResult.MUTATED;
 		}
 

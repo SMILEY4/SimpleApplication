@@ -17,12 +17,6 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 
 
 	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "text.entered";
-
-
-	/**
 	 * The listener for events with {@link TextContentEventData}.
 	 */
 	@Getter

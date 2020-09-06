@@ -9,18 +9,20 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
 
-public class OnFocusReceivedEventProperty extends AbstractObservableListenerProperty<FocusEventData, Boolean> {
+public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<FocusEventData> {
 
-	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "focus.received";
 
 	/**
 	 * The listener for events with {@link FocusEventData}.
 	 */
 	@Getter
 	private final SUIEventListener<FocusEventData> listener;
+
+	/**
+	 * The proxy for the actual change listener.
+	 */
+	@Getter
+	private final ChangeListenerProxy<Boolean> changeListenerProxy;
 
 
 
@@ -29,7 +31,9 @@ public class OnFocusReceivedEventProperty extends AbstractObservableListenerProp
 	 * @param listener the listener for events with {@link FocusEventData}.
 	 */
 	public OnFocusReceivedEventProperty(final SUIEventListener<FocusEventData> listener) {
-		super(OnFocusReceivedEventProperty.class, (value, prev, next) -> {
+		super(OnFocusReceivedEventProperty.class);
+		this.listener = listener;
+		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {
 			if (next) {
 				listener.onEvent(
 						FocusEventData.builder()
@@ -38,7 +42,6 @@ public class OnFocusReceivedEventProperty extends AbstractObservableListenerProp
 				);
 			}
 		});
-		this.listener = listener;
 	}
 
 
@@ -52,7 +55,7 @@ public class OnFocusReceivedEventProperty extends AbstractObservableListenerProp
 						  final SuiNode node,
 						  final OnFocusReceivedEventProperty property,
 						  final Node fxNode) {
-			property.addChangeListenerTo(fxNode.focusedProperty());
+			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
 		}
 
 
@@ -63,11 +66,10 @@ public class OnFocusReceivedEventProperty extends AbstractObservableListenerProp
 									 final OnFocusReceivedEventProperty property,
 									 final SuiNode node,
 									 final Node fxNode) {
-			node.getPropertySafe(OnFocusReceivedEventProperty.class).ifPresent(prop -> {
-				prop.removeChangeListenerFrom(fxNode.focusedProperty());
-
-			});
-			property.addChangeListenerTo(fxNode.focusedProperty());
+			node.getPropertySafe(OnFocusReceivedEventProperty.class)
+					.map(OnFocusReceivedEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(fxNode.focusedProperty()));
+			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -79,7 +81,7 @@ public class OnFocusReceivedEventProperty extends AbstractObservableListenerProp
 									 final OnFocusReceivedEventProperty property,
 									 final SuiNode node,
 									 final Node fxNode) {
-			property.removeChangeListenerFrom(fxNode.focusedProperty());
+			property.getChangeListenerProxy().removeFrom(fxNode.focusedProperty());
 			return MutationResult.MUTATED;
 		}
 

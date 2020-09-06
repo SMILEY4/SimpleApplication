@@ -13,11 +13,6 @@ public class OnKeyPressedEventProperty extends AbstractEventListenerProperty<Key
 
 
 	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "key.pressed"; // todo: remove all event ids -> no longer needed !!
-
-	/**
 	 * The listener for events with {@link KeyEventData}.
 	 */
 	@Getter

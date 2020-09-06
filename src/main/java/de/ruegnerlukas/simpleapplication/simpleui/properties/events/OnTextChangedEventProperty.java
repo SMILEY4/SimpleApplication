@@ -10,19 +10,22 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import lombok.Getter;
 
-public class OnTextChangedEventProperty extends AbstractObservableListenerProperty<TextContentEventData, String> {
+public class OnTextChangedEventProperty extends AbstractEventListenerProperty<TextContentEventData> {
 
 
-	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "text.changed";
 
 	/**
 	 * The listener for events with {@link TextContentEventData}.
 	 */
 	@Getter
 	private final SUIEventListener<TextContentEventData> listener;
+
+	/**
+	 * The proxy for the actual change listener.
+	 */
+	@Getter
+	private final ChangeListenerProxy<String> changeListenerProxy;
+
 
 
 
@@ -31,15 +34,14 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 	 * @param listener the listener for events with {@link TextContentEventData}.
 	 */
 	public OnTextChangedEventProperty(final SUIEventListener<TextContentEventData> listener) {
-		super(OnTextChangedEventProperty.class, (value, prev, next) -> {
-			listener.onEvent(
-					TextContentEventData.builder()
-							.text(next)
-							.prevText(prev)
-							.build()
-			);
-		});
+		super(OnTextChangedEventProperty.class);
 		this.listener = listener;
+		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> listener.onEvent(
+				TextContentEventData.builder()
+						.text(next)
+						.prevText(prev)
+						.build()
+		));
 	}
 
 
@@ -53,7 +55,7 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 						  final SuiNode node,
 						  final OnTextChangedEventProperty property,
 						  final TextField fxNode) {
-			property.addChangeListenerTo(fxNode.textProperty());
+			property.getChangeListenerProxy().addTo(fxNode.textProperty());
 		}
 
 
@@ -64,10 +66,10 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 									 final OnTextChangedEventProperty property,
 									 final SuiNode node,
 									 final TextField fxNode) {
-			node.getPropertySafe(OnTextChangedEventProperty.class).ifPresent(prop -> {
-				prop.removeChangeListenerFrom(fxNode.textProperty());
-			});
-			property.addChangeListenerTo(fxNode.textProperty());
+			node.getPropertySafe(OnTextChangedEventProperty.class)
+					.map(OnTextChangedEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(fxNode.textProperty()));
+			property.getChangeListenerProxy().addTo(fxNode.textProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -79,7 +81,7 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 									 final OnTextChangedEventProperty property,
 									 final SuiNode node,
 									 final TextField fxNode) {
-			property.removeChangeListenerFrom(fxNode.textProperty());
+			property.getChangeListenerProxy().removeFrom(fxNode.textProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -98,7 +100,7 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 						  final SuiNode node,
 						  final OnTextChangedEventProperty property,
 						  final TextArea fxNode) {
-			property.addChangeListenerTo(fxNode.textProperty());
+			property.getChangeListenerProxy().addTo(fxNode.textProperty());
 		}
 
 
@@ -109,10 +111,10 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 									 final OnTextChangedEventProperty property,
 									 final SuiNode node,
 									 final TextArea fxNode) {
-			node.getPropertySafe(OnTextChangedEventProperty.class).ifPresent(prop -> {
-				prop.removeChangeListenerFrom(fxNode.textProperty());
-			});
-			property.addChangeListenerTo(fxNode.textProperty());
+			node.getPropertySafe(OnTextChangedEventProperty.class)
+					.map(OnTextChangedEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(fxNode.textProperty()));
+			property.getChangeListenerProxy().addTo(fxNode.textProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -124,7 +126,7 @@ public class OnTextChangedEventProperty extends AbstractObservableListenerProper
 									 final OnTextChangedEventProperty property,
 									 final SuiNode node,
 									 final TextArea fxNode) {
-			property.removeChangeListenerFrom(fxNode.textProperty());
+			property.getChangeListenerProxy().removeFrom(fxNode.textProperty());
 			return MutationResult.MUTATED;
 		}
 

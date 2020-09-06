@@ -13,11 +13,6 @@ public class OnKeyReleasedEventProperty extends AbstractEventListenerProperty<Ke
 
 
 	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "key.released";
-
-	/**
 	 * The listener for events with {@link KeyEventData}.
 	 */
 	@Getter

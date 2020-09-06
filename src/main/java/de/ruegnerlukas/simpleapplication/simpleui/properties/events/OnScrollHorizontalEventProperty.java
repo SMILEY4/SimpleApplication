@@ -9,19 +9,20 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
-public class OnScrollHorizontalEventProperty extends AbstractObservableListenerProperty<ScrollEventData, Number> {
+public class OnScrollHorizontalEventProperty extends AbstractEventListenerProperty<ScrollEventData> {
 
-
-	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "scroll.horizontal";
 
 	/**
 	 * The listener for events with {@link ScrollEventData}.
 	 */
 	@Getter
 	private final SUIEventListener<ScrollEventData> listener;
+
+	/**
+	 * The proxy for the actual change listener.
+	 */
+	@Getter
+	private final ChangeListenerProxy<Number> changeListenerProxy;
 
 
 
@@ -30,7 +31,9 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 	 * @param listener the listener for events with {@link ScrollEventData}.
 	 */
 	public OnScrollHorizontalEventProperty(final SUIEventListener<ScrollEventData> listener) {
-		super(OnScrollHorizontalEventProperty.class, (value, prev, next) -> {
+		super(OnScrollHorizontalEventProperty.class);
+		this.listener = listener;
+		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {
 			if (prev != null && next != null) {
 				listener.onEvent(
 						ScrollEventData.builder()
@@ -44,7 +47,6 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 				);
 			}
 		});
-		this.listener = listener;
 	}
 
 
@@ -58,7 +60,7 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 						  final SuiNode node,
 						  final OnScrollHorizontalEventProperty property,
 						  final ScrollPane fxNode) {
-			property.addChangeListenerTo(fxNode.hvalueProperty());
+			property.getChangeListenerProxy().addTo(fxNode.hvalueProperty());
 		}
 
 
@@ -69,10 +71,10 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 									 final OnScrollHorizontalEventProperty property,
 									 final SuiNode node,
 									 final ScrollPane fxNode) {
-			node.getPropertySafe(OnScrollHorizontalEventProperty.class).ifPresent(prop -> {
-				prop.removeChangeListenerFrom(fxNode.hvalueProperty());
-			});
-			property.addChangeListenerTo(fxNode.hvalueProperty());
+			node.getPropertySafe(OnScrollHorizontalEventProperty.class)
+					.map(OnScrollHorizontalEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(fxNode.hvalueProperty()));
+			property.getChangeListenerProxy().addTo(fxNode.hvalueProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -84,7 +86,7 @@ public class OnScrollHorizontalEventProperty extends AbstractObservableListenerP
 									 final OnScrollHorizontalEventProperty property,
 									 final SuiNode node,
 									 final ScrollPane fxNode) {
-			property.removeChangeListenerFrom(fxNode.hvalueProperty());
+			property.getChangeListenerProxy().removeFrom(fxNode.hvalueProperty());
 			return MutationResult.MUTATED;
 		}
 

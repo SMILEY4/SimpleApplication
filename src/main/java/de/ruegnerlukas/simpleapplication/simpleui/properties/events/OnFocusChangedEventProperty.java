@@ -9,19 +9,20 @@ import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
 
-public class OnFocusChangedEventProperty extends AbstractObservableListenerProperty<FocusEventData, Boolean> {
+public class OnFocusChangedEventProperty extends AbstractEventListenerProperty<FocusEventData> {
 
-
-	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "focus.changed";
 
 	/**
 	 * The listener for events with {@link FocusEventData}.
 	 */
 	@Getter
 	private final SUIEventListener<FocusEventData> listener;
+
+	/**
+	 * The proxy for the actual change listener.
+	 */
+	@Getter
+	private final ChangeListenerProxy<Boolean> changeListenerProxy;
 
 
 
@@ -30,14 +31,13 @@ public class OnFocusChangedEventProperty extends AbstractObservableListenerPrope
 	 * @param listener the listener for events with {@link FocusEventData}.
 	 */
 	public OnFocusChangedEventProperty(final SUIEventListener<FocusEventData> listener) {
-		super(OnFocusChangedEventProperty.class, (value, prev, next) -> {
-			listener.onEvent(
-					FocusEventData.builder()
-							.focused(next)
-							.build()
-			);
-		});
+		super(OnFocusChangedEventProperty.class);
 		this.listener = listener;
+		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> listener.onEvent(
+				FocusEventData.builder()
+						.focused(next)
+						.build()
+		));
 	}
 
 
@@ -51,7 +51,7 @@ public class OnFocusChangedEventProperty extends AbstractObservableListenerPrope
 						  final SuiNode node,
 						  final OnFocusChangedEventProperty property,
 						  final Node fxNode) {
-			property.addChangeListenerTo(fxNode.focusedProperty());
+			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
 		}
 
 
@@ -62,10 +62,10 @@ public class OnFocusChangedEventProperty extends AbstractObservableListenerPrope
 									 final OnFocusChangedEventProperty property,
 									 final SuiNode node,
 									 final Node fxNode) {
-			node.getPropertySafe(OnFocusChangedEventProperty.class).ifPresent(prop -> {
-				prop.removeChangeListenerFrom(fxNode.focusedProperty());
-			});
-			property.addChangeListenerTo(fxNode.focusedProperty());
+			node.getPropertySafe(OnFocusChangedEventProperty.class)
+					.map(OnFocusChangedEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(fxNode.focusedProperty()));
+			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
 			return MutationResult.MUTATED;
 		}
 
@@ -77,7 +77,7 @@ public class OnFocusChangedEventProperty extends AbstractObservableListenerPrope
 									 final OnFocusChangedEventProperty property,
 									 final SuiNode node,
 									 final Node fxNode) {
-			property.removeChangeListenerFrom(fxNode.focusedProperty());
+			property.getChangeListenerProxy().removeFrom(fxNode.focusedProperty());
 			return MutationResult.MUTATED;
 		}
 

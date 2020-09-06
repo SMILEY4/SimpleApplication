@@ -12,11 +12,6 @@ import lombok.Getter;
 public class OnMouseScrollFinishedEventProperty extends AbstractEventListenerProperty<MouseScrollEventData> {
 
 	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "mousescroll.finished";
-
-	/**
 	 * The listener for events with {@link MouseScrollEventData}.
 	 */
 	@Getter

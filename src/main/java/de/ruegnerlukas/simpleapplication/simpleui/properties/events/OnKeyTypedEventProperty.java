@@ -11,11 +11,6 @@ import lombok.Getter;
 
 public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEventData> {
 
-	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "key.typed";
-
 
 	/**
 	 * The listener for events with {@link KeyEventData}.

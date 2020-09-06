@@ -12,11 +12,6 @@ import lombok.Getter;
 public class OnMouseDragEnteredEventProperty extends AbstractEventListenerProperty<MouseDragEventData> {
 
 	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "mouse.drag.entered";
-
-	/**
 	 * The listener for events with {@link MouseDragEventData}.
 	 */
 	@Getter

@@ -46,6 +46,9 @@ public class ChangeListenerProxy<T> {
 
 
 
+
+
+
 	/**
 	 * Removes this change listener from the given observable value.
 	 *
@@ -59,6 +62,9 @@ public class ChangeListenerProxy<T> {
 
 
 
+
+
+
 	/**
 	 * Removes this change listener from all observable value.
 	 */
@@ -68,5 +74,6 @@ public class ChangeListenerProxy<T> {
 		});
 		observables.clear();
 	}
+
 
 }

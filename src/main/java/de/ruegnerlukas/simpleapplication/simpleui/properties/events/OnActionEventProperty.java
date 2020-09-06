@@ -11,12 +11,6 @@ import lombok.Getter;
 
 public class OnActionEventProperty extends AbstractEventListenerProperty<ActionEventData> {
 
-
-	/**
-	 * The identifying string of the event.
-	 */
-	public static final String EVENT_ID = "action.buttonbase";
-
 	/**
 	 * The listener for events with {@link ActionEventData}.
 	 */
