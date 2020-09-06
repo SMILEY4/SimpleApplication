@@ -17,6 +17,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -27,7 +28,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPane;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPaneItem;
 
 @Slf4j
 public class SUITestApplication {
@@ -104,7 +104,7 @@ public class SUITestApplication {
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneContext(testUIState, TestUIState.class, state ->
 							anchorPane(
 									Properties.items(
-											anchorPaneItem(
+											SuiAnchorPaneItem.anchorPaneItem(
 													SuiSlider.slider(
 															Properties.minMax(-100, 100),
 															Properties.tickMarks(TickMarkProperty.TickMarkStyle.LABELED_TICKS, 50, 1, true),

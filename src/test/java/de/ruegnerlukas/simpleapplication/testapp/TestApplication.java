@@ -20,6 +20,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.events.MouseMoveEventData;
@@ -38,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPane;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPaneItem;
 
 @Slf4j
 public class TestApplication {
@@ -170,7 +170,7 @@ public class TestApplication {
 									)),
 
 									Properties.items(
-											anchorPaneItem(
+											SuiAnchorPaneItem.anchorPaneItem(
 													SuiContainer.container(
 															Properties.id("myContainer"),
 															Properties.layout("myLayout", ((parent, nodes) -> {

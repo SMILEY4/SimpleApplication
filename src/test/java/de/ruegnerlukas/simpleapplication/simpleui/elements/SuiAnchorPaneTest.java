@@ -42,14 +42,14 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 				Properties.disabled(true),
 				Properties.style("-fx-background-color: red"),
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn1"),
 										Properties.textContent("Child Button 1")
 								),
 								Properties.anchor(10, null, null, 50)
 						),
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn2"),
 										Properties.textContent("Child Button 2")
@@ -76,7 +76,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		assertThat(children).doesNotContainNull();
 
 		final SuiNode child1 = children.get(0);
-		TestUtils.assertNode(child1, SuiAnchorPane.AnchorPaneChildItem.class);
+		TestUtils.assertNode(child1, SuiAnchorPaneItem.class);
 		PropertyTestUtils.assertAnchorProperty(child1, 10, null, null, 50);
 		assertThat(child1.getChildrenUnmodifiable()).isNotNull();
 		assertThat(child1.getChildrenUnmodifiable()).hasSize(1);
@@ -87,7 +87,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertTextContentProperty(child1Button, "Child Button 1");
 
 		final SuiNode child2 = children.get(0);
-		TestUtils.assertNode(child2, SuiAnchorPane.AnchorPaneChildItem.class);
+		TestUtils.assertNode(child2, SuiAnchorPaneItem.class);
 		PropertyTestUtils.assertAnchorProperty(child2, 10, null, null, 50);
 		assertThat(child2.getChildrenUnmodifiable()).isNotNull();
 		assertThat(child2.getChildrenUnmodifiable()).hasSize(1);
@@ -116,7 +116,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 				Properties.disabled(true),
 				Properties.style("-fx-background-color: red"),
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn"),
 										Properties.textContent("Child Button")
@@ -135,7 +135,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 				Properties.disabled(false),
 				Properties.style("-fx-background-color: blue"),
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn"),
 										Properties.textContent("New Button")
@@ -167,7 +167,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		assertThat(children).doesNotContainNull();
 
 		final SuiNode child1 = children.get(0);
-		TestUtils.assertNode(child1, SuiAnchorPane.AnchorPaneChildItem.class);
+		TestUtils.assertNode(child1, SuiAnchorPaneItem.class);
 		PropertyTestUtils.assertAnchorProperty(child1, 500, 100, null, null);
 		assertThat(child1.getChildrenUnmodifiable()).isNotNull();
 		assertThat(child1.getChildrenUnmodifiable()).hasSize(1);
@@ -188,7 +188,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn1"),
 										Properties.textContent("Button 1")
@@ -199,13 +199,13 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPaneTarget = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn1"),
 										Properties.textContent("Button 1")
 								)
 						),
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn2"),
 										Properties.textContent("Button 2")
@@ -248,7 +248,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPaneTarget = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn"),
 										Properties.textContent("Button")
@@ -284,13 +284,13 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn1"),
 										Properties.textContent("Button 1")
 								)
 						),
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn2"),
 										Properties.textContent("Button 2")
@@ -329,13 +329,13 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn1"),
 										Properties.textContent("Button 1")
 								)
 						),
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn2"),
 										Properties.textContent("Button 2")
@@ -346,7 +346,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPaneTarget = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn2"),
 										Properties.textContent("Button 2")
@@ -382,13 +382,13 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn1"),
 										Properties.textContent("Button 1")
 								)
 						),
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn2"),
 										Properties.textContent("Button 2")
@@ -399,7 +399,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPaneTarget = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn1"),
 										Properties.textContent("Button 1")
@@ -435,13 +435,13 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn1"),
 										Properties.textContent("Button 1")
 								)
 						),
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn2"),
 										Properties.textContent("Button 2")
@@ -452,13 +452,13 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 		NodeFactory anchorPaneTarget = SuiAnchorPane.anchorPane(
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn2"),
 										Properties.textContent("Button 2")
 								)
 						),
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn1"),
 										Properties.textContent("Button 1")
@@ -493,7 +493,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		final List<SuiNode> children = anchorPaneNode.getChildrenUnmodifiable();
 
 		final SuiNode child = children.get(index);
-		TestUtils.assertNode(child, SuiAnchorPane.AnchorPaneChildItem.class);
+		TestUtils.assertNode(child, SuiAnchorPaneItem.class);
 		assertThat(child.getChildrenUnmodifiable()).isNotNull();
 		assertThat(child.getChildrenUnmodifiable()).hasSize(1);
 		assertThat(child.getChildrenUnmodifiable()).doesNotContainNull();
@@ -520,14 +520,14 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 				Properties.disabled(true),
 				Properties.style("-fx-background-color: red"),
 				Properties.items(
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn"),
 										Properties.textContent("Child Button 1")
 								),
 								Properties.anchor(20, null, null, 50)
 						),
-						SuiAnchorPane.anchorPaneItem(
+						SuiAnchorPaneItem.anchorPaneItem(
 								SuiButton.button(
 										Properties.id("btn"),
 										Properties.textContent("Child Button 2")

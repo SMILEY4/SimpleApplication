@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComboBox;
@@ -94,6 +95,7 @@ public class SuiRegistry {
 		SuiSlider.register(this);
 		SuiContainer.register(this);
 		SuiAnchorPane.register(this);
+		SuiAnchorPaneItem.register(this);
 		SuiScrollPane.register(this);
 		SuiVBox.register(this);
 		SuiHBox.register(this);
