@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PromptTextProperty;
@@ -45,7 +46,11 @@ public final class SuiTextArea {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiTextArea.class, get().getEntry(SuiTextArea.class).getProperties(), properties);
-		return state -> new SuiNode(SuiTextArea.class, List.of(properties), state, null);
+		return state -> SuiBaseNode.create(
+				SuiTextArea.class,
+				List.of(properties),
+				state
+		);
 	}
 
 

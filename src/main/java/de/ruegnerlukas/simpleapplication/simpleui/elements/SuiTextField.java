@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.EditableProperty;
@@ -45,7 +46,11 @@ public final class SuiTextField {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiTextField.class, get().getEntry(SuiTextField.class).getProperties(), properties);
-		return state -> new SuiNode(SuiTextField.class, List.of(properties), state, null);
+		return state -> SuiBaseNode.create(
+				SuiTextField.class,
+				List.of(properties),
+				state
+		);
 	}
 
 

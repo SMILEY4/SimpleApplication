@@ -62,7 +62,7 @@ public class SuiNode {
 	 * The listener for child node transformations (if required).
 	 */
 	@Getter
-	private ChildTransformListener childTransformListener;
+	private SuiNodeChildTransformListener childTransformListener;
 
 	/**
 	 * The fx-node attached to this node (or null).
@@ -101,7 +101,7 @@ public class SuiNode {
 				   final List<Property> propertyList,
 				   final SuiState state,
 				   final ChildListener childListener,
-				   final ChildTransformListener childTransformListener) {
+				   final SuiNodeChildTransformListener childTransformListener) {
 		this.nodeType = nodeType;
 		propertyList.forEach(property -> properties.put(property.getKey(), property));
 		createChildNodesFromProperties(state);
@@ -359,7 +359,7 @@ public class SuiNode {
 
 
 	/**
-	 * Applies the list of operations to this node. Also optionally triggers the {@link ChildTransformListener}.
+	 * Applies the list of operations to this node. Also optionally triggers the {@link SuiNodeChildTransformListener}.
 	 * All given operations must be of the given type.
 	 *
 	 * @param type            the type of all given operations
@@ -387,35 +387,9 @@ public class SuiNode {
 
 
 
-	public interface ChildListener {
-
-
-		/**
-		 * The child nodes of the given parent node have changed.
-		 *
-		 * @param parent the parent node of the changed child nodes
-		 */
-		void onChange(SuiNode parent);
-
-	}
 
 
 
 
-
-
-	public interface ChildTransformListener {
-
-
-		/**
-		 * The given operations of the given type must be applied to the children of the fx-node of the given parent node.
-		 *
-		 * @param parent     the parent node
-		 * @param type       the type of all of the operations
-		 * @param operations the operations to apply
-		 */
-		void onTransformOperations(SuiNode parent, OperationType type, List<? extends BaseOperation> operations);
-
-	}
 
 }

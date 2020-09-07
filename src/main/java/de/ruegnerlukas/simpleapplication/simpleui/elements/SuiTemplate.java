@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
@@ -38,7 +39,11 @@ public final class SuiTemplate {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiTemplate.class, get().getEntry(SuiTemplate.class).getProperties(), properties);
-		return state -> new SuiNode(SuiTemplate.class, List.of(properties), state, null);
+		return state -> SuiBaseNode.create(
+				SuiTemplate.class,
+				List.of(properties),
+				state
+		);
 	}
 
 

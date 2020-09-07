@@ -5,7 +5,10 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNodeChildListener;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNodeChildTransformListener;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.LayoutProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -13,7 +16,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry.PropertyEntry;
-import de.ruegnerlukas.simpleapplication.simpleui.utils.SuiUtils;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
@@ -43,12 +45,13 @@ public final class SuiContainer {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiContainer.class, SuiRegistry.get().getEntry(SuiContainer.class).getProperties(), properties);
-		return state -> new SuiNode(
+		return state -> SuiBaseNode.create(
 				SuiContainer.class,
 				List.of(properties),
 				state,
-				SuiUtils.defaultPaneChildListener(),
-				SuiUtils.defaultPaneChildTransformListener());
+				SuiNodeChildListener.DEFAULT,
+				SuiNodeChildTransformListener.DEFAULT
+		);
 	}
 
 

@@ -5,7 +5,10 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNodeChildListener;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNodeChildTransformListener;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ItemProperty;
@@ -46,7 +49,13 @@ public final class SuiScrollPane {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiScrollPane.class, get().getEntry(SuiScrollPane.class).getProperties(), properties);
-		return state -> new SuiNode(SuiScrollPane.class, List.of(properties), state, SuiScrollPane::handleChildrenChange);
+		return state -> SuiBaseNode.create(
+				SuiLabel.class,
+				List.of(properties),
+				state,
+				SuiNodeChildListener.DEFAULT,
+				SuiNodeChildTransformListener.NO_OP
+		);
 	}
 
 

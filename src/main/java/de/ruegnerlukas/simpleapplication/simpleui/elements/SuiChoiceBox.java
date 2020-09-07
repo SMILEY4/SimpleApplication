@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesProperty;
@@ -44,7 +45,11 @@ public final class SuiChoiceBox {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiChoiceBox.class, get().getEntry(SuiChoiceBox.class).getProperties(), properties);
-		return state -> new SuiNode(SuiChoiceBox.class, List.of(properties), state, null);
+		return state -> SuiBaseNode.create(
+				SuiChoiceBox.class,
+				List.of(properties),
+				state
+		);
 	}
 
 
