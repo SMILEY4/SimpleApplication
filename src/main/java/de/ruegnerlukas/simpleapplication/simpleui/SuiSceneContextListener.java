@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 
 public interface SuiSceneContextListener {
 

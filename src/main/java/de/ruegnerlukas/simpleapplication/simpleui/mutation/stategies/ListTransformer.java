@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.AddOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.BaseOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.operations.RemoveOperation;

@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;

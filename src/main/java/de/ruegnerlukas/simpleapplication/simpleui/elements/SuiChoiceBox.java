@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.BaseFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;

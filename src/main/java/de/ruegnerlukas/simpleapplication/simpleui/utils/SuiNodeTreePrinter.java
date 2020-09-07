@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.utils;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 
 public final class SuiNodeTreePrinter {

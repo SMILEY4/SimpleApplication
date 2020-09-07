@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.builders;
 
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;

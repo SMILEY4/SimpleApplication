@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.builders;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
 
 public interface NodeFactory {

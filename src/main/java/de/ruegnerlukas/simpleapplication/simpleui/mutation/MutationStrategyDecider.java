@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.AddAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.ChildNodesMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy;

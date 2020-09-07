@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.mutation.operations;
 
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import lombok.Getter;

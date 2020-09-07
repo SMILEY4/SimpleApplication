@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.elements;
+package de.ruegnerlukas.simpleapplication.simpleui.elements.basenode;
 
 import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiState;

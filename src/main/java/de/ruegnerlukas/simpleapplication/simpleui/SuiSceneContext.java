@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComponentRenderer;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MasterNodeMutator;
 import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationStrategyDecider;
 import javafx.scene.Node;

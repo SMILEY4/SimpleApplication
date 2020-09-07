@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComponent;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.DuplicatePropertiesException;

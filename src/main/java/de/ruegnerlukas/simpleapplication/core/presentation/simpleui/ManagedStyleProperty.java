@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.style.StringStyle;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.Style;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
 import javafx.scene.Node;

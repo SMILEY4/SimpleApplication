@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.properties;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
