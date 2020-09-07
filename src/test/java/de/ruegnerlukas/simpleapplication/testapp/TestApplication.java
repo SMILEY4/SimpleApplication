@@ -18,16 +18,16 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHan
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPaneItem;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.events.MouseMoveEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.simpleui.streams.SuiStream;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPaneItem;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseMoveEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.SuiStream;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPane;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane.anchorPane;
 
 @Slf4j
 public class TestApplication {
@@ -160,7 +160,7 @@ public class TestApplication {
 					.maxSize(new Dimension2D(300, 300))
 					.title(applicationName + " - View A")
 					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneContext(testUIState, TestUIState.class, state ->
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							anchorPane(
 
 									EventProperties.eventMouseEntered(SuiStream.eventStream(MouseMoveEventData.class,

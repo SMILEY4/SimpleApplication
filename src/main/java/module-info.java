@@ -29,21 +29,18 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.core.presentation.style;
 	exports de.ruegnerlukas.simpleapplication.core.presentation.simpleui;
 
-	exports de.ruegnerlukas.simpleapplication.simpleui;
-	exports de.ruegnerlukas.simpleapplication.simpleui.builders;
-	exports de.ruegnerlukas.simpleapplication.simpleui.elements;
-	exports de.ruegnerlukas.simpleapplication.simpleui.elements.basenode;
-	exports de.ruegnerlukas.simpleapplication.simpleui.elements.jfxelements;
-	exports de.ruegnerlukas.simpleapplication.simpleui.events;
-	exports de.ruegnerlukas.simpleapplication.simpleui.mutation;
-	exports de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies;
-	exports de.ruegnerlukas.simpleapplication.simpleui.mutation.operations;
-	exports de.ruegnerlukas.simpleapplication.simpleui.properties;
-	exports de.ruegnerlukas.simpleapplication.simpleui.properties.events;
-	exports de.ruegnerlukas.simpleapplication.simpleui.registry;
-	exports de.ruegnerlukas.simpleapplication.simpleui.streams;
-	exports de.ruegnerlukas.simpleapplication.simpleui.streams.sources;
-	exports de.ruegnerlukas.simpleapplication.simpleui.streams.operations;
-	exports de.ruegnerlukas.simpleapplication.simpleui.utils;
-
+	exports de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
+	exports de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
+	exports de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
+	exports de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
+	exports de.ruegnerlukas.simpleapplication.simpleui.assets.events;
+	exports de.ruegnerlukas.simpleapplication.simpleui.assets.streams;
+	exports de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources;
+	exports de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations;
+	exports de.ruegnerlukas.simpleapplication.simpleui.core.builders;
+	exports de.ruegnerlukas.simpleapplication.simpleui.core.node;
+	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
+	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
+	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations;
+	exports de.ruegnerlukas.simpleapplication.simpleui.core.registry;
 }

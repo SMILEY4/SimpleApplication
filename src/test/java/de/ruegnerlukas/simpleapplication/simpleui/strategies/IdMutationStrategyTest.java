@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.strategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.IdMutationStrategy;
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.stategies.StrategyDecisionResult;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdMutationStrategy;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -37,8 +37,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneContext context = testData.getLeft();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 
@@ -70,8 +70,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneContext context = testData.getLeft();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 
@@ -105,8 +105,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneContext context = testData.getLeft();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 
@@ -140,8 +140,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(0, "Btn Target", true);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneContext context = testData.getLeft();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 
@@ -173,8 +173,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneContext context = testData.getLeft();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 
@@ -208,8 +208,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneContext context = testData.getLeft();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 
@@ -243,8 +243,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(0, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneContext context = testData.getLeft();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 
@@ -276,8 +276,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneContext context = testData.getLeft();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 
@@ -311,8 +311,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", true);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", true);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneContext context = testData.getLeft();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 
@@ -345,7 +345,7 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", false);
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", false);
 
-		final Triplet<SuiSceneContext, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
 		final SuiNode nodeOriginal = testData.getMiddle();
 		final SuiNode nodeTarget = testData.getRight();
 

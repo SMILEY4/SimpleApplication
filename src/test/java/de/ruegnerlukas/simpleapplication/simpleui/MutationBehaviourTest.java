@@ -1,12 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.MutationBehaviourProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
@@ -59,7 +60,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 				)
 		);
 
-		SuiSceneContext context = new SuiSceneContext(state, vbox);
+		SuiSceneController context = new SuiSceneController(state, vbox);
 		SuiNode original = context.getRootNode();
 		SuiNode target = vboxTarget.create(state);
 		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
@@ -110,7 +111,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 				)
 		);
 
-		SuiSceneContext context = new SuiSceneContext(state, vbox);
+		SuiSceneController context = new SuiSceneController(state, vbox);
 		SuiNode original = context.getRootNode();
 		SuiNode target = vboxTarget.create(state);
 		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
@@ -162,7 +163,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 				)
 		);
 
-		SuiSceneContext context = new SuiSceneContext(state, vbox);
+		SuiSceneController context = new SuiSceneController(state, vbox);
 		SuiNode original = context.getRootNode();
 		SuiNode target = vboxTarget.create(state);
 		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
@@ -216,7 +217,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 				)
 		);
 
-		SuiSceneContext context = new SuiSceneContext(state, vbox);
+		SuiSceneController context = new SuiSceneController(state, vbox);
 		SuiNode original = context.getRootNode();
 		SuiNode target = vboxTarget.create(state);
 		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);

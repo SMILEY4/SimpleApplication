@@ -4,18 +4,17 @@ import de.ruegnerlukas.simpleapplication.core.presentation.style.ResourceStyle;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StringStyle;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.Style;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
-import de.ruegnerlukas.simpleapplication.simpleui.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import javafx.scene.Node;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import de.ruegnerlukas.simpleapplication.simpleui.mutation.MutationResult;
 
 public class ManagedStyleProperty extends Property {
 

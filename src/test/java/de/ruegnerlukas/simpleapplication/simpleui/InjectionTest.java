@@ -1,16 +1,17 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComponent;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.DuplicatePropertiesException;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.InjectionIndexMarker;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiScrollPane;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DuplicatePropertiesException;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -23,8 +24,8 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.id;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.id;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InjectionTest extends ApplicationTest {
@@ -212,7 +213,7 @@ public class InjectionTest extends ApplicationTest {
 		);
 
 		final TestState state = new TestState("Text 1");
-		final SuiSceneContext context = new SuiSceneContext(state, nodeFactory);
+		final SuiSceneController context = new SuiSceneController(state, nodeFactory);
 		final SuiNode node = context.getRootNode();
 		final VBox fxNode = (VBox) node.getFxNode();
 
@@ -262,7 +263,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 	private Node createJFXNode(final NodeFactory nodeFactory) {
-		SuiSceneContext context = new SuiSceneContext(new TestState(), nodeFactory);
+		SuiSceneController context = new SuiSceneController(new TestState(), nodeFactory);
 		return context.getRootNode().getFxNode();
 	}
 

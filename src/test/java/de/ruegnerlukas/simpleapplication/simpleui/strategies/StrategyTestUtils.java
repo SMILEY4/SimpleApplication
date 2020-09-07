@@ -1,14 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.strategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.basenode.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.TestState;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.TextContentProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -41,9 +41,9 @@ public class StrategyTestUtils {
 
 
 
-	public static Triplet<SuiSceneContext, SuiNode, SuiNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
+	public static Triplet<SuiSceneController, SuiNode, SuiNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
 		TestState state = new TestState();
-		SuiSceneContext context = new SuiSceneContext(state, factoryOriginal);
+		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		SuiNode original = context.getRootNode();
 		SuiNode target = factoryTarget.create(state);
 		return Triplet.of(context, original, target);

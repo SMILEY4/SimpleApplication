@@ -1,7 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComponent;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -11,10 +13,10 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.wrapText;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties.eventAction;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.wrapText;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties.eventAction;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SUIIntegrationTest extends ApplicationTest {
@@ -34,7 +36,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 
 		final AtomicInteger buttonPressCounter = new AtomicInteger(0);
 
-		final SuiSceneContext context = new SuiSceneContext(
+		final SuiSceneController context = new SuiSceneController(
 				button(
 						textContent("Some Button"),
 						wrapText(),
@@ -63,7 +65,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 		// setup
 		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
-		final SuiSceneContext context = new SuiSceneContext(testState,
+		final SuiSceneController context = new SuiSceneController(testState,
 				new SuiComponent<TestState>(state -> button(
 						textContent("counter = " + testState.counter),
 						eventAction(e -> state.update(TestState.class, TestState::increment))
@@ -92,7 +94,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 		// setup
 		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
-		final SuiSceneContext context = new SuiSceneContext(testState,
+		final SuiSceneController context = new SuiSceneController(testState,
 				new SuiComponent<TestState>(state -> button(
 						textContent("counter = " + testState.counter),
 						eventAction(e -> state.update(TestState.class, true, s -> {
