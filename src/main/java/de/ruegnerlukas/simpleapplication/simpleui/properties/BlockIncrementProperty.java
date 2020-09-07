@@ -13,7 +13,7 @@ public class BlockIncrementProperty extends Property {
 
 
 	/**
-	 * tTe increment size.
+	 * The increment size.
 	 */
 	@Getter
 	private final Number increment;

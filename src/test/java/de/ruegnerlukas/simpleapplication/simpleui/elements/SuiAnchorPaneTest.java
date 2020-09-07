@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
@@ -31,7 +32,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 	@Test
 	public void testAnchorPaneSNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.id("myAnchorPane"),
@@ -105,7 +106,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 	@Test
 	public void testMutate() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.id("myAnchorPane"),
@@ -184,7 +185,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 	@Test
 	public void testMutateAddChild() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
@@ -239,7 +240,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 	@Test
 	public void testMutateCreateChild() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
@@ -280,7 +281,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 	@Test
 	public void testMutateClearChildren() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
@@ -325,7 +326,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 	@Test
 	public void testMutateRemoveChild1() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
@@ -378,7 +379,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 	@Test
 	public void testMutateRemoveChild2() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
@@ -431,7 +432,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 	@Test
 	public void testMutateSwitchChildren() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.items(
@@ -509,7 +510,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 	@Test
 	public void testFxNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory anchorPane = SuiAnchorPane.anchorPane(
 				Properties.id("myAnchorPane"),

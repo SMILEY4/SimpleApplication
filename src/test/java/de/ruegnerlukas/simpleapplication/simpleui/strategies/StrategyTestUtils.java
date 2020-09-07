@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.ElementTestState;
+import de.ruegnerlukas.simpleapplication.simpleui.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -42,7 +42,7 @@ public class StrategyTestUtils {
 
 
 	public static Triplet<SuiSceneContext, SuiNode, SuiNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
-		ElementTestState state = new ElementTestState();
+		TestState state = new TestState();
 		SuiSceneContext context = new SuiSceneContext(state, factoryOriginal);
 		SuiNode original = context.getRootNode();
 		SuiNode target = factoryTarget.create(state);

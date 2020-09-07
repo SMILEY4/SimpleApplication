@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.ElementTestState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox;
@@ -32,7 +31,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 	@Test
 	public void testMutateMissing() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
 				Properties.id("myVBox"),
@@ -81,7 +80,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 	@Test
 	public void testMutateDefault() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
 				Properties.id("myVBox"),
@@ -133,7 +132,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 	@Test
 	public void testMutateStaticNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
 				Properties.id("myVBox"),
@@ -187,7 +186,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 	@Test
 	public void testMutateStaticSubtree() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
 				Properties.id("myVBox"),

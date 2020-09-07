@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
+import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.ElementTestState;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiNode;
@@ -11,6 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.properties.DuplicateProperties
 import de.ruegnerlukas.simpleapplication.simpleui.properties.InjectionIndexMarker;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -19,6 +20,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.id;
+import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InjectionTest extends ApplicationTest {
@@ -43,43 +49,25 @@ public class InjectionTest extends ApplicationTest {
 	public void testInjectIntoVBox() {
 
 		final String INJECTION_POINT_ID = "injection_point";
-		final ElementTestState state = new ElementTestState();
+		final NodeFactory nodeFactory = vboxWithInjectableItems(INJECTION_POINT_ID);
 
-		NodeFactory vbox = SuiVBox.vbox(
-				Properties.itemsInjectable(INJECTION_POINT_ID)
+		injectButtonsInto(INJECTION_POINT_ID, List.of(
+				Pair.of("ij_btn1", "Injected Button 1"),
+				Pair.of("ij_btn2", "Injected Button 2"))
 		);
+		injectButtonsInto(INJECTION_POINT_ID, List.of(
+				Pair.of("ij_btn3", "Injected Button 3")
+		));
 
-		SuiRegistry.get().inject(INJECTION_POINT_ID,
-				SuiButton.button(
-						Properties.id("ij_btn1"),
-						Properties.textContent("Injected Button 1")
-				),
-				SuiButton.button(
-						Properties.id("ij_btn2"),
-						Properties.textContent("Injected Button 2")
-				)
-		);
-		SuiRegistry.get().inject(INJECTION_POINT_ID,
-				SuiButton.button(
-						Properties.id("ij_btn3"),
-						Properties.textContent("Injected Button 3")
-				)
-		);
-
-
-		SuiSceneContext context = new SuiSceneContext(state, vbox);
-		VBox fxNode = (VBox) context.getRootNode().getFxNode();
+		final VBox fxNode = (VBox) createJFXNode(nodeFactory);
 
 		assertThat(fxNode.getChildren()).hasSize(3);
-
 		assertThat(fxNode.getChildren().get(0) instanceof Button).isTrue();
 		assertThat(fxNode.getChildren().get(1) instanceof Button).isTrue();
 		assertThat(fxNode.getChildren().get(2) instanceof Button).isTrue();
-
 		assertThat(((Button) fxNode.getChildren().get(0)).getText()).isEqualTo("Injected Button 1");
 		assertThat(((Button) fxNode.getChildren().get(1)).getText()).isEqualTo("Injected Button 2");
 		assertThat(((Button) fxNode.getChildren().get(2)).getText()).isEqualTo("Injected Button 3");
-
 	}
 
 
@@ -87,16 +75,9 @@ public class InjectionTest extends ApplicationTest {
 
 	@Test
 	public void testInjectNothingIntoVBox() {
-
 		final String INJECTION_POINT_ID = "injection_point";
-		final ElementTestState state = new ElementTestState();
-
-		NodeFactory vbox = SuiVBox.vbox(
-				Properties.itemsInjectable(INJECTION_POINT_ID)
-		);
-
-		SuiSceneContext context = new SuiSceneContext(state, vbox);
-		VBox fxNode = (VBox) context.getRootNode().getFxNode();
+		final NodeFactory nodeFactory = vboxWithInjectableItems(INJECTION_POINT_ID);
+		final VBox fxNode = (VBox) createJFXNode(nodeFactory);
 		assertThat(fxNode.getChildren()).isEmpty();
 	}
 
@@ -107,44 +88,33 @@ public class InjectionTest extends ApplicationTest {
 	public void testInjectIntoVBoxWithDefault() {
 
 		final String INJECTION_POINT_ID = "injection_point";
-		final ElementTestState state = new ElementTestState();
 
-		NodeFactory vbox = SuiVBox.vbox(
+		final NodeFactory nodeFactory = SuiVBox.vbox(
 				Properties.itemsInjectable(
 						INJECTION_POINT_ID,
 						InjectionIndexMarker.injectAt(1),
 						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Button 1")
+								id("btn1"),
+								textContent("Button 1")
 						),
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Button 2")
+								id("btn2"),
+								textContent("Button 2")
 						))
 		);
 
-		SuiRegistry.get().inject(INJECTION_POINT_ID,
-				SuiButton.button(
-						Properties.id("ij_btn1"),
-						Properties.textContent("Injected Button 1")
-				),
-				SuiButton.button(
-						Properties.id("ij_btn2"),
-						Properties.textContent("Injected Button 2")
-				)
+		injectButtonsInto(INJECTION_POINT_ID, List.of(
+				Pair.of("ij_btn1", "Injected Button 1"),
+				Pair.of("ij_btn2", "Injected Button 2"))
 		);
 
-
-		SuiSceneContext context = new SuiSceneContext(state, vbox);
-		VBox fxNode = (VBox) context.getRootNode().getFxNode();
+		final VBox fxNode = (VBox) createJFXNode(nodeFactory);
 
 		assertThat(fxNode.getChildren()).hasSize(4);
-
 		assertThat(fxNode.getChildren().get(0) instanceof Button).isTrue();
 		assertThat(fxNode.getChildren().get(1) instanceof Button).isTrue();
 		assertThat(fxNode.getChildren().get(2) instanceof Button).isTrue();
 		assertThat(fxNode.getChildren().get(3) instanceof Button).isTrue();
-
 		assertThat(((Button) fxNode.getChildren().get(0)).getText()).isEqualTo("Button 1");
 		assertThat(((Button) fxNode.getChildren().get(1)).getText()).isEqualTo("Injected Button 1");
 		assertThat(((Button) fxNode.getChildren().get(2)).getText()).isEqualTo("Injected Button 2");
@@ -158,8 +128,8 @@ public class InjectionTest extends ApplicationTest {
 	public void testVBoxPropertiesConflict() {
 		SuiVBox.vbox(
 				Properties.items(SuiButton.button(
-						Properties.id("btn"),
-						Properties.textContent("Button")
+						id("btn"),
+						textContent("Button")
 				)),
 				Properties.itemsInjectable("injection_point")
 		);
@@ -172,22 +142,16 @@ public class InjectionTest extends ApplicationTest {
 	public void testInjectIntoScrollPane() {
 
 		final String INJECTION_POINT_ID = "injection_point";
-		final ElementTestState state = new ElementTestState();
 
-		NodeFactory scrollPane = SuiScrollPane.scrollPane(
+		final NodeFactory nodeFactory = SuiScrollPane.scrollPane(
 				Properties.itemInjectable(INJECTION_POINT_ID)
 		);
 
-		SuiRegistry.get().inject(INJECTION_POINT_ID,
-				SuiButton.button(
-						Properties.id("ij_btn"),
-						Properties.textContent("Injected Button")
-				)
-		);
+		injectButtonsInto(INJECTION_POINT_ID, List.of(
+				Pair.of("ij_btn", "Injected Button")
+		));
 
-
-		SuiSceneContext context = new SuiSceneContext(state, scrollPane);
-		ScrollPane fxNode = (ScrollPane) context.getRootNode().getFxNode();
+		final ScrollPane fxNode = (ScrollPane) createJFXNode(nodeFactory);
 
 		assertThat(fxNode.getContent()).isNotNull();
 		assertThat(fxNode.getContent() instanceof Button).isTrue();
@@ -201,19 +165,16 @@ public class InjectionTest extends ApplicationTest {
 	public void testInjectIntoScrollPaneWithDefault() {
 
 		final String INJECTION_POINT_ID = "injection_point";
-		final ElementTestState state = new ElementTestState();
 
-		NodeFactory scrollPane = SuiScrollPane.scrollPane(
+		final NodeFactory nodeFactory = SuiScrollPane.scrollPane(
 				Properties.itemInjectable(INJECTION_POINT_ID,
 						SuiButton.button(
-								Properties.id("btn"),
-								Properties.textContent("Button")
+								id("btn"),
+								textContent("Button")
 						))
 		);
 
-
-		SuiSceneContext context = new SuiSceneContext(state, scrollPane);
-		ScrollPane fxNode = (ScrollPane) context.getRootNode().getFxNode();
+		final ScrollPane fxNode = (ScrollPane) createJFXNode(nodeFactory);
 
 		assertThat(fxNode.getContent()).isNotNull();
 		assertThat(fxNode.getContent() instanceof Button).isTrue();
@@ -227,35 +188,33 @@ public class InjectionTest extends ApplicationTest {
 	public void testInjectIntoVBoxAndMutate() {
 
 		final String INJECTION_POINT_ID = "injection_point";
-		final ElementTestState state = new ElementTestState();
-		state.text = "Text 1";
 
-		NodeFactory vbox = SuiVBox.vbox(
+		final NodeFactory nodeFactory = SuiVBox.vbox(
 				Properties.itemsInjectable(
 						INJECTION_POINT_ID,
 						InjectionIndexMarker.injectAt(1),
 						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Button 1")
+								id("btn1"),
+								textContent("Button 1")
 						),
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Button 2")
+								id("btn2"),
+								textContent("Button 2")
 						))
 		);
 
 		SuiRegistry.get().inject(INJECTION_POINT_ID,
-				new SuiComponent<ElementTestState>(
+				new SuiComponent<TestState>(
 						localState -> SuiButton.button(
-								Properties.id("ij_btn1"),
-								Properties.textContent(localState.text)
+								id("ij_btn1"),
+								textContent(localState.text)
 						))
 		);
 
-
-		SuiSceneContext context = new SuiSceneContext(state, vbox);
-		SuiNode node = context.getRootNode();
-		VBox fxNode = (VBox) node.getFxNode();
+		final TestState state = new TestState("Text 1");
+		final SuiSceneContext context = new SuiSceneContext(state, nodeFactory);
+		final SuiNode node = context.getRootNode();
+		final VBox fxNode = (VBox) node.getFxNode();
 
 		assertThat(fxNode.getChildren()).hasSize(3);
 		assertThat(fxNode.getChildren().get(0) instanceof Button).isTrue();
@@ -267,8 +226,8 @@ public class InjectionTest extends ApplicationTest {
 
 		state.text = "Text 2";
 
-		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(node, vbox.create(state));
-		VBox fxNodeMutated = (VBox) mutatedNode.getFxNode();
+		final SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(node, nodeFactory.create(state));
+		final VBox fxNodeMutated = (VBox) mutatedNode.getFxNode();
 
 		assertThat(fxNodeMutated.getChildren()).hasSize(3);
 		assertThat(fxNodeMutated.getChildren().get(0) instanceof Button).isTrue();
@@ -277,7 +236,34 @@ public class InjectionTest extends ApplicationTest {
 		assertThat(((Button) fxNodeMutated.getChildren().get(0)).getText()).isEqualTo("Button 1");
 		assertThat(((Button) fxNodeMutated.getChildren().get(1)).getText()).isEqualTo("Text 2");
 		assertThat(((Button) fxNodeMutated.getChildren().get(2)).getText()).isEqualTo("Button 2");
+	}
 
+
+
+
+	private NodeFactory vboxWithInjectableItems(final String injectionPointId) {
+		return SuiVBox.vbox(
+				Properties.itemsInjectable(injectionPointId)
+		);
+	}
+
+
+
+
+	private void injectButtonsInto(final String injectionPointId, final List<Pair<String, String>> buttons) {
+		SuiRegistry.get().inject(injectionPointId,
+				buttons.stream()
+						.map(pair -> SuiButton.button(id(pair.getLeft()), textContent(pair.getRight())))
+						.collect(Collectors.toList())
+		);
+	}
+
+
+
+
+	private Node createJFXNode(final NodeFactory nodeFactory) {
+		SuiSceneContext context = new SuiSceneContext(new TestState(), nodeFactory);
+		return context.getRootNode().getFxNode();
 	}
 
 

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -31,7 +32,7 @@ public class SuiContainerTest extends ApplicationTest {
 	@Test
 	public void testAnchorPaneSNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory container = SuiContainer.container(
 				Properties.id("myContainer"),
@@ -165,7 +166,7 @@ public class SuiContainerTest extends ApplicationTest {
 	@Test
 	public void testFxNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory container = SuiContainer.container(
 				Properties.id("myContainer"),

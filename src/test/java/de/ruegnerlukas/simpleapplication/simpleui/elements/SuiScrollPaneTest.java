@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
+import de.ruegnerlukas.simpleapplication.simpleui.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
@@ -30,7 +31,7 @@ public class SuiScrollPaneTest extends ApplicationTest {
 	@Test
 	public void testScrollPaneSNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory scrollPane = SuiScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
@@ -82,7 +83,7 @@ public class SuiScrollPaneTest extends ApplicationTest {
 	@Test
 	public void testMutate() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory scrollPane = SuiScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
@@ -158,7 +159,7 @@ public class SuiScrollPaneTest extends ApplicationTest {
 	@Test
 	public void testMutateRemoveContent() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory scrollPane = SuiScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
@@ -219,7 +220,7 @@ public class SuiScrollPaneTest extends ApplicationTest {
 	@Test
 	public void testMutateAddContent() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory scrollPane = SuiScrollPane.scrollPane(
 				Properties.id("myScrollPane"),
@@ -283,7 +284,7 @@ public class SuiScrollPaneTest extends ApplicationTest {
 	@Test
 	public void testFxNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory scrollPane = SuiScrollPane.scrollPane(
 				Properties.id("myScrollPane"),

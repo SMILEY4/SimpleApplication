@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
+import de.ruegnerlukas.simpleapplication.simpleui.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
@@ -29,7 +30,7 @@ public class SuiSeparatorTest extends ApplicationTest {
 	@Test
 	public void testSNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory separator = SuiSeparator.separator(
 				Properties.id("mySeparator"),
@@ -63,7 +64,7 @@ public class SuiSeparatorTest extends ApplicationTest {
 	@Test
 	public void testMutate() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory separator = SuiSeparator.separator(
 				Properties.id("mySeparator"),
@@ -111,7 +112,7 @@ public class SuiSeparatorTest extends ApplicationTest {
 	@Test
 	public void testFxNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory separator = SuiSeparator.separator(
 				Properties.id("mySeparator"),

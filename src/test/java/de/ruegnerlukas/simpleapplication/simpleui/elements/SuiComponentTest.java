@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.elements;
 
+import de.ruegnerlukas.simpleapplication.simpleui.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
@@ -24,7 +25,7 @@ public class SuiComponentTest extends ApplicationTest {
 
 
 
-	private static class TestSuiComponent extends SuiComponent<ElementTestState> {
+	private static class TestSuiComponent extends SuiComponent<TestState> {
 
 
 		public TestSuiComponent() {
@@ -43,7 +44,7 @@ public class SuiComponentTest extends ApplicationTest {
 	@Test
 	public void testComponentSNode() {
 
-		final ElementTestState state = new ElementTestState();
+		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
 				Properties.id("myVBox"),
