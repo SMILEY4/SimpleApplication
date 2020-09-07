@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.FocusEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -50,8 +49,7 @@ public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final OnFocusReceivedEventProperty property,
 						  final Node fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
@@ -61,11 +59,10 @@ public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnFocusReceivedEventProperty property,
-									 final SuiNode node,
+		public MutationResult update(final OnFocusReceivedEventProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
-			node.getPropertySafe(OnFocusReceivedEventProperty.class)
+			node.getPropertyStore().getSafe(OnFocusReceivedEventProperty.class)
 					.map(OnFocusReceivedEventProperty::getChangeListenerProxy)
 					.ifPresent(proxy -> proxy.removeFrom(fxNode.focusedProperty()));
 			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
@@ -76,9 +73,8 @@ public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnFocusReceivedEventProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final OnFocusReceivedEventProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.focusedProperty());
 			return MutationResult.MUTATED;

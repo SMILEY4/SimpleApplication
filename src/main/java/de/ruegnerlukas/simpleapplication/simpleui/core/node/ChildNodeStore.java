@@ -79,7 +79,7 @@ public class ChildNodeStore {
 	 * @param id the id of the requested child node
 	 * @return the child node with the given id (if one exists)
 	 */
-	public Optional<SuiBaseNode> find(final String id) {
+	public Optional<SuiBaseNode> findSafe(final String id) {
 		return Optional.ofNullable(childMap.get(id));
 	}
 
@@ -92,7 +92,7 @@ public class ChildNodeStore {
 	 * @param id the id of the requested child node
 	 * @return the child node with the given id or null
 	 */
-	public SuiBaseNode findUnsafe(final String id) {
+	public SuiBaseNode find(final String id) {
 		return childMap.get(id);
 	}
 

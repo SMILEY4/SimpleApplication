@@ -10,7 +10,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Choices
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChronologyProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DuplicatePropertiesException;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;

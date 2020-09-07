@@ -2,10 +2,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -81,8 +80,7 @@ public class LayoutProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final LayoutProperty property,
 						  final Node fxNode) {
 			// do nothing, layout was added to jfx-node during during creation of the jfx-node.
@@ -92,9 +90,8 @@ public class LayoutProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final LayoutProperty property,
-									 final SuiNode node,
+		public MutationResult update(final LayoutProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
@@ -103,9 +100,8 @@ public class LayoutProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final LayoutProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final LayoutProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}

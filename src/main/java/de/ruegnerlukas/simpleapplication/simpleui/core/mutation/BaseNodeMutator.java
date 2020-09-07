@@ -1,8 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 
 public interface BaseNodeMutator {
 
@@ -12,12 +11,11 @@ public interface BaseNodeMutator {
 	 * The properties and fx-node of the original node will be changed to match the given target node.
 	 * If this is not possible, {@link MutationResult#REQUIRES_REBUILD} will be returned.
 	 *
-	 * @param original     the original node. If possible, the fx-node of this node will be modified.
-	 * @param target       the target node with the target properties
-	 * @param nodeHandlers the primary node handlers
+	 * @param original the original node. If possible, the fx-node of this node will be modified.
+	 * @param target   the target node with the target properties
 	 * @return whether the node was mutated or has to be rebuild completely
 	 */
-	MutationResult mutateNode(SuiNode original, SuiNode target, MasterNodeHandlers nodeHandlers);
+	MutationResult mutateNode(SuiBaseNode original, SuiBaseNode target);
 
 
 }

@@ -1,10 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseButtonEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseButtonEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -34,8 +35,7 @@ public class OnMouseReleasedEventProperty extends AbstractEventListenerProperty<
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final OnMouseReleasedEventProperty property,
 						  final Node fxNode) {
 			setListener(fxNode, property);
@@ -45,9 +45,8 @@ public class OnMouseReleasedEventProperty extends AbstractEventListenerProperty<
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnMouseReleasedEventProperty property,
-									 final SuiNode node,
+		public MutationResult update(final OnMouseReleasedEventProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
@@ -57,9 +56,8 @@ public class OnMouseReleasedEventProperty extends AbstractEventListenerProperty<
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnMouseReleasedEventProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final OnMouseReleasedEventProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;

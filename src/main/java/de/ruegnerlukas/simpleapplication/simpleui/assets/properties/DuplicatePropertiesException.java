@@ -1,6 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
-
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import java.util.List;
 import java.util.stream.Collectors;

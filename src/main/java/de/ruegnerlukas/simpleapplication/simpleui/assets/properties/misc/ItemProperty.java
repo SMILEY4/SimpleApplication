@@ -2,10 +2,10 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
@@ -65,15 +65,16 @@ public class ItemProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final ItemProperty property,
 						  final ScrollPane fxNode) {
-			Node childNode = null;
-			if (node.hasChildren()) {
-				childNode = nodeHandlers.getFxNodeBuilder().build(node.getChild(0));
+			Node fxChildNode = null;
+			if (node.getChildNodeStore().hasChildren()) {
+				SuiBaseNode childNode = node.getChildNodeStore().get(0);
+				CoreServices.enrichWithFxNodes(childNode);
+				fxChildNode = childNode.getFxNodeStore().get();
 			}
-			fxNode.setContent(childNode);
+			fxNode.setContent(fxChildNode);
 		}
 
 	}

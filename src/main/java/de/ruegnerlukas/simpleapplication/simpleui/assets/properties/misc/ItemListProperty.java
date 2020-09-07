@@ -2,11 +2,10 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
-import javafx.scene.Node;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -92,14 +91,15 @@ public class ItemListProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final ItemListProperty property,
 						  final Pane fxNode) {
-			List<Node> childFxNodes = node.streamChildren()
-					.map(child -> nodeHandlers.getFxNodeBuilder().build(child)) // TODO req nodeHandlers
-					.collect(Collectors.toList());
-			fxNode.getChildren().setAll(childFxNodes);
+			fxNode.getChildren().setAll(
+					node.getChildNodeStore().stream()
+							.peek(CoreServices::enrichWithFxNodes)
+							.map(child -> child.getFxNodeStore().get())
+							.collect(Collectors.toList())
+			);
 		}
 
 	}

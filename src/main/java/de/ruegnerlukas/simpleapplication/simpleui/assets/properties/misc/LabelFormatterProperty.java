@@ -2,10 +2,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.control.Slider;
 import javafx.util.StringConverter;
 import lombok.Getter;
@@ -55,8 +54,7 @@ public class LabelFormatterProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final LabelFormatterProperty property,
 						  final Slider fxNode) {
 			setFormatter(fxNode, property);
@@ -66,11 +64,21 @@ public class LabelFormatterProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final LabelFormatterProperty property,
-									 final SuiNode node,
+		public MutationResult update(final LabelFormatterProperty property,
+									 final SuiBaseNode node,
 									 final Slider fxNode) {
 			setFormatter(fxNode, property);
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final LabelFormatterProperty property,
+									 final SuiBaseNode node,
+									 final Slider fxNode) {
+			fxNode.setLabelFormatter(null);
 			return MutationResult.MUTATED;
 		}
 
@@ -98,17 +106,6 @@ public class LabelFormatterProperty extends Property {
 			});
 		}
 
-
-
-
-		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final LabelFormatterProperty property,
-									 final SuiNode node,
-									 final Slider fxNode) {
-			fxNode.setLabelFormatter(null);
-			return MutationResult.MUTATED;
-		}
 
 	}
 

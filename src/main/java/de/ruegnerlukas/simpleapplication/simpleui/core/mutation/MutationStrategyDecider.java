@@ -1,7 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.AddAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ChildNodesMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdMutationStrategy;
@@ -9,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdShuf
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.RemoveAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StandardMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 
 import java.util.List;
 
@@ -48,13 +49,12 @@ public class MutationStrategyDecider {
 	/**
 	 * Tries to mutate the children of the given original node to match the given target node with a matching mutation strategy.
 	 *
-	 * @param nodeHandlers the primary node handlers
 	 * @param original     the original node
 	 * @param target       the target node to match
 	 * @return the result of the mutation
 	 */
-	public MutationResult mutate(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
-		if (!original.hasChildren() && !target.hasChildren()) {
+	public MutationResult mutate(final SuiBaseNode original, final SuiBaseNode target) {
+		if (!original.getChildNodeStore().hasChildren() && !target.getChildNodeStore().hasChildren()) {
 			return MutationResult.MUTATED;
 		}
 		final boolean allHaveId = allChildrenHaveId(original) && allChildrenHaveId(target);

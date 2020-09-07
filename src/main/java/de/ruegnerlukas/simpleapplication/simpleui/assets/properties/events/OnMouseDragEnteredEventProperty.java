@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseDragEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -34,8 +33,7 @@ public class OnMouseDragEnteredEventProperty extends AbstractEventListenerProper
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final OnMouseDragEnteredEventProperty property,
 						  final Node fxNode) {
 			setListener(fxNode, property);
@@ -45,9 +43,8 @@ public class OnMouseDragEnteredEventProperty extends AbstractEventListenerProper
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnMouseDragEnteredEventProperty property,
-									 final SuiNode node,
+		public MutationResult update(final OnMouseDragEnteredEventProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
@@ -57,9 +54,8 @@ public class OnMouseDragEnteredEventProperty extends AbstractEventListenerProper
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnMouseDragEnteredEventProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final OnMouseDragEnteredEventProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;

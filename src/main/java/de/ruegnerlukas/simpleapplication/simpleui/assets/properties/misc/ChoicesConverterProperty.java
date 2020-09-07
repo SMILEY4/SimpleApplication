@@ -2,10 +2,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.util.StringConverter;
@@ -78,8 +77,7 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final ChoicesConverterProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
@@ -89,9 +87,8 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final ChoicesConverterProperty<T> property,
-									 final SuiNode node,
+		public MutationResult update(final ChoicesConverterProperty<T> property,
+									 final SuiBaseNode node,
 									 final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 			return MutationResult.MUTATED;
@@ -101,9 +98,8 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final ChoicesConverterProperty<T> property,
-									 final SuiNode node,
+		public MutationResult remove(final ChoicesConverterProperty<T> property,
+									 final SuiBaseNode node,
 									 final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(null);
 			return MutationResult.MUTATED;
@@ -120,8 +116,7 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final ChoicesConverterProperty<T> property,
 						  final ComboBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
@@ -131,9 +126,8 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final ChoicesConverterProperty<T> property,
-									 final SuiNode node,
+		public MutationResult update(final ChoicesConverterProperty<T> property,
+									 final SuiBaseNode node,
 									 final ComboBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 			return MutationResult.MUTATED;
@@ -143,9 +137,8 @@ public class ChoicesConverterProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final ChoicesConverterProperty<T> property,
-									 final SuiNode node,
+		public MutationResult remove(final ChoicesConverterProperty<T> property,
+									 final SuiBaseNode node,
 									 final ComboBox<T> fxNode) {
 			fxNode.setConverter(null);
 			return MutationResult.MUTATED;

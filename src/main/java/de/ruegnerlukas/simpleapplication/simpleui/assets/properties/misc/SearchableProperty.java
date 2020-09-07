@@ -2,10 +2,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -54,8 +53,8 @@ public class SearchableProperty extends Property {
 	 * @param node the node to check
 	 * @return whether the node is searchable
 	 */
-	public static boolean isSearchable(final SuiNode node) {
-		return node.getPropertySafe(SearchableProperty.class)
+	public static boolean isSearchable(final SuiBaseNode node) {
+		return node.getPropertyStore().getSafe(SearchableProperty.class)
 				.map(SearchableProperty::isSearchable)
 				.orElse(false);
 	}
@@ -67,8 +66,7 @@ public class SearchableProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final SearchableProperty property,
 						  final Node fxNode) {
 			// do nothing, decision is made when building javafx node. For an example, see SuiComboBox.FxNodeBuilder
@@ -78,9 +76,8 @@ public class SearchableProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final SearchableProperty property,
-									 final SuiNode node,
+		public MutationResult update(final SearchableProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}
@@ -89,9 +86,8 @@ public class SearchableProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final SearchableProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final SearchableProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			return MutationResult.REQUIRES_REBUILD;
 		}

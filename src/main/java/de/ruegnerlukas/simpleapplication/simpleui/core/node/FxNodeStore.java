@@ -50,8 +50,8 @@ public class FxNodeStore {
 	/**
 	 * @return the javafx node
 	 */
-	public Optional<Node> get() {
-		return Optional.ofNullable(getUnsafe());
+	public Optional<Node> getSafe() {
+		return Optional.ofNullable(get());
 	}
 
 
@@ -60,7 +60,7 @@ public class FxNodeStore {
 	/**
 	 * @return the javafx node or null
 	 */
-	public Node getUnsafe() {
+	public Node get() {
 		return node;
 	}
 

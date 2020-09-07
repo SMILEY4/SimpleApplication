@@ -3,10 +3,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
@@ -63,8 +62,7 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final SizeMaxProperty property,
 						  final Region fxNode) {
 			fxNode.setMaxSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
@@ -74,9 +72,8 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final SizeMaxProperty property,
-									 final SuiNode node,
+		public MutationResult update(final SizeMaxProperty property,
+									 final SuiBaseNode node,
 									 final Region fxNode) {
 			fxNode.setMaxSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 			return MutationResult.MUTATED;
@@ -86,12 +83,11 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final SizeMaxProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final SizeMaxProperty property,
+									 final SuiBaseNode node,
 									 final Region fxNode) {
-			if (node.hasProperty(SizeProperty.class)) {
-				SizeProperty sizeProp = node.getProperty(SizeProperty.class);
+			if (node.getPropertyStore().has(SizeProperty.class)) {
+				SizeProperty sizeProp = node.getPropertyStore().get(SizeProperty.class);
 				fxNode.setMaxSize(sizeProp.getMaxWidth().doubleValue(), sizeProp.getMaxHeight().doubleValue());
 			} else {
 				fxNode.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);

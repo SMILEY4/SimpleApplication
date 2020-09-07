@@ -3,14 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import lombok.Getter;
-
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 
 public class StyleProperty extends Property {
 
@@ -117,8 +115,7 @@ public class StyleProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final StyleProperty property,
 						  final Node fxNode) {
 			setStyle(property, fxNode);
@@ -128,9 +125,8 @@ public class StyleProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final StyleProperty property,
-									 final SuiNode node,
+		public MutationResult update(final StyleProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			setStyle(property, fxNode);
 			return MutationResult.MUTATED;
@@ -140,9 +136,8 @@ public class StyleProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final StyleProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final StyleProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			if (property.usesResourceStyle()) {
 				((Parent) fxNode).getStylesheets().clear();

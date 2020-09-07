@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
@@ -62,8 +61,7 @@ public class ShowScrollbarsProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final ShowScrollbarsProperty property,
 						  final ScrollPane fxNode) {
 			fxNode.setHbarPolicy(property.getHorizontal());
@@ -74,9 +72,8 @@ public class ShowScrollbarsProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final ShowScrollbarsProperty property,
-									 final SuiNode node,
+		public MutationResult update(final ShowScrollbarsProperty property,
+									 final SuiBaseNode node,
 									 final ScrollPane fxNode) {
 			fxNode.setHbarPolicy(property.getHorizontal());
 			fxNode.setVbarPolicy(property.getVertical());
@@ -87,9 +84,8 @@ public class ShowScrollbarsProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final ShowScrollbarsProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final ShowScrollbarsProperty property,
+									 final SuiBaseNode node,
 									 final ScrollPane fxNode) {
 			fxNode.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 			fxNode.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);

@@ -65,7 +65,7 @@ public class InjectionIndexMarker {
 		if (index == null) {
 			return target.size();
 		} else {
-			Validations.STATE.isFalse(index > target.size() || index < 0)
+			Validations.STATE.isValidIndex(index, target.size() + 1)
 					.log("Index to inject content at is invalid. Trying to correct index.");
 			return Math.max(0, Math.min(index, target.size()));
 		}

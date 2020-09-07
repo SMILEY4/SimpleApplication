@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.HoverEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -51,8 +50,7 @@ public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<H
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final OnHoverStoppedEventProperty property,
 						  final Node fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
@@ -62,11 +60,10 @@ public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<H
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnHoverStoppedEventProperty property,
-									 final SuiNode node,
+		public MutationResult update(final OnHoverStoppedEventProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
-			node.getPropertySafe(OnHoverStoppedEventProperty.class)
+			node.getPropertyStore().getSafe(OnHoverStoppedEventProperty.class)
 					.map(OnHoverStoppedEventProperty::getChangeListenerProxy)
 					.ifPresent(proxy -> proxy.removeFrom(fxNode.focusedProperty()));
 			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
@@ -77,9 +74,8 @@ public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<H
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnHoverStoppedEventProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final OnHoverStoppedEventProperty property,
+									 final SuiBaseNode node,
 									 final Node fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.focusedProperty());
 			return MutationResult.MUTATED;

@@ -3,10 +3,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.control.Slider;
 import lombok.Getter;
 
@@ -160,8 +159,7 @@ public class TickMarkProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final TickMarkProperty property,
 						  final Slider fxNode) {
 			fxNode.setShowTickMarks(property.getTickMarkStyle().isShowTickMarks());
@@ -175,9 +173,8 @@ public class TickMarkProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final TickMarkProperty property,
-									 final SuiNode node,
+		public MutationResult update(final TickMarkProperty property,
+									 final SuiBaseNode node,
 									 final Slider fxNode) {
 			fxNode.setShowTickMarks(property.getTickMarkStyle().isShowTickMarks());
 			fxNode.setShowTickLabels(property.getTickMarkStyle().isShowLabels());
@@ -191,9 +188,8 @@ public class TickMarkProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final TickMarkProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final TickMarkProperty property,
+									 final SuiBaseNode node,
 									 final Slider fxNode) {
 			fxNode.setShowTickMarks(DEFAULT_STYLE.isShowTickMarks());
 			fxNode.setShowTickLabels(DEFAULT_STYLE.isShowLabels());

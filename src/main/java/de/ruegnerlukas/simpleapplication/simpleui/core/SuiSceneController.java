@@ -3,11 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MasterNodeMutator;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationStrategyDecider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateListener;
@@ -40,11 +36,6 @@ public class SuiSceneController implements SuiStateListener {
 	 */
 	private List<SuiSceneControllerListener> listeners = new ArrayList<>();
 
-	/**
-	 * The primary node handlers (like {@link MasterFxNodeBuilder}, {@link MasterNodeMutator})
-	 */
-	private final MasterNodeHandlers masterNodeHandlers;
-
 
 
 
@@ -67,7 +58,8 @@ public class SuiSceneController implements SuiStateListener {
 	 * @param stateType the exact type of the state to use
 	 * @param renderer  the node renderer used for a component as the root node
 	 */
-	public <T extends SuiState> SuiSceneController(final SuiState state, final Class<T> stateType,
+	public <T extends SuiState> SuiSceneController(final SuiState state,
+												   final Class<T> stateType,
 												   final SuiComponentRenderer<T> renderer) {
 		this(state, new SuiComponent<>(renderer));
 	}
@@ -87,9 +79,16 @@ public class SuiSceneController implements SuiStateListener {
 		this.state = state;
 		this.state.addStateListener(this);
 		this.nodeFactory = nodeFactory;
-		MasterFxNodeBuilder fxNodeBuilder = new MasterFxNodeBuilder(this);
-		MasterNodeMutator nodeMutator = new MasterNodeMutator(fxNodeBuilder, this, MutationStrategyDecider.DEFAULT_STRATEGIES);
-		this.masterNodeHandlers = new MasterNodeHandlers(new MasterFxNodeBuilder(this), nodeMutator);
+	}
+
+
+
+
+	/**
+	 * @return the javafx node of the simpleui root node. Builds the root node with the node factory if necessary.
+	 */
+	public Node getRootFxNode() {
+		return getRootNode().getFxNodeStore().get();
 	}
 
 
@@ -101,19 +100,9 @@ public class SuiSceneController implements SuiStateListener {
 	public SuiBaseNode getRootNode() {
 		if (sceneTree == null) {
 			sceneTree = SuiSceneTree.build(nodeFactory, state);
-			masterNodeHandlers.getFxNodeBuilder().build(rootNode);
+			sceneTree.buildFxNodes();
 		}
 		return sceneTree.getRoot();
-	}
-
-
-
-
-	/**
-	 * @return the javafx node of the simpleui root node. Builds the root node with the node factory if necessary.
-	 */
-	public Node getRootFxNode() {
-		return getRootNode().getFxNodeStore().getUnsafe();
 	}
 
 
@@ -133,7 +122,6 @@ public class SuiSceneController implements SuiStateListener {
 	public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update) {
 		final SuiSceneTree targetTree = SuiSceneTree.build(nodeFactory, state);
 		sceneTree.mutate(targetTree);
-//		rootNode = masterNodeHandlers.getMutator().mutate(rootNode, target);
 		if (sceneTree.mutate(targetTree)) {
 			listeners.forEach(listener -> listener.onNewSuiRootNode(sceneTree.getRoot()));
 		}
@@ -164,18 +152,6 @@ public class SuiSceneController implements SuiStateListener {
 	 */
 	public void removeListener(final SuiSceneControllerListener listener) {
 		listeners.remove(listener);
-	}
-
-
-
-
-	/**
-	 * @return the primary node handlers
-	 * (like {@link de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterFxNodeBuilder},
-	 * {@link de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MasterNodeMutator})
-	 */
-	public MasterNodeHandlers getMasterNodeHandlers() {
-		return this.masterNodeHandlers;
 	}
 
 

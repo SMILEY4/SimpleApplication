@@ -2,10 +2,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
 
@@ -54,8 +53,7 @@ public class SelectedItemProperty<T> extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final SelectedItemProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			if (!Objects.equals(fxNode.getSelectionModel().getSelectedItem(), property.getSelected())) {
@@ -67,9 +65,8 @@ public class SelectedItemProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final SelectedItemProperty<T> property,
-									 final SuiNode node,
+		public MutationResult update(final SelectedItemProperty<T> property,
+									 final SuiBaseNode node,
 									 final ChoiceBox<T> fxNode) {
 			if (!Objects.equals(fxNode.getSelectionModel().getSelectedItem(), property.getSelected())) {
 				fxNode.getSelectionModel().select(property.getSelected());
@@ -81,9 +78,8 @@ public class SelectedItemProperty<T> extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final SelectedItemProperty<T> property,
-									 final SuiNode node,
+		public MutationResult remove(final SelectedItemProperty<T> property,
+									 final SuiBaseNode node,
 									 final ChoiceBox<T> fxNode) {
 			return MutationResult.MUTATED;
 		}

@@ -103,7 +103,7 @@ public final class SuiComboBox {
 
 
 		@Override
-		public ComboBox<T> build(final MasterNodeHandlers nodeHandlers, final SuiNode node) {
+		public ComboBox<T> build(final SuiBaseNode node) {
 			if (SearchableProperty.isSearchable(node)) {
 				return new SearchableComboBox<>();
 			} else {

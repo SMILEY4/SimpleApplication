@@ -1,10 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ScrollEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
@@ -56,8 +55,7 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final OnScrollVerticalEventProperty property,
 						  final ScrollPane fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.vvalueProperty());
@@ -67,11 +65,10 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnScrollVerticalEventProperty property,
-									 final SuiNode node,
+		public MutationResult update(final OnScrollVerticalEventProperty property,
+									 final SuiBaseNode node,
 									 final ScrollPane fxNode) {
-			node.getPropertySafe(OnScrollVerticalEventProperty.class)
+			node.getPropertyStore().getSafe(OnScrollVerticalEventProperty.class)
 					.map(OnScrollVerticalEventProperty::getChangeListenerProxy)
 					.ifPresent(proxy -> proxy.removeFrom(fxNode.vvalueProperty()));
 			property.getChangeListenerProxy().addTo(fxNode.vvalueProperty());
@@ -82,9 +79,8 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnScrollVerticalEventProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final OnScrollVerticalEventProperty property,
+									 final SuiBaseNode node,
 									 final ScrollPane fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.vvalueProperty());
 			return MutationResult.MUTATED;

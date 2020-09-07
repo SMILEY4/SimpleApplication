@@ -3,10 +3,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
@@ -100,8 +99,7 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final SizeProperty property,
 						  final Region fxNode) {
 			setSize(node, property, fxNode);
@@ -111,11 +109,30 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final SizeProperty property,
-									 final SuiNode node,
+		public MutationResult update(final SizeProperty property,
+									 final SuiBaseNode node,
 									 final Region fxNode) {
 			setSize(node, property, fxNode);
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final SizeProperty property,
+									 final SuiBaseNode node,
+									 final Region fxNode) {
+			if (!node.getPropertyStore().has(SizeMinProperty.class)) {
+				fxNode.setMinSize(0, 0);
+			}
+			if (!node.getPropertyStore().has(SizePreferredProperty.class)) {
+				fxNode.setPrefSize(property.getPreferredWidth().doubleValue(), property.getPreferredHeight().doubleValue());
+				return MutationResult.REQUIRES_REBUILD;
+			}
+			if (!node.getPropertyStore().has(SizeMaxProperty.class)) {
+				fxNode.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+			}
 			return MutationResult.MUTATED;
 		}
 
@@ -130,38 +147,18 @@ public class SizeProperty extends Property {
 		 * @param property the property
 		 * @param fxNode   the fx region
 		 */
-		private void setSize(final SuiNode node, final SizeProperty property, final Region fxNode) {
-			if (!node.hasProperty(SizeMinProperty.class)) {
+		private void setSize(final SuiBaseNode node, final SizeProperty property, final Region fxNode) {
+			if (!node.getPropertyStore().has(SizeMinProperty.class)) {
 				fxNode.setMinSize(property.getMinWidth().doubleValue(), property.getMinHeight().doubleValue());
 			}
-			if (!node.hasProperty(SizePreferredProperty.class)) {
+			if (!node.getPropertyStore().has(SizePreferredProperty.class)) {
 				fxNode.setPrefSize(property.getPreferredWidth().doubleValue(), property.getPreferredHeight().doubleValue());
 			}
-			if (!node.hasProperty(SizeMaxProperty.class)) {
+			if (!node.getPropertyStore().has(SizeMaxProperty.class)) {
 				fxNode.setMaxSize(property.getMaxWidth().doubleValue(), property.getMaxHeight().doubleValue());
 			}
 		}
 
-
-
-
-		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final SizeProperty property,
-									 final SuiNode node,
-									 final Region fxNode) {
-			if (!node.hasProperty(SizeMinProperty.class)) {
-				fxNode.setMinSize(0, 0);
-			}
-			if (!node.hasProperty(SizePreferredProperty.class)) {
-				fxNode.setPrefSize(property.getPreferredWidth().doubleValue(), property.getPreferredHeight().doubleValue());
-				return MutationResult.REQUIRES_REBUILD;
-			}
-			if (!node.hasProperty(SizeMaxProperty.class)) {
-				fxNode.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-			}
-			return MutationResult.MUTATED;
-		}
 
 	}
 

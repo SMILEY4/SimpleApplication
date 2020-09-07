@@ -2,10 +2,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.control.DatePicker;
 import lombok.Getter;
 
@@ -61,8 +60,7 @@ public class ChronologyProperty extends Property {
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final ChronologyProperty property,
 						  final DatePicker fxNode) {
 			fxNode.setChronology(property.getChronology());
@@ -72,9 +70,8 @@ public class ChronologyProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final ChronologyProperty property,
-									 final SuiNode node,
+		public MutationResult update(final ChronologyProperty property,
+									 final SuiBaseNode node,
 									 final DatePicker fxNode) {
 			fxNode.setChronology(property.getChronology());
 			return MutationResult.MUTATED;
@@ -84,9 +81,8 @@ public class ChronologyProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final ChronologyProperty property,
-									 final SuiNode node,
+		public MutationResult remove(final ChronologyProperty property,
+									 final SuiBaseNode node,
 									 final DatePicker fxNode) {
 			fxNode.setChronology(DEFAULT);
 			return MutationResult.MUTATED;

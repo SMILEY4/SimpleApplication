@@ -1,20 +1,19 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.builders;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.Node;
 
 public interface AbstractFxNodeBuilder<T extends Node> {
 
 
 	/**
-	 * Builds the base fx-node of the given {@link SuiNode}.
+	 * Builds the javafx node of the given simpleui node.
 	 *
-	 * @param node         the {@link SuiNode}
-	 * @param nodeHandlers the primary node handlers (builder, mutator)
-	 * @return the base fx-node.
+	 * @param node the simpleui node
+	 * @return the javafx node.
 	 */
-	T build(MasterNodeHandlers nodeHandlers, SuiNode node);
+	T build(SuiBaseNode node);
 
 
 }

@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class PropertyStore {
@@ -111,10 +113,18 @@ public class PropertyStore {
 	/**
 	 * @return an unmodifiable list of all properties
 	 */
-	public List<Property> getAll() {
-		return List.copyOf(this.properties.values());
+	public Collection<Property> getAll() {
+		return this.properties.values();
 	}
 
+
+
+	/**
+	 * @return an unmodifiable list of all properties
+	 */
+	public Set<Class<? extends Property>> getTypes() {
+		return this.properties.keySet();
+	}
 
 
 

@@ -1,15 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 
@@ -72,9 +71,11 @@ public final class SuiAnchorPaneItem {
 
 
 		@Override
-		public Node build(final MasterNodeHandlers nodeHandlers, final SuiNode node) {
-			if (node.hasChildren()) {
-				return nodeHandlers.getFxNodeBuilder().build(node.getChild(0)); // TODO req nodeHandlers
+		public Node build(final SuiBaseNode node) {
+			if (node.getChildNodeStore().hasChildren()) {
+				SuiBaseNode childNode = node.getChildNodeStore().get(0);
+				CoreServices.enrichWithFxNodes(childNode);
+				return childNode.getFxNodeStore().get();
 			} else {
 				return null;
 			}

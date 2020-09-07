@@ -1,11 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.SearchableComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
@@ -48,8 +47,7 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final OnValueChangedEventProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.getSelectionModel().selectedItemProperty());
@@ -59,11 +57,10 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
+		public MutationResult update(final OnValueChangedEventProperty<T> property,
+									 final SuiBaseNode node,
 									 final ChoiceBox<T> fxNode) {
-			node.getPropertySafe(OnValueChangedEventProperty.class)
+			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
 					.map(prop -> (OnValueChangedEventProperty<T>) prop)
 					.map(OnValueChangedEventProperty::getChangeListenerProxy)
 					.ifPresent(proxy -> proxy.removeFrom(fxNode.getSelectionModel().selectedItemProperty()));
@@ -75,9 +72,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
+		public MutationResult remove(final OnValueChangedEventProperty<T> property,
+									 final SuiBaseNode node,
 									 final ChoiceBox<T> fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.getSelectionModel().selectedItemProperty());
 			return MutationResult.MUTATED;
@@ -94,8 +90,7 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final OnValueChangedEventProperty<T> property,
 						  final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
@@ -109,18 +104,17 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
+		public MutationResult update(final OnValueChangedEventProperty<T> property,
+									 final SuiBaseNode node,
 									 final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
-				node.getPropertySafe(OnValueChangedEventProperty.class)
+				node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
 						.map(prop -> (OnValueChangedEventProperty<T>) prop)
 						.map(OnValueChangedEventProperty::getChangeListenerProxy)
 						.ifPresent(proxy -> proxy.removeFrom(((SearchableComboBox<T>) fxNode).getSelectedValueProperty()));
 				property.getChangeListenerProxy().addTo(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
 			} else {
-				node.getPropertySafe(OnValueChangedEventProperty.class)
+				node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
 						.map(prop -> (OnValueChangedEventProperty<T>) prop)
 						.map(OnValueChangedEventProperty::getChangeListenerProxy)
 						.ifPresent(proxy -> proxy.removeFrom(fxNode.getSelectionModel().selectedItemProperty()));
@@ -133,9 +127,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
+		public MutationResult remove(final OnValueChangedEventProperty<T> property,
+									 final SuiBaseNode node,
 									 final ComboBox<T> fxNode) {
 			if (fxNode instanceof SearchableComboBox) {
 				property.getChangeListenerProxy().removeFrom(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
@@ -156,8 +149,7 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public void build(final MasterNodeHandlers nodeHandlers,
-						  final SuiNode node,
+		public void build(final SuiBaseNode node,
 						  final OnValueChangedEventProperty<Number> property,
 						  final Slider fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
@@ -167,11 +159,10 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult update(final MasterNodeHandlers nodeHandlers,
-									 final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
+		public MutationResult update(final OnValueChangedEventProperty<Number> property,
+									 final SuiBaseNode node,
 									 final Slider fxNode) {
-			node.getPropertySafe(OnValueChangedEventProperty.class)
+			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
 					.map(prop -> (OnValueChangedEventProperty<Number>) prop)
 					.map(OnValueChangedEventProperty::getChangeListenerProxy)
 					.ifPresent(proxy -> proxy.removeFrom(fxNode.valueProperty()));
@@ -183,9 +174,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final MasterNodeHandlers nodeHandlers,
-									 final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
+		public MutationResult remove(final OnValueChangedEventProperty<Number> property,
+									 final SuiBaseNode node,
 									 final Slider fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.valueProperty());
 			return MutationResult.MUTATED;

@@ -15,7 +15,7 @@ public class SuiSceneTree {
 	 * The root node of this tree.
 	 */
 	@Getter
-	private final SuiBaseNode root;
+	private SuiBaseNode root;
 
 
 
@@ -33,14 +33,24 @@ public class SuiSceneTree {
 
 
 	/**
-	 * Mutate this tree to match the given target tree
+	 * Builds the javafx-nodes for the whole tree.
+	 */
+	public void buildFxNodes() {
+		CoreServices.enrichWithFxNodes(root);
+	}
+
+
+
+
+	/**
+	 * Mutate this tree to match the given target tree. This operation may replace the root node of this tree.
 	 *
 	 * @param targetTree the target tree to match
 	 * @return true, when the root node was rebuild
 	 */
 	public boolean mutate(final SuiSceneTree targetTree) {
-		// todo
-		return false;
+		root = CoreServices.mutate(this, targetTree).getRoot();
+		return root.equals(targetTree.getRoot());
 	}
 
 

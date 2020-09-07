@@ -2,18 +2,16 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LayoutProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LayoutProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
 import javafx.scene.layout.Pane;
@@ -81,11 +79,11 @@ public final class SuiContainer {
 
 
 		@Override
-		public Pane build(final MasterNodeHandlers nodeHandlers, final SuiNode node) {
+		public Pane build(final SuiBaseNode node) {
 			return new Pane() {
 				@Override
 				protected void layoutChildren() {
-					final Optional<LayoutProperty> property = node.getPropertySafe(LayoutProperty.class);
+					final Optional<LayoutProperty> property = node.getPropertyStore().getSafe(LayoutProperty.class);
 					if (property.isPresent()) {
 						property.get().getLayoutFunction().layout(this, this.getChildrenUnmodifiable());
 					} else {
