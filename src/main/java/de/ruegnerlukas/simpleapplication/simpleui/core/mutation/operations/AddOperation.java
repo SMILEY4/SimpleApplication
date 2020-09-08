@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -27,7 +27,7 @@ public class AddOperation extends BaseOperation {
 	/**
 	 * The node to add
 	 */
-	private final SuiNode node;
+	private final SuiBaseNode node;
 
 
 
@@ -36,7 +36,7 @@ public class AddOperation extends BaseOperation {
 	 * @param index the index
 	 * @param node  the node to add
 	 */
-	public AddOperation(final int index, final SuiNode node) {
+	public AddOperation(final int index, final SuiBaseNode node) {
 		super(ADD_COST, OperationType.ADD);
 		this.index = index;
 		this.node = node;
@@ -46,7 +46,7 @@ public class AddOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final List<SuiNode> list) {
+	public void applyTo(final List<SuiBaseNode> list) {
 		list.add(index, node);
 	}
 
@@ -54,8 +54,8 @@ public class AddOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final Map<String, SuiNode> map) {
-		map.put(node.getIdUnsafe(), node);
+	public void applyTo(final Map<String, SuiBaseNode> map) {
+		map.put(node.getPropertyStore().getIdUnsafe(), node);
 	}
 
 
@@ -63,7 +63,7 @@ public class AddOperation extends BaseOperation {
 
 	@Override
 	public void applyTo(final Pane pane) {
-		pane.getChildren().add(index, node.getFxNode());
+		pane.getChildren().add(index, node.getFxNodeStore().get());
 	}
 
 }

@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.ReplaceOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -40,12 +40,12 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 * @return the result of the decision.
 	 */
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
-		if (!allChildrenHaveId || original.childCount() != target.childCount()) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiBaseNode original, final SuiBaseNode target, final boolean allChildrenHaveId) {
+		if (!allChildrenHaveId || original.getChildNodeStore().count() != target.getChildNodeStore().count()) {
 			return StrategyDecisionResult.NOT_APPLICABLE;
 		} else {
-			final Set<String> idsOriginal = original.getChildrenIds();
-			final Set<String> idsTarget = target.getChildrenIds();
+			final Set<String> idsOriginal = original.getChildNodeStore().getIds();
+			final Set<String> idsTarget = target.getChildNodeStore().getIds();
 			if (idsOriginal.equals(idsTarget)) {
 				final int diffCount = countDiffs(original, target);
 				if (diffCount == 0 || (double) diffCount / (double) idsOriginal.size() > PERCENTAGE_MAJORITY) {
@@ -70,11 +70,11 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 * @param target   the target node
 	 * @return the number of differences
 	 */
-	private int countDiffs(final SuiNode original, final SuiNode target) {
+	private int countDiffs(final SuiBaseNode original, final SuiBaseNode target) {
 		int count = 0;
-		for (int i = 0, n = original.childCount(); i < n; i++) {
-			final String idOriginal = original.getChild(i).getIdUnsafe();
-			final String idTarget = target.getChild(i).getIdUnsafe();
+		for (int i = 0, n = original.getChildNodeStore().count(); i < n; i++) {
+			final String idOriginal = original.getChildNodeStore().get(i).getPropertyStore().getIdUnsafe();
+			final String idTarget = target.getChildNodeStore().get(i).getPropertyStore().getIdUnsafe();
 			if (!idOriginal.equals(idTarget)) {
 				count++;
 			}
@@ -116,15 +116,14 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
-								 final SuiNode original,
-								 final SuiNode target,
+	public MutationResult mutate(final SuiBaseNode original,
+								 final SuiBaseNode target,
 								 final StrategyDecisionResult decisionData) {
 		final IdShuffleDecisionResult decision = (IdShuffleDecisionResult) decisionData;
 		if (decision.diffCount == 0) {
-			mutateNoDiffs(nodeHandlers, original, target);
+			mutateNoDiffs(original, target);
 		} else {
-			mutateWithDiffs(nodeHandlers, original, target);
+			mutateWithDiffs(original, target);
 		}
 		return MutationResult.MUTATED;
 	}
@@ -136,24 +135,20 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 * Mutation for the case that no differences between the (order of) ids of the original and target node exist.
 	 * In this special case, there is no need to search for the correct target child.
 	 *
-	 * @param nodeHandlers the node handlers
-	 * @param original     the original node to mutate
-	 * @param target       the target node
+	 * @param original the original node to mutate
+	 * @param target   the target node
 	 */
-	private void mutateNoDiffs(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
-		final List<ReplaceOperation> replaceOperations = new ArrayList<>(original.childCount());
-		for (int i = 0; i < target.childCount(); i++) {
-			final SuiNode originalNode = original.getChild(i);
-			final SuiNode targetNode = target.getChild(i);
-			final SuiNode childNode = nodeHandlers.getMutator().mutate(originalNode, targetNode);
-			if (childNode.getFxNode() == null) {
-				nodeHandlers.getFxNodeBuilder().build(childNode);
-			}
-			if (!originalNode.equals(childNode)) {
-				replaceOperations.add(new ReplaceOperation(i, childNode, originalNode));
+	private void mutateNoDiffs(final SuiBaseNode original, final SuiBaseNode target) {
+		final List<ReplaceOperation> replaceOperations = new ArrayList<>(original.getChildNodeStore().count());
+		for (int i = 0; i < target.getChildNodeStore().count(); i++) {
+			final SuiBaseNode originalChild = original.getChildNodeStore().get(i);
+			final SuiBaseNode targetChild = target.getChildNodeStore().get(i);
+			final SuiBaseNode mutatedChild = CoreServices.mutateNode(originalChild, targetChild);
+			if (!originalChild.equals(mutatedChild)) {
+				replaceOperations.add(new ReplaceOperation(i, mutatedChild, originalChild));
 			}
 		}
-		original.applyTransformOperations(OperationType.REPLACE, replaceOperations, true);
+		original.getChildNodeStore().applyTransformOperations(OperationType.REPLACE, replaceOperations);
 	}
 
 
@@ -162,20 +157,18 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	/**
 	 * Mutation for the case that there are differences between the (order of) ids of the original and target.
 	 *
-	 * @param nodeHandlers the node handlers
-	 * @param original     the original node to mutate
-	 * @param target       the target node
+	 * @param original the original node to mutate
+	 * @param target   the target node
 	 */
-	private void mutateWithDiffs(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
-		final List<SuiNode> newChildList = new ArrayList<>(original.childCount());
-		for (int i = 0, n = target.childCount(); i < n; i++) {
-			final SuiNode targetChild = target.getChild(i);
-			final String targetChildId = targetChild.getIdUnsafe();
-			final SuiNode originalChild = original.findChildUnsafe(targetChildId);
-			final SuiNode newChildNode = nodeHandlers.getMutator().mutate(originalChild, targetChild);
-			newChildList.add(newChildNode);
+	private void mutateWithDiffs(final SuiBaseNode original, final SuiBaseNode target) {
+		final List<SuiBaseNode> newChildList = new ArrayList<>(original.getChildNodeStore().count());
+		for (int i = 0, n = target.getChildNodeStore().count(); i < n; i++) {
+			final SuiBaseNode targetChild = target.getChildNodeStore().get(i);
+			final SuiBaseNode originalChild = original.getChildNodeStore().find(targetChild.getPropertyStore().getIdUnsafe());
+			final SuiBaseNode mutatedChild = CoreServices.mutateNode(originalChild, targetChild);
+			newChildList.add(mutatedChild);
 		}
-		original.setChildren(newChildList, true);
+		original.getChildNodeStore().setChildren(newChildList);
 	}
 
 

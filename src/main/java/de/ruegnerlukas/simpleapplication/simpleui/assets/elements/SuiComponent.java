@@ -54,7 +54,7 @@ public class SuiComponent<T extends SuiState> implements NodeFactory {
 		@SuppressWarnings ("unchecked") final T typedState = (T) state;
 		final SuiBaseNode node = renderer.render(typedState).create(state);
 		if (id != null) {
-			node.getProperties().put(IdProperty.class, Properties.id(this.id));
+			node.getPropertyStore().upsert(Properties.id(this.id));
 		}
 		return node;
 	}

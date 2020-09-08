@@ -1,5 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import lombok.AccessLevel;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,17 +13,19 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class ChildNodeStore {
+public class ChildNodeStore extends ChildNodeOperations {
 
 
 	/**
 	 * The child nodes of a node.
 	 */
+	@Getter (AccessLevel.PROTECTED)
 	private final List<SuiBaseNode> children = new ArrayList<>(0);
 
 	/**
 	 * The child nodes of a node with their id as a key.
 	 */
+	@Getter (AccessLevel.PROTECTED)
 	private final Map<String, SuiBaseNode> childMap = new HashMap<>();
 
 
@@ -28,7 +34,10 @@ public class ChildNodeStore {
 	/**
 	 * @param children the child nodes
 	 */
-	public ChildNodeStore(final List<SuiBaseNode> children) {
+	public ChildNodeStore(final List<SuiBaseNode> children,
+						  final SuiNodeChildListener childListener,
+						  final SuiNodeChildTransformListener childTransformListener) {
+		super(childListener, childTransformListener);
 		this.children.addAll(children);
 		children.forEach(node -> {
 			final String id = node.getPropertyStore().getIdUnsafe();
@@ -67,7 +76,8 @@ public class ChildNodeStore {
 	 * @throws IndexOutOfBoundsException if the given index is out of range
 	 */
 	public SuiBaseNode get(final int index) {
-		return this.children.get(index);
+		Validations.INPUT.isValidIndex(index, children).exception("The given index is not valid ({}).", index);
+		return children.get(index);
 	}
 
 

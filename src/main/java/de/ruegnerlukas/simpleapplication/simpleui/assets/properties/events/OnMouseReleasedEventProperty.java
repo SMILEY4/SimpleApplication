@@ -1,8 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseButtonEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;

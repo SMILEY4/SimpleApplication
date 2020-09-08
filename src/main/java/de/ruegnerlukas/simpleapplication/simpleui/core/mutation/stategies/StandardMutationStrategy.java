@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiBaseNode original, final SuiBaseNode target, final boolean allChildrenHaveId) {
 		return StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA;
 	}
 
@@ -24,40 +24,37 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
-								 final SuiNode original,
-								 final SuiNode target,
+	public MutationResult mutate(final SuiBaseNode original,
+								 final SuiBaseNode target,
 								 final StrategyDecisionResult decisionData) {
 
-		final List<SuiNode> newChildList = new ArrayList<>();
+		final List<SuiBaseNode> newChildList = new ArrayList<>();
 
-		boolean childrenChanged = false;
-		for (int i = 0; i < Math.max(original.childCount(), target.childCount()); i++) {
-			final SuiNode childTarget = target.childCount() <= i ? null : target.getChild(i);
-			final SuiNode childOriginal = original.childCount() <= i ? null : original.getChild(i);
+		final int originalChildCount = original.getChildNodeStore().count();
+		final int targetChildCount = target.getChildNodeStore().count();
 
+		for (int i = 0, n = Math.max(originalChildCount, targetChildCount); i < n; i++) {
+			final SuiBaseNode childOriginal = originalChildCount <= i ? null : original.getChildNodeStore().get(i);
+			final SuiBaseNode childTarget = targetChildCount <= i ? null : target.getChildNodeStore().get(i);
 
 			if (isRemoved(childOriginal, childTarget)) {
-				childrenChanged = true;
 				continue;
 			}
 
 			if (isAdded(childOriginal, childTarget)) {
-				nodeHandlers.getFxNodeBuilder().build(childTarget);
+				CoreServices.enrichWithFxNodes(childTarget);
 				newChildList.add(childTarget);
-				childrenChanged = true;
 				continue;
 			}
 
 			if (notAddedOrRemoved(childOriginal, childTarget)) {
-				SuiNode childMutated = nodeHandlers.getMutator().mutate(childOriginal, childTarget);
+				SuiBaseNode childMutated = CoreServices.mutateNode(childOriginal, childTarget);
 				newChildList.add(childMutated);
-				childrenChanged = true;
 			}
 
 		}
 
-		original.setChildren(newChildList, childrenChanged);
+		original.getChildNodeStore().setChildren(newChildList); // todo: optimize - do not set when nothing changed
 		return MUTATED;
 	}
 

@@ -49,7 +49,7 @@ public class SuiSceneTree {
 	 * @return true, when the root node was rebuild
 	 */
 	public boolean mutate(final SuiSceneTree targetTree) {
-		root = CoreServices.mutate(this, targetTree).getRoot();
+		root = CoreServices.mutateTree(this, targetTree).getRoot();
 		return root.equals(targetTree.getRoot());
 	}
 

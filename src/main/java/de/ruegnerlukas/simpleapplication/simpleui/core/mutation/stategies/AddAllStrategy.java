@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ public class AddAllStrategy implements ChildNodesMutationStrategy {
 	 * @return the result of the decision.
 	 */
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
-		if (!original.hasChildren() && target.hasChildren()) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiBaseNode original, final SuiBaseNode target, final boolean allChildrenHaveId) {
+		if (!original.getChildNodeStore().hasChildren() && target.getChildNodeStore().hasChildren()) {
 			return StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA;
 		} else {
 			return StrategyDecisionResult.NOT_APPLICABLE;
@@ -39,17 +39,14 @@ public class AddAllStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
-								 final SuiNode original,
-								 final SuiNode target,
-								 final StrategyDecisionResult decisionData) {
-		final List<SuiNode> newChildList = new ArrayList<>();
-		for (int i = 0; i < target.childCount(); i++) {
-			final SuiNode childTarget = target.getChild(i);
-			nodeHandlers.getFxNodeBuilder().build(childTarget);
+	public MutationResult mutate(final SuiBaseNode original, final SuiBaseNode target, final StrategyDecisionResult decisionData) {
+		final List<SuiBaseNode> newChildList = new ArrayList<>();
+		for (int i = 0, n = target.getChildNodeStore().count(); i < n; i++) {
+			final SuiBaseNode childTarget = target.getChildNodeStore().get(i);
+			CoreServices.enrichWithFxNodes(childTarget);
 			newChildList.add(childTarget);
 		}
-		original.setChildren(newChildList, true);
+		original.getChildNodeStore().setChildren(newChildList);
 		return MUTATED;
 	}
 

@@ -1,14 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.core.ChildNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 
-@AllArgsConstructor
 public class SuiBaseNode {
 
 
@@ -36,17 +34,25 @@ public class SuiBaseNode {
 	@Getter
 	private final FxNodeStore fxNodeStore;
 
-	/**
-	 * The listener for changes to child nodes (if required).
-	 */
-	@Getter
-	private SuiNodeChildListener childListener;
+
+
 
 	/**
-	 * The listener for child node transformations (if required).
+	 * @param nodeType       the type of this node
+	 * @param propertyStore  the properties of this node
+	 * @param childNodeStore the child nodes of this node
+	 * @param fxNodeStore    the javafx node of this node
 	 */
-	@Getter
-	private SuiNodeChildTransformListener childTransformListener;
+	public SuiBaseNode(final Class<?> nodeType,
+					   final PropertyStore propertyStore,
+					   final ChildNodeStore childNodeStore,
+					   final FxNodeStore fxNodeStore) {
+		this.nodeType = nodeType;
+		this.propertyStore = propertyStore;
+		this.childNodeStore = childNodeStore;
+		this.fxNodeStore = fxNodeStore;
+		childNodeStore.setManagedNode(this);
+	}
 
 
 
@@ -85,10 +91,8 @@ public class SuiBaseNode {
 									 final SuiNodeChildTransformListener childTransformListener) {
 		return new SuiBaseNode(nodeType,
 				new PropertyStore(properties),
-				new ChildNodeStore(ChildNodeBuilder.build(state, properties)),
-				new FxNodeStore(),
-				childListener,
-				childTransformListener);
+				new ChildNodeStore(ChildNodeBuilder.build(state, properties), childListener, childTransformListener),
+				new FxNodeStore());
 	}
 
 

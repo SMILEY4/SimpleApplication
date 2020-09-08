@@ -2,14 +2,14 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.TestState;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.FxTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.TestUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -61,7 +61,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 				)
 		);
 
-		final SuiNode node = anchorPane.create(state);
+		final SuiBaseNode node = anchorPane.create(state);
 
 		TestUtils.assertNode(node, SuiAnchorPane.class);
 		PropertyTestUtils.assertIdProperty(node, "myAnchorPane");
@@ -72,30 +72,30 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertDisabledProperty(node, true);
 		PropertyTestUtils.assertStyle(node, "-fx-background-color: red");
 
-		final List<SuiNode> children = node.getChildrenUnmodifiable();
+		final List<SuiBaseNode> children = node.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
 
-		final SuiNode child1 = children.get(0);
+		final SuiBaseNode child1 = children.get(0);
 		TestUtils.assertNode(child1, SuiAnchorPaneItem.class);
 		PropertyTestUtils.assertAnchorProperty(child1, 10, null, null, 50);
 		assertThat(child1.getChildrenUnmodifiable()).isNotNull();
 		assertThat(child1.getChildrenUnmodifiable()).hasSize(1);
 		assertThat(child1.getChildrenUnmodifiable()).doesNotContainNull();
 
-		final SuiNode child1Button = child1.getChildrenUnmodifiable().get(0);
+		final SuiBaseNode child1Button = child1.getChildrenUnmodifiable().get(0);
 		PropertyTestUtils.assertIdProperty(child1Button, "btn1");
 		PropertyTestUtils.assertTextContentProperty(child1Button, "Child Button 1");
 
-		final SuiNode child2 = children.get(0);
+		final SuiBaseNode child2 = children.get(0);
 		TestUtils.assertNode(child2, SuiAnchorPaneItem.class);
 		PropertyTestUtils.assertAnchorProperty(child2, 10, null, null, 50);
 		assertThat(child2.getChildrenUnmodifiable()).isNotNull();
 		assertThat(child2.getChildrenUnmodifiable()).hasSize(1);
 		assertThat(child2.getChildrenUnmodifiable()).doesNotContainNull();
 
-		final SuiNode child2Button = child2.getChildrenUnmodifiable().get(0);
+		final SuiBaseNode child2Button = child2.getChildrenUnmodifiable().get(0);
 		PropertyTestUtils.assertIdProperty(child2Button, "btn1");
 		PropertyTestUtils.assertTextContentProperty(child2Button, "Child Button 1");
 
@@ -148,10 +148,10 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, anchorPane);
-		SuiNode original = context.getRootNode();
-		SuiNode target = anchorPaneTarget.create(state);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = anchorPaneTarget.create(state);
 
-		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
+		SuiBaseNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
 		TestUtils.assertNode(mutatedNode, SuiAnchorPane.class);
@@ -163,19 +163,19 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		PropertyTestUtils.assertDisabledProperty(mutatedNode, false);
 		PropertyTestUtils.assertStyle(mutatedNode, "-fx-background-color: blue");
 
-		final List<SuiNode> children = mutatedNode.getChildrenUnmodifiable();
+		final List<SuiBaseNode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SuiNode child1 = children.get(0);
+		final SuiBaseNode child1 = children.get(0);
 		TestUtils.assertNode(child1, SuiAnchorPaneItem.class);
 		PropertyTestUtils.assertAnchorProperty(child1, 500, 100, null, null);
 		assertThat(child1.getChildrenUnmodifiable()).isNotNull();
 		assertThat(child1.getChildrenUnmodifiable()).hasSize(1);
 		assertThat(child1.getChildrenUnmodifiable()).doesNotContainNull();
 
-		final SuiNode child1Button = child1.getChildrenUnmodifiable().get(0);
+		final SuiBaseNode child1Button = child1.getChildrenUnmodifiable().get(0);
 		PropertyTestUtils.assertIdProperty(child1Button, "btn");
 		PropertyTestUtils.assertTextContentProperty(child1Button, "New Button");
 	}
@@ -217,15 +217,15 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, anchorPane);
-		SuiNode original = context.getRootNode();
-		SuiNode target = anchorPaneTarget.create(state);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = anchorPaneTarget.create(state);
 
-		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
+		SuiBaseNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
 		TestUtils.assertNode(mutatedNode, SuiAnchorPane.class);
 
-		final List<SuiNode> children = mutatedNode.getChildrenUnmodifiable();
+		final List<SuiBaseNode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
@@ -260,15 +260,15 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, anchorPane);
-		SuiNode original = context.getRootNode();
-		SuiNode target = anchorPaneTarget.create(state);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = anchorPaneTarget.create(state);
 
-		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
+		SuiBaseNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
 		TestUtils.assertNode(mutatedNode, SuiAnchorPane.class);
 
-		final List<SuiNode> children = mutatedNode.getChildrenUnmodifiable();
+		final List<SuiBaseNode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -307,15 +307,15 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, anchorPane);
-		SuiNode original = context.getRootNode();
-		SuiNode target = anchorPaneTarget.create(state);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = anchorPaneTarget.create(state);
 
-		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
+		SuiBaseNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
 		TestUtils.assertNode(mutatedNode, SuiAnchorPane.class);
 
-		final List<SuiNode> children = mutatedNode.getChildrenUnmodifiable();
+		final List<SuiBaseNode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(0);
 
@@ -358,15 +358,15 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, anchorPane);
-		SuiNode original = context.getRootNode();
-		SuiNode target = anchorPaneTarget.create(state);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = anchorPaneTarget.create(state);
 
-		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
+		SuiBaseNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
 		TestUtils.assertNode(mutatedNode, SuiAnchorPane.class);
 
-		final List<SuiNode> children = mutatedNode.getChildrenUnmodifiable();
+		final List<SuiBaseNode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -411,15 +411,15 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, anchorPane);
-		SuiNode original = context.getRootNode();
-		SuiNode target = anchorPaneTarget.create(state);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = anchorPaneTarget.create(state);
 
-		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
+		SuiBaseNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
 		TestUtils.assertNode(mutatedNode, SuiAnchorPane.class);
 
-		final List<SuiNode> children = mutatedNode.getChildrenUnmodifiable();
+		final List<SuiBaseNode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
@@ -470,15 +470,15 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, anchorPane);
-		SuiNode original = context.getRootNode();
-		SuiNode target = anchorPaneTarget.create(state);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = anchorPaneTarget.create(state);
 
-		SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
+		SuiBaseNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(original, target);
 		assertThat(mutatedNode).isEqualTo(original);
 
 		TestUtils.assertNode(mutatedNode, SuiAnchorPane.class);
 
-		final List<SuiNode> children = mutatedNode.getChildrenUnmodifiable();
+		final List<SuiBaseNode> children = mutatedNode.getChildrenUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
@@ -490,17 +490,17 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 
 
 
-	private void assertChildButton(SuiNode anchorPaneNode, int index, String id, String text) {
+	private void assertChildButton(SuiBaseNode anchorPaneNode, int index, String id, String text) {
 
-		final List<SuiNode> children = anchorPaneNode.getChildrenUnmodifiable();
+		final List<SuiBaseNode> children = anchorPaneNode.getChildrenUnmodifiable();
 
-		final SuiNode child = children.get(index);
+		final SuiBaseNode child = children.get(index);
 		TestUtils.assertNode(child, SuiAnchorPaneItem.class);
 		assertThat(child.getChildrenUnmodifiable()).isNotNull();
 		assertThat(child.getChildrenUnmodifiable()).hasSize(1);
 		assertThat(child.getChildrenUnmodifiable()).doesNotContainNull();
 
-		final SuiNode childButton = child.getChildrenUnmodifiable().get(0);
+		final SuiBaseNode childButton = child.getChildrenUnmodifiable().get(0);
 		PropertyTestUtils.assertIdProperty(childButton, id);
 		PropertyTestUtils.assertTextContentProperty(childButton, text);
 	}
@@ -540,7 +540,7 @@ public class SuiAnchorPaneTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, anchorPane);
-		SuiNode node = context.getRootNode();
+		SuiBaseNode node = context.getRootNode();
 
 		FxTestUtils.assertAnchorPane((AnchorPane) node.getFxNode(), FxTestUtils.AnchorPaneInfo.builder()
 				.minWidth(1.0).minHeight(2.0)

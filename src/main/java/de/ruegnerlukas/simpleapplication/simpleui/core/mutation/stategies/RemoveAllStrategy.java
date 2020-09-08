@@ -1,10 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-
-import java.util.List;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 
 /**
  * A strategy used when the target node has no children. This strategy simply removes all children from the original node.
@@ -24,8 +21,8 @@ public class RemoveAllStrategy implements ChildNodesMutationStrategy {
 	 * @return the result of the decision.
 	 */
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
-		if (original.hasChildren() && !target.hasChildren()) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiBaseNode original, final SuiBaseNode target, final boolean allChildrenHaveId) {
+		if (original.getChildNodeStore().hasChildren() && !target.getChildNodeStore().hasChildren()) {
 			return StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA;
 		} else {
 			return StrategyDecisionResult.NOT_APPLICABLE;
@@ -36,11 +33,10 @@ public class RemoveAllStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
-								 final SuiNode original,
-								 final SuiNode target,
+	public MutationResult mutate(final SuiBaseNode original,
+								 final SuiBaseNode target,
 								 final StrategyDecisionResult decisionData) {
-		original.setChildren(List.of(), true);
+		original.getChildNodeStore().clearChildren();
 		return MutationResult.MUTATED;
 	}
 

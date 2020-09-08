@@ -1,14 +1,17 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.BaseNodeMutator;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationStrategyDecider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutator;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutatorImpl;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.ChildNodeStore;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.RegistryEntry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
+
+import java.util.List;
 
 public final class CoreServices {
 
@@ -23,6 +26,11 @@ public final class CoreServices {
 
 
 
+	/**
+	 * Builds the javafx node for the given node and appends it to the node.
+	 *
+	 * @param node the node to builds the javafx-node for
+	 */
 	public static void enrichWithFxNodes(final SuiBaseNode node) {
 		final RegistryEntry registryEntry = SuiRegistry.get().getEntry(node.getNodeType());
 		final Node fxNode = buildBaseFxNode(node, registryEntry);
@@ -71,15 +79,61 @@ public final class CoreServices {
 	 * @param target   the target tree to match
 	 * @return the mutated root node or the original tree or the complete root node of the target tree if a rebuild was required
 	 */
-	public static SuiSceneTree mutate(final SuiSceneTree original, final SuiSceneTree target) {
-		final BaseNodeMutator mutator = new NodeMutator(MutationStrategyDecider.DEFAULT_STRATEGIES);
-		final MutationResult result = mutator.mutateNode(original.getRoot(), target.getRoot());
-		if (result == MutationResult.REQUIRES_REBUILD) {
+	public static SuiSceneTree mutateTree(final SuiSceneTree original, final SuiSceneTree target) {
+		if (mutate(original.getRoot(), target.getRoot()) == MutationResult.REQUIRES_REBUILD) {
 			target.buildFxNodes();
 			return target;
 		} else {
 			return original;
 		}
 	}
+
+
+
+
+	/**
+	 * Mutates the given original node to match the given target node.
+	 *
+	 * @param original the original node to mutate
+	 * @param target   the target node to match
+	 * @return the mutated original node or the target node.
+	 */
+	public static SuiBaseNode mutateNode(final SuiBaseNode original, final SuiBaseNode target) {
+		if (mutate(original, target) == MutationResult.REQUIRES_REBUILD) {
+			CoreServices.enrichWithFxNodes(target);
+			return target;
+		} else {
+			return original;
+		}
+	}
+
+
+
+
+	/**
+	 * Mutates the given original node to match the given target node.
+	 *
+	 * @param original the original node to mutate
+	 * @param target   the target node to match
+	 * @return the result status of the mutation / whether the original node has to be rebuild.
+	 */
+	public static MutationResult mutate(final SuiBaseNode original, final SuiBaseNode target) {
+		final NodeMutator mutator = new NodeMutatorImpl(MutationStrategyDecider.DEFAULT_STRATEGIES);
+		return mutator.mutateNode(original, target);
+	}
+
+
+
+
+
+	public static void setChildren(final SuiBaseNode node, final List<SuiBaseNode> children, final boolean triggerListeners) {
+		final ChildNodeStore childNodeStore = node.getChildNodeStore();
+	}
+
+
+
+
+
+
 
 }

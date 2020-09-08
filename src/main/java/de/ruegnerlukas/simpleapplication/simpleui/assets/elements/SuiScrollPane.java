@@ -11,7 +11,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHe
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
@@ -65,10 +64,10 @@ public final class SuiScrollPane {
 	 *
 	 * @param node the scroll-pane node
 	 */
-	private static void handleChildrenChange(final SuiNode node) {
-		final ScrollPane scrollPane = (ScrollPane) node.getFxNode();
-		if (node.hasChildren()) {
-			scrollPane.setContent(node.getChild(0).getFxNode());
+	private static void handleChildrenChange(final SuiBaseNode node) {
+		final ScrollPane scrollPane = (ScrollPane) node.getFxNodeStore().get();
+		if (node.getChildNodeStore().hasChildren()) {
+			scrollPane.setContent(node.getChildNodeStore().get(0).getFxNodeStore().get());
 		} else {
 			scrollPane.setContent(null);
 		}

@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 
@@ -34,6 +35,22 @@ public class PropertyStore {
 	public PropertyStore(final List<Property> properties) {
 		properties.forEach(property -> this.properties.put(property.getKey(), property));
 		idProperty = get(IdProperty.class);
+	}
+
+
+
+
+	/**
+	 * Update the property of the same type with the given property or add the given property if none exists.
+	 *
+	 * @param property the property to update or insert
+	 */
+	public void upsert(final Property property) {
+		Validations.INPUT.notNull(property).exception("The property to insert/update may not be null.");
+		properties.put(property.getKey(), property);
+		if (property.getKey() == IdProperty.class) {
+			idProperty = (IdProperty) property;
+		}
 	}
 
 
@@ -119,12 +136,14 @@ public class PropertyStore {
 
 
 
+
 	/**
 	 * @return an unmodifiable list of all properties
 	 */
 	public Set<Class<? extends Property>> getTypes() {
 		return this.properties.keySet();
 	}
+
 
 
 

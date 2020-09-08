@@ -2,8 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.AddOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.BaseOperation;
@@ -13,6 +12,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.Repla
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.SwapOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ListTransformer.BaseTransformation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ListTransformer.ReplaceTransformation;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	 * @return the result of the decision.
 	 */
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiBaseNode original, final SuiBaseNode target, final boolean allChildrenHaveId) {
 		if (allChildrenHaveId) {
 			return StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA;
 		} else {
@@ -57,17 +58,14 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public MutationResult mutate(final MasterNodeHandlers nodeHandlers,
-								 final SuiNode original,
-								 final SuiNode target,
-								 final StrategyDecisionResult decisionData) {
+	public MutationResult mutate(final SuiBaseNode original, final SuiBaseNode target, final StrategyDecisionResult decisionData) {
 
 		final List<String> idsOriginal = extractChildIds(original);
 		final List<String> idsTarget = extractChildIds(target);
 
 		final ListTransformer transformer = new ListTransformer(idsOriginal, idsTarget);
 		final List<BaseTransformation> transformations = transformer.calculateTransformations();
-		transformations.addAll(mutatePermanentChildren(nodeHandlers, original, target, transformer.getPermanentElements()));
+		transformations.addAll(mutatePermanentChildren(original, target, transformer.getPermanentElements()));
 
 		AtomicInteger totalCost = new AtomicInteger(0);
 		final List<AddOperation> addOperations = new ArrayList<>();
@@ -75,7 +73,7 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 		final List<ReplaceOperation> replaceOperations = new ArrayList<>();
 		final List<SwapOperation> swapOperations = new ArrayList<>();
 		transformations.forEach(transformation -> {
-			final BaseOperation operation = transformation.toOperation(nodeHandlers, original, target);
+			final BaseOperation operation = transformation.toOperation(original, target);
 			totalCost.addAndGet(operation.getCost());
 			switch (operation.getType()) {
 				case ADD:
@@ -95,13 +93,16 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 			}
 		});
 
-		final boolean useOperationsForFxNode = totalCost.get() < COST_CUTOFF;
-		original.applyTransformOperations(OperationType.REMOVE, removeOperations, useOperationsForFxNode);
-		original.applyTransformOperations(OperationType.ADD, addOperations, useOperationsForFxNode);
-		original.applyTransformOperations(OperationType.SWAP, swapOperations, useOperationsForFxNode);
-		original.applyTransformOperations(OperationType.REPLACE, replaceOperations, useOperationsForFxNode);
-		if (!useOperationsForFxNode) {
-			original.triggerChildListChange();
+		final boolean triggerListenerManually = totalCost.get() < COST_CUTOFF;
+		original.getChildNodeStore().applyTransformOperations(OperationType.REMOVE, removeOperations, triggerListenerManually);
+		original.getChildNodeStore().applyTransformOperations(OperationType.ADD, addOperations, triggerListenerManually);
+		original.getChildNodeStore().applyTransformOperations(OperationType.SWAP, swapOperations, triggerListenerManually);
+		original.getChildNodeStore().applyTransformOperations(OperationType.REPLACE, replaceOperations, triggerListenerManually);
+		if (triggerListenerManually) {
+			SuiNodeChildListener listener = original.getChildNodeStore().getChildListener();
+			if (listener != null) {
+				listener.onChange(original);
+			}
 		}
 
 		return MutationResult.MUTATED;
@@ -116,9 +117,9 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	 * @param parent the parent node
 	 * @return the list of all ids
 	 */
-	private List<String> extractChildIds(final SuiNode parent) {
-		return parent.streamChildren()
-				.map(SuiNode::getIdUnsafe)
+	private List<String> extractChildIds(final SuiBaseNode parent) {
+		return parent.getChildNodeStore().stream()
+				.map(node -> node.getPropertyStore().getIdUnsafe())
 				.collect(Collectors.toList());
 	}
 
@@ -128,23 +129,20 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	/**
 	 * Mutates all children that are in the original and target node, i.e. are not removed or added during the transformation
 	 *
-	 * @param nodeHandlers the simpleui node handlers
-	 * @param original     the original parent node
-	 * @param target       the target parent node
-	 * @param permanents   the children that are not removed or added during the transformation
+	 * @param original   the original parent node
+	 * @param target     the target parent node
+	 * @param permanents the children that are not removed or added during the transformation
 	 * @return the replace transformations required if a child node is rebuild
 	 */
-	private List<ReplaceTransformation> mutatePermanentChildren(final MasterNodeHandlers nodeHandlers,
-																final SuiNode original,
-																final SuiNode target,
+	private List<ReplaceTransformation> mutatePermanentChildren(final SuiBaseNode original,
+																final SuiBaseNode target,
 																final Set<Pair<String, Integer>> permanents) {
 		return LoopUtils.asyncCollectingLoop(new ArrayList<>(permanents), true, permanent -> {
 			final String nodeId = permanent.getLeft();
 			final int index = permanent.getRight();
-			final SuiNode childOriginal = original.findChildUnsafe(nodeId);
-			final SuiNode childTarget = target.getChild(index);
-			final MutationResult result = nodeHandlers.getMutator().mutateNode(childOriginal, childTarget, nodeHandlers);
-			if (result == MutationResult.REQUIRES_REBUILD) {
+			final SuiBaseNode childOriginal = original.getChildNodeStore().find(nodeId);
+			final SuiBaseNode childTarget = target.getChildNodeStore().get(index);
+			if (CoreServices.mutate(childOriginal, childTarget) == MutationResult.REQUIRES_REBUILD) {
 				return new ReplaceTransformation(index, nodeId);
 			} else {
 				return null;

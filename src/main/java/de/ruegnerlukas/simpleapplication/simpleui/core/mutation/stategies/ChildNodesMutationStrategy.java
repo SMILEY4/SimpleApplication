@@ -1,8 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 
 public interface ChildNodesMutationStrategy {
 
@@ -16,18 +15,17 @@ public interface ChildNodesMutationStrategy {
 	 * @param allChildrenHaveId whether all participating child nodes have an id property
 	 * @return the result of the decision.
 	 */
-	StrategyDecisionResult canBeAppliedTo(SuiNode original, SuiNode target, boolean allChildrenHaveId);
+	StrategyDecisionResult canBeAppliedTo(SuiBaseNode original, SuiBaseNode target, boolean allChildrenHaveId);
 
 	/**
 	 * Mutate the child nodes of the given original node to match the given target node.
 	 *
-	 * @param nodeHandlers the primary node handlers
 	 * @param original     the original node
 	 * @param target       the target node to match
 	 * @param decisionData the decision result instance created in {@link ChildNodesMutationStrategy#canBeAppliedTo}
 	 * @return the result of the mutation
 	 */
-	MutationResult mutate(MasterNodeHandlers nodeHandlers, SuiNode original, SuiNode target, StrategyDecisionResult decisionData);
+	MutationResult mutate(SuiBaseNode original, SuiBaseNode target, StrategyDecisionResult decisionData);
 
 
 }

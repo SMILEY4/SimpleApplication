@@ -1,8 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.AddAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ChildNodesMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdMutationStrategy;
@@ -49,17 +47,17 @@ public class MutationStrategyDecider {
 	/**
 	 * Tries to mutate the children of the given original node to match the given target node with a matching mutation strategy.
 	 *
-	 * @param original     the original node
-	 * @param target       the target node to match
+	 * @param original the original node
+	 * @param target   the target node to match
 	 * @return the result of the mutation
 	 */
 	public MutationResult mutate(final SuiBaseNode original, final SuiBaseNode target) {
-		if (!original.getChildNodeStore().hasChildren() && !target.getChildNodeStore().hasChildren()) {
+		if (canSkipMutation(original, target)) {
 			return MutationResult.MUTATED;
 		}
 		final boolean allHaveId = allChildrenHaveId(original) && allChildrenHaveId(target);
 		for (ChildNodesMutationStrategy strategy : strategies) {
-			MutationResult result = runStrategy(strategy, nodeHandlers, original, target, allHaveId);
+			MutationResult result = runStrategy(strategy, original, target, allHaveId);
 			if (result != null) {
 				return result;
 			}
@@ -71,22 +69,14 @@ public class MutationStrategyDecider {
 
 
 	/**
-	 * Tries to run the given mutation strategy. Returns 'null', if the strategy could not be applied.
+	 * Checks whether the mutation of child nodes can be skipped entirely.
 	 *
-	 * @param nodeHandlers the primary node handlers
-	 * @param original     the original node
-	 * @param target       the target node to match
-	 * @param allHaveId    whether all participating child nodes have an id property
-	 * @return the mutation result or 'null', if the strategy could not be applied.
+	 * @param original the original node
+	 * @param target   the target node to match
+	 * @return whether the child nodes have to be mutated
 	 */
-	private MutationResult runStrategy(final ChildNodesMutationStrategy strategy, final MasterNodeHandlers nodeHandlers,
-									   final SuiNode original, final SuiNode target, final boolean allHaveId) {
-		StrategyDecisionResult decisionData = strategy.canBeAppliedTo(original, target, allHaveId);
-		if (decisionData.isApplicable()) {
-			return strategy.mutate(nodeHandlers, original, target, decisionData);
-		} else {
-			return null;
-		}
+	private boolean canSkipMutation(final SuiBaseNode original, final SuiBaseNode target) {
+		return !original.getChildNodeStore().hasChildren() && !target.getChildNodeStore().hasChildren();
 	}
 
 
@@ -98,8 +88,32 @@ public class MutationStrategyDecider {
 	 * @param parent the parent to check
 	 * @return whether all nodes have a valid id
 	 */
-	private boolean allChildrenHaveId(final SuiNode parent) {
-		return parent.streamChildren().allMatch(node -> node.hasProperty(IdProperty.class));
+	private boolean allChildrenHaveId(final SuiBaseNode parent) {
+		return parent.getChildNodeStore().stream().allMatch(node -> node.getPropertyStore().has(IdProperty.class));
 	}
+
+
+
+
+	/**
+	 * Tries to run the given mutation strategy. Returns 'null', if the strategy could not be applied.
+	 *
+	 * @param original  the original node
+	 * @param target    the target node to match
+	 * @param allHaveId whether all participating child nodes have an id property
+	 * @return the mutation result or 'null', if the strategy could not be applied.
+	 */
+	private MutationResult runStrategy(final ChildNodesMutationStrategy strategy,
+									   final SuiBaseNode original,
+									   final SuiBaseNode target,
+									   final boolean allHaveId) {
+		StrategyDecisionResult decisionData = strategy.canBeAppliedTo(original, target, allHaveId);
+		if (decisionData.isApplicable()) {
+			return strategy.mutate(original, target, decisionData);
+		} else {
+			return null;
+		}
+	}
+
 
 }

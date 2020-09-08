@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.BaseOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.RemoveOperation;
@@ -21,18 +20,20 @@ public interface SuiNodeChildTransformListener {
 	};
 
 	/**
-	 * A child transform listener applicable to most cases.
+	 * A child transform listener applicable to most cases (where the javafx node is a {@link Pane}).
 	 */
 	SuiNodeChildTransformListener DEFAULT = (node, type, operations) -> {
-		final Pane pane = (Pane) node.getFxNode();
-		if (type == OperationType.REMOVE) {
-			List<Node> nodesToRemove = operations.stream()
-					.map(op -> (RemoveOperation) op)
-					.map(op -> op.getNode().getFxNode())
-					.collect(Collectors.toList());
-			pane.getChildren().removeAll(nodesToRemove);
-		} else {
-			operations.forEach(op -> op.applyTo(pane));
+		final Pane pane = (Pane) node.getFxNodeStore().get();
+		if (pane != null) {
+			if (type == OperationType.REMOVE) {
+				List<Node> nodesToRemove = operations.stream()
+						.map(op -> (RemoveOperation) op)
+						.map(op -> op.getNode().getFxNodeStore().get())
+						.collect(Collectors.toList());
+				pane.getChildren().removeAll(nodesToRemove);
+			} else {
+				operations.forEach(op -> op.applyTo(pane));
+			}
 		}
 	};
 
@@ -44,6 +45,6 @@ public interface SuiNodeChildTransformListener {
 	 * @param type       the type of all of the operations
 	 * @param operations the operations to apply
 	 */
-	void onTransformOperations(SuiNode parent, OperationType type, List<? extends BaseOperation> operations);
+	void onTransformOperations(SuiBaseNode parent, OperationType type, List<? extends BaseOperation> operations);
 
 }

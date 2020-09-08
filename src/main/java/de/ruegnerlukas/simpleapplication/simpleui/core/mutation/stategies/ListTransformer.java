@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.MasterNodeHandlers;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.AddOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.BaseOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.RemoveOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.ReplaceOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.SwapOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -303,9 +303,9 @@ public class ListTransformer {
 
 
 		@Override
-		public BaseOperation toOperation(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
-			final SuiNode addNode = target.findChildUnsafe(this.getElement());
-			nodeHandlers.getFxNodeBuilder().build(addNode);
+		public BaseOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
+			final SuiBaseNode addNode = target.getChildNodeStore().find(this.getElement());
+			CoreServices.enrichWithFxNodes(addNode);
 			return new AddOperation(this.getIndex(), addNode);
 		}
 
@@ -333,8 +333,8 @@ public class ListTransformer {
 
 
 		@Override
-		public RemoveOperation toOperation(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
-			return new RemoveOperation(this.getIndex(), original.getChild(this.getIndex()));
+		public RemoveOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
+			return new RemoveOperation(this.getIndex(), original.getChildNodeStore().get(this.getIndex()));
 		}
 
 	}
@@ -377,7 +377,7 @@ public class ListTransformer {
 
 
 		@Override
-		public SwapOperation toOperation(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
+		public SwapOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
 			return new SwapOperation(this.getIndexMin(), this.getIndexMax());
 		}
 
@@ -411,10 +411,10 @@ public class ListTransformer {
 
 
 		@Override
-		public ReplaceOperation toOperation(final MasterNodeHandlers nodeHandlers, final SuiNode original, final SuiNode target) {
-			final SuiNode replacementNode = target.findChildUnsafe(this.getElement());
-			nodeHandlers.getFxNodeBuilder().build(replacementNode);
-			return new ReplaceOperation(this.getIndex(), replacementNode, original.getChild(this.getIndex()));
+		public ReplaceOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
+			final SuiBaseNode replacementNode = target.getChildNodeStore().find(this.getElement());
+			CoreServices.enrichWithFxNodes(replacementNode);
+			return new ReplaceOperation(this.getIndex(), replacementNode, original.getChildNodeStore().get(this.getIndex()));
 		}
 
 	}
@@ -433,12 +433,11 @@ public class ListTransformer {
 		/**
 		 * Converts this transformation into an operation
 		 *
-		 * @param nodeHandlers the simpleui hanelers
 		 * @param original     the original node
 		 * @param target       the target node
 		 * @return the created operation
 		 */
-		BaseOperation toOperation(MasterNodeHandlers nodeHandlers, SuiNode original, SuiNode target);
+		BaseOperation toOperation(SuiBaseNode original, SuiBaseNode target);
 
 	}
 
