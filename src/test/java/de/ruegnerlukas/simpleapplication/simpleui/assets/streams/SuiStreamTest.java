@@ -19,7 +19,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testEventStream() {
+	public void test_source_is_event_stream() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testForEachObservable() {
+	public void test_iterate_over_observable_value_changes() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -63,7 +63,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testMap() {
+	public void test_map_operation() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -87,7 +87,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testMapIgnoreNulls() {
+	public void test_map_operation_with_ignore_nulls() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -111,7 +111,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testMapNulls() {
+	public void test_map_operation_for_null_values() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -135,7 +135,31 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testFlatMap() {
+	public void test_map_elements_to_string_operation() {
+
+		final List<String> collectedValues = new ArrayList<>();
+
+		final SimpleObjectProperty<Integer> observable = new SimpleObjectProperty<>();
+		SuiStream.from(observable)
+				.mapToString()
+				.forEach(collectedValues::add);
+
+		assertThat(collectedValues).isEmpty();
+		observable.setValue(1);
+		observable.setValue(2);
+		assertThat(collectedValues).containsExactly("1", "2");
+		observable.setValue(3);
+		observable.setValue(4);
+		assertThat(collectedValues).containsExactly("1", "2", "3", "4");
+		observable.setValue(null);
+		assertThat(collectedValues).containsExactly("1", "2", "3", "4", "null");
+	}
+
+
+
+
+	@Test
+	public void test_flat_map_operation() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -159,7 +183,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testFlatMapIgnoreNulls() {
+	public void test_flat_map_operation_with_ignore_nulls() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -183,7 +207,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testFlatMapNulls() {
+	public void test_flat_map_null_values() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -207,7 +231,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testFilter() {
+	public void test_filter_operation() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -229,7 +253,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testFilterNulls() {
+	public void test_filter_out_null_values() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -251,7 +275,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testPeek() {
+	public void test_peek_operation() {
 
 		final List<String> peekedValues = new ArrayList<>();
 		final List<String> collectedValues = new ArrayList<>();
@@ -280,7 +304,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testOnJfxThreadStream() {
+	public void test_switch_to_jfx_application_thread() {
 
 		final List<String> threadNames = new ArrayList<>();
 
@@ -306,7 +330,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testCollectIntoCollection() {
+	public void test_collect_elements_to_list() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -328,7 +352,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testCollectIntoValue() {
+	public void test_collect_elements_to_single_property() {
 
 		final SimpleStringProperty value = new SimpleStringProperty();
 
@@ -350,7 +374,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testDistinct() {
+	public void test_distinct_operation() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -381,7 +405,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testWaitForExcluding() {
+	public void test_wait_for_operation_excluding_matching_value() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -415,7 +439,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testWaitForIncluding() {
+	public void test_wait_for_operation_including_matching_value() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -449,7 +473,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testWaitForAndPackExcluding() {
+	public void test_wait_for_and_pack_operation() {
 
 		final List<List<String>> collectedValues = new ArrayList<>();
 
@@ -480,7 +504,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testWaitForAndPackIncluding() {
+	public void test_wait_for_and_pack_operation_including_matching_value() {
 
 		final List<List<String>> collectedValues = new ArrayList<>();
 
@@ -511,7 +535,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testAsync() {
+	public void test_process_elements_async() {
 
 		final List<String> threadNames = new ArrayList<>();
 
@@ -540,7 +564,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testSkip() {
+	public void test_skip_elements_while_flag_is_set() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -571,7 +595,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testLastN() {
+	public void test_group_last_n_elements() {
 
 		final List<List<String>> collectedValues = new ArrayList<>();
 
@@ -595,7 +619,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testUnpack() {
+	public void test_unpack_list_operation() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -618,7 +642,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testSuppressExceptions() {
+	public void test_suppress_exceptions_operation() {
 
 		final List<String> collectedValues = new ArrayList<>();
 
@@ -641,7 +665,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testHandleExceptions() {
+	public void test_handle_exceptions_operation() {
 
 		final List<String> collectedValues = new ArrayList<>();
 		final List<String> collectedExceptions = new ArrayList<>();
@@ -669,31 +693,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testToString() {
-
-		final List<String> collectedValues = new ArrayList<>();
-
-		final SimpleObjectProperty<Integer> observable = new SimpleObjectProperty<>();
-		SuiStream.from(observable)
-				.mapToString()
-				.forEach(collectedValues::add);
-
-		assertThat(collectedValues).isEmpty();
-		observable.setValue(1);
-		observable.setValue(2);
-		assertThat(collectedValues).containsExactly("1", "2");
-		observable.setValue(3);
-		observable.setValue(4);
-		assertThat(collectedValues).containsExactly("1", "2", "3", "4");
-		observable.setValue(null);
-		assertThat(collectedValues).containsExactly("1", "2", "3", "4", "null");
-	}
-
-
-
-
-	@Test
-	public void testAccumulate() {
+	public void test_accumulate_with_max_amount_and_duration_operation() {
 
 		final List<List<String>> collectedValues = new ArrayList<>();
 
@@ -726,7 +726,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
-	public void testTimer() {
+	public void test_timer_utility_class() {
 
 		final List<String> list = new ArrayList<>();
 		final JFXTimer timer = new JFXTimer(javafx.util.Duration.millis(500), () -> {

@@ -9,7 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.simpleui.utils.PropertyTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.testutils.PropertyTestUtils;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 
 
 	@Test
-	public void testMutateMissing() {
+	public void test_mutate_without_behaviour_property_expect_everything_changed() {
 
 		final TestState state = new TestState();
 
@@ -80,7 +80,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 
 
 	@Test
-	public void testMutateDefault() {
+	public void test_mutate_with_default_behaviour_expect_everything_changed() {
 
 		final TestState state = new TestState();
 
@@ -132,7 +132,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 
 
 	@Test
-	public void testMutateStaticNode() {
+	public void test_mutate_with_behaviour_is_static_expect_only_children_changed() {
 
 		final TestState state = new TestState();
 
@@ -186,7 +186,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 
 
 	@Test
-	public void testMutateStaticSubtree() {
+	public void test_mutate_with_behaviour_is_static_expect_nothing_changed() {
 
 		final TestState state = new TestState();
 

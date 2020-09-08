@@ -12,12 +12,12 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.strategies.StrategyTestUtils.assertChildren;
-import static de.ruegnerlukas.simpleapplication.simpleui.strategies.StrategyTestUtils.buildTest;
-import static de.ruegnerlukas.simpleapplication.simpleui.strategies.StrategyTestUtils.buildVBox;
-import static de.ruegnerlukas.simpleapplication.simpleui.strategies.StrategyTestUtils.printChildButtons;
-import static de.ruegnerlukas.simpleapplication.simpleui.strategies.StrategyTestUtils.removeChildNodes;
-import static de.ruegnerlukas.simpleapplication.simpleui.strategies.StrategyTestUtils.shuffleChildNodes;
+import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestUtils.assertChildren;
+import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestUtils.buildTest;
+import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestUtils.buildVBox;
+import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestUtils.printChildButtons;
+import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestUtils.removeChildNodes;
+import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestUtils.shuffleChildNodes;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StandardMutationStrategyTest extends ApplicationTest {
@@ -32,7 +32,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void testNoMutation() {
+	public void test_identical_children_expect_mutation_but_no_change() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
@@ -64,7 +64,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void testRemoveSome() {
+	public void test_remove_some_children_expect_mutation_and_children_removed() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
@@ -98,7 +98,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void testRemoveMost() {
+	public void test_remove_most_children_expect_mutation_and_children_removed() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
@@ -132,7 +132,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void testRemoveAll() {
+	public void test_remove_all_children_expect_mutation_and_original_has_no_more_children() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(0, "Btn Target");
@@ -164,7 +164,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void testAddSome() {
+	public void test_add_some_to_existing_children_expect_mutation_and_original_has_nodes() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
@@ -198,7 +198,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void testAddMost() {
+	public void test_add_many_to_existing_children_expect_mutation_and_original_has_nodes() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
@@ -232,7 +232,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void testAddAll() {
+	public void test_add_children_to_empty_parent_expect_mutation_and_original_now_has_children() {
 
 		final NodeFactory factoryOriginal = buildVBox(0, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
@@ -264,7 +264,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void shuffleSome() {
+	public void test_shuffle_some_existing_children_expect_mutation_and_original_matching_target() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
@@ -298,7 +298,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void shuffleMost() {
+	public void test_shuffle_most_existing_children_expect_mutation_and_original_matching_target() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");

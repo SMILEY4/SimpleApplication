@@ -31,7 +31,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 
 
 	@Test
-	public void testSimpleButton() {
+	public void test_create_button_and_check_fx_node_and_events() {
 
 
 		final AtomicInteger buttonPressCounter = new AtomicInteger(0);
@@ -60,7 +60,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 
 
 	@Test
-	public void testSimpleMutation() {
+	public void test_create_and_mutate_button() {
 
 		// setup
 		final Phaser phaser = new Phaser(2);
@@ -89,7 +89,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 
 
 	@Test
-	public void testSilentUpdate() {
+	public void test_silent_state_update_does_not_mutate_elements() {
 
 		// setup
 		final Phaser phaser = new Phaser(2);

@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.strategies;
+package de.ruegnerlukas.simpleapplication.simpleui.testutils;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
 import de.ruegnerlukas.simpleapplication.simpleui.TestState;

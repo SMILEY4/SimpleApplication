@@ -48,7 +48,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 	@Test
-	public void testInjectIntoVBox() {
+	public void test_inject_twice_into_empty_vbox() {
 
 		final String INJECTION_POINT_ID = "injection_point";
 		final NodeFactory nodeFactory = vboxWithInjectableItems(INJECTION_POINT_ID);
@@ -76,7 +76,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 	@Test
-	public void testInjectNothingIntoVBox() {
+	public void test_inject_nothing_into_empty_vbox() {
 		final String INJECTION_POINT_ID = "injection_point";
 		final NodeFactory nodeFactory = vboxWithInjectableItems(INJECTION_POINT_ID);
 		final VBox fxNode = (VBox) createJFXNode(nodeFactory);
@@ -87,7 +87,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 	@Test
-	public void testInjectIntoVBoxWithDefault() {
+	public void test_inject_elements_into_vbox_with_default_elements() {
 
 		final String INJECTION_POINT_ID = "injection_point";
 
@@ -127,7 +127,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 	@Test (expected = DuplicatePropertiesException.class)
-	public void testVBoxPropertiesConflict() {
+	public void test_conflict_exception_with_items_property_and_itemsinjectable_property() {
 		SuiVBox.vbox(
 				Properties.items(SuiButton.button(
 						id("btn"),
@@ -141,7 +141,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 	@Test
-	public void testInjectIntoScrollPane() {
+	public void test_inject_single_item_into_scrollpane() {
 
 		final String INJECTION_POINT_ID = "injection_point";
 
@@ -164,7 +164,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 	@Test
-	public void testInjectIntoScrollPaneWithDefault() {
+	public void test_inject_single_into_scrollpane_with_default_item() {
 
 		final String INJECTION_POINT_ID = "injection_point";
 
@@ -187,7 +187,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 	@Test
-	public void testInjectIntoVBoxAndMutate() {
+	public void test_inject_component_into_vbox_and_mutate_everything() {
 
 		final String INJECTION_POINT_ID = "injection_point";
 

@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.utils;
+package de.ruegnerlukas.simpleapplication.simpleui.testutils;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;

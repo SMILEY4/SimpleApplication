@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.utils;
+package de.ruegnerlukas.simpleapplication.simpleui.testutils;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
