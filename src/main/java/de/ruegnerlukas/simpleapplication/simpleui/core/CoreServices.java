@@ -5,13 +5,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationStrategyDecider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutator;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutatorImpl;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.ChildNodeStore;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.RegistryEntry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
-
-import java.util.List;
 
 public final class CoreServices {
 
@@ -121,19 +118,6 @@ public final class CoreServices {
 		final NodeMutator mutator = new NodeMutatorImpl(MutationStrategyDecider.DEFAULT_STRATEGIES);
 		return mutator.mutateNode(original, target);
 	}
-
-
-
-
-
-	public static void setChildren(final SuiBaseNode node, final List<SuiBaseNode> children, final boolean triggerListeners) {
-		final ChildNodeStore childNodeStore = node.getChildNodeStore();
-	}
-
-
-
-
-
 
 
 }

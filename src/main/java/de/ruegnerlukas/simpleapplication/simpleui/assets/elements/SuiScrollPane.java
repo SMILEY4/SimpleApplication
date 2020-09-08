@@ -48,7 +48,7 @@ public final class SuiScrollPane {
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiScrollPane.class, get().getEntry(SuiScrollPane.class).getProperties(), properties);
 		return state -> SuiBaseNode.create(
-				SuiLabel.class,
+				SuiScrollPane.class,
 				List.of(properties),
 				state,
 				SuiNodeChildListener.DEFAULT,

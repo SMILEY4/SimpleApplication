@@ -1,16 +1,17 @@
 package de.ruegnerlukas.simpleapplication.simpleui;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.DuplicatePropertiesException;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
+import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -214,8 +215,8 @@ public class InjectionTest extends ApplicationTest {
 
 		final TestState state = new TestState("Text 1");
 		final SuiSceneController context = new SuiSceneController(state, nodeFactory);
-		final SuiNode node = context.getRootNode();
-		final VBox fxNode = (VBox) node.getFxNode();
+		final SuiBaseNode node = context.getRootNode();
+		final VBox fxNode = (VBox) node.getFxNodeStore().get();
 
 		assertThat(fxNode.getChildren()).hasSize(3);
 		assertThat(fxNode.getChildren().get(0) instanceof Button).isTrue();
@@ -227,8 +228,8 @@ public class InjectionTest extends ApplicationTest {
 
 		state.text = "Text 2";
 
-		final SuiNode mutatedNode = context.getMasterNodeHandlers().getMutator().mutate(node, nodeFactory.create(state));
-		final VBox fxNodeMutated = (VBox) mutatedNode.getFxNode();
+		final SuiBaseNode mutatedNode = CoreServices.mutateNode(node, nodeFactory.create(state));
+		final VBox fxNodeMutated = (VBox) mutatedNode.getFxNodeStore().get();
 
 		assertThat(fxNodeMutated.getChildren()).hasSize(3);
 		assertThat(fxNodeMutated.getChildren().get(0) instanceof Button).isTrue();
@@ -264,7 +265,7 @@ public class InjectionTest extends ApplicationTest {
 
 	private Node createJFXNode(final NodeFactory nodeFactory) {
 		SuiSceneController context = new SuiSceneController(new TestState(), nodeFactory);
-		return context.getRootNode().getFxNode();
+		return context.getRootNode().getFxNodeStore().get();
 	}
 
 

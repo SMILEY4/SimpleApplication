@@ -2,17 +2,16 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
 public class SuiComponent<T extends SuiState> implements NodeFactory {
 
 
 	/**
-	 * The id of this component or null. (This will be transformed into a {@link IdProperty}).
+	 * The id of this component or null. (This will be transformed into an IdProperty).
 	 */
 	private String id = null;
 
@@ -36,7 +35,7 @@ public class SuiComponent<T extends SuiState> implements NodeFactory {
 
 
 	/**
-	 * Adds the given id to this component. This will be transformed into a {@link IdProperty}
+	 * Adds the given id to this component. This will be transformed into an IdProperty
 	 *
 	 * @param id the id, unique among the siblings
 	 * @return this component

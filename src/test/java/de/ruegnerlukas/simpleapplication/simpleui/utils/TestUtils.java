@@ -1,12 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.utils;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
+
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestUtils {
 
-	public static void assertNode(SuiNode node, Class<?> nodeType) {
+	public static void assertNode(SuiBaseNode node, Class<?> nodeType) {
 		assertThat(node).isNotNull();
 		assertThat(node.getNodeType()).isEqualTo(nodeType);
 	}

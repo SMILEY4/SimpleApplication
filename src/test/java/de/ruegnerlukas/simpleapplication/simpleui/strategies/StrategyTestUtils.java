@@ -1,14 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.strategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -28,46 +28,46 @@ public class StrategyTestUtils {
 
 
 
-	public static void assertChildren(SuiNode expected, SuiNode actual) {
-		assertThat(actual.childCount()).isEqualTo(expected.childCount());
-		for (int i = 0; i < expected.childCount(); i++) {
-			final SuiNode childActual = actual.getChild(i);
-			final SuiNode childExpected = expected.getChild(i);
-			assertThat(childActual.getProperty(TextContentProperty.class).getText())
-					.isEqualTo(childExpected.getProperty(TextContentProperty.class).getText());
+	public static void assertChildren(SuiBaseNode expected, SuiBaseNode actual) {
+		assertThat(actual.getChildNodeStore().count()).isEqualTo(expected.getChildNodeStore().count());
+		for (int i = 0; i < expected.getChildNodeStore().count(); i++) {
+			final SuiBaseNode childActual = actual.getChildNodeStore().get(i);
+			final SuiBaseNode childExpected = expected.getChildNodeStore().get(i);
+			assertThat(childActual.getPropertyStore().get(TextContentProperty.class).getText())
+					.isEqualTo(childExpected.getPropertyStore().get(TextContentProperty.class).getText());
 		}
 	}
 
 
 
 
-	public static Triplet<SuiSceneController, SuiNode, SuiNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
+	public static Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
 		TestState state = new TestState();
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiNode original = context.getRootNode();
-		SuiNode target = factoryTarget.create(state);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = factoryTarget.create(state);
 		return Triplet.of(context, original, target);
 	}
 
 
 
 
-	public static void removeChildNodes(final SuiNode node, final int n) {
+	public static void removeChildNodes(final SuiBaseNode node, final int n) {
 		Random random = new Random(SEED);
-		List<SuiNode> children = new ArrayList<>(node.getChildrenUnmodifiable());
+		List<SuiBaseNode> children = new ArrayList<>(node.getChildNodeStore().getUnmodifiable());
 		for (int i = 0; i < n; i++) {
 			children.remove(random.nextInt(children.size()));
 		}
-		node.setChildren(children, true);
+		node.getChildNodeStore().setChildren(children);
 	}
 
 
 
 
-	public static void shuffleChildNodes(final SuiNode node, final int n) {
+	public static void shuffleChildNodes(final SuiBaseNode node, final int n) {
 		Random random = new Random(SEED);
-		List<SuiNode> children = new ArrayList<>(node.getChildrenUnmodifiable());
-		if (n == node.childCount()) {
+		List<SuiBaseNode> children = new ArrayList<>(node.getChildNodeStore().getUnmodifiable());
+		if (n == node.getChildNodeStore().count()) {
 			Collections.shuffle(children, random);
 		} else {
 			for (int i = 0; i < n; i++) {
@@ -80,19 +80,19 @@ public class StrategyTestUtils {
 				}
 			}
 		}
-		node.setChildren(children, true);
+		node.getChildNodeStore().setChildren(children);
 	}
 
 
 
 
-	public static void printChildButtons(String nodeName, SuiNode node) {
+	public static void printChildButtons(String nodeName, SuiBaseNode node) {
 		log.info("{}-{}: childCount={}, {}",
 				nodeName,
 				Integer.toHexString(node.hashCode()),
-				node.childCount(),
-				node.getChildrenUnmodifiable().stream()
-						.map(c -> c.getProperty(TextContentProperty.class).getText())
+				node.getChildNodeStore().count(),
+				node.getChildNodeStore().stream()
+						.map(c -> c.getPropertyStore().get(TextContentProperty.class).getText())
 						.map(str -> "\"" + str + "\"")
 						.collect(Collectors.toList())
 		);
@@ -105,6 +105,9 @@ public class StrategyTestUtils {
 	public static NodeFactory buildVBox(int nChildren, String buttonPrefix) {
 		return buildVBox(nChildren, buttonPrefix, false);
 	}
+
+
+
 
 	public static NodeFactory buildVBox(int nChildren, String buttonPrefix, boolean withIds) {
 		return SuiVBox.vbox(

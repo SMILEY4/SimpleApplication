@@ -1,23 +1,33 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ChildNodeBuilder {
+public final class ChildNodeBuilder {
 
 
 	/**
 	 * The amount of child nodes that have to be created to use the async processing.
 	 */
 	private static final int CREATE_CHILD_LIST_ASYNC_CUTOFF = 1028;
+
+
+
+
+	/**
+	 * Hidden constructor for utility class
+	 */
+	private ChildNodeBuilder() {
+		// Hidden constructor
+	}
 
 
 
