@@ -309,7 +309,7 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @return whether the property is unchanged.
 	 */
 	private boolean isUnchanged(final SuiProperty original, final SuiProperty target) {
-		return (original != null) && (target != null) && (original.isEqual(target));
+		return (original != null) && (target != null) && (original.isPropertyEqual(target));
 	}
 
 
@@ -323,7 +323,7 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @return whether the property was changed.
 	 */
 	private boolean isUpdated(final SuiProperty original, final SuiProperty target) {
-		return (original != null) && (target != null) && (!original.isEqual(target));
+		return (original != null) && (target != null) && (!original.isPropertyEqual(target));
 	}
 
 }
