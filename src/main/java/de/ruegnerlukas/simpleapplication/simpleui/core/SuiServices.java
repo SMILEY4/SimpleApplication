@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationStrategy
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutator;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutatorImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.RegistryEntry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
@@ -97,6 +98,7 @@ public class SuiServices {
 	 * @return the created javafx-node
 	 */
 	private Node buildBaseFxNode(final SuiNode node, final RegistryEntry registryEntry) {
+		SuiProfiler.get().countFxNodeBuild();
 		return registryEntry.getBaseFxNodeBuilder().build(node);
 	}
 
@@ -114,6 +116,7 @@ public class SuiServices {
 	private void applyProperties(final SuiNode node, final RegistryEntry registryEntry, final Node fxNode) {
 		node.getPropertyStore().stream().forEach(property -> {
 			@SuppressWarnings ("rawtypes") PropFxNodeBuilder builder = registryEntry.getPropFxNodeBuilders().get(property.getKey());
+			SuiProfiler.get().countPropertyBuild();
 			builder.build(node, property, fxNode);
 		});
 	}
@@ -129,7 +132,9 @@ public class SuiServices {
 	 * @return the mutated root node or the original tree or the complete root node of the target tree if a rebuild was required
 	 */
 	public SuiSceneTree mutateTree(final SuiSceneTree original, final SuiSceneTree target) {
+		final long timeStart = System.currentTimeMillis();
 		if (mutate(original.getRoot(), target.getRoot()) == MutationResult.REQUIRES_REBUILD) {
+			SuiProfiler.get().getMutationDuration().count(System.currentTimeMillis() - timeStart);
 			target.buildFxNodes();
 			return target;
 		} else {

@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,9 @@ public class SuiSceneTree {
 	 * @return the created scene tree
 	 */
 	public static SuiSceneTree build(final NodeFactory nodeFactory, final SuiState state) {
+		long timeStart = System.currentTimeMillis();
 		final SuiNode rootNode = nodeFactory.create(state);
+		SuiProfiler.get().getBuildDuration().count(System.currentTimeMillis() - timeStart);
 		return new SuiSceneTree(rootNode);
 	}
 
