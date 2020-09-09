@@ -1,6 +1,11 @@
-package de.ruegnerlukas.simpleapplication.simpleui.strategies;
+package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.strategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
@@ -8,9 +13,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdShuf
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
+
+import java.util.List;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestUtils.assertChildren;
 import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestUtils.buildTest;
@@ -282,6 +291,175 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
 		assertThat(decisionResult.isApplicable()).isFalse();
 	}
+
+
+
+
+	@Test
+	public void test_same_ids_and_order_but_rebuild_child_expect_mutated_and_child_replaced() {
+
+		final NodeFactory factoryOriginal = SuiVBox.vbox(
+				Properties.id("box"),
+				Properties.items(
+						SuiButton.button(
+								Properties.id("child1"),
+								Properties.textContent("Button 1")
+						),
+						SuiButton.button(
+								Properties.id("child2"),
+								Properties.textContent("Button 2")
+						),
+						SuiButton.button(
+								Properties.id("child3"),
+								Properties.textContent("Button 2")
+						)
+				)
+		);
+
+		final NodeFactory factoryTarget = SuiVBox.vbox(
+				Properties.id("box"),
+				Properties.items(
+						SuiButton.button(
+								Properties.id("child1"),
+								Properties.textContent("Mutated Button 1")
+						),
+						SuiLabel.label(
+								Properties.id("child2"),
+								Properties.textContent("Label")
+						),
+						SuiButton.button(
+								Properties.id("child3"),
+								Properties.textContent("Mutated Button 2")
+						)
+				)
+		);
+
+		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
+		final SuiBaseNode nodeOriginal = testData.getMiddle();
+		final SuiBaseNode nodeTarget = testData.getRight();
+
+		final IdShuffleMutationStrategy strategy = new IdShuffleMutationStrategy();
+
+		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, true);
+		assertThat(decisionResult.isApplicable()).isTrue();
+
+		final MutationResult mutationResult = strategy.mutate(nodeOriginal, nodeTarget, decisionResult);
+		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
+		assertThat(nodeOriginal.getChildNodeStore().count()).isEqualTo(3);
+
+		final List<SuiBaseNode> childrenMutated = nodeOriginal.getChildNodeStore().getUnmodifiable();
+		assertThat(childrenMutated.get(0).getFxNodeStore().get()).isInstanceOf(Button.class);
+		assertThat(childrenMutated.get(1).getFxNodeStore().get()).isInstanceOf(Label.class);
+		assertThat(childrenMutated.get(2).getFxNodeStore().get()).isInstanceOf(Button.class);
+
+		assertThat(childrenMutated.get(0).getPropertyStore().getIdUnsafe()).isEqualTo("child1");
+		assertThat(childrenMutated.get(1).getPropertyStore().getIdUnsafe()).isEqualTo("child2");
+		assertThat(childrenMutated.get(2).getPropertyStore().getIdUnsafe()).isEqualTo("child3");
+
+		assertThat(childrenMutated.get(0).getPropertyStore().get(TextContentProperty.class).getText()).isEqualTo("Mutated Button 1");
+		assertThat(childrenMutated.get(1).getPropertyStore().get(TextContentProperty.class).getText()).isEqualTo("Label");
+		assertThat(childrenMutated.get(2).getPropertyStore().get(TextContentProperty.class).getText()).isEqualTo("Mutated Button 2");
+
+	}
+
+
+
+	@Test
+	public void test_same_ids_but_different_order_and_rebuild_child_expect_mutated_and_child_replaced() {
+
+		final NodeFactory factoryOriginal = SuiVBox.vbox(
+				Properties.id("box"),
+				Properties.items(
+						SuiButton.button(
+								Properties.id("child1"),
+								Properties.textContent("Button 1")
+						),
+						SuiButton.button(
+								Properties.id("child2"),
+								Properties.textContent("Button 2")
+						),
+						SuiButton.button(
+								Properties.id("child3"),
+								Properties.textContent("Button 2")
+						)
+				)
+		);
+
+		final NodeFactory factoryTarget = SuiVBox.vbox(
+				Properties.id("box"),
+				Properties.items(
+						SuiButton.button(
+								Properties.id("child2"),
+								Properties.textContent("Mutated Button 1")
+						),
+						SuiLabel.label(
+								Properties.id("child1"),
+								Properties.textContent("Label")
+						),
+						SuiButton.button(
+								Properties.id("child3"),
+								Properties.textContent("Mutated Button 2")
+						)
+				)
+		);
+
+		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiSceneController context = testData.getLeft();
+		final SuiBaseNode nodeOriginal = testData.getMiddle();
+		final SuiBaseNode nodeTarget = testData.getRight();
+
+		final IdShuffleMutationStrategy strategy = new IdShuffleMutationStrategy();
+
+		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, true);
+		assertThat(decisionResult.isApplicable()).isTrue();
+
+		final MutationResult mutationResult = strategy.mutate(nodeOriginal, nodeTarget, decisionResult);
+		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
+		assertThat(nodeOriginal.getChildNodeStore().count()).isEqualTo(3);
+
+		final List<SuiBaseNode> childrenMutated = nodeOriginal.getChildNodeStore().getUnmodifiable();
+		assertThat(childrenMutated.get(0).getFxNodeStore().get()).isInstanceOf(Button.class);
+		assertThat(childrenMutated.get(1).getFxNodeStore().get()).isInstanceOf(Label.class);
+		assertThat(childrenMutated.get(2).getFxNodeStore().get()).isInstanceOf(Button.class);
+
+		assertThat(childrenMutated.get(0).getPropertyStore().getIdUnsafe()).isEqualTo("child2");
+		assertThat(childrenMutated.get(1).getPropertyStore().getIdUnsafe()).isEqualTo("child1");
+		assertThat(childrenMutated.get(2).getPropertyStore().getIdUnsafe()).isEqualTo("child3");
+
+		assertThat(childrenMutated.get(0).getPropertyStore().get(TextContentProperty.class).getText()).isEqualTo("Mutated Button 1");
+		assertThat(childrenMutated.get(1).getPropertyStore().get(TextContentProperty.class).getText()).isEqualTo("Label");
+		assertThat(childrenMutated.get(2).getPropertyStore().get(TextContentProperty.class).getText()).isEqualTo("Mutated Button 2");
+
+	}
+
+
+
+
+	@Test
+	public void test_with_children_different_ids_expect_not_applicable() {
+
+		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal", false);
+		final NodeFactory factoryTarget = buildVBox(20, "Btn Target", false);
+
+		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiBaseNode nodeOriginal = testData.getMiddle();
+		final SuiBaseNode nodeTarget = testData.getRight();
+
+		shuffleChildNodes(nodeOriginal, 20);
+		shuffleChildNodes(nodeTarget, 20);
+
+		removeChildNodes(nodeOriginal, 10);
+		removeChildNodes(nodeTarget, 10);
+
+		final IdShuffleMutationStrategy strategy = new IdShuffleMutationStrategy();
+
+		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
+		assertThat(decisionResult.isApplicable()).isFalse();
+	}
+
+
+
 
 
 

@@ -1,10 +1,10 @@
-package de.ruegnerlukas.simpleapplication.simpleui.strategies;
+package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.strategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StandardMutationStrategy;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.AddAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -20,7 +20,7 @@ import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestU
 import static de.ruegnerlukas.simpleapplication.simpleui.testutils.StrategyTestUtils.shuffleChildNodes;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class StandardMutationStrategyTest extends ApplicationTest {
+public class AddAllStrategyTest extends ApplicationTest {
 
 
 	@Override
@@ -32,45 +32,34 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void test_identical_children_expect_mutation_but_no_change() {
+	public void test_identical_children_expect_not_applicable() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
 		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneController context = testData.getLeft();
 		final SuiBaseNode nodeOriginal = testData.getMiddle();
 		final SuiBaseNode nodeTarget = testData.getRight();
 
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
 
-		final StandardMutationStrategy strategy = new StandardMutationStrategy();
+		final AddAllStrategy strategy = new AddAllStrategy();
 
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
-		assertThat(decisionResult.isApplicable()).isTrue();
-
-		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
-				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
-		printChildButtons("  Result", nodeOriginal);
-
-		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
-		assertChildren(nodeTarget, nodeOriginal);
-
+		assertThat(decisionResult.isApplicable()).isFalse();
 	}
 
 
 
 
 	@Test
-	public void test_remove_some_children_expect_mutation_and_children_removed() {
+	public void test_remove_some_children_expect_not_applicable() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
 		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneController context = testData.getLeft();
 		final SuiBaseNode nodeOriginal = testData.getMiddle();
 		final SuiBaseNode nodeTarget = testData.getRight();
 
@@ -79,18 +68,11 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
 
-		final StandardMutationStrategy strategy = new StandardMutationStrategy();
+		final AddAllStrategy strategy = new AddAllStrategy();
 
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
-		assertThat(decisionResult.isApplicable()).isTrue();
+		assertThat(decisionResult.isApplicable()).isFalse();
 
-		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
-				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
-		printChildButtons("  Result", nodeOriginal);
-
-		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
-		assertChildren(nodeTarget, nodeOriginal);
 
 	}
 
@@ -98,13 +80,12 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void test_remove_most_children_expect_mutation_and_children_removed() {
+	public void test_remove_most_children_expect_not_applicable() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
 		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneController context = testData.getLeft();
 		final SuiBaseNode nodeOriginal = testData.getMiddle();
 		final SuiBaseNode nodeTarget = testData.getRight();
 
@@ -113,18 +94,10 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
 
-		final StandardMutationStrategy strategy = new StandardMutationStrategy();
+		final AddAllStrategy strategy = new AddAllStrategy();
 
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
-		assertThat(decisionResult.isApplicable()).isTrue();
-
-		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
-				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
-		printChildButtons("  Result", nodeOriginal);
-
-		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
-		assertChildren(nodeTarget, nodeOriginal);
+		assertThat(decisionResult.isApplicable()).isFalse();
 
 	}
 
@@ -132,31 +105,22 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void test_remove_all_children_expect_mutation_and_original_has_no_more_children() {
+	public void test_remove_all_children_expect_not_applicable() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(0, "Btn Target");
 
 		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneController context = testData.getLeft();
 		final SuiBaseNode nodeOriginal = testData.getMiddle();
 		final SuiBaseNode nodeTarget = testData.getRight();
 
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
 
-		final StandardMutationStrategy strategy = new StandardMutationStrategy();
+		final AddAllStrategy strategy = new AddAllStrategy();
 
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
-		assertThat(decisionResult.isApplicable()).isTrue();
-
-		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
-				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
-		printChildButtons("  Result", nodeOriginal);
-
-		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
-		assertChildren(nodeTarget, nodeOriginal);
+		assertThat(decisionResult.isApplicable()).isFalse();
 
 	}
 
@@ -164,13 +128,12 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void test_add_some_to_existing_children_expect_mutation_and_original_has_nodes() {
+	public void test_add_some_to_existing_children_expect_not_applicable() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
 		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneController context = testData.getLeft();
 		final SuiBaseNode nodeOriginal = testData.getMiddle();
 		final SuiBaseNode nodeTarget = testData.getRight();
 
@@ -179,18 +142,11 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
 
-		final StandardMutationStrategy strategy = new StandardMutationStrategy();
+		final AddAllStrategy strategy = new AddAllStrategy();
 
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
-		assertThat(decisionResult.isApplicable()).isTrue();
+		assertThat(decisionResult.isApplicable()).isFalse();
 
-		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
-				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
-		printChildButtons("  Result", nodeOriginal);
-
-		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
-		assertChildren(nodeTarget, nodeOriginal);
 
 	}
 
@@ -198,13 +154,12 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void test_add_many_to_existing_children_expect_mutation_and_original_has_nodes() {
+	public void test_add_many_to_existing_children_expect_not_applicable() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
 		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneController context = testData.getLeft();
 		final SuiBaseNode nodeOriginal = testData.getMiddle();
 		final SuiBaseNode nodeTarget = testData.getRight();
 
@@ -213,18 +168,11 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
 
-		final StandardMutationStrategy strategy = new StandardMutationStrategy();
+		final AddAllStrategy strategy = new AddAllStrategy();
 
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
-		assertThat(decisionResult.isApplicable()).isTrue();
+		assertThat(decisionResult.isApplicable()).isFalse();
 
-		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
-				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
-		printChildButtons("  Result", nodeOriginal);
-
-		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
-		assertChildren(nodeTarget, nodeOriginal);
 
 	}
 
@@ -232,7 +180,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void test_add_children_to_empty_parent_expect_mutation_and_original_now_has_children() {
+	public void test_add_children_to_empty_parent_expect_mutated_and_parent_now_has_children() {
 
 		final NodeFactory factoryOriginal = buildVBox(0, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
@@ -245,7 +193,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
 
-		final StandardMutationStrategy strategy = new StandardMutationStrategy();
+		final AddAllStrategy strategy = new AddAllStrategy();
 
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
 		assertThat(decisionResult.isApplicable()).isTrue();
@@ -256,6 +204,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		printChildButtons("  Result", nodeOriginal);
 
 		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
+		assertThat(nodeOriginal.getChildNodeStore().count()).isEqualTo(20);
 		assertChildren(nodeTarget, nodeOriginal);
 
 	}
@@ -264,13 +213,12 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void test_shuffle_some_existing_children_expect_mutation_and_original_matching_target() {
+	public void test_shuffle_some_existing_children_expect_not_applicable() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
 		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneController context = testData.getLeft();
 		final SuiBaseNode nodeOriginal = testData.getMiddle();
 		final SuiBaseNode nodeTarget = testData.getRight();
 
@@ -279,18 +227,11 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
 
-		final StandardMutationStrategy strategy = new StandardMutationStrategy();
+		final AddAllStrategy strategy = new AddAllStrategy();
 
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
-		assertThat(decisionResult.isApplicable()).isTrue();
+		assertThat(decisionResult.isApplicable()).isFalse();
 
-		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
-				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
-		printChildButtons("  Result", nodeOriginal);
-
-		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
-		assertChildren(nodeTarget, nodeOriginal);
 
 	}
 
@@ -298,13 +239,12 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 
 	@Test
-	public void test_shuffle_most_existing_children_expect_mutation_and_original_matching_target() {
+	public void test_shuffle_most_existing_children_expect_not_applicable() {
 
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
 		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiSceneController context = testData.getLeft();
 		final SuiBaseNode nodeOriginal = testData.getMiddle();
 		final SuiBaseNode nodeTarget = testData.getRight();
 
@@ -313,18 +253,11 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
 
-		final StandardMutationStrategy strategy = new StandardMutationStrategy();
+		final AddAllStrategy strategy = new AddAllStrategy();
 
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
-		assertThat(decisionResult.isApplicable()).isTrue();
+		assertThat(decisionResult.isApplicable()).isFalse();
 
-		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
-				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
-		printChildButtons("  Result", nodeOriginal);
-
-		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
-		assertChildren(nodeTarget, nodeOriginal);
 	}
 
 

@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.streams;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SUIEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.JFXTimer;
+import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.util.Duration;
@@ -642,6 +643,28 @@ public class SuiStreamTest extends ApplicationTest {
 
 
 	@Test
+	public void test_unpack_list_operation_with_null_elements() {
+
+		final List<String> collectedValues = new ArrayList<>();
+
+		final SimpleObjectProperty<List<String>> observable = new SimpleObjectProperty<>();
+		SuiStream.from(observable)
+				.unpack(String.class)
+				.forEach(collectedValues::add);
+
+		assertThat(collectedValues).isEmpty();
+		observable.setValue(List.of("a"));
+		observable.setValue(List.of("a", "b"));
+		assertThat(collectedValues).containsExactly("a", "a", "b");
+		observable.setValue(null);
+		observable.setValue(List.of("d", "e", "f"));
+		assertThat(collectedValues).containsExactly("a", "a", "b", null, "d", "e", "f");
+	}
+
+
+
+
+	@Test
 	public void test_suppress_exceptions_operation() {
 
 		final List<String> collectedValues = new ArrayList<>();
@@ -760,6 +783,86 @@ public class SuiStreamTest extends ApplicationTest {
 		assertThat(list).hasSize(1);
 		assertThat(timer.isRunning()).isFalse();
 
+	}
+
+
+
+
+	@Test
+	public void test_update_state_operation() {
+
+
+		final TestState testState = new TestState("-");
+
+		final List<String> collectedValues = new ArrayList<>();
+		testState.addStateListener((state, update) -> {
+			collectedValues.add(((TestState) state).text);
+		});
+
+		final SimpleStringProperty observable = new SimpleStringProperty();
+		SuiStream.from(observable)
+				.updateState(TestState.class, testState, (state, value) -> state.text = value);
+
+		assertThat(testState.text).isEqualTo("-");
+
+		observable.setValue("a");
+		delay(200);
+		assertThat(testState.text).isEqualTo("a");
+
+		observable.setValue("b");
+		observable.setValue("c");
+		delay(200);
+		assertThat(testState.text).isEqualTo("c");
+
+		observable.setValue(null);
+		delay(200);
+		assertThat(testState.text).isEqualTo(null);
+
+		observable.setValue("e");
+		delay(200);
+		assertThat(testState.text).isEqualTo("e");
+
+		assertThat(collectedValues).containsExactly("a", "b", "c", null, "e");
+	}
+
+
+
+
+	@Test
+	public void test_update_state_silent_operation() {
+
+
+		final TestState testState = new TestState("-");
+
+		final List<String> collectedValues = new ArrayList<>();
+		testState.addStateListener((state, update) -> {
+			collectedValues.add(((TestState) state).text);
+		});
+
+		final SimpleStringProperty observable = new SimpleStringProperty();
+		SuiStream.from(observable)
+				.updateStateSilent(TestState.class, testState, (state, value) -> state.text = value);
+
+		assertThat(testState.text).isEqualTo("-");
+
+		observable.setValue("a");
+		delay(200);
+		assertThat(testState.text).isEqualTo("a");
+
+		observable.setValue("b");
+		observable.setValue("c");
+		delay(200);
+		assertThat(testState.text).isEqualTo("c");
+
+		observable.setValue(null);
+		delay(200);
+		assertThat(testState.text).isEqualTo(null);
+
+		observable.setValue("e");
+		delay(200);
+		assertThat(testState.text).isEqualTo("e");
+
+		assertThat(collectedValues).isEmpty();
 	}
 
 

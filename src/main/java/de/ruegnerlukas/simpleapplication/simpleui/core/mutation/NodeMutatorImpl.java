@@ -76,6 +76,10 @@ public class NodeMutatorImpl implements NodeMutator {
 	public MutationResult mutateNode(final SuiBaseNode original, final SuiBaseNode target) {
 		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
 
+		if (mutationBehaviour == MutationBehaviour.DEFAULT && original.getNodeType() != target.getNodeType()) {
+			return REQUIRES_REBUILD;
+		}
+
 		if (mutationBehaviour == MutationBehaviour.DEFAULT) {
 			if (mutateProperties(original, target) == REQUIRES_REBUILD) {
 				return REQUIRES_REBUILD;
@@ -149,7 +153,7 @@ public class NodeMutatorImpl implements NodeMutator {
 				if (updater.remove(propOriginal, original, original.getFxNodeStore().get()) == REQUIRES_REBUILD) {
 					return REQUIRES_REBUILD;
 				} else {
-					original.getPropertyStore().upsert(propTarget);
+					original.getPropertyStore().remove(propOriginal.getKey());
 					return MUTATED;
 				}
 

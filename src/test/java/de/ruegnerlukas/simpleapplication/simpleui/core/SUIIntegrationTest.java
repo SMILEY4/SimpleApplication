@@ -1,9 +1,8 @@
-package de.ruegnerlukas.simpleapplication.simpleui;
+package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -14,9 +13,9 @@ import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties.eventAction;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.wrapText;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties.eventAction;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SUIIntegrationTest extends ApplicationTest {

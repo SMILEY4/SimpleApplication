@@ -57,6 +57,22 @@ public class PropertyStore {
 
 
 	/**
+	 * Removes the property of the given type.
+	 *
+	 * @param property the type of the property to remove
+	 */
+	public void remove(final Class<? extends Property> property) {
+		Validations.INPUT.notNull(property).exception("The property type may not be null.");
+		properties.remove(property);
+		if (property == IdProperty.class) {
+			idProperty = null;
+		}
+	}
+
+
+
+
+	/**
 	 * Get the property with the given type.
 	 *
 	 * @param type the type of the requested property

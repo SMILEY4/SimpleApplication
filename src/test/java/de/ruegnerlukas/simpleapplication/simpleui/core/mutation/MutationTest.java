@@ -1,16 +1,21 @@
-package de.ruegnerlukas.simpleapplication.simpleui;
+package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.PropertyTestUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
+import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestUtils;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -19,7 +24,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MutationBehaviourTest extends ApplicationTest {
+public class MutationTest extends ApplicationTest {
 
 
 	@Override
@@ -31,7 +36,7 @@ public class MutationBehaviourTest extends ApplicationTest {
 
 
 	@Test
-	public void test_mutate_without_behaviour_property_expect_everything_changed() {
+	public void test_mutate_expect_alignment_changed_and_child_removed_and_child_text_changed() {
 
 		final TestState state = new TestState();
 
@@ -77,6 +82,137 @@ public class MutationBehaviourTest extends ApplicationTest {
 		PropertyTestUtils.assertIdProperty(childButton, "btn2");
 		PropertyTestUtils.assertTextContentProperty(childButton, "Renamed Child Button 2");
 	}
+
+
+
+
+	@Test
+	public void test_mutate_node_type_expect_rebuild() {
+
+		final TestState state = new TestState();
+
+		NodeFactory factoryOriginal = SuiVBox.vbox(
+				Properties.items(
+						SuiButton.button(
+								Properties.textContent("Child Button")
+						)
+				)
+		);
+
+		NodeFactory factoryTarget = SuiButton.button(
+				Properties.textContent("My Button")
+		);
+
+		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = factoryTarget.create(state);
+		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+
+		TestUtils.assertNode(mutatedNode, SuiButton.class);
+		PropertyTestUtils.assertTextContentProperty(mutatedNode, "My Button");
+		assertThat(mutatedNode).isNotEqualTo(original);
+		assertThat(mutatedNode).isEqualTo(target);
+		assertThat(mutatedNode.getFxNodeStore().get()).isNotNull();
+
+	}
+
+
+
+
+	@Test
+	public void test_remove_size_property_expect_rebuild() {
+
+		final TestState state = new TestState();
+
+		NodeFactory factoryOriginal = SuiVBox.vbox(
+				Properties.size(0, 0, 5, 5, 10, 10),
+				Properties.items(
+						SuiButton.button(
+								Properties.textContent("Child Button")
+						)
+				)
+		);
+
+		NodeFactory factoryTarget = SuiVBox.vbox(
+				Properties.items(
+						SuiButton.button(
+								Properties.textContent("Child Button")
+						)
+				)
+		);
+
+		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = factoryTarget.create(state);
+		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+
+		TestUtils.assertNode(mutatedNode, SuiVBox.class);
+		assertThat(mutatedNode.getPropertyStore().has(SizeProperty.class)).isFalse();
+		assertThat(mutatedNode).isNotEqualTo(original);
+		assertThat(mutatedNode).isEqualTo(target);
+		assertThat(mutatedNode.getFxNodeStore().get()).isNotNull();
+	}
+
+
+
+
+	@Test
+	public void test_remove_property_expect_mutation_and_property_removed() {
+
+		final TestState state = new TestState();
+
+		NodeFactory factoryOriginal = SuiButton.button(
+				Properties.id("myButton"),
+				Properties.textContent("Button")
+		);
+
+		NodeFactory factoryTarget = SuiButton.button(
+				Properties.id("myButton")
+		);
+
+		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = factoryTarget.create(state);
+		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+
+		TestUtils.assertNode(mutatedNode, SuiButton.class);
+		assertThat(mutatedNode.getPropertyStore().has(TextContentProperty.class)).isFalse();
+		assertThat(mutatedNode).isEqualTo(original);
+		assertThat(mutatedNode).isNotEqualTo(target);
+		assertThat(mutatedNode.getFxNodeStore().get()).isNotNull();
+		assertThat(((Button) mutatedNode.getFxNodeStore().get()).getText()).isEqualTo("");
+	}
+
+
+	@Test
+	public void test_add_property_expect_mutation_and_property_added() {
+
+		final TestState state = new TestState();
+
+		NodeFactory factoryOriginal = SuiButton.button(
+				Properties.id("myButton")
+		);
+
+		NodeFactory factoryTarget = SuiButton.button(
+				Properties.id("myButton"),
+				Properties.textContent("Button")
+		);
+
+		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		SuiBaseNode original = context.getRootNode();
+		SuiBaseNode target = factoryTarget.create(state);
+		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+
+		TestUtils.assertNode(mutatedNode, SuiButton.class);
+		assertThat(mutatedNode).isEqualTo(original);
+		assertThat(mutatedNode).isNotEqualTo(target);
+		PropertyTestUtils.assertTextContentProperty(mutatedNode, "Button");
+		assertThat(mutatedNode.getFxNodeStore().get()).isNotNull();
+		assertThat(((Button) mutatedNode.getFxNodeStore().get()).getText()).isEqualTo("Button");
+	}
+
+
+
 
 
 	@Test
@@ -129,6 +265,8 @@ public class MutationBehaviourTest extends ApplicationTest {
 		PropertyTestUtils.assertIdProperty(childButton, "btn2");
 		PropertyTestUtils.assertTextContentProperty(childButton, "Renamed Child Button 2");
 	}
+
+
 
 
 	@Test
@@ -239,7 +377,6 @@ public class MutationBehaviourTest extends ApplicationTest {
 		PropertyTestUtils.assertIdProperty(childButton2, "btn2");
 		PropertyTestUtils.assertTextContentProperty(childButton2, "Child Button 2");
 	}
-
 
 
 }

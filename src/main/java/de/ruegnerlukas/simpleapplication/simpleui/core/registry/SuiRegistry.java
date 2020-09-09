@@ -2,11 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.registry;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
@@ -23,6 +18,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import javafx.scene.Node;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,10 +46,30 @@ public class SuiRegistry {
 
 
 	/**
-	 * initializes the singleton instance of this registry.
+	 * initializes the singleton instance of this registry with all pre-build nodes registered.
 	 */
 	public static void initialize() {
-		instance = new SuiRegistry();
+		instance = new SuiRegistry(false);
+	}
+
+
+
+
+	/**
+	 * initializes the singleton instance of this registry.
+	 */
+	public static void initializeEmpty() {
+		instance = new SuiRegistry(true);
+	}
+
+
+
+
+	/**
+	 * Disposes of the current registry instance.
+	 */
+	public static void dispose() {
+		instance = null;
 	}
 
 
@@ -81,24 +101,28 @@ public class SuiRegistry {
 
 
 	/**
-	 * Default constructor. Registers the pre-build nodes.
+	 * Default constructor. Optionally registers the pre-build nodes.
+	 *
+	 * @param initEmpty whether to initialize this registry with the pre-build nodes
 	 */
-	public SuiRegistry() {
-		SuiSeparator.register(this);
-		SuiLabel.register(this);
-		SuiButton.register(this);
-		SuiChoiceBox.register(this);
-		SuiComboBox.register(this);
-		SuiTextField.register(this);
-		SuiTextArea.register(this);
-		SuiDatePicker.register(this);
-		SuiSlider.register(this);
-		SuiContainer.register(this);
-		SuiAnchorPane.register(this);
-		SuiAnchorPaneItem.register(this);
-		SuiScrollPane.register(this);
-		SuiVBox.register(this);
-		SuiHBox.register(this);
+	public SuiRegistry(final boolean initEmpty) {
+		if (!initEmpty) {
+			SuiSeparator.register(this);
+			SuiLabel.register(this);
+			SuiButton.register(this);
+			SuiChoiceBox.register(this);
+			SuiComboBox.register(this);
+			SuiTextField.register(this);
+			SuiTextArea.register(this);
+			SuiDatePicker.register(this);
+			SuiSlider.register(this);
+			SuiContainer.register(this);
+			SuiAnchorPane.register(this);
+			SuiAnchorPaneItem.register(this);
+			SuiScrollPane.register(this);
+			SuiVBox.register(this);
+			SuiHBox.register(this);
+		}
 	}
 
 

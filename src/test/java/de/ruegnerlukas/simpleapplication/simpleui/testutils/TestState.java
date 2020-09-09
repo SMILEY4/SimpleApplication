@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui;
+package de.ruegnerlukas.simpleapplication.simpleui.testutils;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
