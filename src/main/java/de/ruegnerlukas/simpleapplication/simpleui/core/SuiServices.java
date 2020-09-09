@@ -10,14 +10,65 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.registry.RegistryEntry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 
-public final class CoreServices {
+public class SuiServices {
 
 
 	/**
-	 * Hidden constructor
+	 * The current instance.
 	 */
-	private CoreServices() {
-		// Hidden constructor
+	private static SuiServices instance = null;
+
+
+
+
+	/**
+	 * Get the instance of the simpleui services. If none was initialized yet, it will be initialized with the default implementation.
+	 *
+	 * @return an instance of the simpleui services
+	 */
+	public static SuiServices get() {
+		if (instance == null) {
+			initializeDefault();
+		}
+		return instance;
+	}
+
+
+
+
+	/**
+	 * Initialize the instance of the simpleui services with the default implementation.
+	 */
+	public static void initializeDefault() {
+		initialize(new SuiServices(new NodeMutatorImpl(MutationStrategyDecider.DEFAULT_STRATEGIES)));
+	}
+
+
+
+
+	/**
+	 * Initialize the instance of the simpleui services with the given implementation.
+	 */
+	public static void initialize(final SuiServices instance) {
+		SuiServices.instance = instance;
+	}
+
+
+
+
+	/**
+	 * The node mutator to use.
+	 */
+	private final NodeMutator mutator;
+
+
+
+
+	/**
+	 * @param mutator the node mutator to use.
+	 */
+	public SuiServices(final NodeMutator mutator) {
+		this.mutator = mutator;
 	}
 
 
@@ -28,7 +79,7 @@ public final class CoreServices {
 	 *
 	 * @param node the node to builds the javafx-node for
 	 */
-	public static void enrichWithFxNodes(final SuiBaseNode node) {
+	public void enrichWithFxNodes(final SuiBaseNode node) {
 		final RegistryEntry registryEntry = SuiRegistry.get().getEntry(node.getNodeType());
 		final Node fxNode = buildBaseFxNode(node, registryEntry);
 		applyProperties(node, registryEntry, fxNode);
@@ -45,7 +96,7 @@ public final class CoreServices {
 	 * @param registryEntry the registry entry for the node
 	 * @return the created javafx-node
 	 */
-	private static Node buildBaseFxNode(final SuiBaseNode node, final RegistryEntry registryEntry) {
+	private Node buildBaseFxNode(final SuiBaseNode node, final RegistryEntry registryEntry) {
 		return registryEntry.getBaseFxNodeBuilder().build(node);
 	}
 
@@ -59,10 +110,11 @@ public final class CoreServices {
 	 * @param registryEntry the registry entry of the node
 	 * @param fxNode        the javafx node
 	 */
-	private static void applyProperties(final SuiBaseNode node, final RegistryEntry registryEntry, final Node fxNode) {
+	@SuppressWarnings ("unchecked")
+	private void applyProperties(final SuiBaseNode node, final RegistryEntry registryEntry, final Node fxNode) {
 		node.getPropertyStore().stream().forEach(property -> {
-			PropFxNodeBuilder propBuilder = registryEntry.getPropFxNodeBuilders().get(property.getKey());
-			propBuilder.build(node, property, fxNode);
+			@SuppressWarnings ("rawtypes") PropFxNodeBuilder builder = registryEntry.getPropFxNodeBuilders().get(property.getKey());
+			builder.build(node, property, fxNode);
 		});
 	}
 
@@ -76,7 +128,7 @@ public final class CoreServices {
 	 * @param target   the target tree to match
 	 * @return the mutated root node or the original tree or the complete root node of the target tree if a rebuild was required
 	 */
-	public static SuiSceneTree mutateTree(final SuiSceneTree original, final SuiSceneTree target) {
+	public SuiSceneTree mutateTree(final SuiSceneTree original, final SuiSceneTree target) {
 		if (mutate(original.getRoot(), target.getRoot()) == MutationResult.REQUIRES_REBUILD) {
 			target.buildFxNodes();
 			return target;
@@ -95,9 +147,9 @@ public final class CoreServices {
 	 * @param target   the target node to match
 	 * @return the mutated original node or the target node.
 	 */
-	public static SuiBaseNode mutateNode(final SuiBaseNode original, final SuiBaseNode target) {
+	public SuiBaseNode mutateNode(final SuiBaseNode original, final SuiBaseNode target) {
 		if (mutate(original, target) == MutationResult.REQUIRES_REBUILD) {
-			CoreServices.enrichWithFxNodes(target);
+			enrichWithFxNodes(target);
 			return target;
 		} else {
 			return original;
@@ -114,8 +166,7 @@ public final class CoreServices {
 	 * @param target   the target node to match
 	 * @return the result status of the mutation / whether the original node has to be rebuild.
 	 */
-	public static MutationResult mutate(final SuiBaseNode original, final SuiBaseNode target) {
-		final NodeMutator mutator = new NodeMutatorImpl(MutationStrategyDecider.DEFAULT_STRATEGIES);
+	public MutationResult mutate(final SuiBaseNode original, final SuiBaseNode target) {
 		return mutator.mutateNode(original, target);
 	}
 

@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.AddOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.BaseOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.RemoveOperation;
@@ -305,7 +305,7 @@ public class ListTransformer {
 		@Override
 		public BaseOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
 			final SuiBaseNode addNode = target.getChildNodeStore().find(this.getElement());
-			CoreServices.enrichWithFxNodes(addNode);
+			SuiServices.get().enrichWithFxNodes(addNode);
 			return new AddOperation(this.getIndex(), addNode);
 		}
 
@@ -413,7 +413,7 @@ public class ListTransformer {
 		@Override
 		public ReplaceOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
 			final SuiBaseNode replacementNode = target.getChildNodeStore().find(this.getElement());
-			CoreServices.enrichWithFxNodes(replacementNode);
+			SuiServices.get().enrichWithFxNodes(replacementNode);
 			return new ReplaceOperation(this.getIndex(), replacementNode, original.getChildNodeStore().get(this.getIndex()));
 		}
 

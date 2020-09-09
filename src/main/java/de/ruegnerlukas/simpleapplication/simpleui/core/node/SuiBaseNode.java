@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
-import de.ruegnerlukas.simpleapplication.simpleui.core.ChildNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import lombok.Getter;
 
@@ -91,7 +90,7 @@ public class SuiBaseNode {
 									 final SuiNodeChildTransformListener childTransformListener) {
 		return new SuiBaseNode(nodeType,
 				new PropertyStore(properties),
-				new ChildNodeStore(ChildNodeBuilder.build(state, properties), childListener, childTransformListener),
+				new ChildNodeStore(state, properties, ChildNodeBuilder.DEFAULT, childListener, childTransformListener),
 				new FxNodeStore());
 	}
 

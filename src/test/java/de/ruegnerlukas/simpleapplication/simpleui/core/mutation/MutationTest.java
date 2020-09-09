@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
@@ -69,7 +69,7 @@ public class MutationTest extends ApplicationTest {
 		SuiSceneController context = new SuiSceneController(state, vbox);
 		SuiBaseNode original = context.getRootNode();
 		SuiBaseNode target = vboxTarget.create(state);
-		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 
@@ -106,7 +106,7 @@ public class MutationTest extends ApplicationTest {
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		SuiBaseNode original = context.getRootNode();
 		SuiBaseNode target = factoryTarget.create(state);
-		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
 		PropertyTestUtils.assertTextContentProperty(mutatedNode, "My Button");
@@ -144,7 +144,7 @@ public class MutationTest extends ApplicationTest {
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		SuiBaseNode original = context.getRootNode();
 		SuiBaseNode target = factoryTarget.create(state);
-		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiVBox.class);
 		assertThat(mutatedNode.getPropertyStore().has(SizeProperty.class)).isFalse();
@@ -173,7 +173,7 @@ public class MutationTest extends ApplicationTest {
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		SuiBaseNode original = context.getRootNode();
 		SuiBaseNode target = factoryTarget.create(state);
-		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
 		assertThat(mutatedNode.getPropertyStore().has(TextContentProperty.class)).isFalse();
@@ -201,7 +201,7 @@ public class MutationTest extends ApplicationTest {
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		SuiBaseNode original = context.getRootNode();
 		SuiBaseNode target = factoryTarget.create(state);
-		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
 		assertThat(mutatedNode).isEqualTo(original);
@@ -251,7 +251,7 @@ public class MutationTest extends ApplicationTest {
 		SuiSceneController context = new SuiSceneController(state, vbox);
 		SuiBaseNode original = context.getRootNode();
 		SuiBaseNode target = vboxTarget.create(state);
-		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.DEFAULT);
@@ -305,7 +305,7 @@ public class MutationTest extends ApplicationTest {
 		SuiSceneController context = new SuiSceneController(state, vbox);
 		SuiBaseNode original = context.getRootNode();
 		SuiBaseNode target = vboxTarget.create(state);
-		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.STATIC_NODE);
@@ -359,7 +359,7 @@ public class MutationTest extends ApplicationTest {
 		SuiSceneController context = new SuiSceneController(state, vbox);
 		SuiBaseNode original = context.getRootNode();
 		SuiBaseNode target = vboxTarget.create(state);
-		SuiBaseNode mutatedNode = CoreServices.mutateNode(original, target);
+		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.STATIC_SUBTREE);

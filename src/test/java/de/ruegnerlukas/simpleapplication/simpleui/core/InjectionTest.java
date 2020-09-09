@@ -227,7 +227,7 @@ public class InjectionTest extends ApplicationTest {
 
 		state.text = "Text 2";
 
-		final SuiBaseNode mutatedNode = CoreServices.mutateNode(node, nodeFactory.create(state));
+		final SuiBaseNode mutatedNode = SuiServices.get().mutateNode(node, nodeFactory.create(state));
 		final VBox fxNodeMutated = (VBox) mutatedNode.getFxNodeStore().get();
 
 		assertThat(fxNodeMutated.getChildren()).hasSize(3);

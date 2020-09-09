@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.AddOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.BaseOperation;
@@ -142,7 +142,7 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 			final int index = permanent.getRight();
 			final SuiBaseNode childOriginal = original.getChildNodeStore().find(nodeId);
 			final SuiBaseNode childTarget = target.getChildNodeStore().get(index);
-			if (CoreServices.mutate(childOriginal, childTarget) == MutationResult.REQUIRES_REBUILD) {
+			if (SuiServices.get().mutate(childOriginal, childTarget) == MutationResult.REQUIRES_REBUILD) {
 				return new ReplaceTransformation(index, nodeId);
 			} else {
 				return null;

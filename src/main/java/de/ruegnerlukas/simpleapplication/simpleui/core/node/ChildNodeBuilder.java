@@ -1,17 +1,22 @@
-package de.ruegnerlukas.simpleapplication.simpleui.core;
+package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
 import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public final class ChildNodeBuilder {
+public class ChildNodeBuilder {
+
+
+	/**
+	 * The default child node builder instance.
+	 */
+	public static final ChildNodeBuilder DEFAULT = new ChildNodeBuilder();
 
 
 	/**
@@ -23,22 +28,12 @@ public final class ChildNodeBuilder {
 
 
 	/**
-	 * Hidden constructor for utility class
-	 */
-	private ChildNodeBuilder() {
-		// Hidden constructor
-	}
-
-
-
-
-	/**
 	 * Creates child nodes from the given properties of the (parent) node.
 	 *
 	 * @param properties all properties of the (parent) node
 	 * @return the created child nodes
 	 */
-	public static List<SuiBaseNode> build(final SuiState state, final List<Property> properties) {
+	public List<SuiBaseNode> build(final SuiState state, final List<Property> properties) {
 		for (Property property : properties) {
 			if (property.getKey() == ItemListProperty.class) {
 				return fromItemListProperty(state, (ItemListProperty) property);
@@ -59,7 +54,7 @@ public final class ChildNodeBuilder {
 	 * @param state    the current state
 	 * @param property the item list property
 	 */
-	private static List<SuiBaseNode> fromItemListProperty(final SuiState state, final ItemListProperty property) {
+	private List<SuiBaseNode> fromItemListProperty(final SuiState state, final ItemListProperty property) {
 		if (property.getFactories().size() < CREATE_CHILD_LIST_ASYNC_CUTOFF) {
 			return property.getFactories().stream()
 					.map(factory -> factory.create(state))
@@ -78,7 +73,7 @@ public final class ChildNodeBuilder {
 	 * @param state    the current state
 	 * @param property the item property
 	 */
-	private static List<SuiBaseNode> fromItemProperty(final SuiState state, final ItemProperty property) {
+	private List<SuiBaseNode> fromItemProperty(final SuiState state, final ItemProperty property) {
 		return Optional.ofNullable(property.getFactory())
 				.map(factory -> factory.create(state))
 				.map(List::of)

@@ -1,6 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import lombok.AccessLevel;
 import lombok.Getter;
 
@@ -32,7 +34,27 @@ public class ChildNodeStore extends ChildNodeOperations {
 
 
 	/**
-	 * @param children the child nodes
+	 * @param properties             the properties
+	 * @param state                  the current state
+	 * @param childNodeBuilder       the builder creating child nodes from the given state and properties
+	 * @param childListener          the listener for changed children
+	 * @param childTransformListener the listener for child transform operations
+	 */
+	public ChildNodeStore(final SuiState state,
+						  final List<Property> properties,
+						  final ChildNodeBuilder childNodeBuilder,
+						  final SuiNodeChildListener childListener,
+						  final SuiNodeChildTransformListener childTransformListener) {
+		this(childNodeBuilder.build(state, properties), childListener, childTransformListener);
+	}
+
+
+
+
+	/**
+	 * @param children               the child nodes
+	 * @param childListener          the listener for changed children
+	 * @param childTransformListener the listener for child transform operations
 	 */
 	public ChildNodeStore(final List<SuiBaseNode> children,
 						  final SuiNodeChildListener childListener,

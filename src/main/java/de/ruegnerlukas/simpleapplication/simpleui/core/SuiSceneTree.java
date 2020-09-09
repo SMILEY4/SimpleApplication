@@ -36,7 +36,7 @@ public class SuiSceneTree {
 	 * Builds the javafx-nodes for the whole tree.
 	 */
 	public void buildFxNodes() {
-		CoreServices.enrichWithFxNodes(root);
+		SuiServices.get().enrichWithFxNodes(root);
 	}
 
 
@@ -49,7 +49,7 @@ public class SuiSceneTree {
 	 * @return true, when the root node was rebuild
 	 */
 	public boolean mutate(final SuiSceneTree targetTree) {
-		root = CoreServices.mutateTree(this, targetTree).getRoot();
+		root = SuiServices.get().mutateTree(this, targetTree).getRoot();
 		return root.equals(targetTree.getRoot());
 	}
 

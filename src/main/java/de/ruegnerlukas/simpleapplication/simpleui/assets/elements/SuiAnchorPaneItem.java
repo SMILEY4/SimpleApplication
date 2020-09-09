@@ -4,7 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
@@ -74,7 +74,7 @@ public final class SuiAnchorPaneItem {
 		public Node build(final SuiBaseNode node) {
 			if (node.getChildNodeStore().hasChildren()) {
 				SuiBaseNode childNode = node.getChildNodeStore().get(0);
-				CoreServices.enrichWithFxNodes(childNode);
+				SuiServices.get().enrichWithFxNodes(childNode);
 				return childNode.getFxNodeStore().get();
 			} else {
 				return null;

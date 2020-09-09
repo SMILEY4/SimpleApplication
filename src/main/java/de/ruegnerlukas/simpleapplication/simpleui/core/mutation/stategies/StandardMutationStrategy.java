@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 
@@ -45,14 +45,14 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 			}
 
 			if (isAdded(childOriginal, childTarget)) {
-				CoreServices.enrichWithFxNodes(childTarget);
+				SuiServices.get().enrichWithFxNodes(childTarget);
 				newChildList.add(childTarget);
 				wasChanged = true;
 				continue;
 			}
 
 			if (notAddedOrRemoved(childOriginal, childTarget)) {
-				SuiBaseNode childMutated = CoreServices.mutateNode(childOriginal, childTarget);
+				SuiBaseNode childMutated = SuiServices.get().mutateNode(childOriginal, childTarget);
 				newChildList.add(childMutated);
 				if (!childMutated.equals(childOriginal)) {
 					wasChanged = true;

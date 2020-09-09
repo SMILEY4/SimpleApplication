@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.ReplaceOperation;
@@ -143,7 +143,7 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 		for (int i = 0; i < target.getChildNodeStore().count(); i++) {
 			final SuiBaseNode originalChild = original.getChildNodeStore().get(i);
 			final SuiBaseNode targetChild = target.getChildNodeStore().get(i);
-			final SuiBaseNode mutatedChild = CoreServices.mutateNode(originalChild, targetChild);
+			final SuiBaseNode mutatedChild = SuiServices.get().mutateNode(originalChild, targetChild);
 			if (!originalChild.equals(mutatedChild)) {
 				replaceOperations.add(new ReplaceOperation(i, mutatedChild, originalChild));
 			}
@@ -165,7 +165,7 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 		for (int i = 0, n = target.getChildNodeStore().count(); i < n; i++) {
 			final SuiBaseNode targetChild = target.getChildNodeStore().get(i);
 			final SuiBaseNode originalChild = original.getChildNodeStore().find(targetChild.getPropertyStore().getIdUnsafe());
-			final SuiBaseNode mutatedChild = CoreServices.mutateNode(originalChild, targetChild);
+			final SuiBaseNode mutatedChild = SuiServices.get().mutateNode(originalChild, targetChild);
 			newChildList.add(mutatedChild);
 		}
 		original.getChildNodeStore().setChildren(newChildList);

@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.CoreServices;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
 
@@ -43,7 +43,7 @@ public class AddAllStrategy implements ChildNodesMutationStrategy {
 		final List<SuiBaseNode> newChildList = new ArrayList<>();
 		for (int i = 0, n = target.getChildNodeStore().count(); i < n; i++) {
 			final SuiBaseNode childTarget = target.getChildNodeStore().get(i);
-			CoreServices.enrichWithFxNodes(childTarget);
+			SuiServices.get().enrichWithFxNodes(childTarget);
 			newChildList.add(childTarget);
 		}
 		original.getChildNodeStore().setChildren(newChildList);
