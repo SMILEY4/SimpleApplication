@@ -2,10 +2,10 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.Slider;
 import lombok.Getter;
 
@@ -45,14 +45,6 @@ public class MinMaxProperty extends SuiProperty {
 	protected boolean isPropertyEqual(final SuiProperty other) {
 		return NumberUtils.isEqual(getMin(), ((MinMaxProperty) other).getMin())
 				&& NumberUtils.isEqual(getMax(), ((MinMaxProperty) other).getMax());
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return getMin() + "," + getMax();
 	}
 
 

@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
@@ -63,14 +63,6 @@ public class AnchorProperty extends SuiProperty {
 				&& Objects.equals(getBottom(), anchorOther.getBottom())
 				&& Objects.equals(getLeft(), anchorOther.getLeft())
 				&& Objects.equals(getRight(), anchorOther.getRight());
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return "t=" + getTop() + " b=" + getBottom() + " l=" + getLeft() + " r=" + getRight();
 	}
 
 

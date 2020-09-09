@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
@@ -48,14 +48,6 @@ public class ItemProperty extends SuiProperty {
 	protected boolean isPropertyEqual(final SuiProperty other) {
 		final ItemProperty otherItem = (ItemProperty) other;
 		return false; // TODO
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return "n=1";
 	}
 
 

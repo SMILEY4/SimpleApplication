@@ -31,11 +31,4 @@ public abstract class AbstractEventListenerProperty<T> extends SuiProperty {
 	}
 
 
-
-
-	@Override
-	public String printValue() {
-		return String.valueOf(getListener());
-	}
-
 }

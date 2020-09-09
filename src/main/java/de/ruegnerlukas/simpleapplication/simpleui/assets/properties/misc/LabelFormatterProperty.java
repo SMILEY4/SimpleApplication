@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.Slider;
 import javafx.util.StringConverter;
 import lombok.Getter;
@@ -37,14 +37,6 @@ public class LabelFormatterProperty extends SuiProperty {
 	@Override
 	protected boolean isPropertyEqual(final SuiProperty other) {
 		return getFormatter().equals(((LabelFormatterProperty) other).getFormatter());
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return getFormatter() == null ? "null" : getFormatter().toString();
 	}
 
 

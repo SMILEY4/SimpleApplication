@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
@@ -44,14 +44,6 @@ public class ShowScrollbarsProperty extends SuiProperty {
 	protected boolean isPropertyEqual(final SuiProperty other) {
 		return horizontal == ((ShowScrollbarsProperty) other).getHorizontal()
 				&& vertical == ((ShowScrollbarsProperty) other).getVertical();
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return "horz=" + getHorizontal() + " vert=" + getVertical();
 	}
 
 

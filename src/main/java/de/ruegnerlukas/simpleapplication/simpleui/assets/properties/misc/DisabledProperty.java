@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -34,14 +34,6 @@ public class DisabledProperty extends SuiProperty {
 	@Override
 	protected boolean isPropertyEqual(final SuiProperty other) {
 		return disabled == ((DisabledProperty) other).isDisabled();
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return isDisabled() ? "disabled" : "notDisabled";
 	}
 
 

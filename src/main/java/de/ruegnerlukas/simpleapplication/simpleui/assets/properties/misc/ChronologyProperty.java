@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.DatePicker;
 import lombok.Getter;
 
@@ -43,15 +43,6 @@ public class ChronologyProperty extends SuiProperty {
 	protected boolean isPropertyEqual(final SuiProperty other) {
 		return chronology.equals(((ChronologyProperty) other).getChronology());
 	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return String.valueOf(chronology);
-	}
-
 
 
 

@@ -42,10 +42,4 @@ public abstract class SuiProperty {
 	 */
 	protected abstract boolean isPropertyEqual(SuiProperty other);
 
-
-	/**
-	 * @return the value(s) of this property as a readable string.
-	 */
-	public abstract String printValue();
-
 }

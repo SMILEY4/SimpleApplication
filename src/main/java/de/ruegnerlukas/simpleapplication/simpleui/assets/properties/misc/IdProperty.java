@@ -32,12 +32,4 @@ public class IdProperty extends SuiProperty {
 	}
 
 
-
-
-	@Override
-	public String printValue() {
-		return id;
-	}
-
-
 }

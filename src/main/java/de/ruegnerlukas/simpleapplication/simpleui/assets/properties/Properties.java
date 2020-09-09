@@ -136,7 +136,8 @@ public final class Properties {
 	 * @param properties        the list of properties to check
 	 * @return the list of illegal properties.
 	 */
-	public static List<SuiProperty> findIllegal(final Set<Class<? extends SuiProperty>> allowedProperties, final List<SuiProperty> properties) {
+	public static List<SuiProperty> findIllegal(final Set<Class<? extends SuiProperty>> allowedProperties,
+												final List<SuiProperty> properties) {
 		List<SuiProperty> illegal = new ArrayList<>();
 		properties.forEach(property -> {
 			if (!allowedProperties.contains(property.getKey())) {

@@ -3,11 +3,11 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.SearchableComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -15,7 +15,6 @@ import lombok.Getter;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class ChoicesProperty<T> extends SuiProperty {
 
@@ -53,14 +52,6 @@ public class ChoicesProperty<T> extends SuiProperty {
 			}
 			return true;
 		}
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return "{" + getChoices().stream().map(Object::toString).collect(Collectors.joining(", ")) + "}";
 	}
 
 

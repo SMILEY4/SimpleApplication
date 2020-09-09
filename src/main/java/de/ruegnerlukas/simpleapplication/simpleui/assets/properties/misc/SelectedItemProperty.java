@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
 
@@ -36,14 +36,6 @@ public class SelectedItemProperty<T> extends SuiProperty {
 	@Override
 	public boolean isPropertyEqual(final SuiProperty other) {
 		return getSelected().equals(((SelectedItemProperty) other).getSelected());
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return getSelected() == null ? "null" : getSelected().toString();
 	}
 
 
