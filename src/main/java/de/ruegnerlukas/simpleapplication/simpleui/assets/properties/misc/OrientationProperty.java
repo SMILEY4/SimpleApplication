@@ -5,12 +5,20 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiPropertyComparable;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import lombok.Getter;
 
-public class OrientationProperty extends SuiProperty implements SuiPropertyComparable<OrientationProperty> {
+import java.util.function.BiFunction;
+
+public class OrientationProperty extends SuiProperty {
+
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<OrientationProperty, OrientationProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getOrientation() == b.getOrientation();
 
 
 	/**
@@ -26,16 +34,8 @@ public class OrientationProperty extends SuiProperty implements SuiPropertyCompa
 	 * @param orientation the orientation value
 	 */
 	public OrientationProperty(final Orientation orientation) {
-		super(OrientationProperty.class);
+		super(OrientationProperty.class, COMPARATOR);
 		this.orientation = orientation;
-	}
-
-
-
-
-	@Override
-	public boolean checkPropertyEqual(final OrientationProperty other) {
-		return orientation == other.getOrientation();
 	}
 
 
