@@ -2,12 +2,14 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -18,11 +20,15 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 public class MutationTest extends ApplicationTest {
 
@@ -184,6 +190,8 @@ public class MutationTest extends ApplicationTest {
 	}
 
 
+
+
 	@Test
 	public void test_add_property_expect_mutation_and_property_added() {
 
@@ -210,7 +218,6 @@ public class MutationTest extends ApplicationTest {
 		assertThat(mutatedNode.getFxNodeStore().get()).isNotNull();
 		assertThat(((Button) mutatedNode.getFxNodeStore().get()).getText()).isEqualTo("Button");
 	}
-
 
 
 
@@ -378,5 +385,107 @@ public class MutationTest extends ApplicationTest {
 		PropertyTestUtils.assertTextContentProperty(childButton2, "Child Button 2");
 	}
 
+
+
+
+	@Test
+	public void test_with_not_comparable_property_and_no_property_id_expect_update_property() {
+
+		final TestState state = new TestState();
+		final List<String> capturedEvents = new ArrayList<>();
+
+		final OnActionEventProperty.ButtonBaseUpdatingBuilder spyOnActionUpdatingBuilder = Mockito.spy(new OnActionEventProperty.ButtonBaseUpdatingBuilder());
+		SuiRegistry.get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
+
+		NodeFactory factoryOriginal = SuiButton.button(
+				Properties.id("btn"),
+				Properties.textContent("Button Original"),
+				EventProperties.eventAction(e -> capturedEvents.add("from original"))
+		);
+
+		NodeFactory factoryTarget = SuiButton.button(
+				Properties.id("btn"),
+				Properties.textContent("Button Target"),
+				EventProperties.eventAction(e -> capturedEvents.add("from target"))
+		);
+
+		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		SuiNode original = context.getRootNode();
+		SuiNode target = factoryTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+
+		assertThat(mutatedNode).isNotEqualTo(target);
+		assertThat(mutatedNode).isEqualTo(original);
+
+		((Button) mutatedNode.getFxNodeStore().get()).fire();
+		delay(100);
+		assertThat(capturedEvents).containsExactly("from target");
+
+		assertThat(mutatedNode.getPropertyStore().get(OnActionEventProperty.class))
+				.isEqualTo(target.getPropertyStore().get(OnActionEventProperty.class));
+
+		verify(spyOnActionUpdatingBuilder).update(
+				Mockito.eq(target.getPropertyStore().get(OnActionEventProperty.class)),
+				Mockito.eq(original),
+				Mockito.any());
+
+	}
+
+
+
+
+	@Test
+	public void test_with_not_comparable_property_and_property_id_expect_no_change() {
+
+		final TestState state = new TestState();
+		final List<String> capturedEvents = new ArrayList<>();
+
+		final OnActionEventProperty.ButtonBaseUpdatingBuilder spyOnActionUpdatingBuilder = Mockito.spy(new OnActionEventProperty.ButtonBaseUpdatingBuilder());
+		SuiRegistry.get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
+
+		NodeFactory factoryOriginal = SuiButton.button(
+				Properties.id("btn"),
+				Properties.textContent("Button Original"),
+				EventProperties.eventAction(/*todo: id here ?*/e -> capturedEvents.add("from original"))
+		);
+
+		NodeFactory factoryTarget = SuiButton.button(
+				Properties.id("btn"),
+				Properties.textContent("Button Target"),
+				EventProperties.eventAction(/*todo: id here ?*/e -> capturedEvents.add("from target"))
+		);
+
+		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		SuiNode original = context.getRootNode();
+		SuiNode target = factoryTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+
+		assertThat(mutatedNode).isNotEqualTo(target);
+		assertThat(mutatedNode).isEqualTo(original);
+
+		((Button) mutatedNode.getFxNodeStore().get()).fire();
+		delay(100);
+		assertThat(capturedEvents).containsExactly("from original");
+
+		assertThat(mutatedNode.getPropertyStore().get(OnActionEventProperty.class))
+				.isNotEqualTo(target.getPropertyStore().get(OnActionEventProperty.class));
+
+		verify(spyOnActionUpdatingBuilder, never()).update(
+				Mockito.eq(target.getPropertyStore().get(OnActionEventProperty.class)),
+				Mockito.eq(original),
+				Mockito.any());
+
+	}
+
+
+
+
+	private void delay(final long ms) {
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
