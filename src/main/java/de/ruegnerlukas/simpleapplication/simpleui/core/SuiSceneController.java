@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateUpdate;
@@ -122,6 +123,7 @@ public class SuiSceneController implements SuiStateListener {
 	public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update) {
 		final SuiSceneTree targetTree = SuiSceneTree.build(nodeFactory, state);
 		sceneTree.mutate(targetTree);
+		SuiProfiler.get().countSceneMutated();
 		if (sceneTree.mutate(targetTree)) {
 			listeners.forEach(listener -> listener.onNewSuiRootNode(sceneTree.getRoot()));
 		}

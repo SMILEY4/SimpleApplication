@@ -1,13 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ChildNodesMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 
@@ -150,6 +151,7 @@ public class NodeMutatorImpl implements NodeMutator {
 		switch (getPropertyState(propOriginal, propTarget)) {
 
 			case REMOVED:
+				SuiProfiler.get().countPropertyRemoved();
 				if (updater.remove(propOriginal, original, original.getFxNodeStore().get()) == REQUIRES_REBUILD) {
 					return REQUIRES_REBUILD;
 				} else {
@@ -159,6 +161,7 @@ public class NodeMutatorImpl implements NodeMutator {
 
 			case ADDED:
 			case UPDATED:
+				SuiProfiler.get().countPropertyUpsert();
 				if (updater.update(propTarget, original, original.getFxNodeStore().get()) == REQUIRES_REBUILD) {
 					return REQUIRES_REBUILD;
 				} else {
