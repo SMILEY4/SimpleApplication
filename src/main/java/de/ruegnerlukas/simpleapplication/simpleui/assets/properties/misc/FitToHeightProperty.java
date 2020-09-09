@@ -40,12 +40,6 @@ public class FitToHeightProperty extends SuiProperty {
 
 
 
-	@Override
-	public String printValue() {
-		return isFitToHeight() ? "fit to height" : "dont fit to height";
-	}
-
-
 
 
 	public static class ScrollPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<FitToHeightProperty, ScrollPane> {

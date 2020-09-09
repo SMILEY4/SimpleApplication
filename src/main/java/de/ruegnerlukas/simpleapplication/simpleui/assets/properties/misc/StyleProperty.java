@@ -2,10 +2,10 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import lombok.Getter;
@@ -62,7 +62,6 @@ public class StyleProperty extends SuiProperty {
 
 
 
-
 	/**
 	 * @return this style as a path.
 	 */
@@ -93,18 +92,6 @@ public class StyleProperty extends SuiProperty {
 			return pathThis.equals(pathOther) && getResStyle().isInternal() == otherProp.getResStyle().isInternal();
 		} else {
 			return getStrStyle().equals(otherProp.getStrStyle());
-		}
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		if (usesResourceStyle()) {
-			return getResStyle().getPath() + (getResStyle().isInternal() ? " (internal)" : "");
-		} else {
-			return getStrStyle();
 		}
 	}
 

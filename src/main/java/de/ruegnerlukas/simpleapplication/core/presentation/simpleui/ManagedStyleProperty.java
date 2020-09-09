@@ -4,10 +4,10 @@ import de.ruegnerlukas.simpleapplication.core.presentation.style.ResourceStyle;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StringStyle;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.Style;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -104,18 +104,6 @@ public class ManagedStyleProperty extends SuiProperty {
 			final Set<String> styleStringsThis = new HashSet<>(Arrays.asList(getStrStyle().getStyleStrings()));
 			final Set<String> styleStringsOther = new HashSet<>(Arrays.asList(otherProp.getStrStyle().getStyleStrings()));
 			return styleStringsThis.equals(styleStringsOther);
-		}
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		if (usesResourceStyle()) {
-			return getResStyle().getResource().getPath() + (getResStyle().getResource().isInternal() ? " (internal)" : "");
-		} else {
-			return getStrStyle().getAsSingleString();
 		}
 	}
 

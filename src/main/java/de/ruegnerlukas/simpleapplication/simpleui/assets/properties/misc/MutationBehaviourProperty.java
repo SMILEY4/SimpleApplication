@@ -60,14 +60,6 @@ public class MutationBehaviourProperty extends SuiProperty {
 	}
 
 
-
-
-	@Override
-	public String printValue() {
-		return this.behaviour.toString();
-	}
-
-
 }
 
 

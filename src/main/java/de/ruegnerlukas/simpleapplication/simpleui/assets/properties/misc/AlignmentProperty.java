@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
@@ -38,14 +38,6 @@ public class AlignmentProperty extends SuiProperty {
 	@Override
 	protected boolean isPropertyEqual(final SuiProperty other) {
 		return alignment == ((AlignmentProperty) other).getAlignment();
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return this.alignment.toString();
 	}
 
 

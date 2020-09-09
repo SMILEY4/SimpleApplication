@@ -2,10 +2,10 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
@@ -45,14 +45,6 @@ public class SizePreferredProperty extends SuiProperty {
 		final SizePreferredProperty sizeOther = (SizePreferredProperty) other;
 		return NumberUtils.isEqual(this.getWidth(), sizeOther.getWidth())
 				&& NumberUtils.isEqual(this.getHeight(), sizeOther.getHeight());
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return getWidth() + "x" + getHeight();
 	}
 
 

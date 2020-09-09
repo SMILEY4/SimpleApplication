@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
@@ -35,14 +35,6 @@ public class EditableProperty extends SuiProperty {
 	@Override
 	protected boolean isPropertyEqual(final SuiProperty other) {
 		return editable == ((EditableProperty) other).isEditable();
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return isEditable() ? "editable" : "notEditable";
 	}
 
 

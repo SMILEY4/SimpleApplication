@@ -433,7 +433,8 @@ public final class EventProperties {
 	 * @param <T>          generic type
 	 * @return a {@link OnValueChangedEventProperty}
 	 */
-	public static <T> SuiProperty eventValueChanged(final Class<T> expectedType, final SUIEventListener<ValueChangedEventData<T>> listener) {
+	public static <T> SuiProperty eventValueChanged(final Class<T> expectedType,
+													final SUIEventListener<ValueChangedEventData<T>> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnValueChangedEventProperty<>(listener);
 	}

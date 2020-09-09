@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -35,14 +35,6 @@ public class SpacingProperty extends SuiProperty {
 	@Override
 	protected boolean isPropertyEqual(final SuiProperty other) {
 		return spacing == ((SpacingProperty) other).getSpacing();
-	}
-
-
-
-
-	@Override
-	public String printValue() {
-		return Double.toString(spacing);
 	}
 
 
