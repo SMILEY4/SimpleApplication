@@ -8,9 +8,16 @@ import javafx.scene.control.Labeled;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class WrapTextProperty extends SuiProperty {
 
 
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<WrapTextProperty, WrapTextProperty, Boolean> COMPARATOR =
+			(a, b) -> a.isWrap() == b.isWrap();
 	/**
 	 * Whether the text content should wrap.
 	 */
@@ -24,16 +31,8 @@ public class WrapTextProperty extends SuiProperty {
 	 * @param wrap whether the text content should wrap.
 	 */
 	public WrapTextProperty(final boolean wrap) {
-		super(WrapTextProperty.class);
+		super(WrapTextProperty.class, COMPARATOR);
 		this.wrap = wrap;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return wrap == ((WrapTextProperty) other).isWrap();
 	}
 
 

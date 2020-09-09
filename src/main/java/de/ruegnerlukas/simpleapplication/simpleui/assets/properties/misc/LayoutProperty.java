@@ -10,9 +10,16 @@ import javafx.scene.layout.Pane;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class LayoutProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<LayoutProperty, LayoutProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getLayoutId().equals(b.getLayoutId());
 
 	/**
 	 * The id of the layout. This property will only be mutated, when this id changes.
@@ -34,17 +41,9 @@ public class LayoutProperty extends SuiProperty {
 	 * @param layoutFunction the function used to calculate the layout of the child nodes
 	 */
 	public LayoutProperty(final String layoutId, final LayoutFunction layoutFunction) {
-		super(LayoutProperty.class);
+		super(LayoutProperty.class, COMPARATOR);
 		this.layoutId = layoutId;
 		this.layoutFunction = layoutFunction;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return getLayoutId().equals(((LayoutProperty) other).getLayoutId());
 	}
 
 

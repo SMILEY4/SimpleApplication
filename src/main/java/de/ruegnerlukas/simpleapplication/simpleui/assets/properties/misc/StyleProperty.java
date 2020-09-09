@@ -10,8 +10,27 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class StyleProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<StyleProperty, StyleProperty, Boolean> COMPARATOR = (a, b) -> {
+		if (a.usesResourceStyle() == b.usesResourceStyle()) {
+			if (a.usesResourceStyle()) {
+				final String aPath = a.getResStyle().getPath();
+				final String bPath = b.getResStyle().getPath();
+				return aPath.equals(bPath) && a.getResStyle().isInternal() == b.getResStyle().isInternal();
+			} else {
+				return a.getStrStyle().equals(b.getStrStyle());
+			}
+		} else {
+			return false;
+		}
+	};
 
 	/**
 	 * The style as a string
@@ -32,7 +51,7 @@ public class StyleProperty extends SuiProperty {
 	 * @param style the style as a string
 	 */
 	public StyleProperty(final String style) {
-		super(StyleProperty.class);
+		super(StyleProperty.class, COMPARATOR);
 		this.strStyle = style;
 		this.resStyle = null;
 	}
@@ -44,7 +63,7 @@ public class StyleProperty extends SuiProperty {
 	 * @param style the style as a file / resource
 	 */
 	public StyleProperty(final Resource style) {
-		super(StyleProperty.class);
+		super(StyleProperty.class, COMPARATOR);
 		this.strStyle = null;
 		this.resStyle = style;
 	}
@@ -74,24 +93,6 @@ public class StyleProperty extends SuiProperty {
 			return path;
 		} else {
 			return "";
-		}
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		final StyleProperty otherProp = (StyleProperty) other;
-		if (usesResourceStyle() != otherProp.usesResourceStyle()) {
-			return false;
-		}
-		if (usesResourceStyle()) {
-			final String pathThis = getResStyle().getPath();
-			final String pathOther = otherProp.getResStyle().getPath();
-			return pathThis.equals(pathOther) && getResStyle().isInternal() == otherProp.getResStyle().isInternal();
-		} else {
-			return getStrStyle().equals(otherProp.getStrStyle());
 		}
 	}
 

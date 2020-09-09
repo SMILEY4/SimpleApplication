@@ -4,6 +4,8 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class MutationBehaviourProperty extends SuiProperty {
 
 
@@ -35,6 +37,12 @@ public class MutationBehaviourProperty extends SuiProperty {
 
 
 	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<MutationBehaviourProperty, MutationBehaviourProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getBehaviour() == b.getBehaviour();
+
+	/**
 	 * The behaviour.
 	 */
 	@Getter
@@ -47,16 +55,8 @@ public class MutationBehaviourProperty extends SuiProperty {
 	 * @param behaviour the behaviour
 	 */
 	public MutationBehaviourProperty(final MutationBehaviour behaviour) {
-		super(MutationBehaviourProperty.class);
+		super(MutationBehaviourProperty.class, COMPARATOR);
 		this.behaviour = behaviour;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return behaviour == ((MutationBehaviourProperty) other).getBehaviour();
 	}
 
 

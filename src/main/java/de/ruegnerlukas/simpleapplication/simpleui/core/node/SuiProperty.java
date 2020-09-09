@@ -27,7 +27,7 @@ public abstract class SuiProperty {
 	 * @param comparator the function comparing two properties of the same type checking if they are considered equal.
 	 * @param <T>        the generic type of this property
 	 */
-	public <T extends SuiProperty> SuiProperty(final Class<T> key, final BiFunction<T, T, Boolean> comparator) {
+	public <T extends SuiProperty> SuiProperty(final Class<? extends SuiProperty> key, final BiFunction<T, T, Boolean> comparator) {
 		this.key = key;
 		this.comparator = comparator;
 	}

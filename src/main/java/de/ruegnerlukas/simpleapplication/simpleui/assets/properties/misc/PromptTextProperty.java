@@ -9,8 +9,16 @@ import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class PromptTextProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<PromptTextProperty, PromptTextProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getText().equals(b.getText());
 
 	/**
 	 * The text prompt.
@@ -25,16 +33,8 @@ public class PromptTextProperty extends SuiProperty {
 	 * @param text the prompt text
 	 */
 	public PromptTextProperty(final String text) {
-		super(PromptTextProperty.class);
+		super(PromptTextProperty.class, COMPARATOR);
 		this.text = text;
-	}
-
-
-
-
-	@Override
-	public boolean isPropertyEqual(final SuiProperty other) {
-		return getText().equals(((PromptTextProperty) other).getText());
 	}
 
 

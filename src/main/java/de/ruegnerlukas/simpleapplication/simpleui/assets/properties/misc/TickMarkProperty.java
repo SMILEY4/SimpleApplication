@@ -9,6 +9,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.Slider;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class TickMarkProperty extends SuiProperty {
 
 
@@ -88,6 +90,16 @@ public class TickMarkProperty extends SuiProperty {
 
 
 	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<TickMarkProperty, TickMarkProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getTickMarkStyle().equals(b.getTickMarkStyle())
+					&& NumberUtils.isEqual(a.getMajorTickUnit(), b.getMajorTickUnit())
+					&& a.getMinorTickCount() == b.getMinorTickCount()
+					&& a.isSnapToTicks() == b.isSnapToTicks();
+
+
+	/**
 	 * The style of the tick marks
 	 */
 	@Getter
@@ -127,22 +139,11 @@ public class TickMarkProperty extends SuiProperty {
 							final Number majorTickUnit,
 							final int minorTickCount,
 							final boolean snapToTicks) {
-		super(TickMarkProperty.class);
+		super(TickMarkProperty.class, COMPARATOR);
 		this.tickMarkStyle = tickMarkStyle;
 		this.majorTickUnit = majorTickUnit;
 		this.minorTickCount = minorTickCount;
 		this.snapToTicks = snapToTicks;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return getTickMarkStyle().equals(((TickMarkProperty) other).getTickMarkStyle())
-				&& NumberUtils.isEqual(getMajorTickUnit(), ((TickMarkProperty) other).getMajorTickUnit())
-				&& getMinorTickCount() == ((TickMarkProperty) other).getMinorTickCount()
-				&& isSnapToTicks() == ((TickMarkProperty) other).isSnapToTicks();
 	}
 
 

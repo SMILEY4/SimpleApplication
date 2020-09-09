@@ -14,9 +14,33 @@ import lombok.Getter;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 public class ManagedStyleProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<ManagedStyleProperty, ManagedStyleProperty, Boolean> COMPARATOR = (a, b) -> {
+		if (a.usesResourceStyle() != b.usesResourceStyle()) {
+			return false;
+		}
+		if (!a.getStyleService().equals(b.getStyleService())) {
+			return false;
+		}
+		if (a.usesResourceStyle()) {
+			final String aPath = a.getResStyle().getResource().getPath();
+			final String bPath = b.getResStyle().getResource().getPath();
+			final boolean aInternal = a.getResStyle().getResource().isInternal();
+			final boolean bInternal = b.getResStyle().getResource().isInternal();
+			return aInternal == bInternal && aPath.equals(bPath);
+		} else {
+			final Set<String> styleStringsThis = new HashSet<>(Arrays.asList(a.getStrStyle().getStyleStrings()));
+			final Set<String> styleStringsOther = new HashSet<>(Arrays.asList(b.getStrStyle().getStyleStrings()));
+			return styleStringsThis.equals(styleStringsOther);
+		}
+	};
 
 	/**
 	 * The style managed by the style service.
@@ -50,7 +74,7 @@ public class ManagedStyleProperty extends SuiProperty {
 	 * @param styleService the style service
 	 */
 	public ManagedStyleProperty(final StyleService styleService, final Style style) {
-		super(ManagedStyleProperty.class);
+		super(ManagedStyleProperty.class, COMPARATOR);
 		this.style = style;
 		this.styleService = styleService;
 	}
@@ -83,28 +107,6 @@ public class ManagedStyleProperty extends SuiProperty {
 	 */
 	private StringStyle getStrStyle() {
 		return (StringStyle) style;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		final ManagedStyleProperty otherProp = (ManagedStyleProperty) other;
-		if (!getStyleService().equals(otherProp.getStyleService())) {
-			return false;
-		}
-		if (usesResourceStyle() != otherProp.usesResourceStyle()) {
-			return false;
-		}
-		if (usesResourceStyle()) {
-			return getResStyle().getResource().getPath().equals(otherProp.getResStyle().getResource().getPath())
-					&& getResStyle().getResource().isInternal() == otherProp.getResStyle().getResource().isInternal();
-		} else {
-			final Set<String> styleStringsThis = new HashSet<>(Arrays.asList(getStrStyle().getStyleStrings()));
-			final Set<String> styleStringsOther = new HashSet<>(Arrays.asList(otherProp.getStrStyle().getStyleStrings()));
-			return styleStringsThis.equals(styleStringsOther);
-		}
 	}
 
 

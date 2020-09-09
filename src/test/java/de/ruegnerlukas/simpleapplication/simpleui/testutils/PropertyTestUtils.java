@@ -151,7 +151,7 @@ public class PropertyTestUtils {
 	public static void assertSpacingProperty(final SuiNode node, final double spacing) {
 		assertThat(node.getPropertyStore().has(SpacingProperty.class)).isTrue();
 		final SpacingProperty property = node.getPropertyStore().get(SpacingProperty.class);
-		assertThat(property.getSpacing()).isCloseTo(spacing, Percentage.withPercentage(0.01));
+		assertThat(property.getSpacing().doubleValue()).isCloseTo(spacing, Percentage.withPercentage(0.01));
 	}
 
 

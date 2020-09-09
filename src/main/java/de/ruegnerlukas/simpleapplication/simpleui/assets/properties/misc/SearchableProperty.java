@@ -8,8 +8,16 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class SearchableProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<SearchableProperty, SearchableProperty, Boolean> COMPARATOR =
+			(a, b) -> a.isSearchable() == b.isSearchable();
 
 	/**
 	 * Whether the element is searchable.
@@ -24,16 +32,8 @@ public class SearchableProperty extends SuiProperty {
 	 * @param searchable whether the element is searchable
 	 */
 	public SearchableProperty(final boolean searchable) {
-		super(SearchableProperty.class);
+		super(SearchableProperty.class, COMPARATOR);
 		this.searchable = searchable;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return searchable == ((SearchableProperty) other).isSearchable();
 	}
 
 

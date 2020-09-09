@@ -10,9 +10,16 @@ import lombok.Getter;
 
 import java.time.chrono.Chronology;
 import java.util.Locale;
+import java.util.function.BiFunction;
 
 public class ChronologyProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<ChronologyProperty, ChronologyProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getChronology().equals(b.getChronology());
 
 	/**
 	 * The default {@link Chronology}.
@@ -32,16 +39,8 @@ public class ChronologyProperty extends SuiProperty {
 	 * @param chronology the {@link Chronology}
 	 */
 	public ChronologyProperty(final Chronology chronology) {
-		super(ChronologyProperty.class);
+		super(ChronologyProperty.class, COMPARATOR);
 		this.chronology = chronology;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return chronology.equals(((ChronologyProperty) other).getChronology());
 	}
 
 

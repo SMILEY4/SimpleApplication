@@ -10,7 +10,17 @@ import javafx.scene.control.ComboBox;
 import javafx.util.StringConverter;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class ChoicesConverterProperty<T> extends SuiProperty {
+
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	@SuppressWarnings ("rawtypes")
+	private static final BiFunction<ChoicesConverterProperty, ChoicesConverterProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getConverter() == b.getConverter();
 
 
 	/**
@@ -27,7 +37,7 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 	 * @param toString   converter from an object to a string
 	 */
 	public ChoicesConverterProperty(final FromStringConverter<T> fromString, final ToStringConverter<T> toString) {
-		this(new StringConverter<T>() {
+		this(new StringConverter<>() {
 			@Override
 			public String toString(final T t) {
 				return toString.toString(t);
@@ -50,16 +60,8 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 	 * @param converter the string converter
 	 */
 	public ChoicesConverterProperty(final StringConverter<T> converter) {
-		super(ChoicesConverterProperty.class);
+		super(ChoicesConverterProperty.class, COMPARATOR);
 		this.converter = converter;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return converter.equals(((ChoicesConverterProperty) other).getConverter());
 	}
 
 

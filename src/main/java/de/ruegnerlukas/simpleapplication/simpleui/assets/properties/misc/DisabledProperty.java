@@ -8,8 +8,16 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class DisabledProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<DisabledProperty, DisabledProperty, Boolean> COMPARATOR =
+			(a, b) -> a.isDisabled() == b.isDisabled();
 
 	/**
 	 * Whether the element is disabled.
@@ -24,16 +32,8 @@ public class DisabledProperty extends SuiProperty {
 	 * @param disabled whether the element is disabled
 	 */
 	public DisabledProperty(final boolean disabled) {
-		super(DisabledProperty.class);
+		super(DisabledProperty.class, COMPARATOR);
 		this.disabled = disabled;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return disabled == ((DisabledProperty) other).isDisabled();
 	}
 
 

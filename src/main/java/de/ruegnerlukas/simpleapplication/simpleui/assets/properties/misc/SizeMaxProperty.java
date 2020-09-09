@@ -9,9 +9,17 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 @Getter
 public class SizeMaxProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<SizeMaxProperty, SizeMaxProperty, Boolean> COMPARATOR = (a, b) ->
+			NumberUtils.isEqual(a.getWidth(), b.getWidth()) && NumberUtils.isEqual(a.getHeight(), b.getHeight());
 
 	/**
 	 * The maximum width.
@@ -32,19 +40,9 @@ public class SizeMaxProperty extends SuiProperty {
 	 * @param height the maximum height.
 	 */
 	public SizeMaxProperty(final Number width, final Number height) {
-		super(SizeMaxProperty.class);
+		super(SizeMaxProperty.class, COMPARATOR);
 		this.width = width;
 		this.height = height;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		final SizeMaxProperty sizeOther = (SizeMaxProperty) other;
-		return NumberUtils.isEqual(this.getWidth(), sizeOther.getWidth())
-				&& NumberUtils.isEqual(this.getHeight(), sizeOther.getHeight());
 	}
 
 

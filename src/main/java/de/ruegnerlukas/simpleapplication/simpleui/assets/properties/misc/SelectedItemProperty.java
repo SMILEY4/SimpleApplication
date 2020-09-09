@@ -9,9 +9,16 @@ import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
 
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 public class SelectedItemProperty<T> extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<SelectedItemProperty, SelectedItemProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getSelected().equals(b.getSelected());
 
 	/**
 	 * The selected item.
@@ -26,16 +33,8 @@ public class SelectedItemProperty<T> extends SuiProperty {
 	 * @param selected the selected item
 	 */
 	public SelectedItemProperty(final T selected) {
-		super(SelectedItemProperty.class);
+		super(SelectedItemProperty.class, COMPARATOR);
 		this.selected = selected;
-	}
-
-
-
-
-	@Override
-	public boolean isPropertyEqual(final SuiProperty other) {
-		return getSelected().equals(((SelectedItemProperty) other).getSelected());
 	}
 
 

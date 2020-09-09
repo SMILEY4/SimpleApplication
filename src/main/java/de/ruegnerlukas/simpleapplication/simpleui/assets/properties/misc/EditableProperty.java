@@ -9,8 +9,16 @@ import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class EditableProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<EditableProperty, EditableProperty, Boolean> COMPARATOR =
+			(a, b) -> a.isEditable() == b.isEditable();
 
 	/**
 	 * Whether the element is editable.
@@ -25,16 +33,8 @@ public class EditableProperty extends SuiProperty {
 	 * @param editable whether the element is editable
 	 */
 	public EditableProperty(final boolean editable) {
-		super(EditableProperty.class);
+		super(EditableProperty.class, COMPARATOR);
 		this.editable = editable;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return editable == ((EditableProperty) other).isEditable();
 	}
 
 

@@ -1,16 +1,24 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class FitToHeightProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<FitToHeightProperty, FitToHeightProperty, Boolean> COMPARATOR =
+			(a, b) -> a.isFitToHeight() == b.isFitToHeight();
 
 	/**
 	 * Whether the element should fit the height of its parent element.
@@ -25,19 +33,9 @@ public class FitToHeightProperty extends SuiProperty {
 	 * @param fitToHeight whether the element should fit the height of its parent element.
 	 */
 	public FitToHeightProperty(final boolean fitToHeight) {
-		super(FitToHeightProperty.class);
+		super(FitToHeightProperty.class, COMPARATOR);
 		this.fitToHeight = fitToHeight;
 	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return fitToHeight == ((FitToHeightProperty) other).isFitToHeight();
-	}
-
-
 
 
 

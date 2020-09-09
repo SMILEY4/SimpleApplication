@@ -9,8 +9,16 @@ import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class TextContentProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<TextContentProperty, TextContentProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getText().equals(b.getText());
 
 	/**
 	 * The text content.
@@ -25,16 +33,8 @@ public class TextContentProperty extends SuiProperty {
 	 * @param text the text content
 	 */
 	public TextContentProperty(final String text) {
-		super(TextContentProperty.class);
+		super(TextContentProperty.class, COMPARATOR);
 		this.text = text;
-	}
-
-
-
-
-	@Override
-	public boolean isPropertyEqual(final SuiProperty other) {
-		return getText().equals(((TextContentProperty) other).getText());
 	}
 
 

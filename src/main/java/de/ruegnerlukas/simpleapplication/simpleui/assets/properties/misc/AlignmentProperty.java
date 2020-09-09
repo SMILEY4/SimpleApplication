@@ -12,7 +12,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class AlignmentProperty extends SuiProperty {
+
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<AlignmentProperty, AlignmentProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getAlignment() == b.getAlignment();
 
 
 	/**
@@ -28,16 +37,8 @@ public class AlignmentProperty extends SuiProperty {
 	 * @param alignment the alignment
 	 */
 	public AlignmentProperty(final Pos alignment) {
-		super(AlignmentProperty.class);
+		super(AlignmentProperty.class, COMPARATOR);
 		this.alignment = alignment;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return alignment == ((AlignmentProperty) other).getAlignment();
 	}
 
 
