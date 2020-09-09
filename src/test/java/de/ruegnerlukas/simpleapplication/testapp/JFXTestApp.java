@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.events.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -16,22 +16,22 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiContainer.container;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiHBox.hbox;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiScrollPane.scrollPane;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiVBox.vbox;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.fitToWidth;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.id;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.item;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.items;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.layout;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.maxSize;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.preferredSize;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.showScrollbars;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.spacing;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.staticNode;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiContainer.container;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiHBox.hbox;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiScrollPane.scrollPane;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox.vbox;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.fitToWidth;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.id;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.item;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.items;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.layout;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.maxSize;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.preferredSize;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.showScrollbars;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.spacing;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.staticNode;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
 
 @SuppressWarnings ("ALL")
 public class JFXTestApp extends Application {
@@ -51,7 +51,7 @@ public class JFXTestApp extends Application {
 
 		TestState testUIState = new TestState();
 
-		SuiSceneContext context = new SuiSceneContext(testUIState, TestState.class, state -> customLayout());
+		SuiSceneController context = new SuiSceneController(testUIState, TestState.class, state -> customLayout());
 
 		Scene scene = new Scene((Parent) context.getRootFxNode(), 500, 600);
 		stage.setScene(scene);

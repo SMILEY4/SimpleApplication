@@ -14,9 +14,9 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.application.Platform;
 import javafx.geometry.Dimension2D;
 import javafx.scene.control.Button;
@@ -24,8 +24,8 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SimpleUIViewTest extends ApplicationTest {
@@ -83,7 +83,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle.getCurrentRootNode()).getText()).isEqualTo("A Button");
 
-			final SuiSceneContext context = ((SUIWindowHandleData) handle.getData()).getSceneContext();
+			final SuiSceneController context = ((SUIWindowHandleData) handle.getData()).getSceneContext();
 			assertThat(context).isNotNull();
 			assertThat(context.getState()).isEqualTo(state);
 			assertThat(state.getListeners()).hasSize(1);
@@ -114,10 +114,10 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle2.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle2.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			final SuiSceneContext context = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			final SuiSceneController context = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
 			assertThat(context.getState()).isEqualTo(state);
 			assertThat(state.getListeners()).hasSize(1);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneContext) context);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneController) context);
 		});
 	}
 
@@ -148,15 +148,15 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle2.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle2.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			final SuiSceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
-			final SuiSceneContext context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			final SuiSceneController context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			final SuiSceneController context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
 			assertThat(context1).isNotEqualTo(context2);
 
 			assertThat(context1.getState()).isEqualTo(state);
 			assertThat(context2.getState()).isEqualTo(state);
 
 			assertThat(state.getListeners()).hasSize(2);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneContext) context1, (SuiSceneContext) context2);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneController) context1, (SuiSceneController) context2);
 		});
 	}
 
@@ -199,10 +199,10 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle4.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle4.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			final SuiSceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
-			final SuiSceneContext context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
-			final SuiSceneContext context3 = ((SUIWindowHandleData) handle3.getData()).getSceneContext();
-			final SuiSceneContext context4 = ((SUIWindowHandleData) handle4.getData()).getSceneContext();
+			final SuiSceneController context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			final SuiSceneController context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			final SuiSceneController context3 = ((SUIWindowHandleData) handle3.getData()).getSceneContext();
+			final SuiSceneController context4 = ((SUIWindowHandleData) handle4.getData()).getSceneContext();
 			assertThat(context1).isNotEqualTo(context2);
 			assertThat(context1).isNotEqualTo(context3);
 			assertThat(context1).isNotEqualTo(context4);
@@ -214,10 +214,10 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 			assertThat(state.getListeners()).hasSize(4);
 			assertThat(state.getListeners()).containsExactlyInAnyOrder(
-					(SuiSceneContext) context1,
-					(SuiSceneContext) context2,
-					(SuiSceneContext) context3,
-					(SuiSceneContext) context4
+					(SuiSceneController) context1,
+					(SuiSceneController) context2,
+					(SuiSceneController) context3,
+					(SuiSceneController) context4
 			);
 		});
 	}
@@ -242,12 +242,12 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(viewService.isWindowHandleActive(handle1)).isTrue();
 			assertThat(viewService.isWindowHandleActive(handle2)).isFalse();
 
-			final SuiSceneContext context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			final SuiSceneController context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
 			assertThat(handle2.getData()).isNull();
 			assertThat(context1.getState()).isEqualTo(state);
 
 			assertThat(state.getListeners()).hasSize(1);
-			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneContext) context1);
+			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneController) context1);
 		});
 	}
 
@@ -269,7 +269,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 
 	private View view(final String id) {
-		return view(id, new SUIWindowHandleDataFactory(() -> new SuiSceneContext(
+		return view(id, new SUIWindowHandleDataFactory(() -> new SuiSceneController(
 				button(
 						textContent("A Button")
 				)
@@ -280,7 +280,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 
 	private View view(final String id, final SuiState state, final String btnText) {
-		return view(id, new SUIWindowHandleDataFactory(() -> new SuiSceneContext(state,
+		return view(id, new SUIWindowHandleDataFactory(() -> new SuiSceneController(state,
 				button(
 						textContent(btnText)
 				)

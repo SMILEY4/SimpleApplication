@@ -15,19 +15,19 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyle
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiSceneContext;
-import de.ruegnerlukas.simpleapplication.simpleui.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.elements.SuiSlider;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.properties.TickMarkProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPaneItem;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.geometry.Dimension2D;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPane;
-import static de.ruegnerlukas.simpleapplication.simpleui.elements.SuiAnchorPane.anchorPaneItem;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane.anchorPane;
 
 @Slf4j
 public class SUITestApplication {
@@ -101,10 +101,10 @@ public class SUITestApplication {
 					.maxSize(new Dimension2D(600, 600))
 					.title(new StringProvider("application_name").get())
 					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneContext(testUIState, TestUIState.class, state ->
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							anchorPane(
 									Properties.items(
-											anchorPaneItem(
+											SuiAnchorPaneItem.anchorPaneItem(
 													SuiSlider.slider(
 															Properties.minMax(-100, 100),
 															Properties.tickMarks(TickMarkProperty.TickMarkStyle.LABELED_TICKS, 50, 1, true),

@@ -2,12 +2,12 @@
 //
 //import de.ruegnerlukas.simpleapplication.simpleui.utils.SNodeTreePrinter;
 //import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
-//import de.ruegnerlukas.simpleapplication.simpleui.registry.SimpleUIRegistry;
+//import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SimpleUIRegistry;
 //import de.ruegnerlukas.simpleapplication.simpleui.State;
-//import de.ruegnerlukas.simpleapplication.simpleui.builders.NodeFactory;
-//import de.ruegnerlukas.simpleapplication.simpleui.elements.Component;
-//import de.ruegnerlukas.simpleapplication.simpleui.elements.injection.InjectionContext;
-//import de.ruegnerlukas.simpleapplication.simpleui.elements.InjectionPoint;
+//import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+//import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.Component;
+//import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.injection.InjectionContext;
+//import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.InjectionPoint;
 //import javafx.application.Application;
 //import javafx.geometry.Orientation;
 //import javafx.geometry.Pos;
@@ -19,19 +19,19 @@
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//import static de.ruegnerlukas.simpleapplication.simpleui.elements.SButton.button;
-//import static de.ruegnerlukas.simpleapplication.simpleui.elements.SScrollPane.scrollPane;
-//import static de.ruegnerlukas.simpleapplication.simpleui.elements.SSeparator.separator;
-//import static de.ruegnerlukas.simpleapplication.simpleui.elements.SVBox.vbox;
-//import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.alignment;
-//import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.buttonListener;
-//import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.fitToWidth;
-//import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.item;
-//import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.items;
-//import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.maxSize;
-//import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.showScrollbars;
-//import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.spacing;
-//import static de.ruegnerlukas.simpleapplication.simpleui.properties.Properties.textContent;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SButton.button;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SScrollPane.scrollPane;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SSeparator.separator;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SVBox.vbox;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.alignment;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.buttonListener;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.fitToWidth;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.item;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.items;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.maxSize;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.showScrollbars;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.spacing;
+//import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
 //
 //
 //public class SimpleUITest extends Application {
