@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,13 +21,13 @@ public class ChildNodeStore extends ChildNodeOperations {
 	 * The child nodes of a node.
 	 */
 	@Getter (AccessLevel.PROTECTED)
-	private final List<SuiBaseNode> children = new ArrayList<>(0);
+	private final List<SuiNode> children = new ArrayList<>(0);
 
 	/**
 	 * The child nodes of a node with their id as a key.
 	 */
 	@Getter (AccessLevel.PROTECTED)
-	private final Map<String, SuiBaseNode> childMap = new HashMap<>();
+	private final Map<String, SuiNode> childMap = new HashMap<>();
 
 
 
@@ -41,7 +40,7 @@ public class ChildNodeStore extends ChildNodeOperations {
 	 * @param childTransformListener the listener for child transform operations
 	 */
 	public ChildNodeStore(final SuiState state,
-						  final List<Property> properties,
+						  final List<SuiProperty> properties,
 						  final ChildNodeBuilder childNodeBuilder,
 						  final SuiNodeChildListener childListener,
 						  final SuiNodeChildTransformListener childTransformListener) {
@@ -56,7 +55,7 @@ public class ChildNodeStore extends ChildNodeOperations {
 	 * @param childListener          the listener for changed children
 	 * @param childTransformListener the listener for child transform operations
 	 */
-	public ChildNodeStore(final List<SuiBaseNode> children,
+	public ChildNodeStore(final List<SuiNode> children,
 						  final SuiNodeChildListener childListener,
 						  final SuiNodeChildTransformListener childTransformListener) {
 		super(childListener, childTransformListener);
@@ -97,7 +96,7 @@ public class ChildNodeStore extends ChildNodeOperations {
 	 * @return the child at the given index
 	 * @throws IndexOutOfBoundsException if the given index is out of range
 	 */
-	public SuiBaseNode get(final int index) {
+	public SuiNode get(final int index) {
 		Validations.INPUT.isValidIndex(index, children).exception("The given index is not valid ({}).", index);
 		return children.get(index);
 	}
@@ -111,7 +110,7 @@ public class ChildNodeStore extends ChildNodeOperations {
 	 * @param id the id of the requested child node
 	 * @return the child node with the given id (if one exists)
 	 */
-	public Optional<SuiBaseNode> findSafe(final String id) {
+	public Optional<SuiNode> findSafe(final String id) {
 		return Optional.ofNullable(childMap.get(id));
 	}
 
@@ -124,7 +123,7 @@ public class ChildNodeStore extends ChildNodeOperations {
 	 * @param id the id of the requested child node
 	 * @return the child node with the given id or null
 	 */
-	public SuiBaseNode find(final String id) {
+	public SuiNode find(final String id) {
 		return childMap.get(id);
 	}
 
@@ -134,7 +133,7 @@ public class ChildNodeStore extends ChildNodeOperations {
 	/**
 	 * @return an unmodifiable list of children
 	 */
-	public List<SuiBaseNode> getUnmodifiable() {
+	public List<SuiNode> getUnmodifiable() {
 		return Collections.unmodifiableList(this.children);
 	}
 
@@ -154,7 +153,7 @@ public class ChildNodeStore extends ChildNodeOperations {
 	/**
 	 * @return the children of this node as a stream
 	 */
-	public Stream<SuiBaseNode> stream() {
+	public Stream<SuiNode> stream() {
 		return this.children.stream();
 	}
 

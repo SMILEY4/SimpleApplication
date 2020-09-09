@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.builders;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 public interface NodeFactory {
 
@@ -13,7 +13,7 @@ public interface NodeFactory {
 	 * @param state the current state
 	 * @return the created node
 	 */
-	SuiBaseNode create(SuiState state);
+	SuiNode create(SuiState state);
 
 
 }

@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdShuf
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.RemoveAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StandardMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class MutationStrategyDecider {
 	 * @param target   the target node to match
 	 * @return the result of the mutation
 	 */
-	public MutationResult mutate(final SuiBaseNode original, final SuiBaseNode target) {
+	public MutationResult mutate(final SuiNode original, final SuiNode target) {
 		if (canSkipMutation(original, target)) {
 			return MutationResult.MUTATED;
 		}
@@ -75,7 +75,7 @@ public class MutationStrategyDecider {
 	 * @param target   the target node to match
 	 * @return whether the child nodes have to be mutated
 	 */
-	private boolean canSkipMutation(final SuiBaseNode original, final SuiBaseNode target) {
+	private boolean canSkipMutation(final SuiNode original, final SuiNode target) {
 		return !original.getChildNodeStore().hasChildren() && !target.getChildNodeStore().hasChildren();
 	}
 
@@ -88,7 +88,7 @@ public class MutationStrategyDecider {
 	 * @param parent the parent to check
 	 * @return whether all nodes have a valid id
 	 */
-	private boolean allChildrenHaveId(final SuiBaseNode parent) {
+	private boolean allChildrenHaveId(final SuiNode parent) {
 		return parent.getChildNodeStore().stream().allMatch(node -> node.getPropertyStore().has(IdProperty.class));
 	}
 
@@ -104,8 +104,8 @@ public class MutationStrategyDecider {
 	 * @return the mutation result or 'null', if the strategy could not be applied.
 	 */
 	private MutationResult runStrategy(final ChildNodesMutationStrategy strategy,
-									   final SuiBaseNode original,
-									   final SuiBaseNode target,
+									   final SuiNode original,
+									   final SuiNode target,
 									   final boolean allHaveId) {
 		StrategyDecisionResult decisionData = strategy.canBeAppliedTo(original, target, allHaveId);
 		if (decisionData.isApplicable()) {

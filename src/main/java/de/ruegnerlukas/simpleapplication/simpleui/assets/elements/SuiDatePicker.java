@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSelectedDateEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChronologyProperty;
@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Editabl
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.DatePicker;
 
@@ -38,11 +38,11 @@ public final class SuiDatePicker {
 	 * @param properties the properties
 	 * @return the factory for a date picker
 	 */
-	public static NodeFactory datePicker(final Property... properties) {
+	public static NodeFactory datePicker(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiDatePicker.class, get().getEntry(SuiDatePicker.class).getProperties(), properties);
-		return state -> SuiBaseNode.create(
+		return state -> SuiNode.create(
 				SuiDatePicker.class,
 				List.of(properties),
 				state
@@ -77,7 +77,7 @@ public final class SuiDatePicker {
 
 
 		@Override
-		public DatePicker build(final SuiBaseNode node) {
+		public DatePicker build(final SuiNode node) {
 			final DatePicker datePicker = new DatePicker();
 			datePicker.setChronology(ChronologyProperty.DEFAULT);
 			return datePicker;

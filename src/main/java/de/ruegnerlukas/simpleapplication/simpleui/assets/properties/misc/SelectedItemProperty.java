@@ -1,16 +1,16 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
 
 import java.util.Objects;
 
-public class SelectedItemProperty<T> extends Property {
+public class SelectedItemProperty<T> extends SuiProperty {
 
 
 	/**
@@ -34,7 +34,7 @@ public class SelectedItemProperty<T> extends Property {
 
 
 	@Override
-	public boolean isPropertyEqual(final Property other) {
+	public boolean isPropertyEqual(final SuiProperty other) {
 		return getSelected().equals(((SelectedItemProperty) other).getSelected());
 	}
 
@@ -53,7 +53,7 @@ public class SelectedItemProperty<T> extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final SelectedItemProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			if (!Objects.equals(fxNode.getSelectionModel().getSelectedItem(), property.getSelected())) {
@@ -66,7 +66,7 @@ public class SelectedItemProperty<T> extends Property {
 
 		@Override
 		public MutationResult update(final SelectedItemProperty<T> property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ChoiceBox<T> fxNode) {
 			if (!Objects.equals(fxNode.getSelectionModel().getSelectedItem(), property.getSelected())) {
 				fxNode.getSelectionModel().select(property.getSelected());
@@ -79,7 +79,7 @@ public class SelectedItemProperty<T> extends Property {
 
 		@Override
 		public MutationResult remove(final SelectedItemProperty<T> property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ChoiceBox<T> fxNode) {
 			return MutationResult.MUTATED;
 		}

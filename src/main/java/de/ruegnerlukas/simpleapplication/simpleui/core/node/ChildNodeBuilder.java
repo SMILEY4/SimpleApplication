@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
 import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
@@ -33,8 +32,8 @@ public class ChildNodeBuilder {
 	 * @param properties all properties of the (parent) node
 	 * @return the created child nodes
 	 */
-	public List<SuiBaseNode> build(final SuiState state, final List<Property> properties) {
-		for (Property property : properties) {
+	public List<SuiNode> build(final SuiState state, final List<SuiProperty> properties) {
+		for (SuiProperty property : properties) {
 			if (property.getKey() == ItemListProperty.class) {
 				return fromItemListProperty(state, (ItemListProperty) property);
 			}
@@ -54,7 +53,7 @@ public class ChildNodeBuilder {
 	 * @param state    the current state
 	 * @param property the item list property
 	 */
-	private List<SuiBaseNode> fromItemListProperty(final SuiState state, final ItemListProperty property) {
+	private List<SuiNode> fromItemListProperty(final SuiState state, final ItemListProperty property) {
 		if (property.getFactories().size() < CREATE_CHILD_LIST_ASYNC_CUTOFF) {
 			return property.getFactories().stream()
 					.map(factory -> factory.create(state))
@@ -73,7 +72,7 @@ public class ChildNodeBuilder {
 	 * @param state    the current state
 	 * @param property the item property
 	 */
-	private List<SuiBaseNode> fromItemProperty(final SuiState state, final ItemProperty property) {
+	private List<SuiNode> fromItemProperty(final SuiState state, final ItemProperty property) {
 		return Optional.ofNullable(property.getFactory())
 				.map(factory -> factory.create(state))
 				.map(List::of)

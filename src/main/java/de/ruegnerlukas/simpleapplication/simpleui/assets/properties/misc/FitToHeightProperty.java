@@ -1,15 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 
-public class FitToHeightProperty extends Property {
+public class FitToHeightProperty extends SuiProperty {
 
 
 	/**
@@ -33,7 +33,7 @@ public class FitToHeightProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return fitToHeight == ((FitToHeightProperty) other).isFitToHeight();
 	}
 
@@ -52,7 +52,7 @@ public class FitToHeightProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final FitToHeightProperty property,
 						  final ScrollPane fxNode) {
 			fxNode.setFitToHeight(property.isFitToHeight());
@@ -63,7 +63,7 @@ public class FitToHeightProperty extends Property {
 
 		@Override
 		public MutationResult update(final FitToHeightProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ScrollPane fxNode) {
 			fxNode.setFitToHeight(property.isFitToHeight());
 			return MutationResult.MUTATED;
@@ -74,7 +74,7 @@ public class FitToHeightProperty extends Property {
 
 		@Override
 		public MutationResult remove(final FitToHeightProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ScrollPane fxNode) {
 			fxNode.setFitToHeight(false);
 			return MutationResult.MUTATED;
@@ -91,7 +91,7 @@ public class FitToHeightProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final FitToHeightProperty property,
 						  final HBox fxNode) {
 			fxNode.setFillHeight(property.isFitToHeight());
@@ -102,7 +102,7 @@ public class FitToHeightProperty extends Property {
 
 		@Override
 		public MutationResult update(final FitToHeightProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final HBox fxNode) {
 			fxNode.setFillHeight(property.isFitToHeight());
 			return MutationResult.MUTATED;
@@ -113,7 +113,7 @@ public class FitToHeightProperty extends Property {
 
 		@Override
 		public MutationResult remove(final FitToHeightProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final HBox fxNode) {
 			fxNode.setFillHeight(false);
 			return MutationResult.MUTATED;

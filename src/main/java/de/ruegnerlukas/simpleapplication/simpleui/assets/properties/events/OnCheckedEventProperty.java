@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.CheckBox;
 import lombok.Getter;
 
@@ -49,7 +49,7 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final OnCheckedEventProperty property,
 						  final CheckBox fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
@@ -60,7 +60,7 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 
 		@Override
 		public MutationResult update(final OnCheckedEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final CheckBox fxNode) {
 			node.getPropertyStore().getSafe(OnCheckedEventProperty.class)
 					.map(OnCheckedEventProperty::getChangeListenerProxy)
@@ -74,7 +74,7 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 
 		@Override
 		public MutationResult remove(final OnCheckedEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final CheckBox fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.focusedProperty());
 			return MutationResult.MUTATED;

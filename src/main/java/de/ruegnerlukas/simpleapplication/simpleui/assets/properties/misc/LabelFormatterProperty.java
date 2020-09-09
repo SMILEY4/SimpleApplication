@@ -1,17 +1,17 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.Slider;
 import javafx.util.StringConverter;
 import lombok.Getter;
 
 import java.util.function.Function;
 
-public class LabelFormatterProperty extends Property {
+public class LabelFormatterProperty extends SuiProperty {
 
 
 	/**
@@ -35,7 +35,7 @@ public class LabelFormatterProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return getFormatter().equals(((LabelFormatterProperty) other).getFormatter());
 	}
 
@@ -54,7 +54,7 @@ public class LabelFormatterProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final LabelFormatterProperty property,
 						  final Slider fxNode) {
 			setFormatter(fxNode, property);
@@ -65,7 +65,7 @@ public class LabelFormatterProperty extends Property {
 
 		@Override
 		public MutationResult update(final LabelFormatterProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Slider fxNode) {
 			setFormatter(fxNode, property);
 			return MutationResult.MUTATED;
@@ -76,7 +76,7 @@ public class LabelFormatterProperty extends Property {
 
 		@Override
 		public MutationResult remove(final LabelFormatterProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Slider fxNode) {
 			fxNode.setLabelFormatter(null);
 			return MutationResult.MUTATED;

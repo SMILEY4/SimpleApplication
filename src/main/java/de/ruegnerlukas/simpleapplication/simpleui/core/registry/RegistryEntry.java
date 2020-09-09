@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuil
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -31,13 +31,13 @@ public class RegistryEntry {
 	/**
 	 * The node builder for the node type and a property type of this entry.
 	 */
-	private final Map<Class<? extends Property>, PropFxNodeBuilder<? extends Property, ? extends Node>> propFxNodeBuilders
+	private final Map<Class<? extends SuiProperty>, PropFxNodeBuilder<? extends SuiProperty, ? extends Node>> propFxNodeBuilders
 			= new HashMap<>();
 
 	/**
 	 * The node updater for the node type and a property type of this entry.
 	 */
-	private final Map<Class<? extends Property>, PropFxNodeUpdater<? extends Property, ? extends Node>> propFxNodeUpdaters
+	private final Map<Class<? extends SuiProperty>, PropFxNodeUpdater<? extends SuiProperty, ? extends Node>> propFxNodeUpdaters
 			= new HashMap<>();
 
 
@@ -60,8 +60,8 @@ public class RegistryEntry {
 	/**
 	 * @return a set of all property types that have at least a builder registered at this entry.
 	 */
-	public Set<Class<? extends Property>> getProperties() {
-		Set<Class<? extends Property>> properties = new HashSet<>(propFxNodeBuilders.keySet());
+	public Set<Class<? extends SuiProperty>> getProperties() {
+		Set<Class<? extends SuiProperty>> properties = new HashSet<>(propFxNodeBuilders.keySet());
 		properties.add(IdProperty.class);
 		return properties;
 	}

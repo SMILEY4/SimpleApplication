@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 public interface SuiSceneControllerListener {
 
@@ -10,7 +10,7 @@ public interface SuiSceneControllerListener {
 	 *
 	 * @param newRoot the new root node
 	 */
-	void onNewSuiRootNode(SuiBaseNode newRoot);
+	void onNewSuiRootNode(SuiNode newRoot);
 
 
 }

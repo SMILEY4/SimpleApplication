@@ -1,15 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
-public class SpacingProperty extends Property {
+public class SpacingProperty extends SuiProperty {
 
 
 	/**
@@ -33,7 +33,7 @@ public class SpacingProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return spacing == ((SpacingProperty) other).getSpacing();
 	}
 
@@ -52,7 +52,7 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final SpacingProperty property,
 						  final VBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
@@ -63,7 +63,7 @@ public class SpacingProperty extends Property {
 
 		@Override
 		public MutationResult update(final SpacingProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final VBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 			return MutationResult.MUTATED;
@@ -74,7 +74,7 @@ public class SpacingProperty extends Property {
 
 		@Override
 		public MutationResult remove(final SpacingProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final VBox fxNode) {
 			fxNode.setSpacing(0);
 			return MutationResult.MUTATED;
@@ -91,7 +91,7 @@ public class SpacingProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final SpacingProperty property,
 						  final HBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
@@ -102,7 +102,7 @@ public class SpacingProperty extends Property {
 
 		@Override
 		public MutationResult update(final SpacingProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final HBox fxNode) {
 			fxNode.setSpacing(property.getSpacing());
 			return MutationResult.MUTATED;
@@ -113,7 +113,7 @@ public class SpacingProperty extends Property {
 
 		@Override
 		public MutationResult remove(final SpacingProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final HBox fxNode) {
 			fxNode.setSpacing(0);
 			return MutationResult.MUTATED;

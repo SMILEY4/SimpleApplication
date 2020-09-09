@@ -1,15 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
 
-public class EditableProperty extends Property {
+public class EditableProperty extends SuiProperty {
 
 
 	/**
@@ -33,7 +33,7 @@ public class EditableProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return editable == ((EditableProperty) other).isEditable();
 	}
 
@@ -52,7 +52,7 @@ public class EditableProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final EditableProperty property,
 						  final TextInputControl fxNode) {
 			fxNode.setEditable(property.isEditable());
@@ -63,7 +63,7 @@ public class EditableProperty extends Property {
 
 		@Override
 		public MutationResult update(final EditableProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextInputControl fxNode) {
 			fxNode.setEditable(property.isEditable());
 			return MutationResult.MUTATED;
@@ -74,7 +74,7 @@ public class EditableProperty extends Property {
 
 		@Override
 		public MutationResult remove(final EditableProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextInputControl fxNode) {
 			fxNode.setEditable(true);
 			return MutationResult.MUTATED;
@@ -91,7 +91,7 @@ public class EditableProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final EditableProperty property,
 						  final ComboBoxBase<?> fxNode) {
 			fxNode.setEditable(property.isEditable());
@@ -102,7 +102,7 @@ public class EditableProperty extends Property {
 
 		@Override
 		public MutationResult update(final EditableProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ComboBoxBase<?> fxNode) {
 			fxNode.setEditable(property.isEditable());
 			return MutationResult.MUTATED;
@@ -113,7 +113,7 @@ public class EditableProperty extends Property {
 
 		@Override
 		public MutationResult remove(final EditableProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ComboBoxBase<?> fxNode) {
 			fxNode.setEditable(false);
 			return MutationResult.MUTATED;

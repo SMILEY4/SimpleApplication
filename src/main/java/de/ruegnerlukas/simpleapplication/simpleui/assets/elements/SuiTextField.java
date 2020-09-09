@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextEnteredEventProperty;
@@ -12,7 +12,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptT
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.TextField;
 
@@ -40,11 +40,11 @@ public final class SuiTextField {
 	 * @param properties the properties
 	 * @return the factory for a text field
 	 */
-	public static NodeFactory textField(final Property... properties) {
+	public static NodeFactory textField(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiTextField.class, get().getEntry(SuiTextField.class).getProperties(), properties);
-		return state -> SuiBaseNode.create(
+		return state -> SuiNode.create(
 				SuiTextField.class,
 				List.of(properties),
 				state
@@ -81,7 +81,7 @@ public final class SuiTextField {
 
 
 		@Override
-		public TextField build(final SuiBaseNode node) {
+		public TextField build(final SuiNode node) {
 			return new TextField();
 		}
 

@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.geometry.Pos;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
-public class AlignmentProperty extends Property {
+public class AlignmentProperty extends SuiProperty {
 
 
 	/**
@@ -36,7 +36,7 @@ public class AlignmentProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return alignment == ((AlignmentProperty) other).getAlignment();
 	}
 
@@ -55,7 +55,7 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final AlignmentProperty property,
 						  final VBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
@@ -66,7 +66,7 @@ public class AlignmentProperty extends Property {
 
 		@Override
 		public MutationResult update(final AlignmentProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final VBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 			return MutationResult.MUTATED;
@@ -77,7 +77,7 @@ public class AlignmentProperty extends Property {
 
 		@Override
 		public MutationResult remove(final AlignmentProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final VBox fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
 			return MutationResult.MUTATED;
@@ -94,7 +94,7 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final AlignmentProperty property,
 						  final HBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
@@ -105,7 +105,7 @@ public class AlignmentProperty extends Property {
 
 		@Override
 		public MutationResult update(final AlignmentProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final HBox fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 			return MutationResult.MUTATED;
@@ -116,7 +116,7 @@ public class AlignmentProperty extends Property {
 
 		@Override
 		public MutationResult remove(final AlignmentProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final HBox fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
 			return MutationResult.MUTATED;
@@ -133,7 +133,7 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final AlignmentProperty property,
 						  final Labeled fxNode) {
 			fxNode.setAlignment(property.getAlignment());
@@ -144,7 +144,7 @@ public class AlignmentProperty extends Property {
 
 		@Override
 		public MutationResult update(final AlignmentProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Labeled fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 			return MutationResult.MUTATED;
@@ -155,7 +155,7 @@ public class AlignmentProperty extends Property {
 
 		@Override
 		public MutationResult remove(final AlignmentProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Labeled fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
 			return MutationResult.MUTATED;
@@ -172,7 +172,7 @@ public class AlignmentProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final AlignmentProperty property,
 						  final TextField fxNode) {
 			fxNode.setAlignment(property.getAlignment());
@@ -183,7 +183,7 @@ public class AlignmentProperty extends Property {
 
 		@Override
 		public MutationResult update(final AlignmentProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextField fxNode) {
 			fxNode.setAlignment(property.getAlignment());
 			return MutationResult.MUTATED;
@@ -194,7 +194,7 @@ public class AlignmentProperty extends Property {
 
 		@Override
 		public MutationResult remove(final AlignmentProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextField fxNode) {
 			fxNode.setAlignment(Pos.TOP_LEFT);
 			return MutationResult.MUTATED;

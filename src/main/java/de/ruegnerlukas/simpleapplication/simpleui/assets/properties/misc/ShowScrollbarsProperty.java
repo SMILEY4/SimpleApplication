@@ -1,15 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
 import java.util.Optional;
 
-public class ShowScrollbarsProperty extends Property {
+public class ShowScrollbarsProperty extends SuiProperty {
 
 
 	/**
@@ -41,7 +41,7 @@ public class ShowScrollbarsProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return horizontal == ((ShowScrollbarsProperty) other).getHorizontal()
 				&& vertical == ((ShowScrollbarsProperty) other).getVertical();
 	}
@@ -61,7 +61,7 @@ public class ShowScrollbarsProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final ShowScrollbarsProperty property,
 						  final ScrollPane fxNode) {
 			fxNode.setHbarPolicy(property.getHorizontal());
@@ -73,7 +73,7 @@ public class ShowScrollbarsProperty extends Property {
 
 		@Override
 		public MutationResult update(final ShowScrollbarsProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ScrollPane fxNode) {
 			fxNode.setHbarPolicy(property.getHorizontal());
 			fxNode.setVbarPolicy(property.getVertical());
@@ -85,7 +85,7 @@ public class ShowScrollbarsProperty extends Property {
 
 		@Override
 		public MutationResult remove(final ShowScrollbarsProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ScrollPane fxNode) {
 			fxNode.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 			fxNode.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);

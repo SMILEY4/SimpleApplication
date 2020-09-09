@@ -1,17 +1,17 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.DatePicker;
 import lombok.Getter;
 
 import java.time.chrono.Chronology;
 import java.util.Locale;
 
-public class ChronologyProperty extends Property {
+public class ChronologyProperty extends SuiProperty {
 
 
 	/**
@@ -40,7 +40,7 @@ public class ChronologyProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return chronology.equals(((ChronologyProperty) other).getChronology());
 	}
 
@@ -60,7 +60,7 @@ public class ChronologyProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final ChronologyProperty property,
 						  final DatePicker fxNode) {
 			fxNode.setChronology(property.getChronology());
@@ -71,7 +71,7 @@ public class ChronologyProperty extends Property {
 
 		@Override
 		public MutationResult update(final ChronologyProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final DatePicker fxNode) {
 			fxNode.setChronology(property.getChronology());
 			return MutationResult.MUTATED;
@@ -82,7 +82,7 @@ public class ChronologyProperty extends Property {
 
 		@Override
 		public MutationResult remove(final ChronologyProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final DatePicker fxNode) {
 			fxNode.setChronology(DEFAULT);
 			return MutationResult.MUTATED;

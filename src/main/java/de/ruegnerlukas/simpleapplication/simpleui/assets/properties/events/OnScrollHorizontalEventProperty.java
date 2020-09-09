@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
@@ -54,7 +54,7 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final OnScrollHorizontalEventProperty property,
 						  final ScrollPane fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.hvalueProperty());
@@ -65,7 +65,7 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 
 		@Override
 		public MutationResult update(final OnScrollHorizontalEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ScrollPane fxNode) {
 			node.getPropertyStore().getSafe(OnScrollHorizontalEventProperty.class)
 					.map(OnScrollHorizontalEventProperty::getChangeListenerProxy)
@@ -79,7 +79,7 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 
 		@Override
 		public MutationResult remove(final OnScrollHorizontalEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ScrollPane fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.hvalueProperty());
 			return MutationResult.MUTATED;

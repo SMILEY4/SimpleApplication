@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 
 import java.util.Collection;
@@ -18,7 +17,7 @@ public class PropertyStore {
 	/**
 	 * All  properties of a node.
 	 */
-	private final Map<Class<? extends Property>, Property> properties = new HashMap<>();
+	private final Map<Class<? extends SuiProperty>, SuiProperty> properties = new HashMap<>();
 
 
 	/**
@@ -32,7 +31,7 @@ public class PropertyStore {
 	/**
 	 * @param properties the list of properties
 	 */
-	public PropertyStore(final List<Property> properties) {
+	public PropertyStore(final List<SuiProperty> properties) {
 		properties.forEach(property -> this.properties.put(property.getKey(), property));
 		idProperty = get(IdProperty.class);
 	}
@@ -45,7 +44,7 @@ public class PropertyStore {
 	 *
 	 * @param property the property to update or insert
 	 */
-	public void upsert(final Property property) {
+	public void upsert(final SuiProperty property) {
 		Validations.INPUT.notNull(property).exception("The property to insert/update may not be null.");
 		properties.put(property.getKey(), property);
 		if (property.getKey() == IdProperty.class) {
@@ -61,7 +60,7 @@ public class PropertyStore {
 	 *
 	 * @param property the type of the property to remove
 	 */
-	public void remove(final Class<? extends Property> property) {
+	public void remove(final Class<? extends SuiProperty> property) {
 		Validations.INPUT.notNull(property).exception("The property type may not be null.");
 		properties.remove(property);
 		if (property == IdProperty.class) {
@@ -79,7 +78,7 @@ public class PropertyStore {
 	 * @param <T>  the generic type of the property
 	 * @return the requested property
 	 */
-	public <T extends Property> Optional<T> getSafe(final Class<T> type) {
+	public <T extends SuiProperty> Optional<T> getSafe(final Class<T> type) {
 		return Optional.ofNullable(get(type));
 	}
 
@@ -93,8 +92,8 @@ public class PropertyStore {
 	 * @param <T>  the generic type of the property
 	 * @return the requested property or null
 	 */
-	public <T extends Property> T get(final Class<T> type) {
-		final Property property = properties.get(type);
+	public <T extends SuiProperty> T get(final Class<T> type) {
+		final SuiProperty property = properties.get(type);
 		if (property != null) {
 			@SuppressWarnings ("unchecked") final T prop = (T) property;
 			return prop;
@@ -112,7 +111,7 @@ public class PropertyStore {
 	 * @param type the type of the property
 	 * @return whether this node has a property of the given type.
 	 */
-	public boolean has(final Class<? extends Property> type) {
+	public boolean has(final Class<? extends SuiProperty> type) {
 		return properties.containsKey(type);
 	}
 
@@ -146,7 +145,7 @@ public class PropertyStore {
 	/**
 	 * @return an unmodifiable list of all properties
 	 */
-	public Collection<Property> getAll() {
+	public Collection<SuiProperty> getAll() {
 		return this.properties.values();
 	}
 
@@ -156,7 +155,7 @@ public class PropertyStore {
 	/**
 	 * @return an unmodifiable list of all properties
 	 */
-	public Set<Class<? extends Property>> getTypes() {
+	public Set<Class<? extends SuiProperty>> getTypes() {
 		return this.properties.keySet();
 	}
 
@@ -166,7 +165,7 @@ public class PropertyStore {
 	/**
 	 * @return an stream of all properties
 	 */
-	public Stream<Property> stream() {
+	public Stream<SuiProperty> stream() {
 		return this.properties.values().stream();
 	}
 

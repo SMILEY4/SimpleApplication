@@ -1,14 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
 
-public class WrapTextProperty extends Property {
+public class WrapTextProperty extends SuiProperty {
 
 
 	/**
@@ -32,7 +32,7 @@ public class WrapTextProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return wrap == ((WrapTextProperty) other).isWrap();
 	}
 
@@ -51,7 +51,7 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final WrapTextProperty property,
 						  final Labeled fxNode) {
 			fxNode.setWrapText(property.isWrap());
@@ -62,7 +62,7 @@ public class WrapTextProperty extends Property {
 
 		@Override
 		public MutationResult update(final WrapTextProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Labeled fxNode) {
 			fxNode.setWrapText(property.isWrap());
 			return MutationResult.MUTATED;
@@ -73,7 +73,7 @@ public class WrapTextProperty extends Property {
 
 		@Override
 		public MutationResult remove(final WrapTextProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Labeled fxNode) {
 			fxNode.setWrapText(false);
 			return MutationResult.MUTATED;
@@ -90,7 +90,7 @@ public class WrapTextProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final WrapTextProperty property,
 						  final TextArea fxNode) {
 			fxNode.setWrapText(property.isWrap());
@@ -101,7 +101,7 @@ public class WrapTextProperty extends Property {
 
 		@Override
 		public MutationResult update(final WrapTextProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextArea fxNode) {
 			fxNode.setWrapText(property.isWrap());
 			return MutationResult.MUTATED;
@@ -112,7 +112,7 @@ public class WrapTextProperty extends Property {
 
 		@Override
 		public MutationResult remove(final WrapTextProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextArea fxNode) {
 			fxNode.setWrapText(false);
 			return MutationResult.MUTATED;

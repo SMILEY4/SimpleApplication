@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.DuplicatePro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -214,7 +214,7 @@ public class InjectionTest extends ApplicationTest {
 
 		final TestState state = new TestState("Text 1");
 		final SuiSceneController context = new SuiSceneController(state, nodeFactory);
-		final SuiBaseNode node = context.getRootNode();
+		final SuiNode node = context.getRootNode();
 		final VBox fxNode = (VBox) node.getFxNodeStore().get();
 
 		assertThat(fxNode.getChildren()).hasSize(3);
@@ -227,7 +227,7 @@ public class InjectionTest extends ApplicationTest {
 
 		state.text = "Text 2";
 
-		final SuiBaseNode mutatedNode = SuiServices.get().mutateNode(node, nodeFactory.create(state));
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(node, nodeFactory.create(state));
 		final VBox fxNodeMutated = (VBox) mutatedNode.getFxNodeStore().get();
 
 		assertThat(fxNodeMutated.getChildren()).hasSize(3);

@@ -46,6 +46,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTex
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextEnteredEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnUncheckedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 
 public final class EventProperties {
 
@@ -66,7 +67,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link KeyEventData}.
 	 * @return a {@link OnKeyPressedEventProperty}
 	 */
-	public static Property eventKeyPressed(final SUIEventListener<KeyEventData> listener) {
+	public static SuiProperty eventKeyPressed(final SUIEventListener<KeyEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnKeyPressedEventProperty(listener);
 	}
@@ -80,7 +81,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link KeyEventData}.
 	 * @return a {@link OnKeyReleasedEventProperty}
 	 */
-	public static Property eventKeyReleased(final SUIEventListener<KeyEventData> listener) {
+	public static SuiProperty eventKeyReleased(final SUIEventListener<KeyEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnKeyReleasedEventProperty(listener);
 	}
@@ -94,7 +95,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link KeyEventData}.
 	 * @return a {@link OnKeyReleasedEventProperty}
 	 */
-	public static Property eventKeyTyped(final SUIEventListener<KeyEventData> listener) {
+	public static SuiProperty eventKeyTyped(final SUIEventListener<KeyEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnKeyTypedEventProperty(listener);
 	}
@@ -108,7 +109,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseButtonEventData}.
 	 * @return a {@link OnMouseClickedEventProperty}
 	 */
-	public static Property eventMouseClicked(final SUIEventListener<MouseButtonEventData> listener) {
+	public static SuiProperty eventMouseClicked(final SUIEventListener<MouseButtonEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseClickedEventProperty(listener);
 	}
@@ -122,7 +123,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseButtonEventData}.
 	 * @return a {@link OnMousePressedEventProperty}
 	 */
-	public static Property eventMousePressed(final SUIEventListener<MouseButtonEventData> listener) {
+	public static SuiProperty eventMousePressed(final SUIEventListener<MouseButtonEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMousePressedEventProperty(listener);
 	}
@@ -136,7 +137,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseButtonEventData}.
 	 * @return a {@link OnMouseReleasedEventProperty}
 	 */
-	public static Property eventMouseReleased(final SUIEventListener<MouseButtonEventData> listener) {
+	public static SuiProperty eventMouseReleased(final SUIEventListener<MouseButtonEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseReleasedEventProperty(listener);
 	}
@@ -150,7 +151,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseDragEventData}.
 	 * @return a {@link OnMouseDragEnteredEventProperty}
 	 */
-	public static Property eventMouseDragEntered(final SUIEventListener<MouseDragEventData> listener) {
+	public static SuiProperty eventMouseDragEntered(final SUIEventListener<MouseDragEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseDragEnteredEventProperty(listener);
 	}
@@ -164,7 +165,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseDragEventData}.
 	 * @return a {@link OnMouseDragExitedEventProperty}
 	 */
-	public static Property eventMouseDragExited(final SUIEventListener<MouseDragEventData> listener) {
+	public static SuiProperty eventMouseDragExited(final SUIEventListener<MouseDragEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseDragExitedEventProperty(listener);
 	}
@@ -178,7 +179,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseDragEventData}.
 	 * @return a {@link OnMouseDraggedEventProperty}
 	 */
-	public static Property eventMouseDragged(final SUIEventListener<MouseDragEventData> listener) {
+	public static SuiProperty eventMouseDragged(final SUIEventListener<MouseDragEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseDraggedEventProperty(listener);
 	}
@@ -192,7 +193,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseDragEventData}.
 	 * @return a {@link OnMouseDragReleasedEventProperty}
 	 */
-	public static Property eventMouseDragReleased(final SUIEventListener<MouseDragEventData> listener) {
+	public static SuiProperty eventMouseDragReleased(final SUIEventListener<MouseDragEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseDragReleasedEventProperty(listener);
 	}
@@ -206,7 +207,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseDragEventData}.
 	 * @return a {@link OnMouseDragOverEventProperty}
 	 */
-	public static Property eventMouseDragOver(final SUIEventListener<MouseDragEventData> listener) {
+	public static SuiProperty eventMouseDragOver(final SUIEventListener<MouseDragEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseDragOverEventProperty(listener);
 	}
@@ -220,7 +221,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseMoveEventData}.
 	 * @return a {@link OnMouseEnteredEventProperty}
 	 */
-	public static Property eventMouseEntered(final SUIEventListener<MouseMoveEventData> listener) {
+	public static SuiProperty eventMouseEntered(final SUIEventListener<MouseMoveEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseEnteredEventProperty(listener);
 	}
@@ -234,7 +235,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseMoveEventData}.
 	 * @return a {@link OnMouseExitedEventProperty}
 	 */
-	public static Property eventMouseExited(final SUIEventListener<MouseMoveEventData> listener) {
+	public static SuiProperty eventMouseExited(final SUIEventListener<MouseMoveEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseExitedEventProperty(listener);
 	}
@@ -248,7 +249,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseMoveEventData}.
 	 * @return a {@link OnMouseMovedEventProperty}
 	 */
-	public static Property eventMouseMoved(final SUIEventListener<MouseMoveEventData> listener) {
+	public static SuiProperty eventMouseMoved(final SUIEventListener<MouseMoveEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseMovedEventProperty(listener);
 	}
@@ -262,7 +263,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseScrollEventData}.
 	 * @return a {@link OnMouseScrollEventProperty}
 	 */
-	public static Property eventMouseScroll(final SUIEventListener<MouseScrollEventData> listener) {
+	public static SuiProperty eventMouseScroll(final SUIEventListener<MouseScrollEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseScrollEventProperty(listener);
 	}
@@ -276,7 +277,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseScrollEventData}.
 	 * @return a {@link OnMouseScrollEventProperty}
 	 */
-	public static Property eventMouseScrollStarted(final SUIEventListener<MouseScrollEventData> listener) {
+	public static SuiProperty eventMouseScrollStarted(final SUIEventListener<MouseScrollEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseScrollStartedEventProperty(listener);
 	}
@@ -290,7 +291,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link MouseScrollEventData}.
 	 * @return a {@link OnMouseScrollEventProperty}
 	 */
-	public static Property eventMouseScrollFinished(final SUIEventListener<MouseScrollEventData> listener) {
+	public static SuiProperty eventMouseScrollFinished(final SUIEventListener<MouseScrollEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnMouseScrollFinishedEventProperty(listener);
 	}
@@ -304,7 +305,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link FocusEventData}.
 	 * @return a {@link OnFocusChangedEventProperty}
 	 */
-	public static Property eventFocusChanged(final SUIEventListener<FocusEventData> listener) {
+	public static SuiProperty eventFocusChanged(final SUIEventListener<FocusEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnFocusChangedEventProperty(listener);
 	}
@@ -318,7 +319,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link FocusEventData}.
 	 * @return a {@link OnFocusReceivedEventProperty}
 	 */
-	public static Property eventFocusReceived(final SUIEventListener<FocusEventData> listener) {
+	public static SuiProperty eventFocusReceived(final SUIEventListener<FocusEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnFocusReceivedEventProperty(listener);
 	}
@@ -332,7 +333,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link FocusEventData}.
 	 * @return a {@link OnFocusLostEventProperty}
 	 */
-	public static Property eventFocusLost(final SUIEventListener<FocusEventData> listener) {
+	public static SuiProperty eventFocusLost(final SUIEventListener<FocusEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnFocusLostEventProperty(listener);
 	}
@@ -346,7 +347,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link HoverEventData}.
 	 * @return a {@link OnHoverChangedEventProperty}
 	 */
-	public static Property eventHoverChanged(final SUIEventListener<HoverEventData> listener) {
+	public static SuiProperty eventHoverChanged(final SUIEventListener<HoverEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnHoverChangedEventProperty(listener);
 	}
@@ -360,7 +361,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link HoverEventData}.
 	 * @return a {@link OnHoverStartedEventProperty}
 	 */
-	public static Property eventHoverStarted(final SUIEventListener<HoverEventData> listener) {
+	public static SuiProperty eventHoverStarted(final SUIEventListener<HoverEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnHoverStartedEventProperty(listener);
 	}
@@ -374,7 +375,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link HoverEventData}.
 	 * @return a {@link OnHoverStoppedEventProperty}
 	 */
-	public static Property eventHoverStopped(final SUIEventListener<HoverEventData> listener) {
+	public static SuiProperty eventHoverStopped(final SUIEventListener<HoverEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnHoverStoppedEventProperty(listener);
 	}
@@ -388,7 +389,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link ActionEventData}.
 	 * @return a {@link OnActionEventProperty}
 	 */
-	public static Property eventAction(final SUIEventListener<ActionEventData> listener) {
+	public static SuiProperty eventAction(final SUIEventListener<ActionEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnActionEventProperty(listener);
 	}
@@ -402,7 +403,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link DatePickerActionEventData}.
 	 * @return a {@link OnActionEventProperty}
 	 */
-	public static Property eventDatePickerAction(final SUIEventListener<DatePickerActionEventData> listener) {
+	public static SuiProperty eventDatePickerAction(final SUIEventListener<DatePickerActionEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnSelectedDateEventProperty<>(listener);
 	}
@@ -416,7 +417,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link ValueChangedEventData}.
 	 * @return a {@link OnValueChangedEventProperty}
 	 */
-	public static <T> Property eventValueChanged(final SUIEventListener<ValueChangedEventData<T>> listener) {
+	public static <T> SuiProperty eventValueChanged(final SUIEventListener<ValueChangedEventData<T>> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnValueChangedEventProperty<>(listener);
 	}
@@ -432,7 +433,7 @@ public final class EventProperties {
 	 * @param <T>          generic type
 	 * @return a {@link OnValueChangedEventProperty}
 	 */
-	public static <T> Property eventValueChanged(final Class<T> expectedType, final SUIEventListener<ValueChangedEventData<T>> listener) {
+	public static <T> SuiProperty eventValueChanged(final Class<T> expectedType, final SUIEventListener<ValueChangedEventData<T>> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnValueChangedEventProperty<>(listener);
 	}
@@ -446,7 +447,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link ScrollEventData}.
 	 * @return a {@link OnScrollHorizontalEventProperty}
 	 */
-	public static Property eventScrollHorizontal(final SUIEventListener<ScrollEventData> listener) {
+	public static SuiProperty eventScrollHorizontal(final SUIEventListener<ScrollEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnScrollHorizontalEventProperty(listener);
 	}
@@ -460,7 +461,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link CheckedEventData}.
 	 * @return a {@link OnCheckedEventProperty}
 	 */
-	public static Property eventChecked(final SUIEventListener<CheckedEventData> listener) {
+	public static SuiProperty eventChecked(final SUIEventListener<CheckedEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnCheckedEventProperty(listener);
 	}
@@ -474,7 +475,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link CheckedEventData}.
 	 * @return a {@link OnUncheckedEventProperty}
 	 */
-	public static Property eventUnchecked(final SUIEventListener<CheckedEventData> listener) {
+	public static SuiProperty eventUnchecked(final SUIEventListener<CheckedEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnUncheckedEventProperty(listener);
 	}
@@ -488,7 +489,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link CheckedEventData}.
 	 * @return a {@link OnUncheckedEventProperty}
 	 */
-	public static Property eventTextEntered(final SUIEventListener<TextContentEventData> listener) {
+	public static SuiProperty eventTextEntered(final SUIEventListener<TextContentEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnTextEnteredEventProperty(listener);
 	}
@@ -502,7 +503,7 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link CheckedEventData}.
 	 * @return a {@link OnTextChangedEventProperty}
 	 */
-	public static Property eventTextChanged(final SUIEventListener<TextContentEventData> listener) {
+	public static SuiProperty eventTextChanged(final SUIEventListener<TextContentEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnTextChangedEventProperty(listener);
 	}

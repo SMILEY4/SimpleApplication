@@ -2,14 +2,14 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.Slider;
 import lombok.Getter;
 
-public class BlockIncrementProperty extends Property {
+public class BlockIncrementProperty extends SuiProperty {
 
 
 	/**
@@ -33,7 +33,7 @@ public class BlockIncrementProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return NumberUtils.isEqual(getIncrement(), ((BlockIncrementProperty) other).getIncrement());
 	}
 
@@ -52,7 +52,7 @@ public class BlockIncrementProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final BlockIncrementProperty property,
 						  final Slider fxNode) {
 			fxNode.setBlockIncrement(property.getIncrement().doubleValue());
@@ -63,7 +63,7 @@ public class BlockIncrementProperty extends Property {
 
 		@Override
 		public MutationResult update(final BlockIncrementProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Slider fxNode) {
 			fxNode.setBlockIncrement(property.getIncrement().doubleValue());
 			return MutationResult.MUTATED;
@@ -74,7 +74,7 @@ public class BlockIncrementProperty extends Property {
 
 		@Override
 		public MutationResult remove(final BlockIncrementProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Slider fxNode) {
 			fxNode.setBlockIncrement(1);
 			return MutationResult.MUTATED;

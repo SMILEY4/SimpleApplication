@@ -29,7 +29,7 @@ public abstract class ChildNodeOperations {
 	 * The simpleui node these operations work on
 	 */
 	@Setter (AccessLevel.PROTECTED)
-	private SuiBaseNode managedNode;
+	private SuiNode managedNode;
 
 
 
@@ -49,12 +49,12 @@ public abstract class ChildNodeOperations {
 	/**
 	 * @return the list of child nodes
 	 */
-	protected abstract List<SuiBaseNode> getChildren();
+	protected abstract List<SuiNode> getChildren();
 
 	/**
 	 * @return the child nodes with their id as the key
 	 */
-	protected abstract Map<String, SuiBaseNode> getChildMap();
+	protected abstract Map<String, SuiNode> getChildMap();
 
 
 
@@ -64,7 +64,7 @@ public abstract class ChildNodeOperations {
 	 *
 	 * @param children the new child nodes
 	 */
-	public void setChildren(final List<SuiBaseNode> children) {
+	public void setChildren(final List<SuiNode> children) {
 		Validations.INPUT.notNull(children).exception("The new children may not be null.");
 		Validations.INPUT.containsNoNull(children).exception("The new children may not contain null-elements.");
 		getChildren().clear();
@@ -137,9 +137,9 @@ public abstract class ChildNodeOperations {
 	 * Completely rebuilds the child map.
 	 */
 	private void rebuildChildMap() {
-		final Map<String, SuiBaseNode> childMap = getChildMap();
+		final Map<String, SuiNode> childMap = getChildMap();
 		childMap.clear();
-		for (SuiBaseNode child : getChildren()) {
+		for (SuiNode child : getChildren()) {
 			final String id = child.getPropertyStore().getIdUnsafe();
 			if (id != null) {
 				childMap.put(id, child);

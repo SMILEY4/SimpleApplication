@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.layout.Pane;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,14 +34,14 @@ public abstract class BaseOperation {
 	 *
 	 * @param list the list to modify
 	 */
-	public abstract void applyTo(List<SuiBaseNode> list);
+	public abstract void applyTo(List<SuiNode> list);
 
 	/**
 	 * Applies this operation to the given map of nodes.
 	 *
 	 * @param map the map to modify. The key is the id of the node and the value is the node.
 	 */
-	public abstract void applyTo(Map<String, SuiBaseNode> map);
+	public abstract void applyTo(Map<String, SuiNode> map);
 
 	/**
 	 * Applies this operation to the child nodes of the given javafx pane.

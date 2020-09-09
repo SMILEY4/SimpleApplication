@@ -2,15 +2,15 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
 @Getter
-public class SizeProperty extends Property {
+public class SizeProperty extends SuiProperty {
 
 
 	/**
@@ -72,7 +72,7 @@ public class SizeProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		final SizeProperty sizeOther = (SizeProperty) other;
 		return NumberUtils.isEqual(this.getMinWidth(), sizeOther.getMinWidth())
 				&& NumberUtils.isEqual(this.getMinHeight(), sizeOther.getMinHeight())
@@ -99,7 +99,7 @@ public class SizeProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final SizeProperty property,
 						  final Region fxNode) {
 			setSize(node, property, fxNode);
@@ -110,7 +110,7 @@ public class SizeProperty extends Property {
 
 		@Override
 		public MutationResult update(final SizeProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Region fxNode) {
 			setSize(node, property, fxNode);
 			return MutationResult.MUTATED;
@@ -121,7 +121,7 @@ public class SizeProperty extends Property {
 
 		@Override
 		public MutationResult remove(final SizeProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Region fxNode) {
 			if (!node.getPropertyStore().has(SizeMinProperty.class)) {
 				fxNode.setMinSize(0, 0);
@@ -147,7 +147,7 @@ public class SizeProperty extends Property {
 		 * @param property the property
 		 * @param fxNode   the fx region
 		 */
-		private void setSize(final SuiBaseNode node, final SizeProperty property, final Region fxNode) {
+		private void setSize(final SuiNode node, final SizeProperty property, final Region fxNode) {
 			if (!node.getPropertyStore().has(SizeMinProperty.class)) {
 				fxNode.setMinSize(property.getMinWidth().doubleValue(), property.getMinHeight().doubleValue());
 			}

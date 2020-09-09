@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
@@ -11,7 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MinMaxP
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.Slider;
 
@@ -39,11 +39,11 @@ public final class SuiSlider {
 	 * @param properties the properties
 	 * @return the factory for a slider
 	 */
-	public static NodeFactory slider(final Property... properties) {
+	public static NodeFactory slider(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiSlider.class, get().getEntry(SuiSlider.class).getProperties(), properties);
-		return state -> SuiBaseNode.create(
+		return state -> SuiNode.create(
 				SuiSlider.class,
 				List.of(properties),
 				state
@@ -79,7 +79,7 @@ public final class SuiSlider {
 
 
 		@Override
-		public Slider build(final SuiBaseNode node) {
+		public Slider build(final SuiNode node) {
 			final Slider slider = new Slider();
 			slider.setShowTickMarks(TickMarkProperty.DEFAULT_STYLE.isShowTickMarks());
 			slider.setShowTickLabels(TickMarkProperty.DEFAULT_STYLE.isShowLabels());

@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class StrategyTestUtils {
 
 
 
-	public static void assertChildren(SuiBaseNode expected, SuiBaseNode actual) {
+	public static void assertChildren(SuiNode expected, SuiNode actual) {
 		assertThat(actual.getChildNodeStore().count()).isEqualTo(expected.getChildNodeStore().count());
 		for (int i = 0; i < expected.getChildNodeStore().count(); i++) {
-			final SuiBaseNode childActual = actual.getChildNodeStore().get(i);
-			final SuiBaseNode childExpected = expected.getChildNodeStore().get(i);
+			final SuiNode childActual = actual.getChildNodeStore().get(i);
+			final SuiNode childExpected = expected.getChildNodeStore().get(i);
 			assertThat(childActual.getPropertyStore().get(TextContentProperty.class).getText())
 					.isEqualTo(childExpected.getPropertyStore().get(TextContentProperty.class).getText());
 		}
@@ -40,20 +40,20 @@ public class StrategyTestUtils {
 
 
 
-	public static Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
+	public static Triplet<SuiSceneController, SuiNode, SuiNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
 		TestState state = new TestState();
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiBaseNode original = context.getRootNode();
-		SuiBaseNode target = factoryTarget.create(state);
+		SuiNode original = context.getRootNode();
+		SuiNode target = factoryTarget.create(state);
 		return Triplet.of(context, original, target);
 	}
 
 
 
 
-	public static void removeChildNodes(final SuiBaseNode node, final int n) {
+	public static void removeChildNodes(final SuiNode node, final int n) {
 		Random random = new Random(SEED);
-		List<SuiBaseNode> children = new ArrayList<>(node.getChildNodeStore().getUnmodifiable());
+		List<SuiNode> children = new ArrayList<>(node.getChildNodeStore().getUnmodifiable());
 		for (int i = 0; i < n; i++) {
 			children.remove(random.nextInt(children.size()));
 		}
@@ -63,9 +63,9 @@ public class StrategyTestUtils {
 
 
 
-	public static void shuffleChildNodes(final SuiBaseNode node, final int n) {
+	public static void shuffleChildNodes(final SuiNode node, final int n) {
 		Random random = new Random(SEED);
-		List<SuiBaseNode> children = new ArrayList<>(node.getChildNodeStore().getUnmodifiable());
+		List<SuiNode> children = new ArrayList<>(node.getChildNodeStore().getUnmodifiable());
 		if (n == node.getChildNodeStore().count()) {
 			Collections.shuffle(children, random);
 		} else {
@@ -85,7 +85,7 @@ public class StrategyTestUtils {
 
 
 
-	public static void printChildButtons(String nodeName, SuiBaseNode node) {
+	public static void printChildButtons(String nodeName, SuiNode node) {
 		log.info("{}-{}: childCount={}, {}",
 				nodeName,
 				Integer.toHexString(node.hashCode()),

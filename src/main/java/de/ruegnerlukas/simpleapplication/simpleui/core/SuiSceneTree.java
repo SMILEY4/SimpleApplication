@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ public class SuiSceneTree {
 	 * The root node of this tree.
 	 */
 	@Getter
-	private SuiBaseNode root;
+	private SuiNode root;
 
 
 
@@ -25,7 +25,7 @@ public class SuiSceneTree {
 	 * @return the created scene tree
 	 */
 	public static SuiSceneTree build(final NodeFactory nodeFactory, final SuiState state) {
-		final SuiBaseNode rootNode = nodeFactory.create(state);
+		final SuiNode rootNode = nodeFactory.create(state);
 		return new SuiSceneTree(rootNode);
 	}
 

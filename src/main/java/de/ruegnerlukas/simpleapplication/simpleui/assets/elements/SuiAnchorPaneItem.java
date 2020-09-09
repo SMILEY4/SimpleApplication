@@ -1,14 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 
@@ -37,11 +37,11 @@ public final class SuiAnchorPaneItem {
 	 * @param properties the properties
 	 * @return the factory for an anchor-pane child node
 	 */
-	public static NodeFactory anchorPaneItem(final NodeFactory factory, final Property... properties) {
-		final List<Property> list = new ArrayList<>();
+	public static NodeFactory anchorPaneItem(final NodeFactory factory, final SuiProperty... properties) {
+		final List<SuiProperty> list = new ArrayList<>();
 		list.add(new ItemListProperty(factory));
 		list.addAll(List.of(properties));
-		return state -> SuiBaseNode.create(
+		return state -> SuiNode.create(
 				SuiAnchorPaneItem.class,
 				list,
 				state
@@ -71,9 +71,9 @@ public final class SuiAnchorPaneItem {
 
 
 		@Override
-		public Node build(final SuiBaseNode node) {
+		public Node build(final SuiNode node) {
 			if (node.getChildNodeStore().hasChildren()) {
-				SuiBaseNode childNode = node.getChildNodeStore().get(0);
+				SuiNode childNode = node.getChildNodeStore().get(0);
 				SuiServices.get().enrichWithFxNodes(childNode);
 				return childNode.getFxNodeStore().get();
 			} else {

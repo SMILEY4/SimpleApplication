@@ -4,10 +4,10 @@ import de.ruegnerlukas.simpleapplication.core.presentation.style.ResourceStyle;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StringStyle;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.Style;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ManagedStyleProperty extends Property {
+public class ManagedStyleProperty extends SuiProperty {
 
 
 	/**
@@ -38,7 +38,7 @@ public class ManagedStyleProperty extends Property {
 	 * @param styleService the style service.
 	 * @return the new {@link ManagedStyleProperty}.
 	 */
-	public static Property managedStyle(final StyleService styleService, final Style style) {
+	public static SuiProperty managedStyle(final StyleService styleService, final Style style) {
 		return new ManagedStyleProperty(styleService, style);
 	}
 
@@ -89,7 +89,7 @@ public class ManagedStyleProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		final ManagedStyleProperty otherProp = (ManagedStyleProperty) other;
 		if (!getStyleService().equals(otherProp.getStyleService())) {
 			return false;
@@ -126,7 +126,7 @@ public class ManagedStyleProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node, final ManagedStyleProperty property, final Node fxNode) {
+		public void build(final SuiNode node, final ManagedStyleProperty property, final Node fxNode) {
 			property.getStyleService().registerStyle(property.getStyle(), calcStyleName(property));
 			property.getStyleService().applyStyleToExclusive(calcStyleName(property), fxNode);
 		}
@@ -135,7 +135,7 @@ public class ManagedStyleProperty extends Property {
 
 
 		@Override
-		public MutationResult update(final ManagedStyleProperty property, final SuiBaseNode node, final Node fxNode) {
+		public MutationResult update(final ManagedStyleProperty property, final SuiNode node, final Node fxNode) {
 
 			node.getPropertyStore().getSafe(ManagedStyleProperty.class).ifPresent(prevStyleProp ->
 					prevStyleProp.getStyleService().deregisterStyle(calcStyleName(prevStyleProp)));
@@ -149,7 +149,7 @@ public class ManagedStyleProperty extends Property {
 
 
 		@Override
-		public MutationResult remove(final ManagedStyleProperty property, final SuiBaseNode node, final Node fxNode) {
+		public MutationResult remove(final ManagedStyleProperty property, final SuiNode node, final Node fxNode) {
 			property.getStyleService().deregisterStyle(calcStyleName(property));
 			return MutationResult.MUTATED;
 		}

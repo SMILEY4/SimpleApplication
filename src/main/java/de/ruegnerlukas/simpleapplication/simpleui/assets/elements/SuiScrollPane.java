@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnScrollHorizontalEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnScrollVerticalEventProperty;
@@ -13,7 +13,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemPro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -43,11 +43,11 @@ public final class SuiScrollPane {
 	 * @param properties the properties
 	 * @return the factory for an scroll-pane node
 	 */
-	public static NodeFactory scrollPane(final Property... properties) {
+	public static NodeFactory scrollPane(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiScrollPane.class, get().getEntry(SuiScrollPane.class).getProperties(), properties);
-		return state -> SuiBaseNode.create(
+		return state -> SuiNode.create(
 				SuiScrollPane.class,
 				List.of(properties),
 				state,
@@ -64,7 +64,7 @@ public final class SuiScrollPane {
 	 *
 	 * @param node the scroll-pane node
 	 */
-	private static void handleChildrenChange(final SuiBaseNode node) {
+	private static void handleChildrenChange(final SuiNode node) {
 		final ScrollPane scrollPane = (ScrollPane) node.getFxNodeStore().get();
 		if (node.getChildNodeStore().hasChildren()) {
 			scrollPane.setContent(node.getChildNodeStore().get(0).getFxNodeStore().get());
@@ -103,7 +103,7 @@ public final class SuiScrollPane {
 
 
 		@Override
-		public ScrollPane build(final SuiBaseNode node) {
+		public ScrollPane build(final SuiNode node) {
 			return new ScrollPane();
 		}
 

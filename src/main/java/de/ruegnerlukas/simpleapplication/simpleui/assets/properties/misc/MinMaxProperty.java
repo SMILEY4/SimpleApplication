@@ -2,14 +2,14 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.Slider;
 import lombok.Getter;
 
-public class MinMaxProperty extends Property {
+public class MinMaxProperty extends SuiProperty {
 
 
 	/**
@@ -42,7 +42,7 @@ public class MinMaxProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return NumberUtils.isEqual(getMin(), ((MinMaxProperty) other).getMin())
 				&& NumberUtils.isEqual(getMax(), ((MinMaxProperty) other).getMax());
 	}
@@ -62,7 +62,7 @@ public class MinMaxProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final MinMaxProperty property,
 						  final Slider fxNode) {
 			fxNode.setMin(property.getMin().doubleValue());
@@ -74,7 +74,7 @@ public class MinMaxProperty extends Property {
 
 		@Override
 		public MutationResult update(final MinMaxProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Slider fxNode) {
 			fxNode.setMin(property.getMin().doubleValue());
 			fxNode.setMax(property.getMax().doubleValue());
@@ -86,7 +86,7 @@ public class MinMaxProperty extends Property {
 
 		@Override
 		public MutationResult remove(final MinMaxProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Slider fxNode) {
 			fxNode.setMin(-Double.MAX_VALUE);
 			fxNode.setMax(+Double.MAX_VALUE);

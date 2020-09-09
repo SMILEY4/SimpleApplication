@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateUpdate;
@@ -97,7 +97,7 @@ public class SuiSceneController implements SuiStateListener {
 	/**
 	 * @return the simpleui root node. Builds the root node with the node factory if necessary.
 	 */
-	public SuiBaseNode getRootNode() {
+	public SuiNode getRootNode() {
 		if (sceneTree == null) {
 			sceneTree = SuiSceneTree.build(nodeFactory, state);
 			sceneTree.buildFxNodes();

@@ -2,15 +2,15 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import lombok.Getter;
 
-public class StyleProperty extends Property {
+public class StyleProperty extends SuiProperty {
 
 
 	/**
@@ -82,7 +82,7 @@ public class StyleProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		final StyleProperty otherProp = (StyleProperty) other;
 		if (usesResourceStyle() != otherProp.usesResourceStyle()) {
 			return false;
@@ -115,7 +115,7 @@ public class StyleProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final StyleProperty property,
 						  final Node fxNode) {
 			setStyle(property, fxNode);
@@ -126,7 +126,7 @@ public class StyleProperty extends Property {
 
 		@Override
 		public MutationResult update(final StyleProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Node fxNode) {
 			setStyle(property, fxNode);
 			return MutationResult.MUTATED;
@@ -137,7 +137,7 @@ public class StyleProperty extends Property {
 
 		@Override
 		public MutationResult remove(final StyleProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Node fxNode) {
 			if (property.usesResourceStyle()) {
 				((Parent) fxNode).getStylesheets().clear();

@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import lombok.Getter;
 
-public class IdProperty extends Property {
+public class IdProperty extends SuiProperty {
 
 
 	/**
@@ -27,7 +27,7 @@ public class IdProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return id.equals(((IdProperty) other).getId());
 	}
 

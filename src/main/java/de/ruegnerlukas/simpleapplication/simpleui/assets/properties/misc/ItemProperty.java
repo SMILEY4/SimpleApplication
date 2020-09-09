@@ -1,16 +1,16 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
-public class ItemProperty extends Property {
+public class ItemProperty extends SuiProperty {
 
 
 	/**
@@ -45,7 +45,7 @@ public class ItemProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		final ItemProperty otherItem = (ItemProperty) other;
 		return false; // TODO
 	}
@@ -65,12 +65,12 @@ public class ItemProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final ItemProperty property,
 						  final ScrollPane fxNode) {
 			Node fxChildNode = null;
 			if (node.getChildNodeStore().hasChildren()) {
-				SuiBaseNode childNode = node.getChildNodeStore().get(0);
+				SuiNode childNode = node.getChildNodeStore().get(0);
 				SuiServices.get().enrichWithFxNodes(childNode);
 				fxChildNode = childNode.getFxNodeStore().get();
 			}

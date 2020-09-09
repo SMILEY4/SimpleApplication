@@ -36,6 +36,6 @@ public interface SuiNodeChildListener {
 	 *
 	 * @param parent the parent node of the changed child nodes
 	 */
-	void onChange(SuiBaseNode parent);
+	void onChange(SuiNode parent);
 
 }

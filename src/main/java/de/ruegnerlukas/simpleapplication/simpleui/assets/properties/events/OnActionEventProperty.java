@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.ButtonBase;
 import lombok.Getter;
 
@@ -33,7 +33,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final OnActionEventProperty property,
 						  final ButtonBase fxNode) {
 			setListener(fxNode, property);
@@ -44,7 +44,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 		@Override
 		public MutationResult update(final OnActionEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ButtonBase fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
@@ -55,7 +55,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 		@Override
 		public MutationResult remove(final OnActionEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ButtonBase fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;

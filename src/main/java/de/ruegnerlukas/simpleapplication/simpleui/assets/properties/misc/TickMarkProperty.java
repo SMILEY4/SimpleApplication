@@ -2,14 +2,14 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.Slider;
 import lombok.Getter;
 
-public class TickMarkProperty extends Property {
+public class TickMarkProperty extends SuiProperty {
 
 	/**
 	 * The default value for the tick marks style.
@@ -137,7 +137,7 @@ public class TickMarkProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return getTickMarkStyle().equals(((TickMarkProperty) other).getTickMarkStyle())
 				&& NumberUtils.isEqual(getMajorTickUnit(), ((TickMarkProperty) other).getMajorTickUnit())
 				&& getMinorTickCount() == ((TickMarkProperty) other).getMinorTickCount()
@@ -159,7 +159,7 @@ public class TickMarkProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final TickMarkProperty property,
 						  final Slider fxNode) {
 			fxNode.setShowTickMarks(property.getTickMarkStyle().isShowTickMarks());
@@ -174,7 +174,7 @@ public class TickMarkProperty extends Property {
 
 		@Override
 		public MutationResult update(final TickMarkProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Slider fxNode) {
 			fxNode.setShowTickMarks(property.getTickMarkStyle().isShowTickMarks());
 			fxNode.setShowTickLabels(property.getTickMarkStyle().isShowLabels());
@@ -189,7 +189,7 @@ public class TickMarkProperty extends Property {
 
 		@Override
 		public MutationResult remove(final TickMarkProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Slider fxNode) {
 			fxNode.setShowTickMarks(DEFAULT_STYLE.isShowTickMarks());
 			fxNode.setShowTickLabels(DEFAULT_STYLE.isShowLabels());

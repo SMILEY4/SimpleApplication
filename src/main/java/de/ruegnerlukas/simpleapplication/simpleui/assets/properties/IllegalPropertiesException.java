@@ -1,6 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +15,7 @@ public class IllegalPropertiesException extends RuntimeException {
 	 * @param nodeType   the type of the simpleui node
 	 * @param properties the list of illegal properties
 	 */
-	public IllegalPropertiesException(final Class<?> nodeType, final List<Property> properties) {
+	public IllegalPropertiesException(final Class<?> nodeType, final List<SuiProperty> properties) {
 		super("Illegal properties for " + nodeType.getSimpleName() + " ["
 				+ properties.stream().map(prop -> prop.getKey().toString()).collect(Collectors.joining(", "))
 				+ "]");

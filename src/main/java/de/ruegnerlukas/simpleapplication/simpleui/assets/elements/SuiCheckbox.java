@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnCheckedEventProperty;
@@ -12,7 +12,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextCon
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.CheckBox;
 
@@ -40,11 +40,11 @@ public final class SuiCheckbox {
 	 * @param properties the properties
 	 * @return the factory for a checkbox node
 	 */
-	public static NodeFactory checkbox(final Property... properties) {
+	public static NodeFactory checkbox(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiCheckbox.class, get().getEntry(SuiCheckbox.class).getProperties(), properties);
-		return state -> SuiBaseNode.create(
+		return state -> SuiNode.create(
 				SuiCheckbox.class,
 				List.of(properties),
 				state
@@ -80,7 +80,7 @@ public final class SuiCheckbox {
 
 
 		@Override
-		public CheckBox build(final SuiBaseNode node) {
+		public CheckBox build(final SuiNode node) {
 			return new CheckBox();
 		}
 

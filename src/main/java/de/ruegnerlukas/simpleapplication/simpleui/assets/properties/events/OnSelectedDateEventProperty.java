@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.DatePicker;
 import lombok.Getter;
 
@@ -36,7 +36,7 @@ public class OnSelectedDateEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final OnSelectedDateEventProperty<LocalDate> property,
 						  final DatePicker fxNode) {
 			setListener(fxNode, property);
@@ -47,7 +47,7 @@ public class OnSelectedDateEventProperty<T> extends AbstractEventListenerPropert
 
 		@Override
 		public MutationResult update(final OnSelectedDateEventProperty<LocalDate> property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final DatePicker fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
@@ -58,7 +58,7 @@ public class OnSelectedDateEventProperty<T> extends AbstractEventListenerPropert
 
 		@Override
 		public MutationResult remove(final OnSelectedDateEventProperty<LocalDate> property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final DatePicker fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;

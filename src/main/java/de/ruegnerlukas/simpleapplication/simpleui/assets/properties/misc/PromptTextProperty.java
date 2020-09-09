@@ -1,15 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
 
-public class PromptTextProperty extends Property {
+public class PromptTextProperty extends SuiProperty {
 
 
 	/**
@@ -33,7 +33,7 @@ public class PromptTextProperty extends Property {
 
 
 	@Override
-	public boolean isPropertyEqual(final Property other) {
+	public boolean isPropertyEqual(final SuiProperty other) {
 		return getText().equals(((PromptTextProperty) other).getText());
 	}
 
@@ -52,7 +52,7 @@ public class PromptTextProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final PromptTextProperty property,
 						  final TextInputControl fxNode) {
 			fxNode.setPromptText(property.getText());
@@ -63,7 +63,7 @@ public class PromptTextProperty extends Property {
 
 		@Override
 		public MutationResult update(final PromptTextProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextInputControl fxNode) {
 			fxNode.setPromptText(property.getText());
 			return MutationResult.MUTATED;
@@ -74,7 +74,7 @@ public class PromptTextProperty extends Property {
 
 		@Override
 		public MutationResult remove(final PromptTextProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextInputControl fxNode) {
 			fxNode.setPromptText("");
 			return MutationResult.MUTATED;
@@ -91,7 +91,7 @@ public class PromptTextProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final PromptTextProperty property,
 						  final ComboBoxBase<T> fxNode) {
 			fxNode.setPromptText(property.getText());
@@ -102,7 +102,7 @@ public class PromptTextProperty extends Property {
 
 		@Override
 		public MutationResult update(final PromptTextProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ComboBoxBase<T> fxNode) {
 			fxNode.setPromptText(property.getText());
 			return MutationResult.MUTATED;
@@ -113,7 +113,7 @@ public class PromptTextProperty extends Property {
 
 		@Override
 		public MutationResult remove(final PromptTextProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final ComboBoxBase<T> fxNode) {
 			fxNode.setPromptText("");
 			return MutationResult.MUTATED;

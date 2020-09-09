@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.BaseO
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.RemoveOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.ReplaceOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.SwapOperation;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -303,8 +303,8 @@ public class ListTransformer {
 
 
 		@Override
-		public BaseOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
-			final SuiBaseNode addNode = target.getChildNodeStore().find(this.getElement());
+		public BaseOperation toOperation(final SuiNode original, final SuiNode target) {
+			final SuiNode addNode = target.getChildNodeStore().find(this.getElement());
 			SuiServices.get().enrichWithFxNodes(addNode);
 			return new AddOperation(this.getIndex(), addNode);
 		}
@@ -333,7 +333,7 @@ public class ListTransformer {
 
 
 		@Override
-		public RemoveOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
+		public RemoveOperation toOperation(final SuiNode original, final SuiNode target) {
 			return new RemoveOperation(this.getIndex(), original.getChildNodeStore().get(this.getIndex()));
 		}
 
@@ -377,7 +377,7 @@ public class ListTransformer {
 
 
 		@Override
-		public SwapOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
+		public SwapOperation toOperation(final SuiNode original, final SuiNode target) {
 			return new SwapOperation(this.getIndexMin(), this.getIndexMax());
 		}
 
@@ -411,8 +411,8 @@ public class ListTransformer {
 
 
 		@Override
-		public ReplaceOperation toOperation(final SuiBaseNode original, final SuiBaseNode target) {
-			final SuiBaseNode replacementNode = target.getChildNodeStore().find(this.getElement());
+		public ReplaceOperation toOperation(final SuiNode original, final SuiNode target) {
+			final SuiNode replacementNode = target.getChildNodeStore().find(this.getElement());
 			SuiServices.get().enrichWithFxNodes(replacementNode);
 			return new ReplaceOperation(this.getIndex(), replacementNode, original.getChildNodeStore().get(this.getIndex()));
 		}
@@ -437,7 +437,7 @@ public class ListTransformer {
 		 * @param target       the target node
 		 * @return the created operation
 		 */
-		BaseOperation toOperation(SuiBaseNode original, SuiBaseNode target);
+		BaseOperation toOperation(SuiNode original, SuiNode target);
 
 	}
 

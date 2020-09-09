@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.RemoveAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -37,9 +37,9 @@ public class RemoveAllStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
-		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiBaseNode nodeOriginal = testData.getMiddle();
-		final SuiBaseNode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
@@ -60,9 +60,9 @@ public class RemoveAllStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
-		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiBaseNode nodeOriginal = testData.getMiddle();
-		final SuiBaseNode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		removeChildNodes(nodeTarget, 5);
 
@@ -86,9 +86,9 @@ public class RemoveAllStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
-		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiBaseNode nodeOriginal = testData.getMiddle();
-		final SuiBaseNode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		removeChildNodes(nodeTarget, 15);
 
@@ -111,10 +111,10 @@ public class RemoveAllStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(0, "Btn Target");
 
-		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
 		final SuiSceneController context = testData.getLeft();
-		final SuiBaseNode nodeOriginal = testData.getMiddle();
-		final SuiBaseNode nodeTarget = testData.getRight();
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
@@ -144,9 +144,9 @@ public class RemoveAllStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
-		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiBaseNode nodeOriginal = testData.getMiddle();
-		final SuiBaseNode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		removeChildNodes(nodeOriginal, 5);
 
@@ -170,9 +170,9 @@ public class RemoveAllStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
-		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiBaseNode nodeOriginal = testData.getMiddle();
-		final SuiBaseNode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		removeChildNodes(nodeOriginal, 15);
 
@@ -196,9 +196,9 @@ public class RemoveAllStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(0, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
-		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiBaseNode nodeOriginal = testData.getMiddle();
-		final SuiBaseNode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		printChildButtons("Original", nodeOriginal);
 		printChildButtons("  Target", nodeTarget);
@@ -220,9 +220,9 @@ public class RemoveAllStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
-		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiBaseNode nodeOriginal = testData.getMiddle();
-		final SuiBaseNode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		shuffleChildNodes(nodeTarget, 3);
 
@@ -246,9 +246,9 @@ public class RemoveAllStrategyTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = buildVBox(20, "Btn Orgnal");
 		final NodeFactory factoryTarget = buildVBox(20, "Btn Target");
 
-		final Triplet<SuiSceneController, SuiBaseNode, SuiBaseNode> testData = buildTest(factoryOriginal, factoryTarget);
-		final SuiBaseNode nodeOriginal = testData.getMiddle();
-		final SuiBaseNode nodeTarget = testData.getRight();
+		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
+		final SuiNode nodeOriginal = testData.getMiddle();
+		final SuiNode nodeTarget = testData.getRight();
 
 		shuffleChildNodes(nodeTarget, 20);
 

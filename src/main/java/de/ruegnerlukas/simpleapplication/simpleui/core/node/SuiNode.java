@@ -1,12 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import lombok.Getter;
 
 import java.util.List;
 
-public class SuiBaseNode {
+public class SuiNode {
 
 
 	/**
@@ -42,10 +41,10 @@ public class SuiBaseNode {
 	 * @param childNodeStore the child nodes of this node
 	 * @param fxNodeStore    the javafx node of this node
 	 */
-	public SuiBaseNode(final Class<?> nodeType,
-					   final PropertyStore propertyStore,
-					   final ChildNodeStore childNodeStore,
-					   final FxNodeStore fxNodeStore) {
+	public SuiNode(final Class<?> nodeType,
+				   final PropertyStore propertyStore,
+				   final ChildNodeStore childNodeStore,
+				   final FxNodeStore fxNodeStore) {
 		this.nodeType = nodeType;
 		this.propertyStore = propertyStore;
 		this.childNodeStore = childNodeStore;
@@ -64,9 +63,9 @@ public class SuiBaseNode {
 	 * @param state      the current state
 	 * @return the created node
 	 */
-	public static SuiBaseNode create(final Class<?> nodeType,
-									 final List<Property> properties,
-									 final SuiState state) {
+	public static SuiNode create(final Class<?> nodeType,
+								 final List<SuiProperty> properties,
+								 final SuiState state) {
 		return create(nodeType, properties, state, SuiNodeChildListener.NO_OP, SuiNodeChildTransformListener.NO_OP);
 	}
 
@@ -83,12 +82,12 @@ public class SuiBaseNode {
 	 * @param childTransformListener the child transform listener
 	 * @return the created node
 	 */
-	public static SuiBaseNode create(final Class<?> nodeType,
-									 final List<Property> properties,
-									 final SuiState state,
-									 final SuiNodeChildListener childListener,
-									 final SuiNodeChildTransformListener childTransformListener) {
-		return new SuiBaseNode(nodeType,
+	public static SuiNode create(final Class<?> nodeType,
+								 final List<SuiProperty> properties,
+								 final SuiState state,
+								 final SuiNodeChildListener childListener,
+								 final SuiNodeChildTransformListener childTransformListener) {
+		return new SuiNode(nodeType,
 				new PropertyStore(properties),
 				new ChildNodeStore(state, properties, ChildNodeBuilder.DEFAULT, childListener, childTransformListener),
 				new FxNodeStore());

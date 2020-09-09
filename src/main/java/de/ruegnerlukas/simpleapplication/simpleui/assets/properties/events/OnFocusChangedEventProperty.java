@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -45,7 +45,7 @@ public class OnFocusChangedEventProperty extends AbstractEventListenerProperty<F
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final OnFocusChangedEventProperty property,
 						  final Node fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.focusedProperty());
@@ -56,7 +56,7 @@ public class OnFocusChangedEventProperty extends AbstractEventListenerProperty<F
 
 		@Override
 		public MutationResult update(final OnFocusChangedEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Node fxNode) {
 			node.getPropertyStore().getSafe(OnFocusChangedEventProperty.class)
 					.map(OnFocusChangedEventProperty::getChangeListenerProxy)
@@ -70,7 +70,7 @@ public class OnFocusChangedEventProperty extends AbstractEventListenerProperty<F
 
 		@Override
 		public MutationResult remove(final OnFocusChangedEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Node fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.focusedProperty());
 			return MutationResult.MUTATED;

@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.builders;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.Node;
 
-public interface PropFxNodeUpdater<P extends Property, T extends Node> {
+public interface PropFxNodeUpdater<P extends SuiProperty, T extends Node> {
 
 
 	/**
@@ -17,7 +17,7 @@ public interface PropFxNodeUpdater<P extends Property, T extends Node> {
 	 * @param fxNode       the fx-node to modify
 	 * @return whether the fx-node could be mutated or has to be rebuild completely.
 	 */
-	MutationResult update(P property, SuiBaseNode node, T fxNode);
+	MutationResult update(P property, SuiNode node, T fxNode);
 
 	/**
 	 * Removes the given property of the given node by modifying the given fx-node
@@ -27,7 +27,7 @@ public interface PropFxNodeUpdater<P extends Property, T extends Node> {
 	 * @param fxNode       the fx-node to modify
 	 * @return whether the fx-node could be mutated or has to be rebuild completely.
 	 */
-	MutationResult remove(P property, SuiBaseNode node, T fxNode);
+	MutationResult remove(P property, SuiNode node, T fxNode);
 
 
 }

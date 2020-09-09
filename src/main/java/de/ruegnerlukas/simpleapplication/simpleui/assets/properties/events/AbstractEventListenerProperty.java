@@ -1,16 +1,16 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 
 import java.util.Objects;
 
-public abstract class AbstractEventListenerProperty<T> extends Property {
+public abstract class AbstractEventListenerProperty<T> extends SuiProperty {
 
 
 	/**
 	 * @param key the key or type of this property.
 	 */
-	public AbstractEventListenerProperty(final Class<? extends Property> key) {
+	public AbstractEventListenerProperty(final Class<? extends SuiProperty> key) {
 		super(key);
 	}
 
@@ -26,7 +26,7 @@ public abstract class AbstractEventListenerProperty<T> extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return Objects.equals(getListener(), ((AbstractEventListenerProperty<?>) other).getListener());
 	}
 

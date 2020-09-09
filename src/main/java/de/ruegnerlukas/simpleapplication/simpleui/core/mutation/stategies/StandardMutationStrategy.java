@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public StrategyDecisionResult canBeAppliedTo(final SuiBaseNode original, final SuiBaseNode target, final boolean allChildrenHaveId) {
+	public StrategyDecisionResult canBeAppliedTo(final SuiNode original, final SuiNode target, final boolean allChildrenHaveId) {
 		return StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA;
 	}
 
@@ -24,11 +24,11 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public MutationResult mutate(final SuiBaseNode original,
-								 final SuiBaseNode target,
+	public MutationResult mutate(final SuiNode original,
+								 final SuiNode target,
 								 final StrategyDecisionResult decisionData) {
 
-		final List<SuiBaseNode> newChildList = new ArrayList<>();
+		final List<SuiNode> newChildList = new ArrayList<>();
 
 		final int originalChildCount = original.getChildNodeStore().count();
 		final int targetChildCount = target.getChildNodeStore().count();
@@ -36,8 +36,8 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 		boolean wasChanged = false;
 
 		for (int i = 0, n = Math.max(originalChildCount, targetChildCount); i < n; i++) {
-			final SuiBaseNode childOriginal = originalChildCount <= i ? null : original.getChildNodeStore().get(i);
-			final SuiBaseNode childTarget = targetChildCount <= i ? null : target.getChildNodeStore().get(i);
+			final SuiNode childOriginal = originalChildCount <= i ? null : original.getChildNodeStore().get(i);
+			final SuiNode childTarget = targetChildCount <= i ? null : target.getChildNodeStore().get(i);
 
 			if (isRemoved(childOriginal, childTarget)) {
 				wasChanged = true;
@@ -52,7 +52,7 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 			}
 
 			if (notAddedOrRemoved(childOriginal, childTarget)) {
-				SuiBaseNode childMutated = SuiServices.get().mutateNode(childOriginal, childTarget);
+				SuiNode childMutated = SuiServices.get().mutateNode(childOriginal, childTarget);
 				newChildList.add(childMutated);
 				if (!childMutated.equals(childOriginal)) {
 					wasChanged = true;

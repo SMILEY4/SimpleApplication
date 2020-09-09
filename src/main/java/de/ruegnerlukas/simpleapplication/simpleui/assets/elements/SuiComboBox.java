@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.SearchableComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
@@ -13,7 +13,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptT
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.ComboBox;
 
@@ -42,12 +42,12 @@ public final class SuiComboBox {
 	 * @param properties the properties
 	 * @return the factory for a combobox
 	 */
-	public static NodeFactory comboBox(final Property... properties) {
+	public static NodeFactory comboBox(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		validateConflictSearchableEditable(properties);
 		Properties.validate(SuiComboBox.class, get().getEntry(SuiComboBox.class).getProperties(), properties);
-		return state -> SuiBaseNode.create(
+		return state -> SuiNode.create(
 				SuiComboBox.class,
 				List.of(properties),
 				state
@@ -62,10 +62,10 @@ public final class SuiComboBox {
 	 *
 	 * @param properties the properties to check
 	 */
-	private static void validateConflictSearchableEditable(final Property... properties) {
+	private static void validateConflictSearchableEditable(final SuiProperty... properties) {
 		Validations.INPUT.notEqual(2,
 				(int) Arrays.stream(properties)
-						.map(Property::getKey)
+						.map(SuiProperty::getKey)
 						.filter(key -> key == SearchableProperty.class || key == EditableProperty.class)
 						.count())
 				.exception("Searchable-Property and Editable-Property exclude each other. Can not add both.");
@@ -101,7 +101,7 @@ public final class SuiComboBox {
 
 
 		@Override
-		public ComboBox<T> build(final SuiBaseNode node) {
+		public ComboBox<T> build(final SuiNode node) {
 			if (SearchableProperty.isSearchable(node)) {
 				return new SearchableComboBox<>();
 			} else {

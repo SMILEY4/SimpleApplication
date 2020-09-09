@@ -1,15 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import lombok.Getter;
 
-public class OrientationProperty extends Property {
+public class OrientationProperty extends SuiProperty {
 
 
 	/**
@@ -33,7 +33,7 @@ public class OrientationProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return orientation == ((OrientationProperty) other).getOrientation();
 	}
 
@@ -52,7 +52,7 @@ public class OrientationProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final OrientationProperty property,
 						  final Separator fxNode) {
 			fxNode.setOrientation(property.getOrientation());
@@ -63,7 +63,7 @@ public class OrientationProperty extends Property {
 
 		@Override
 		public MutationResult update(final OrientationProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Separator fxNode) {
 			fxNode.setOrientation(property.getOrientation());
 			return MutationResult.MUTATED;
@@ -74,7 +74,7 @@ public class OrientationProperty extends Property {
 
 		@Override
 		public MutationResult remove(final OrientationProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Separator fxNode) {
 			fxNode.setOrientation(Orientation.HORIZONTAL);
 			return MutationResult.MUTATED;

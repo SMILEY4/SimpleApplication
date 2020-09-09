@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 public interface NodeMutator {
 
@@ -15,7 +15,7 @@ public interface NodeMutator {
 	 * @param target   the target node with the target properties
 	 * @return whether the node was mutated or has to be rebuild completely
 	 */
-	MutationResult mutateNode(SuiBaseNode original, SuiBaseNode target);
+	MutationResult mutateNode(SuiNode original, SuiNode target);
 
 
 }

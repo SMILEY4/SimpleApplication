@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -33,7 +33,7 @@ public class OnMouseScrollEventProperty extends AbstractEventListenerProperty<Mo
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final OnMouseScrollEventProperty property,
 						  final Node fxNode) {
 			setListener(fxNode, property);
@@ -44,7 +44,7 @@ public class OnMouseScrollEventProperty extends AbstractEventListenerProperty<Mo
 
 		@Override
 		public MutationResult update(final OnMouseScrollEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Node fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
@@ -55,7 +55,7 @@ public class OnMouseScrollEventProperty extends AbstractEventListenerProperty<Mo
 
 		@Override
 		public MutationResult remove(final OnMouseScrollEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Node fxNode) {
 			fxNode.setOnMouseClicked(null);
 			return MutationResult.MUTATED;

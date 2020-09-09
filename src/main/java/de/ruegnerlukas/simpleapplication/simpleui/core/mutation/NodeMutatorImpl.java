@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ChildNodesMutationStrategy;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 
@@ -73,7 +73,7 @@ public class NodeMutatorImpl implements NodeMutator {
 
 
 	@Override
-	public MutationResult mutateNode(final SuiBaseNode original, final SuiBaseNode target) {
+	public MutationResult mutateNode(final SuiNode original, final SuiNode target) {
 		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
 
 		if (mutationBehaviour == MutationBehaviour.DEFAULT && original.getNodeType() != target.getNodeType()) {
@@ -106,22 +106,22 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param original the original node
 	 * @param target   the target node to match
 	 */
-	private MutationResult mutateProperties(final SuiBaseNode original, final SuiBaseNode target) {
+	private MutationResult mutateProperties(final SuiNode original, final SuiNode target) {
 
-		final Set<Class<? extends Property>> commonProperties = getCommonProperties(original, target);
+		final Set<Class<? extends SuiProperty>> commonProperties = getCommonProperties(original, target);
 
-		for (Class<? extends Property> key : commonProperties) {
+		for (Class<? extends SuiProperty> key : commonProperties) {
 			if (shouldSkipPropertyMutation(key)) {
 				continue;
 			}
 
-			final Property propOriginal = original.getPropertyStore().get(key);
-			final Property propTarget = target.getPropertyStore().get(key);
+			final SuiProperty propOriginal = original.getPropertyStore().get(key);
+			final SuiProperty propTarget = target.getPropertyStore().get(key);
 			if (isUnchanged(propOriginal, propTarget)) {
 				continue;
 			}
 
-			final PropFxNodeUpdater<Property, Node> updater = getPropNodeUpdater(original.getNodeType(), key);
+			final PropFxNodeUpdater<SuiProperty, Node> updater = getPropNodeUpdater(original.getNodeType(), key);
 			if (updater == null || mutateProperty(original, propOriginal, propTarget, updater) == REQUIRES_REBUILD) {
 				return REQUIRES_REBUILD;
 			}
@@ -143,10 +143,10 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param updater      the node updater
 	 * @return whether the node has to be rebuild or was mutated successfully
 	 */
-	private MutationResult mutateProperty(final SuiBaseNode original,
-										  final Property propOriginal,
-										  final Property propTarget,
-										  final PropFxNodeUpdater<Property, Node> updater) {
+	private MutationResult mutateProperty(final SuiNode original,
+										  final SuiProperty propOriginal,
+										  final SuiProperty propTarget,
+										  final PropFxNodeUpdater<SuiProperty, Node> updater) {
 		switch (getPropertyState(propOriginal, propTarget)) {
 
 			case REMOVED:
@@ -182,7 +182,7 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param target   the target property or null
 	 * @return the {@link PropertyState}
 	 */
-	private PropertyState getPropertyState(final Property original, final Property target) {
+	private PropertyState getPropertyState(final SuiProperty original, final SuiProperty target) {
 		if (isRemoved(original, target)) {
 			return PropertyState.REMOVED;
 		}
@@ -206,7 +206,7 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param target   the target node to match
 	 * @return the result of the mutation
 	 */
-	private MutationResult mutateChildren(final SuiBaseNode original, final SuiBaseNode target) {
+	private MutationResult mutateChildren(final SuiNode original, final SuiNode target) {
 		return strategyDecider.mutate(original, target);
 	}
 
@@ -218,8 +218,8 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param b the other node
 	 * @return the set of property-key the two given nodes have in common.
 	 */
-	private Set<Class<? extends Property>> getCommonProperties(final SuiBaseNode a, final SuiBaseNode b) {
-		final Set<Class<? extends Property>> properties = new HashSet<>(a.getPropertyStore().getTypes());
+	private Set<Class<? extends SuiProperty>> getCommonProperties(final SuiNode a, final SuiNode b) {
+		final Set<Class<? extends SuiProperty>> properties = new HashSet<>(a.getPropertyStore().getTypes());
 		properties.addAll(b.getPropertyStore().getTypes());
 		return properties;
 	}
@@ -231,7 +231,7 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param propertyKey the key of the property
 	 * @return whether the given property type should be skipped during property mutation.
 	 */
-	private boolean shouldSkipPropertyMutation(final Class<? extends Property> propertyKey) {
+	private boolean shouldSkipPropertyMutation(final Class<? extends SuiProperty> propertyKey) {
 		return propertyKey == ItemListProperty.class || propertyKey == ItemProperty.class;
 	}
 
@@ -245,7 +245,7 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param node the node
 	 * @return the {@link MutationBehaviour}.
 	 */
-	private MutationBehaviour getMutationBehaviour(final SuiBaseNode node) {
+	private MutationBehaviour getMutationBehaviour(final SuiNode node) {
 		return node.getPropertyStore().getSafe(MutationBehaviourProperty.class)
 				.map(MutationBehaviourProperty::getBehaviour)
 				.orElse(MutationBehaviour.DEFAULT);
@@ -259,9 +259,9 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param propType the identifying type of the property
 	 * @return the {@link PropFxNodeUpdater} for the given property and given node type
 	 */
-	private PropFxNodeUpdater<Property, Node> getPropNodeUpdater(final Class<?> nodeType, final Class<? extends Property> propType) {
-		@SuppressWarnings ("unchecked") final PropFxNodeUpdater<Property, Node> updater =
-				(PropFxNodeUpdater<Property, Node>) SuiRegistry.get()
+	private PropFxNodeUpdater<SuiProperty, Node> getPropNodeUpdater(final Class<?> nodeType, final Class<? extends SuiProperty> propType) {
+		@SuppressWarnings ("unchecked") final PropFxNodeUpdater<SuiProperty, Node> updater =
+				(PropFxNodeUpdater<SuiProperty, Node>) SuiRegistry.get()
 						.getEntry(nodeType)
 						.getPropFxNodeUpdaters().get(propType);
 		return updater;
@@ -305,7 +305,7 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param target   the target property
 	 * @return whether the property is unchanged.
 	 */
-	private boolean isUnchanged(final Property original, final Property target) {
+	private boolean isUnchanged(final SuiProperty original, final SuiProperty target) {
 		return (original != null) && (target != null) && (original.isEqual(target));
 	}
 
@@ -319,7 +319,7 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @param target   the target property
 	 * @return whether the property was changed.
 	 */
-	private boolean isUpdated(final Property original, final Property target) {
+	private boolean isUpdated(final SuiProperty original, final SuiProperty target) {
 		return (original != null) && (target != null) && (!original.isEqual(target));
 	}
 

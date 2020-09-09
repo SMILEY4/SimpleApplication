@@ -2,15 +2,15 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
 @Getter
-public class SizeMaxProperty extends Property {
+public class SizeMaxProperty extends SuiProperty {
 
 
 	/**
@@ -41,7 +41,7 @@ public class SizeMaxProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		final SizeMaxProperty sizeOther = (SizeMaxProperty) other;
 		return NumberUtils.isEqual(this.getWidth(), sizeOther.getWidth())
 				&& NumberUtils.isEqual(this.getHeight(), sizeOther.getHeight());
@@ -62,7 +62,7 @@ public class SizeMaxProperty extends Property {
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final SizeMaxProperty property,
 						  final Region fxNode) {
 			fxNode.setMaxSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
@@ -73,7 +73,7 @@ public class SizeMaxProperty extends Property {
 
 		@Override
 		public MutationResult update(final SizeMaxProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Region fxNode) {
 			fxNode.setMaxSize(property.getWidth().doubleValue(), property.getHeight().doubleValue());
 			return MutationResult.MUTATED;
@@ -84,7 +84,7 @@ public class SizeMaxProperty extends Property {
 
 		@Override
 		public MutationResult remove(final SizeMaxProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final Region fxNode) {
 			if (node.getPropertyStore().has(SizeProperty.class)) {
 				SizeProperty sizeProp = node.getPropertyStore().get(SizeProperty.class);

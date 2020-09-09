@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import lombok.Getter;
 
-public class MutationBehaviourProperty extends Property {
+public class MutationBehaviourProperty extends SuiProperty {
 
 
 	/**
@@ -55,7 +55,7 @@ public class MutationBehaviourProperty extends Property {
 
 
 	@Override
-	protected boolean isPropertyEqual(final Property other) {
+	protected boolean isPropertyEqual(final SuiProperty other) {
 		return behaviour == ((MutationBehaviourProperty) other).getBehaviour();
 	}
 

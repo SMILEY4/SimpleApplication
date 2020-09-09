@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import lombok.Getter;
@@ -49,7 +49,7 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final OnTextChangedEventProperty property,
 						  final TextField fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.textProperty());
@@ -60,7 +60,7 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 
 		@Override
 		public MutationResult update(final OnTextChangedEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextField fxNode) {
 			node.getPropertyStore().getSafe(OnTextChangedEventProperty.class)
 					.map(OnTextChangedEventProperty::getChangeListenerProxy)
@@ -74,7 +74,7 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 
 		@Override
 		public MutationResult remove(final OnTextChangedEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextField fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.textProperty());
 			return MutationResult.MUTATED;
@@ -91,7 +91,7 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 
 
 		@Override
-		public void build(final SuiBaseNode node,
+		public void build(final SuiNode node,
 						  final OnTextChangedEventProperty property,
 						  final TextArea fxNode) {
 			property.getChangeListenerProxy().addTo(fxNode.textProperty());
@@ -102,7 +102,7 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 
 		@Override
 		public MutationResult update(final OnTextChangedEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextArea fxNode) {
 			node.getPropertyStore().getSafe(OnTextChangedEventProperty.class)
 					.map(OnTextChangedEventProperty::getChangeListenerProxy)
@@ -116,7 +116,7 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 
 		@Override
 		public MutationResult remove(final OnTextChangedEventProperty property,
-									 final SuiBaseNode node,
+									 final SuiNode node,
 									 final TextArea fxNode) {
 			property.getChangeListenerProxy().removeFrom(fxNode.textProperty());
 			return MutationResult.MUTATED;

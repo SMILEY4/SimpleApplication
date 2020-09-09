@@ -45,6 +45,6 @@ public interface SuiNodeChildTransformListener {
 	 * @param type       the type of all of the operations
 	 * @param operations the operations to apply
 	 */
-	void onTransformOperations(SuiBaseNode parent, OperationType type, List<? extends BaseOperation> operations);
+	void onTransformOperations(SuiNode parent, OperationType type, List<? extends BaseOperation> operations);
 
 }

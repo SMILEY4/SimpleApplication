@@ -17,7 +17,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Property;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
@@ -152,8 +152,8 @@ public class SuiRegistry {
 	 * @param ub       the {@link PropFxNodeUpdatingBuilder}
 	 */
 	public void registerProperty(final Class<?> nodeType,
-								 final Class<? extends Property> property,
-								 final PropFxNodeUpdatingBuilder<? extends Property, ? extends Node> ub) {
+								 final Class<? extends SuiProperty> property,
+								 final PropFxNodeUpdatingBuilder<? extends SuiProperty, ? extends Node> ub) {
 		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
 		Validations.INPUT.notNull(property).exception("The property type can not be null");
 		registerProperty(nodeType, property, ub, ub);
@@ -170,8 +170,8 @@ public class SuiRegistry {
 	 * @param builder  the {@link PropFxNodeBuilder}
 	 */
 	public void registerProperty(final Class<?> nodeType,
-								 final Class<? extends Property> property,
-								 final PropFxNodeBuilder<? extends Property, ? extends Node> builder) {
+								 final Class<? extends SuiProperty> property,
+								 final PropFxNodeBuilder<? extends SuiProperty, ? extends Node> builder) {
 		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
 		Validations.INPUT.notNull(property).exception("The property type can not be null");
 		final RegistryEntry entry = getEntry(nodeType);
@@ -192,9 +192,9 @@ public class SuiRegistry {
 	 * @param updater  the {@link PropFxNodeUpdater}
 	 */
 	public void registerProperty(final Class<?> nodeType,
-								 final Class<? extends Property> property,
-								 final PropFxNodeBuilder<? extends Property, ? extends Node> builder,
-								 final PropFxNodeUpdater<? extends Property, ? extends Node> updater) {
+								 final Class<? extends SuiProperty> property,
+								 final PropFxNodeBuilder<? extends SuiProperty, ? extends Node> builder,
+								 final PropFxNodeUpdater<? extends SuiProperty, ? extends Node> updater) {
 		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
 		Validations.INPUT.notNull(property).exception("The property type can not be null");
 		final RegistryEntry entry = getEntry(nodeType);
@@ -311,19 +311,19 @@ public class SuiRegistry {
 		 * the type of the property
 		 */
 		@Getter
-		private final Class<? extends Property> type;
+		private final Class<? extends SuiProperty> type;
 
 		/**
 		 * The builder
 		 */
 		@Getter
-		private final PropFxNodeBuilder<? extends Property, ? extends Node> builder;
+		private final PropFxNodeBuilder<? extends SuiProperty, ? extends Node> builder;
 
 		/**
 		 * The updater
 		 */
 		@Getter
-		private final PropFxNodeUpdater<? extends Property, ? extends Node> updater;
+		private final PropFxNodeUpdater<? extends SuiProperty, ? extends Node> updater;
 
 
 
@@ -335,9 +335,9 @@ public class SuiRegistry {
 		 * @return the property entry
 		 */
 		public static PropertyEntry of(
-				final Class<? extends Property> type,
-				final PropFxNodeBuilder<? extends Property, ? extends Node> builder,
-				final PropFxNodeUpdater<? extends Property, ? extends Node> updater) {
+				final Class<? extends SuiProperty> type,
+				final PropFxNodeBuilder<? extends SuiProperty, ? extends Node> builder,
+				final PropFxNodeUpdater<? extends SuiProperty, ? extends Node> updater) {
 			return new PropertyEntry(type, builder, updater);
 		}
 
@@ -350,8 +350,8 @@ public class SuiRegistry {
 		 * @return the property entry
 		 */
 		public static PropertyEntry of(
-				final Class<? extends Property> type,
-				final PropFxNodeUpdatingBuilder<? extends Property, ? extends Node> updatingBuilder) {
+				final Class<? extends SuiProperty> type,
+				final PropFxNodeUpdatingBuilder<? extends SuiProperty, ? extends Node> updatingBuilder) {
 			return new PropertyEntry(type, updatingBuilder, updatingBuilder);
 		}
 

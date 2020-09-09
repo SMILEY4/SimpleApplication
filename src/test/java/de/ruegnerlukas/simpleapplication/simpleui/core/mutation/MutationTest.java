@@ -9,7 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextCon
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiBaseNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
@@ -67,18 +67,18 @@ public class MutationTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, vbox);
-		SuiBaseNode original = context.getRootNode();
-		SuiBaseNode target = vboxTarget.create(state);
-		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		SuiNode original = context.getRootNode();
+		SuiNode target = vboxTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 
-		final List<SuiBaseNode> children = mutatedNode.getChildNodeStore().getUnmodifiable();
+		final List<SuiNode> children = mutatedNode.getChildNodeStore().getUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SuiBaseNode childButton = children.get(0);
+		final SuiNode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "btn2");
 		PropertyTestUtils.assertTextContentProperty(childButton, "Renamed Child Button 2");
 	}
@@ -104,9 +104,9 @@ public class MutationTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiBaseNode original = context.getRootNode();
-		SuiBaseNode target = factoryTarget.create(state);
-		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		SuiNode original = context.getRootNode();
+		SuiNode target = factoryTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
 		PropertyTestUtils.assertTextContentProperty(mutatedNode, "My Button");
@@ -142,9 +142,9 @@ public class MutationTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiBaseNode original = context.getRootNode();
-		SuiBaseNode target = factoryTarget.create(state);
-		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		SuiNode original = context.getRootNode();
+		SuiNode target = factoryTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiVBox.class);
 		assertThat(mutatedNode.getPropertyStore().has(SizeProperty.class)).isFalse();
@@ -171,9 +171,9 @@ public class MutationTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiBaseNode original = context.getRootNode();
-		SuiBaseNode target = factoryTarget.create(state);
-		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		SuiNode original = context.getRootNode();
+		SuiNode target = factoryTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
 		assertThat(mutatedNode.getPropertyStore().has(TextContentProperty.class)).isFalse();
@@ -199,9 +199,9 @@ public class MutationTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiBaseNode original = context.getRootNode();
-		SuiBaseNode target = factoryTarget.create(state);
-		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		SuiNode original = context.getRootNode();
+		SuiNode target = factoryTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
 		assertThat(mutatedNode).isEqualTo(original);
@@ -249,19 +249,19 @@ public class MutationTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, vbox);
-		SuiBaseNode original = context.getRootNode();
-		SuiBaseNode target = vboxTarget.create(state);
-		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		SuiNode original = context.getRootNode();
+		SuiNode target = vboxTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.DEFAULT);
 
-		final List<SuiBaseNode> children = mutatedNode.getChildNodeStore().getUnmodifiable();
+		final List<SuiNode> children = mutatedNode.getChildNodeStore().getUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SuiBaseNode childButton = children.get(0);
+		final SuiNode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "btn2");
 		PropertyTestUtils.assertTextContentProperty(childButton, "Renamed Child Button 2");
 	}
@@ -303,19 +303,19 @@ public class MutationTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, vbox);
-		SuiBaseNode original = context.getRootNode();
-		SuiBaseNode target = vboxTarget.create(state);
-		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		SuiNode original = context.getRootNode();
+		SuiNode target = vboxTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.STATIC_NODE);
 
-		final List<SuiBaseNode> children = mutatedNode.getChildNodeStore().getUnmodifiable();
+		final List<SuiNode> children = mutatedNode.getChildNodeStore().getUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(1);
 		assertThat(children).doesNotContainNull();
 
-		final SuiBaseNode childButton = children.get(0);
+		final SuiNode childButton = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton, "btn2");
 		PropertyTestUtils.assertTextContentProperty(childButton, "Renamed Child Button 2");
 	}
@@ -357,23 +357,23 @@ public class MutationTest extends ApplicationTest {
 		);
 
 		SuiSceneController context = new SuiSceneController(state, vbox);
-		SuiBaseNode original = context.getRootNode();
-		SuiBaseNode target = vboxTarget.create(state);
-		SuiBaseNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		SuiNode original = context.getRootNode();
+		SuiNode target = vboxTarget.create(state);
+		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.STATIC_SUBTREE);
 
-		final List<SuiBaseNode> children = mutatedNode.getChildNodeStore().getUnmodifiable();
+		final List<SuiNode> children = mutatedNode.getChildNodeStore().getUnmodifiable();
 		assertThat(children).isNotNull();
 		assertThat(children).hasSize(2);
 		assertThat(children).doesNotContainNull();
 
-		final SuiBaseNode childButton1 = children.get(0);
+		final SuiNode childButton1 = children.get(0);
 		PropertyTestUtils.assertIdProperty(childButton1, "btn1");
 		PropertyTestUtils.assertTextContentProperty(childButton1, "Child Button 1");
 
-		final SuiBaseNode childButton2 = children.get(1);
+		final SuiNode childButton2 = children.get(1);
 		PropertyTestUtils.assertIdProperty(childButton2, "btn2");
 		PropertyTestUtils.assertTextContentProperty(childButton2, "Child Button 2");
 	}
