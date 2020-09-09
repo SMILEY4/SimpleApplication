@@ -81,7 +81,7 @@ public class SuiRegistryTest {
 		SuiRegistry.get().registerBaseFxNodeBuilder(SuiRegistryTest.class, fxNodeBuilder);
 		SuiRegistry.get().registerProperty(SuiRegistryTest.class, TextContentProperty.class, propUpdatingBuilder);
 
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getProperties()).containsExactly(IdProperty.class, TextContentProperty.class);
+		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getProperties()).containsExactlyInAnyOrder(IdProperty.class, TextContentProperty.class);
 		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).hasSize(2);
 		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).hasSize(2);
 

@@ -33,28 +33,37 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 		final int originalChildCount = original.getChildNodeStore().count();
 		final int targetChildCount = target.getChildNodeStore().count();
 
+		boolean wasChanged = false;
+
 		for (int i = 0, n = Math.max(originalChildCount, targetChildCount); i < n; i++) {
 			final SuiBaseNode childOriginal = originalChildCount <= i ? null : original.getChildNodeStore().get(i);
 			final SuiBaseNode childTarget = targetChildCount <= i ? null : target.getChildNodeStore().get(i);
 
 			if (isRemoved(childOriginal, childTarget)) {
+				wasChanged = true;
 				continue;
 			}
 
 			if (isAdded(childOriginal, childTarget)) {
 				CoreServices.enrichWithFxNodes(childTarget);
 				newChildList.add(childTarget);
+				wasChanged = true;
 				continue;
 			}
 
 			if (notAddedOrRemoved(childOriginal, childTarget)) {
 				SuiBaseNode childMutated = CoreServices.mutateNode(childOriginal, childTarget);
 				newChildList.add(childMutated);
+				if (!childMutated.equals(childOriginal)) {
+					wasChanged = true;
+				}
 			}
 
 		}
 
-		original.getChildNodeStore().setChildren(newChildList); // todo: optimize - do not set when nothing changed
+		if (wasChanged) {
+			original.getChildNodeStore().setChildren(newChildList);
+		}
 		return MUTATED;
 	}
 
