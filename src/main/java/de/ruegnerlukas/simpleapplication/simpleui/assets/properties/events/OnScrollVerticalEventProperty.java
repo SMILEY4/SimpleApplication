@@ -10,7 +10,6 @@ import lombok.Getter;
 public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty<ScrollEventData> {
 
 
-
 	/**
 	 * The listener for events with {@link ScrollEventData}.
 	 */
@@ -27,10 +26,11 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 
 
 	/**
-	 * @param listener the listener for events with {@link ScrollEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link ScrollEventData}.
 	 */
-	public OnScrollVerticalEventProperty(final SUIEventListener<ScrollEventData> listener) {
-		super(OnScrollVerticalEventProperty.class);
+	public OnScrollVerticalEventProperty(final String propertyId, final SUIEventListener<ScrollEventData> listener) {
+		super(OnScrollVerticalEventProperty.class, propertyId);
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {
 			if (prev != null && next != null) {

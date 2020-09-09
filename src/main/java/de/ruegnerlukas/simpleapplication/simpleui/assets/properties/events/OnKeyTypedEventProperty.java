@@ -20,10 +20,11 @@ public class OnKeyTypedEventProperty extends AbstractEventListenerProperty<KeyEv
 
 
 	/**
-	 * @param listener the listener for events with {@link KeyEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link KeyEventData}.
 	 */
-	public OnKeyTypedEventProperty(final SUIEventListener<KeyEventData> listener) {
-		super(OnKeyTypedEventProperty.class);
+	public OnKeyTypedEventProperty(final String propertyId, final SUIEventListener<KeyEventData> listener) {
+		super(OnKeyTypedEventProperty.class, propertyId);
 		this.listener = listener;
 	}
 

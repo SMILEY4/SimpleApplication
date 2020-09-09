@@ -22,10 +22,11 @@ public class OnSelectedDateEventProperty<T> extends AbstractEventListenerPropert
 
 
 	/**
-	 * @param listener the listener for events with {@link DatePickerActionEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link DatePickerActionEventData}.
 	 */
-	public OnSelectedDateEventProperty(final SUIEventListener<DatePickerActionEventData> listener) {
-		super(OnSelectedDateEventProperty.class);
+	public OnSelectedDateEventProperty(final String propertyId, final SUIEventListener<DatePickerActionEventData> listener) {
+		super(OnSelectedDateEventProperty.class, propertyId);
 		this.listener = listener;
 	}
 

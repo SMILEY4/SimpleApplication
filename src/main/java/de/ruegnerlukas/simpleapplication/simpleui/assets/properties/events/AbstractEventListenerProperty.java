@@ -18,10 +18,11 @@ public abstract class AbstractEventListenerProperty<T> extends SuiProperty {
 
 
 	/**
-	 * @param key the key or type of this property.
+	 * @param key        the key or type of this property.
+	 * @param propertyId see {@link SuiProperty#getPropertyId()}.
 	 */
-	public AbstractEventListenerProperty(final Class<? extends SuiProperty> key) {
-		super(key, COMPARATOR);
+	public AbstractEventListenerProperty(final Class<? extends SuiProperty> key, final String propertyId) {
+		super(key, COMPARATOR, propertyId);
 	}
 
 

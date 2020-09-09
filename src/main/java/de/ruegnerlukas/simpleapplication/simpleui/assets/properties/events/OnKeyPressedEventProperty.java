@@ -20,10 +20,11 @@ public class OnKeyPressedEventProperty extends AbstractEventListenerProperty<Key
 
 
 	/**
-	 * @param listener the listener for events with {@link KeyEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link KeyEventData}.
 	 */
-	public OnKeyPressedEventProperty(final SUIEventListener<KeyEventData> listener) {
-		super(OnKeyPressedEventProperty.class);
+	public OnKeyPressedEventProperty(final String propertyId, final SUIEventListener<KeyEventData> listener) {
+		super(OnKeyPressedEventProperty.class, propertyId);
 		this.listener = listener;
 	}
 

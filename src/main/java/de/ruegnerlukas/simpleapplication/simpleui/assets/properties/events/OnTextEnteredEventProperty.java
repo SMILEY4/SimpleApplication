@@ -31,10 +31,11 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 
 
 	/**
-	 * @param listener the listener for events with {@link TextContentEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link TextContentEventData}.
 	 */
-	public OnTextEnteredEventProperty(final SUIEventListener<TextContentEventData> listener) {
-		super(OnTextEnteredEventProperty.class);
+	public OnTextEnteredEventProperty(final String propertyId, final SUIEventListener<TextContentEventData> listener) {
+		super(OnTextEnteredEventProperty.class, propertyId);
 		this.listener = listener;
 		this.textAreaEventHandler = e -> {
 			if (e.getCode() == KeyCode.ENTER && e.isShortcutDown()) {

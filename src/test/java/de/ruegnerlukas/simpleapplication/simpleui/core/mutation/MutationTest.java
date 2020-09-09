@@ -446,13 +446,13 @@ public class MutationTest extends ApplicationTest {
 		NodeFactory factoryOriginal = SuiButton.button(
 				Properties.id("btn"),
 				Properties.textContent("Button Original"),
-				EventProperties.eventAction(/*todo: id here ?*/e -> capturedEvents.add("from original"))
+				EventProperties.eventAction("myPropertyId", e -> capturedEvents.add("from original"))
 		);
 
 		NodeFactory factoryTarget = SuiButton.button(
 				Properties.id("btn"),
 				Properties.textContent("Button Target"),
-				EventProperties.eventAction(/*todo: id here ?*/e -> capturedEvents.add("from target"))
+				EventProperties.eventAction("myPropertyId", e -> capturedEvents.add("from target"))
 		);
 
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);

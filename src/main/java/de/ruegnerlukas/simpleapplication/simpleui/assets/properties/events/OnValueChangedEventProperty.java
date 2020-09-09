@@ -29,10 +29,11 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 	/**
-	 * @param listener the listener for events with {@link ValueChangedEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link ValueChangedEventData}.
 	 */
-	public OnValueChangedEventProperty(final SUIEventListener<ValueChangedEventData<T>> listener) {
-		super(OnValueChangedEventProperty.class);
+	public OnValueChangedEventProperty(final String propertyId, final SUIEventListener<ValueChangedEventData<T>> listener) {
+		super(OnValueChangedEventProperty.class, propertyId);
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> listener.onEvent(
 				new ValueChangedEventData<>(next, prev))

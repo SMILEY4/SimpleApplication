@@ -36,8 +36,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StylePr
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
@@ -610,19 +610,34 @@ public final class Properties {
 
 
 	/**
+	 * @param type      the type to convert to/from string
 	 * @param converter the converter for the displayed choice box items
 	 * @return an {@link ChoicesConverterProperty}
 	 */
 	public static <T> SuiProperty choicesConverter(final Class<T> type, final StringConverter<T> converter) {
-		Validations.INPUT.notNull(type).exception("The type can not be null.");
-		Validations.INPUT.notNull(converter).exception("The converter can not be null.");
-		return new ChoicesConverterProperty<>(converter);
+		return choicesConverter(null, type, converter);
 	}
 
 
 
 
 	/**
+	 * @param propertyId see {@link SuiProperty#getPropertyId()}
+	 * @param type       the type to convert to/from string
+	 * @param converter  the converter for the displayed choice box items
+	 * @return an {@link ChoicesConverterProperty}
+	 */
+	public static <T> SuiProperty choicesConverter(final String propertyId, final Class<T> type, final StringConverter<T> converter) {
+		Validations.INPUT.notNull(type).exception("The type can not be null.");
+		Validations.INPUT.notNull(converter).exception("The converter can not be null.");
+		return new ChoicesConverterProperty<>(propertyId, converter);
+	}
+
+
+
+
+	/**
+	 * @param type       the type to convert to/from string
 	 * @param fromString converter from a string to an object
 	 * @param toString   converter from an object to a string
 	 * @return an {@link ChoicesConverterProperty}
@@ -630,10 +645,27 @@ public final class Properties {
 	public static <T> SuiProperty choicesConverter(final Class<T> type,
 												   final ChoicesConverterProperty.FromStringConverter<T> fromString,
 												   final ChoicesConverterProperty.ToStringConverter<T> toString) {
+		return choicesConverter(null, type, fromString, toString);
+	}
+
+
+
+
+	/**
+	 * @param propertyId see {@link SuiProperty#getPropertyId()}
+	 * @param type       the type to convert to/from string
+	 * @param fromString converter from a string to an object
+	 * @param toString   converter from an object to a string
+	 * @return an {@link ChoicesConverterProperty}
+	 */
+	public static <T> SuiProperty choicesConverter(final String propertyId,
+												   final Class<T> type,
+												   final ChoicesConverterProperty.FromStringConverter<T> fromString,
+												   final ChoicesConverterProperty.ToStringConverter<T> toString) {
 		Validations.INPUT.notNull(type).exception("The type can not be null.");
 		Validations.INPUT.notNull(fromString).exception("The converter from strings can not be null.");
 		Validations.INPUT.notNull(toString).exception("The converter to strings can not be null.");
-		return new ChoicesConverterProperty<>(fromString, toString);
+		return new ChoicesConverterProperty<>(propertyId, fromString, toString);
 	}
 
 
@@ -682,14 +714,14 @@ public final class Properties {
 
 
 	/**
-	 * @param layoutId       the id of the layout. This property will only be mutated, when this id changes.
+	 * @param propertyId     see {@link SuiProperty#getPropertyId()}
 	 * @param layoutFunction the function used to calculate the layout of the child nodes
 	 * @return a {@link MutationBehaviourProperty}
 	 */
-	public static SuiProperty layout(final String layoutId, final LayoutProperty.LayoutFunction layoutFunction) {
-		Validations.INPUT.notEmpty(layoutId).exception("The layout id can not be null or empty.");
+	public static SuiProperty layout(final String propertyId, final LayoutProperty.LayoutFunction layoutFunction) {
+		Validations.INPUT.notEmpty(propertyId).exception("The layout id can not be null or empty.");
 		Validations.INPUT.notNull(layoutFunction).exception("The layout function can not be null.");
-		return new LayoutProperty(layoutId, layoutFunction);
+		return new LayoutProperty(propertyId, layoutFunction);
 	}
 
 
@@ -793,8 +825,20 @@ public final class Properties {
 	 * @return a {@link LabelFormatterProperty}
 	 */
 	public static SuiProperty labelFormatter(final Function<Double, String> formatter) {
+		return labelFormatter(null, formatter);
+	}
+
+
+
+
+	/**
+	 * @param propertyId see {@link SuiProperty#getPropertyId()}
+	 * @param formatter  the formatting function
+	 * @return a {@link LabelFormatterProperty}
+	 */
+	public static SuiProperty labelFormatter(final String propertyId, final Function<Double, String> formatter) {
 		Validations.INPUT.notNull(formatter).exception("The formatting-function may not be null.");
-		return new LabelFormatterProperty(formatter);
+		return new LabelFormatterProperty(propertyId, formatter);
 	}
 
 

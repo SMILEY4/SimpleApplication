@@ -20,7 +20,7 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 	 */
 	@SuppressWarnings ("rawtypes")
 	private static final BiFunction<ChoicesConverterProperty, ChoicesConverterProperty, Boolean> COMPARATOR =
-			(a, b) -> a.getConverter() == b.getConverter();
+			(a, b) -> a.getConverter().equals(b.getConverter());
 
 
 	/**
@@ -33,11 +33,12 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 	/**
+	 * @param propertyId see {@link SuiProperty#getPropertyId()}
 	 * @param fromString converter from a string to an object
 	 * @param toString   converter from an object to a string
 	 */
-	public ChoicesConverterProperty(final FromStringConverter<T> fromString, final ToStringConverter<T> toString) {
-		this(new StringConverter<>() {
+	public ChoicesConverterProperty(final String propertyId, final FromStringConverter<T> fromString, final ToStringConverter<T> toString) {
+		this(propertyId, new StringConverter<>() {
 			@Override
 			public String toString(final T t) {
 				return toString.toString(t);
@@ -57,10 +58,11 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 	/**
-	 * @param converter the string converter
+	 * @param propertyId see {@link SuiProperty#getPropertyId()}
+	 * @param converter  the string converter
 	 */
-	public ChoicesConverterProperty(final StringConverter<T> converter) {
-		super(ChoicesConverterProperty.class, COMPARATOR);
+	public ChoicesConverterProperty(final String propertyId, final StringConverter<T> converter) {
+		super(ChoicesConverterProperty.class, COMPARATOR, propertyId);
 		this.converter = converter;
 	}
 

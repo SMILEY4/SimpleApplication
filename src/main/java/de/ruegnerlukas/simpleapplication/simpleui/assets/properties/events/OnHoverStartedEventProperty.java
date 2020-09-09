@@ -10,7 +10,6 @@ import lombok.Getter;
 public class OnHoverStartedEventProperty extends AbstractEventListenerProperty<HoverEventData> {
 
 
-
 	/**
 	 * The listener for events with {@link HoverEventData}.
 	 */
@@ -27,10 +26,11 @@ public class OnHoverStartedEventProperty extends AbstractEventListenerProperty<H
 
 
 	/**
-	 * @param listener the listener for events with {@link HoverEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link HoverEventData}.
 	 */
-	public OnHoverStartedEventProperty(final SUIEventListener<HoverEventData> listener) {
-		super(OnHoverStartedEventProperty.class);
+	public OnHoverStartedEventProperty(final String propertyId, final SUIEventListener<HoverEventData> listener) {
+		super(OnHoverStartedEventProperty.class, propertyId);
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {
 			if (next) {

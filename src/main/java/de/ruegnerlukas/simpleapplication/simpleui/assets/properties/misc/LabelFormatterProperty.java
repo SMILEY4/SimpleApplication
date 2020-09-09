@@ -34,8 +34,8 @@ public class LabelFormatterProperty extends SuiProperty {
 	/**
 	 * @param formatter the label formatting function
 	 */
-	public LabelFormatterProperty(final Function<Double, String> formatter) {
-		super(LabelFormatterProperty.class, COMPARATOR);
+	public LabelFormatterProperty(final String propertyId, final Function<Double, String> formatter) {
+		super(LabelFormatterProperty.class, COMPARATOR, propertyId);
 		this.formatter = formatter;
 	}
 

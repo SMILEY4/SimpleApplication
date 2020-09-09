@@ -26,10 +26,11 @@ public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<
 
 
 	/**
-	 * @param listener the listener for events with {@link FocusEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link FocusEventData}.
 	 */
-	public OnFocusReceivedEventProperty(final SUIEventListener<FocusEventData> listener) {
-		super(OnFocusReceivedEventProperty.class);
+	public OnFocusReceivedEventProperty(final String propertyId, final SUIEventListener<FocusEventData> listener) {
+		super(OnFocusReceivedEventProperty.class, propertyId);
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {
 			if (next) {

@@ -19,13 +19,8 @@ public class LayoutProperty extends SuiProperty {
 	 * The comparator function for this property type.
 	 */
 	private static final BiFunction<LayoutProperty, LayoutProperty, Boolean> COMPARATOR =
-			(a, b) -> a.getLayoutId().equals(b.getLayoutId());
+			(a, b) -> a.getLayoutFunction().equals(b.getLayoutFunction());
 
-	/**
-	 * The id of the layout. This property will only be mutated, when this id changes.
-	 */
-	@Getter
-	private final String layoutId;
 
 	/**
 	 * The function used to calculate the layout of the child nodes
@@ -37,12 +32,11 @@ public class LayoutProperty extends SuiProperty {
 
 
 	/**
-	 * @param layoutId       the id of the layout. This property will only be mutated, when this id changes.
+	 * @param propertyId     see {@link SuiProperty#getPropertyId()}
 	 * @param layoutFunction the function used to calculate the layout of the child nodes
 	 */
-	public LayoutProperty(final String layoutId, final LayoutFunction layoutFunction) {
-		super(LayoutProperty.class, COMPARATOR);
-		this.layoutId = layoutId;
+	public LayoutProperty(final String propertyId, final LayoutFunction layoutFunction) {
+		super(LayoutProperty.class, COMPARATOR, propertyId);
 		this.layoutFunction = layoutFunction;
 	}
 
