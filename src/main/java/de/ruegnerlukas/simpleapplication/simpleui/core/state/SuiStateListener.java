@@ -1,5 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.state;
 
+import java.util.List;
+
 public interface SuiStateListener {
 
 
@@ -18,8 +20,9 @@ public interface SuiStateListener {
 	 *
 	 * @param state  the state after the given update was applied
 	 * @param update the state update that modified the given state
+	 * @param tags   the list of tags attached to the given update
 	 */
-	void stateUpdated(SuiState state, SuiStateUpdate<?> update);
+	void stateUpdated(SuiState state, SuiStateUpdate<?> update, List<String> tags);
 
 
 }

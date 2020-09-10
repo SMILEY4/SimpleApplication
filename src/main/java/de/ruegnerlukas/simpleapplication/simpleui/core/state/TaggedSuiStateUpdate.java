@@ -7,7 +7,7 @@ public interface TaggedSuiStateUpdate<T> extends SuiStateUpdate<T> {
 
 	@Override
 	default void doUpdate(T state) {
-		// do nothing
+		doTaggedUpdate(state);
 	}
 
 	/**

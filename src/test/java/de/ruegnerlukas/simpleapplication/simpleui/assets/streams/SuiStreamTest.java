@@ -795,7 +795,7 @@ public class SuiStreamTest extends ApplicationTest {
 		final TestState testState = new TestState("-");
 
 		final List<String> collectedValues = new ArrayList<>();
-		testState.addStateListener((state, update) -> {
+		testState.addStateListener((state, update, tags) -> {
 			collectedValues.add(((TestState) state).text);
 		});
 
@@ -835,7 +835,7 @@ public class SuiStreamTest extends ApplicationTest {
 		final TestState testState = new TestState("-");
 
 		final List<String> collectedValues = new ArrayList<>();
-		testState.addStateListener((state, update) -> {
+		testState.addStateListener((state, update, tags) -> {
 			collectedValues.add(((TestState) state).text);
 		});
 

@@ -70,7 +70,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 						eventAction(e -> state.update(TestState.class, TestState::increment))
 				))
 		);
-		testState.addStateListener((state, update) -> phaser.arrive());
+		testState.addStateListener((state, update, tags) -> phaser.arrive());
 
 		// assert button text
 		final Button fxButton = (Button) context.getRootFxNode();
@@ -102,7 +102,7 @@ public class SUIIntegrationTest extends ApplicationTest {
 						}))
 				))
 		);
-		testState.addStateListener((state, update) -> phaser.arrive());
+		testState.addStateListener((state, update, tags) -> phaser.arrive());
 
 		// assert button text
 		final Button fxButton = (Button) context.getRootFxNode();

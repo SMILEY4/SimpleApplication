@@ -98,10 +98,29 @@ public class SuiState {
 		if (!silent) {
 			listeners.forEach(listener -> listener.beforeUpdate(this, update));
 		}
-		update.doUpdate((T) this);
+		final List<String> tags = doUpdate(update);
 		if (!silent) {
-			listeners.forEach(listener -> listener.stateUpdated(this, update));
+			listeners.forEach(listener -> listener.stateUpdated(this, update, tags));
 		}
+	}
+
+
+
+
+	/**
+	 * @param update the state update
+	 * @param <T>    the generic type of this state
+	 * @return the tags attached to the update (or an empty list).
+	 */
+	private <T> List<String> doUpdate(final SuiStateUpdate<T> update) {
+		@SuppressWarnings ("unchecked") final T state = (T) this;
+		List<String> tags = List.of();
+		if (update instanceof TaggedSuiStateUpdate) {
+			tags = ((TaggedSuiStateUpdate<T>) update).doTaggedUpdate(state);
+		} else {
+			update.doUpdate(state);
+		}
+		return tags;
 	}
 
 
