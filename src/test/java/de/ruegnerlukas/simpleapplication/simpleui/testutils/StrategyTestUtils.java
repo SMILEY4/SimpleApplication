@@ -44,7 +44,7 @@ public class StrategyTestUtils {
 		TestState state = new TestState();
 		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		SuiNode original = context.getRootNode();
-		SuiNode target = factoryTarget.create(state);
+		SuiNode target = factoryTarget.create(state, null);
 		return Triplet.of(context, original, target);
 	}
 

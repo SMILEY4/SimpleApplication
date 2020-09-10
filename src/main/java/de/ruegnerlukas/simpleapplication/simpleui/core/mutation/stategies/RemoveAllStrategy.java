@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 /**
@@ -35,6 +36,7 @@ public class RemoveAllStrategy implements ChildNodesMutationStrategy {
 	@Override
 	public MutationResult mutate(final SuiNode original,
 								 final SuiNode target,
+								 final Tags tags,
 								 final StrategyDecisionResult decisionData) {
 		original.getChildNodeStore().clearChildren();
 		return MutationResult.MUTATED;

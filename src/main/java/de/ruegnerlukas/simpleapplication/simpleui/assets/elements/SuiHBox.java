@@ -46,10 +46,11 @@ public final class SuiHBox {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiHBox.class, get().getEntry(SuiHBox.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiHBox.class,
 				List.of(properties),
 				state,
+				tags,
 				SuiNodeChildListener.DEFAULT,
 				SuiNodeChildTransformListener.DEFAULT
 				);

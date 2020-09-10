@@ -1,11 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ChildNodesMutationStrategy;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
@@ -74,26 +77,60 @@ public class NodeMutatorImpl implements NodeMutator {
 
 
 	@Override
-	public MutationResult mutateNode(final SuiNode original, final SuiNode target) {
-		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
+	public MutationResult mutateNode(final SuiNode original, final SuiNode target, final Tags tags) {
+
+		final MutationBehaviour mutationBehaviour = MutationBehaviourProperty.getMutationBehaviour(original);
 
 		if (mutationBehaviour == MutationBehaviour.DEFAULT && original.getNodeType() != target.getNodeType()) {
 			return REQUIRES_REBUILD;
 		}
 
-		if (mutationBehaviour == MutationBehaviour.DEFAULT) {
+		boolean mutateProperties;
+		boolean mutateChildNodes;
+
+		switch (mutationBehaviour) {
+			case DEFAULT:
+				mutateProperties = true;
+				mutateChildNodes = true;
+				break;
+			case STATIC_NODE:
+				mutateProperties = false;
+				mutateChildNodes = true;
+				break;
+			case STATIC_SUBTREE:
+				mutateProperties = true;
+				mutateChildNodes = false;
+				break;
+			case STATIC:
+				mutateProperties = false;
+				mutateChildNodes = false;
+				break;
+			default:
+				Validations.STATE.fail().exception("Unknown mutation behaviour: {}.", mutationBehaviour);
+				mutateProperties = true;
+				mutateChildNodes = true;
+		}
+
+		final TagConditionExpression tagFilter = getTagFilter(original);
+		if (tagFilter != null && tagFilter.matches(tags)) {
+			mutateProperties = true;
+			mutateChildNodes = true;
+		}
+
+		if (mutateProperties) {
 			if (mutateProperties(original, target) == REQUIRES_REBUILD) {
 				return REQUIRES_REBUILD;
 			}
 		}
 
-		if (mutationBehaviour != MutationBehaviour.STATIC_SUBTREE) {
-			if (mutateChildren(original, target) == REQUIRES_REBUILD) {
+		if (mutateChildNodes) {
+			if (mutateChildren(original, target, tags) == REQUIRES_REBUILD) {
 				return REQUIRES_REBUILD;
 			}
 		}
 
 		return MUTATED;
+
 	}
 
 
@@ -207,10 +244,11 @@ public class NodeMutatorImpl implements NodeMutator {
 	 *
 	 * @param original the original node
 	 * @param target   the target node to match
+	 * @param tags     tags associated with the state update triggering this mutation
 	 * @return the result of the mutation
 	 */
-	private MutationResult mutateChildren(final SuiNode original, final SuiNode target) {
-		return strategyDecider.mutate(original, target);
+	private MutationResult mutateChildren(final SuiNode original, final SuiNode target, final Tags tags) {
+		return strategyDecider.mutate(original, target, tags);
 	}
 
 
@@ -241,17 +279,18 @@ public class NodeMutatorImpl implements NodeMutator {
 
 
 
+
 	/**
-	 * Get the mutation behaviour from the given node.
-	 * Returns the default behaviour if the property was not added to the given node.
+	 * Get the {@link TagConditionExpression} from the mutation behaviour of the given node.
+	 * Returns a default filter expression if the property was not added to the given node or the expression is null.
 	 *
 	 * @param node the node
-	 * @return the {@link MutationBehaviour}.
+	 * @return the {@link TagConditionExpression} or null.
 	 */
-	private MutationBehaviour getMutationBehaviour(final SuiNode node) {
+	private TagConditionExpression getTagFilter(final SuiNode node) {
 		return node.getPropertyStore().getSafe(MutationBehaviourProperty.class)
-				.map(MutationBehaviourProperty::getBehaviour)
-				.orElse(MutationBehaviour.DEFAULT);
+				.map(MutationBehaviourProperty::getCondition)
+				.orElse(null);
 	}
 
 

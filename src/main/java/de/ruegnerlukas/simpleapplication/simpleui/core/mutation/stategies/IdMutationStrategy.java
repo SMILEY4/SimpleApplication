@@ -12,6 +12,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.Repla
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.SwapOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ListTransformer.BaseTransformation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ListTransformer.ReplaceTransformation;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 
@@ -58,14 +59,17 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public MutationResult mutate(final SuiNode original, final SuiNode target, final StrategyDecisionResult decisionData) {
+	public MutationResult mutate(final SuiNode original,
+								 final SuiNode target,
+								 final Tags tags,
+								 final StrategyDecisionResult decisionData) {
 
 		final List<String> idsOriginal = extractChildIds(original);
 		final List<String> idsTarget = extractChildIds(target);
 
 		final ListTransformer transformer = new ListTransformer(idsOriginal, idsTarget);
 		final List<BaseTransformation> transformations = transformer.calculateTransformations();
-		transformations.addAll(mutatePermanentChildren(original, target, transformer.getPermanentElements()));
+		transformations.addAll(mutatePermanentChildren(original, target, tags, transformer.getPermanentElements()));
 
 		AtomicInteger totalCost = new AtomicInteger(0);
 		final List<AddOperation> addOperations = new ArrayList<>();
@@ -136,13 +140,14 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 	 */
 	private List<ReplaceTransformation> mutatePermanentChildren(final SuiNode original,
 																final SuiNode target,
+																final Tags tags,
 																final Set<Pair<String, Integer>> permanents) {
 		return LoopUtils.asyncCollectingLoop(new ArrayList<>(permanents), true, permanent -> {
 			final String nodeId = permanent.getLeft();
 			final int index = permanent.getRight();
 			final SuiNode childOriginal = original.getChildNodeStore().find(nodeId);
 			final SuiNode childTarget = target.getChildNodeStore().get(index);
-			if (SuiServices.get().mutate(childOriginal, childTarget) == MutationResult.REQUIRES_REBUILD) {
+			if (SuiServices.get().mutate(childOriginal, childTarget, tags) == MutationResult.REQUIRES_REBUILD) {
 				return new ReplaceTransformation(index, nodeId);
 			} else {
 				return null;

@@ -41,10 +41,11 @@ public final class SuiAnchorPaneItem {
 		final List<SuiProperty> list = new ArrayList<>();
 		list.add(new ItemListProperty(factory));
 		list.addAll(List.of(properties));
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiAnchorPaneItem.class,
 				list,
-				state
+				state,
+				tags
 		);
 	}
 

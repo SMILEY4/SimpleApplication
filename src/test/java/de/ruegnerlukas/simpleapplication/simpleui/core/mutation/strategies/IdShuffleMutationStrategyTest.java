@@ -11,6 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdShuffleMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.Button;
@@ -60,7 +61,7 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				decisionResult);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -265,7 +266,7 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				decisionResult);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -344,7 +345,7 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, true);
 		assertThat(decisionResult.isApplicable()).isTrue();
 
-		final MutationResult mutationResult = strategy.mutate(nodeOriginal, nodeTarget, decisionResult);
+		final MutationResult mutationResult = strategy.mutate(nodeOriginal, nodeTarget, Tags.empty(), decisionResult);
 		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
 		assertThat(nodeOriginal.getChildNodeStore().count()).isEqualTo(3);
 
@@ -414,7 +415,7 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, true);
 		assertThat(decisionResult.isApplicable()).isTrue();
 
-		final MutationResult mutationResult = strategy.mutate(nodeOriginal, nodeTarget, decisionResult);
+		final MutationResult mutationResult = strategy.mutate(nodeOriginal, nodeTarget, Tags.empty(), decisionResult);
 		assertThat(mutationResult).isEqualTo(MutationResult.MUTATED);
 		assertThat(nodeOriginal.getChildNodeStore().count()).isEqualTo(3);
 

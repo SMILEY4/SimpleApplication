@@ -43,10 +43,11 @@ public final class SuiButton {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiButton.class, get().getEntry(SuiButton.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiButton.class,
 				List.of(properties),
-				state
+				state,
+				tags
 		);
 	}
 

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,10 +42,11 @@ public class ChildNodeStore extends ChildNodeOperations {
 	 */
 	public ChildNodeStore(final SuiState state,
 						  final List<SuiProperty> properties,
+						  final Tags tags,
 						  final ChildNodeBuilder childNodeBuilder,
 						  final SuiNodeChildListener childListener,
 						  final SuiNodeChildTransformListener childTransformListener) {
-		this(childNodeBuilder.build(state, properties), childListener, childTransformListener);
+		this(childNodeBuilder.build(state, properties, tags), childListener, childTransformListener);
 	}
 
 
@@ -55,7 +57,7 @@ public class ChildNodeStore extends ChildNodeOperations {
 	 * @param childListener          the listener for changed children
 	 * @param childTransformListener the listener for child transform operations
 	 */
-	public ChildNodeStore(final List<SuiNode> children,
+	private ChildNodeStore(final List<SuiNode> children,
 						  final SuiNodeChildListener childListener,
 						  final SuiNodeChildTransformListener childTransformListener) {
 		super(childListener, childTransformListener);

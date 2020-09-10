@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
@@ -100,7 +101,7 @@ public class SuiSceneController implements SuiStateListener {
 	 */
 	public SuiNode getRootNode() {
 		if (sceneTree == null) {
-			sceneTree = SuiSceneTree.build(nodeFactory, state);
+			sceneTree = SuiSceneTree.build(nodeFactory, state, null);
 			sceneTree.buildFxNodes();
 		}
 		return sceneTree.getRoot();
@@ -120,11 +121,10 @@ public class SuiSceneController implements SuiStateListener {
 
 
 	@Override
-	public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update) {
-		final SuiSceneTree targetTree = SuiSceneTree.build(nodeFactory, state);
-		sceneTree.mutate(targetTree);
+	public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update, final Tags tags) {
+		final SuiSceneTree targetTree = SuiSceneTree.build(nodeFactory, state, tags);
 		SuiProfiler.get().countSceneMutated();
-		if (sceneTree.mutate(targetTree)) {
+		if (sceneTree.mutate(targetTree, tags)) {
 			listeners.forEach(listener -> listener.onNewSuiRootNode(sceneTree.getRoot()));
 		}
 	}

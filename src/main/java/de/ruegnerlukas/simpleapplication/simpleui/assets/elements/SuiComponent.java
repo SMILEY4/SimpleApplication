@@ -4,6 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
@@ -49,9 +50,9 @@ public class SuiComponent<T extends SuiState> implements NodeFactory {
 
 
 	@Override
-	public SuiNode create(final SuiState state) {
+	public SuiNode create(final SuiState state, final Tags tags) {
 		@SuppressWarnings ("unchecked") final T typedState = (T) state;
-		final SuiNode node = renderer.render(typedState).create(state);
+		final SuiNode node = renderer.render(typedState).create(state, tags);
 		if (id != null) {
 			node.getPropertyStore().upsert(Properties.id(this.id));
 		}

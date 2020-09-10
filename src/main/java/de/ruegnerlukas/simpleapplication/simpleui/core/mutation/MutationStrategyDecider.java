@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdShuf
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.RemoveAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StandardMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 import java.util.List;
@@ -51,13 +52,13 @@ public class MutationStrategyDecider {
 	 * @param target   the target node to match
 	 * @return the result of the mutation
 	 */
-	public MutationResult mutate(final SuiNode original, final SuiNode target) {
+	public MutationResult mutate(final SuiNode original, final SuiNode target, final Tags tags) {
 		if (canSkipMutation(original, target)) {
 			return MutationResult.MUTATED;
 		}
 		final boolean allHaveId = allChildrenHaveId(original) && allChildrenHaveId(target);
 		for (ChildNodesMutationStrategy strategy : strategies) {
-			MutationResult result = runStrategy(strategy, original, target, allHaveId);
+			MutationResult result = runStrategy(strategy, original, target, tags, allHaveId);
 			if (result != null) {
 				return result;
 			}
@@ -100,16 +101,18 @@ public class MutationStrategyDecider {
 	 *
 	 * @param original  the original node
 	 * @param target    the target node to match
+	 * @param tags      tags associated with the state update triggering this mutation
 	 * @param allHaveId whether all participating child nodes have an id property
 	 * @return the mutation result or 'null', if the strategy could not be applied.
 	 */
 	private MutationResult runStrategy(final ChildNodesMutationStrategy strategy,
 									   final SuiNode original,
 									   final SuiNode target,
+									   final Tags tags,
 									   final boolean allHaveId) {
 		StrategyDecisionResult decisionData = strategy.canBeAppliedTo(original, target, allHaveId);
 		if (decisionData.isApplicable()) {
-			return strategy.mutate(original, target, decisionData);
+			return strategy.mutate(original, target, tags, decisionData);
 		} else {
 			return null;
 		}

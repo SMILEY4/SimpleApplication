@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 	@Override
 	public MutationResult mutate(final SuiNode original,
 								 final SuiNode target,
+								 final Tags tags,
 								 final StrategyDecisionResult decisionData) {
 
 		final List<SuiNode> newChildList = new ArrayList<>();
@@ -52,7 +54,7 @@ public class StandardMutationStrategy implements ChildNodesMutationStrategy {
 			}
 
 			if (notAddedOrRemoved(childOriginal, childTarget)) {
-				SuiNode childMutated = SuiServices.get().mutateNode(childOriginal, childTarget);
+				SuiNode childMutated = SuiServices.get().mutateNode(childOriginal, childTarget, tags);
 				newChildList.add(childMutated);
 				if (!childMutated.equals(childOriginal)) {
 					wasChanged = true;

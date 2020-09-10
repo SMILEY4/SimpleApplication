@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
@@ -227,7 +228,7 @@ public class InjectionTest extends ApplicationTest {
 
 		state.text = "Text 2";
 
-		final SuiNode mutatedNode = SuiServices.get().mutateNode(node, nodeFactory.create(state));
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(node, nodeFactory.create(state, null), Tags.empty());
 		final VBox fxNodeMutated = (VBox) mutatedNode.getFxNodeStore().get();
 
 		assertThat(fxNodeMutated.getChildren()).hasSize(3);

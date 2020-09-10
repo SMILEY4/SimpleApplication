@@ -1,5 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.state;
 
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+
 public interface SuiStateListener {
 
 
@@ -18,8 +20,9 @@ public interface SuiStateListener {
 	 *
 	 * @param state  the state after the given update was applied
 	 * @param update the state update that modified the given state
+	 * @param tags   the tags attached to the given state update
 	 */
-	void stateUpdated(SuiState state, SuiStateUpdate<?> update);
+	void stateUpdated(SuiState state, SuiStateUpdate<?> update, Tags tags);
 
 
 }
