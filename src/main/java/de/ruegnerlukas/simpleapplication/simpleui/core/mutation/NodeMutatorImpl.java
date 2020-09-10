@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemPro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.ChildNodesMutationStrategy;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
@@ -75,10 +76,14 @@ public class NodeMutatorImpl implements NodeMutator {
 
 
 	@Override
-	public MutationResult mutateNode(final SuiNode original, final SuiNode target) {
+	public MutationResult mutateNode(final SuiNode original, final SuiNode target, final Tags tags) {
 		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
 
-		// todo: addition to behaviour-check: also check if update-tags match
+		if (mutationBehaviour == MutationBehaviour.DEFAULT && original.getNodeType() != target.getNodeType()) {
+			return REQUIRES_REBUILD;
+		}
+
+		// todo: addition to behaviour-check: also check if update-tags match.
 
 		switch (mutationBehaviour) {
 
@@ -86,13 +91,13 @@ public class NodeMutatorImpl implements NodeMutator {
 				if (mutateProperties(original, target) == REQUIRES_REBUILD) {
 					return REQUIRES_REBUILD;
 				}
-				if (mutateChildren(original, target) == REQUIRES_REBUILD) {
+				if (mutateChildren(original, target, tags) == REQUIRES_REBUILD) {
 					return REQUIRES_REBUILD;
 				}
 				return MUTATED;
 
 			case STATIC_NODE:
-				if (mutateChildren(original, target) == REQUIRES_REBUILD) {
+				if (mutateChildren(original, target, tags) == REQUIRES_REBUILD) {
 					return REQUIRES_REBUILD;
 				}
 				return MUTATED;
@@ -219,10 +224,11 @@ public class NodeMutatorImpl implements NodeMutator {
 	 *
 	 * @param original the original node
 	 * @param target   the target node to match
+	 * @param tags     tags associated with the state update triggering this mutation
 	 * @return the result of the mutation
 	 */
-	private MutationResult mutateChildren(final SuiNode original, final SuiNode target) {
-		return strategyDecider.mutate(original, target);
+	private MutationResult mutateChildren(final SuiNode original, final SuiNode target, final Tags tags) {
+		return strategyDecider.mutate(original, target, tags);
 	}
 
 

@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationStrategyDecider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutator;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutatorImpl;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.RegistryEntry;
@@ -129,11 +130,12 @@ public class SuiServices {
 	 *
 	 * @param original the original tree to mutate
 	 * @param target   the target tree to match
+	 * @param tags     tags associated with the state update triggering this mutation
 	 * @return the mutated root node or the original tree or the complete root node of the target tree if a rebuild was required
 	 */
-	public SuiSceneTree mutateTree(final SuiSceneTree original, final SuiSceneTree target) {
+	public SuiSceneTree mutateTree(final SuiSceneTree original, final SuiSceneTree target, final Tags tags) {
 		final long timeStart = System.currentTimeMillis();
-		if (mutate(original.getRoot(), target.getRoot()) == MutationResult.REQUIRES_REBUILD) {
+		if (mutate(original.getRoot(), target.getRoot(), tags) == MutationResult.REQUIRES_REBUILD) {
 			SuiProfiler.get().getMutationDuration().count(System.currentTimeMillis() - timeStart);
 			target.buildFxNodes();
 			return target;
@@ -150,10 +152,11 @@ public class SuiServices {
 	 *
 	 * @param original the original node to mutate
 	 * @param target   the target node to match
+	 * @param tags     an optional list of tags associated with the state update triggering this mutation
 	 * @return the mutated original node or the target node.
 	 */
-	public SuiNode mutateNode(final SuiNode original, final SuiNode target) {
-		if (mutate(original, target) == MutationResult.REQUIRES_REBUILD) {
+	public SuiNode mutateNode(final SuiNode original, final SuiNode target, final Tags tags) {
+		if (mutate(original, target, tags) == MutationResult.REQUIRES_REBUILD) {
 			enrichWithFxNodes(target);
 			return target;
 		} else {
@@ -169,10 +172,11 @@ public class SuiServices {
 	 *
 	 * @param original the original node to mutate
 	 * @param target   the target node to match
+	 * @param tags     an optional list of tags associated with the state update triggering this mutation
 	 * @return the result status of the mutation / whether the original node has to be rebuild.
 	 */
-	public MutationResult mutate(final SuiNode original, final SuiNode target) {
-		return mutator.mutateNode(original, target);
+	public MutationResult mutate(final SuiNode original, final SuiNode target, final Tags tags) {
+		return mutator.mutateNode(original, target, tags);
 	}
 
 

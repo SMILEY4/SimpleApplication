@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
@@ -49,10 +50,11 @@ public class SuiSceneTree {
 	 * Mutate this tree to match the given target tree. This operation may replace the root node of this tree.
 	 *
 	 * @param targetTree the target tree to match
+	 * @param tags       tags associated with the state update triggering this mutation
 	 * @return true, when the root node was rebuild
 	 */
-	public boolean mutate(final SuiSceneTree targetTree) {
-		root = SuiServices.get().mutateTree(this, targetTree).getRoot();
+	public boolean mutate(final SuiSceneTree targetTree, final Tags tags) {
+		root = SuiServices.get().mutateTree(this, targetTree, tags).getRoot();
 		return root.equals(targetTree.getRoot());
 	}
 

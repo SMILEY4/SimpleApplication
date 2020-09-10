@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.state;
 
-import java.util.List;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 
 public interface TaggedSuiStateUpdate<T> extends SuiStateUpdate<T> {
 
@@ -16,7 +16,7 @@ public interface TaggedSuiStateUpdate<T> extends SuiStateUpdate<T> {
 	 * @param state the state to modify
 	 * @return the tags that should be attached to this update.
 	 */
-	List<String> doTaggedUpdate(T state);
+	Tags doTaggedUpdate(T state);
 
 
 }

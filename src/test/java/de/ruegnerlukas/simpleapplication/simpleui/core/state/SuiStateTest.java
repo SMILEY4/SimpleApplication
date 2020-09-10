@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.state;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
 import javafx.application.Platform;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class SuiStateTest extends ApplicationTest {
 		final List<Triplet<Boolean, SuiState, List<String>>> collectedData = new ArrayList<>();
 
 		final TestState testState = new TestState("original text");
-		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags)));
+		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags.getTags())));
 
 		testState.update(TestState.class, state -> state.text = "new text");
 		delay(100);
@@ -42,7 +43,7 @@ public class SuiStateTest extends ApplicationTest {
 		final List<Triplet<Boolean, SuiState, List<String>>> collectedData = new ArrayList<>();
 
 		final TestState testState = new TestState("original text");
-		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags)));
+		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags.getTags())));
 
 		testState.update(TestState.class, true, state -> state.text = "new text");
 		delay(100);
@@ -60,7 +61,7 @@ public class SuiStateTest extends ApplicationTest {
 		final List<Triplet<Boolean, SuiState, List<String>>> collectedData = new ArrayList<>();
 
 		final TestState testState = new TestState("original text");
-		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags)));
+		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags.getTags())));
 
 		testState.updateUnsafe(TestState.class, state -> state.text = "new text");
 		delay(100);
@@ -81,11 +82,11 @@ public class SuiStateTest extends ApplicationTest {
 		final List<Triplet<Boolean, SuiState, List<String>>> collectedData = new ArrayList<>();
 
 		final TestState testState = new TestState("original text");
-		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags)));
+		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags.getTags())));
 
 		testState.updateUnsafe(TestState.class, (TaggedSuiStateUpdate<TestState>) state -> {
 			state.text = "new text";
-			return List.of("tag1", "tag2");
+			return Tags.from("tag1", "tag2");
 		});
 		delay(100);
 
@@ -105,11 +106,11 @@ public class SuiStateTest extends ApplicationTest {
 		final List<Triplet<Boolean, SuiState, List<String>>> collectedData = new ArrayList<>();
 
 		final TestState testState = new TestState("original text");
-		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags)));
+		testState.addStateListener((state, update, tags) -> collectedData.add(Triplet.of(Platform.isFxApplicationThread(), state, tags.getTags())));
 
 		testState.updateUnsafe(TestState.class, true, (TaggedSuiStateUpdate<TestState>) state -> {
 			state.text = "new text";
-			return List.of("tag1", "tag2");
+			return Tags.from("tag1", "tag2");
 		});
 		delay(100);
 
@@ -137,7 +138,7 @@ public class SuiStateTest extends ApplicationTest {
 
 
 			@Override
-			public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update, final List<String> tags) {
+			public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update, final Tags tags) {
 				countAfter.incrementAndGet();
 			}
 		});

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 public interface NodeMutator {
@@ -13,9 +14,10 @@ public interface NodeMutator {
 	 *
 	 * @param original the original node. If possible, the fx-node of this node will be modified.
 	 * @param target   the target node with the target properties
+	 * @param tags     tags associated with the state update triggering this mutation
 	 * @return whether the node was mutated or has to be rebuild completely
 	 */
-	MutationResult mutateNode(SuiNode original, SuiNode target);
+	MutationResult mutateNode(SuiNode original, SuiNode target, Tags tags);
 
 
 }

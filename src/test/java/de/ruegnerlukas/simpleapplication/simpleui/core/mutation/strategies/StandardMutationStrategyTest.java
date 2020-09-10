@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StandardMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.stage.Stage;
@@ -51,7 +52,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -85,7 +86,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -119,7 +120,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -151,7 +152,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -185,7 +186,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -219,7 +220,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -251,7 +252,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -285,7 +286,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
 		printChildButtons("  Result", nodeOriginal);
 
@@ -319,7 +320,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 		assertThat(decisionResult.isApplicable()).isTrue();
 
 		final MutationResult mutationResult = strategy.mutate(
-				nodeOriginal, nodeTarget,
+				nodeOriginal, nodeTarget, Tags.empty(),
 				StrategyDecisionResult.APPLICABLE_NO_EXTRA_DATA);
 		printChildButtons("  Result", nodeOriginal);
 

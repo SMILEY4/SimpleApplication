@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.state;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
@@ -98,7 +99,7 @@ public class SuiState {
 		if (!silent) {
 			listeners.forEach(listener -> listener.beforeUpdate(this, update));
 		}
-		final List<String> tags = doUpdate(update);
+		final Tags tags = doUpdate(update);
 		if (!silent) {
 			listeners.forEach(listener -> listener.stateUpdated(this, update, tags));
 		}
@@ -112,9 +113,9 @@ public class SuiState {
 	 * @param <T>    the generic type of this state
 	 * @return the tags attached to the update (or an empty list).
 	 */
-	private <T> List<String> doUpdate(final SuiStateUpdate<T> update) {
+	private <T> Tags doUpdate(final SuiStateUpdate<T> update) {
 		@SuppressWarnings ("unchecked") final T state = (T) this;
-		List<String> tags = List.of();
+		Tags tags = Tags.empty();
 		if (update instanceof TaggedSuiStateUpdate) {
 			tags = ((TaggedSuiStateUpdate<T>) update).doTaggedUpdate(state);
 		} else {

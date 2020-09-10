@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 public interface ChildNodesMutationStrategy {
@@ -22,10 +23,11 @@ public interface ChildNodesMutationStrategy {
 	 *
 	 * @param original     the original node
 	 * @param target       the target node to match
+	 * @param tags         tags associated with the state update triggering this mutation
 	 * @param decisionData the decision result instance created in {@link ChildNodesMutationStrategy#canBeAppliedTo}
 	 * @return the result of the mutation
 	 */
-	MutationResult mutate(SuiNode original, SuiNode target, StrategyDecisionResult decisionData);
+	MutationResult mutate(SuiNode original, SuiNode target, Tags tags, StrategyDecisionResult decisionData);
 
 
 }

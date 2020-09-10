@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.ReplaceOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import lombok.Getter;
 
@@ -118,12 +119,13 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	@Override
 	public MutationResult mutate(final SuiNode original,
 								 final SuiNode target,
+								 final Tags tags,
 								 final StrategyDecisionResult decisionData) {
 		final IdShuffleDecisionResult decision = (IdShuffleDecisionResult) decisionData;
 		if (decision.diffCount == 0) {
-			mutateNoDiffs(original, target);
+			mutateNoDiffs(original, target, tags);
 		} else {
-			mutateWithDiffs(original, target);
+			mutateWithDiffs(original, target, tags);
 		}
 		return MutationResult.MUTATED;
 	}
@@ -137,13 +139,14 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 *
 	 * @param original the original node to mutate
 	 * @param target   the target node
+	 * @param tags     tags associated with the state update triggering this mutation
 	 */
-	private void mutateNoDiffs(final SuiNode original, final SuiNode target) {
+	private void mutateNoDiffs(final SuiNode original, final SuiNode target, final Tags tags) {
 		final List<ReplaceOperation> replaceOperations = new ArrayList<>(original.getChildNodeStore().count());
 		for (int i = 0; i < target.getChildNodeStore().count(); i++) {
 			final SuiNode originalChild = original.getChildNodeStore().get(i);
 			final SuiNode targetChild = target.getChildNodeStore().get(i);
-			final SuiNode mutatedChild = SuiServices.get().mutateNode(originalChild, targetChild);
+			final SuiNode mutatedChild = SuiServices.get().mutateNode(originalChild, targetChild, tags);
 			if (!originalChild.equals(mutatedChild)) {
 				replaceOperations.add(new ReplaceOperation(i, mutatedChild, originalChild));
 			}
@@ -159,13 +162,14 @@ public class IdShuffleMutationStrategy implements ChildNodesMutationStrategy {
 	 *
 	 * @param original the original node to mutate
 	 * @param target   the target node
+	 * @param tags     tags associated with the state update triggering this mutation
 	 */
-	private void mutateWithDiffs(final SuiNode original, final SuiNode target) {
+	private void mutateWithDiffs(final SuiNode original, final SuiNode target, final Tags tags) {
 		final List<SuiNode> newChildList = new ArrayList<>(original.getChildNodeStore().count());
 		for (int i = 0, n = target.getChildNodeStore().count(); i < n; i++) {
 			final SuiNode targetChild = target.getChildNodeStore().get(i);
 			final SuiNode originalChild = original.getChildNodeStore().find(targetChild.getPropertyStore().getIdUnsafe());
-			final SuiNode mutatedChild = SuiServices.get().mutateNode(originalChild, targetChild);
+			final SuiNode mutatedChild = SuiServices.get().mutateNode(originalChild, targetChild, tags);
 			newChildList.add(mutatedChild);
 		}
 		original.getChildNodeStore().setChildren(newChildList);

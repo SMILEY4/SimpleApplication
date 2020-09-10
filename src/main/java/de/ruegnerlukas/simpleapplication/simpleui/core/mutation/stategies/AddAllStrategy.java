@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 import java.util.ArrayList;
@@ -39,7 +40,10 @@ public class AddAllStrategy implements ChildNodesMutationStrategy {
 
 
 	@Override
-	public MutationResult mutate(final SuiNode original, final SuiNode target, final StrategyDecisionResult decisionData) {
+	public MutationResult mutate(final SuiNode original,
+								 final SuiNode target,
+								 final Tags tags,
+								 final StrategyDecisionResult decisionData) {
 		final List<SuiNode> newChildList = new ArrayList<>();
 		for (int i = 0, n = target.getChildNodeStore().count(); i < n; i++) {
 			final SuiNode childTarget = target.getChildNodeStore().get(i);
