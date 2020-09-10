@@ -1,0 +1,17 @@
+.DS_STORE
+.project
+.classpath
+.settings
+/bin
+*.jar
+*.psd
+*.zip
+/libs
+/docs
+/wiki
+/.idea
+/out
+/tests/
+q
+*iml
+target
