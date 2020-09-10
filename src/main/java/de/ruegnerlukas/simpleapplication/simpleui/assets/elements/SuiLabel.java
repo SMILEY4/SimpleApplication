@@ -39,10 +39,11 @@ public final class SuiLabel {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiLabel.class, get().getEntry(SuiLabel.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiLabel.class,
 				List.of(properties),
-				state
+				state,
+				tags
 		);
 	}
 

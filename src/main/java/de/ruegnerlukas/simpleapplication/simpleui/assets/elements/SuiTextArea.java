@@ -44,10 +44,11 @@ public final class SuiTextArea {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiTextArea.class, get().getEntry(SuiTextArea.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiTextArea.class,
 				List.of(properties),
-				state
+				state,
+				tags
 		);
 	}
 

@@ -42,10 +42,11 @@ public final class SuiDatePicker {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiDatePicker.class, get().getEntry(SuiDatePicker.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiDatePicker.class,
 				List.of(properties),
-				state
+				state,
+				tags
 		);
 	}
 

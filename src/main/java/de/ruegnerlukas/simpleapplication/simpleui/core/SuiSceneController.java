@@ -101,7 +101,7 @@ public class SuiSceneController implements SuiStateListener {
 	 */
 	public SuiNode getRootNode() {
 		if (sceneTree == null) {
-			sceneTree = SuiSceneTree.build(nodeFactory, state);
+			sceneTree = SuiSceneTree.build(nodeFactory, state, null);
 			sceneTree.buildFxNodes();
 		}
 		return sceneTree.getRoot();
@@ -122,8 +122,7 @@ public class SuiSceneController implements SuiStateListener {
 
 	@Override
 	public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update, final Tags tags) {
-		// todo: maybe only build tree where we need the nodes / i.e. where we know the nodes match the tags ??
-		final SuiSceneTree targetTree = SuiSceneTree.build(nodeFactory, state);
+		final SuiSceneTree targetTree = SuiSceneTree.build(nodeFactory, state, tags);
 		SuiProfiler.get().countSceneMutated();
 		if (sceneTree.mutate(targetTree, tags)) {
 			listeners.forEach(listener -> listener.onNewSuiRootNode(sceneTree.getRoot()));

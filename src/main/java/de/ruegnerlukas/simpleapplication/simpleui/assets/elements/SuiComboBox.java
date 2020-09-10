@@ -47,10 +47,11 @@ public final class SuiComboBox {
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		validateConflictSearchableEditable(properties);
 		Properties.validate(SuiComboBox.class, get().getEntry(SuiComboBox.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiComboBox.class,
 				List.of(properties),
-				state
+				state,
+				tags
 		);
 	}
 

@@ -43,10 +43,11 @@ public final class SuiContainer {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiContainer.class, SuiRegistry.get().getEntry(SuiContainer.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiContainer.class,
 				List.of(properties),
 				state,
+				tags,
 				SuiNodeChildListener.DEFAULT,
 				SuiNodeChildTransformListener.DEFAULT
 		);

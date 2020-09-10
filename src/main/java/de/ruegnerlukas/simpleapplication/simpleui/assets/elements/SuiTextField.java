@@ -44,10 +44,11 @@ public final class SuiTextField {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiTextField.class, get().getEntry(SuiTextField.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiTextField.class,
 				List.of(properties),
-				state
+				state,
+				tags
 		);
 	}
 

@@ -2,9 +2,11 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
@@ -87,6 +89,41 @@ public class MutationBehaviourProperty extends SuiProperty {
 		super(MutationBehaviourProperty.class, COMPARATOR);
 		this.behaviour = behaviour;
 		this.condition = condition;
+	}
+
+
+
+
+	/**
+	 * Get the mutation behaviour from the given node.
+	 * Returns the default behaviour if the property was not added to the given node.
+	 *
+	 * @param node the node
+	 * @return the {@link MutationBehaviour}.
+	 */
+	public static MutationBehaviour getMutationBehaviour(final SuiNode node) {
+		return node.getPropertyStore().getSafe(MutationBehaviourProperty.class)
+				.map(MutationBehaviourProperty::getBehaviour)
+				.orElse(MutationBehaviour.DEFAULT);
+	}
+
+
+
+
+	/**
+	 * Get the mutation behaviour from the given properties.
+	 * Returns the default behaviour if the property was not added to the given store.
+	 *
+	 * @param properties the properties
+	 * @return the {@link MutationBehaviour}.
+	 */
+	public static MutationBehaviour getMutationBehaviour(final List<SuiProperty> properties) {
+		return properties.stream()
+				.filter(prop -> prop.getKey() == MutationBehaviourProperty.class)
+				.map(prop -> (MutationBehaviourProperty) prop)
+				.map(MutationBehaviourProperty::getBehaviour)
+				.findAny()
+				.orElse(MutationBehaviour.DEFAULT);
 	}
 
 

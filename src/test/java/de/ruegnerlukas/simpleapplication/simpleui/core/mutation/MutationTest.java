@@ -79,7 +79,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = vboxTarget.create(state);
+		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
@@ -116,7 +116,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = factoryTarget.create(state);
+		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
@@ -154,7 +154,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = factoryTarget.create(state);
+		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		TestUtils.assertNode(mutatedNode, SuiVBox.class);
@@ -183,7 +183,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = factoryTarget.create(state);
+		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
@@ -213,7 +213,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = factoryTarget.create(state);
+		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
@@ -262,7 +262,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = vboxTarget.create(state);
+		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
@@ -316,7 +316,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = vboxTarget.create(state);
+		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
@@ -370,7 +370,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = vboxTarget.create(state);
+		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
@@ -428,7 +428,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = vboxTarget.create(state);
+		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
@@ -474,7 +474,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = factoryTarget.create(state);
+		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		assertThat(mutatedNode).isNotEqualTo(target);
@@ -520,7 +520,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = factoryTarget.create(state);
+		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
 		assertThat(mutatedNode).isNotEqualTo(target);
@@ -554,7 +554,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = factoryTarget.create(state);
+		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.from("tag1"));
 
 		assertThat(mutatedNode).isNotEqualTo(target);
@@ -587,7 +587,7 @@ public class MutationTest extends ApplicationTest {
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
-		final SuiNode target = factoryTarget.create(state);
+		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.from("tag2"));
 
 		assertThat(mutatedNode).isNotEqualTo(target);

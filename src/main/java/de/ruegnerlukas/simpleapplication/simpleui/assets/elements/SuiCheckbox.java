@@ -44,10 +44,11 @@ public final class SuiCheckbox {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiCheckbox.class, get().getEntry(SuiCheckbox.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiCheckbox.class,
 				List.of(properties),
-				state
+				state,
+				tags
 		);
 	}
 

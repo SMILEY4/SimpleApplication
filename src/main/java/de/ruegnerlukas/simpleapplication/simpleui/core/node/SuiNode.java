@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import lombok.Getter;
 
@@ -65,8 +66,9 @@ public class SuiNode {
 	 */
 	public static SuiNode create(final Class<?> nodeType,
 								 final List<SuiProperty> properties,
-								 final SuiState state) {
-		return create(nodeType, properties, state, SuiNodeChildListener.NO_OP, SuiNodeChildTransformListener.NO_OP);
+								 final SuiState state,
+								 final Tags tags) {
+		return create(nodeType, properties, state, tags, SuiNodeChildListener.NO_OP, SuiNodeChildTransformListener.NO_OP);
 	}
 
 
@@ -85,11 +87,12 @@ public class SuiNode {
 	public static SuiNode create(final Class<?> nodeType,
 								 final List<SuiProperty> properties,
 								 final SuiState state,
+								 final Tags tags,
 								 final SuiNodeChildListener childListener,
 								 final SuiNodeChildTransformListener childTransformListener) {
 		return new SuiNode(nodeType,
 				new PropertyStore(properties),
-				new ChildNodeStore(state, properties, ChildNodeBuilder.DEFAULT, childListener, childTransformListener),
+				new ChildNodeStore(state, properties, tags, ChildNodeBuilder.DEFAULT, childListener, childTransformListener),
 				new FxNodeStore());
 	}
 

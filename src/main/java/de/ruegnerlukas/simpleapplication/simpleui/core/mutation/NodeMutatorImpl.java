@@ -78,7 +78,8 @@ public class NodeMutatorImpl implements NodeMutator {
 
 	@Override
 	public MutationResult mutateNode(final SuiNode original, final SuiNode target, final Tags tags) {
-		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
+
+		final MutationBehaviour mutationBehaviour = MutationBehaviourProperty.getMutationBehaviour(original);
 
 		if (mutationBehaviour == MutationBehaviour.DEFAULT && original.getNodeType() != target.getNodeType()) {
 			return REQUIRES_REBUILD;
@@ -275,21 +276,6 @@ public class NodeMutatorImpl implements NodeMutator {
 		return propertyKey == ItemListProperty.class || propertyKey == ItemProperty.class;
 	}
 
-
-
-
-	/**
-	 * Get the mutation behaviour from the given node.
-	 * Returns the default behaviour if the property was not added to the given node.
-	 *
-	 * @param node the node
-	 * @return the {@link MutationBehaviour}.
-	 */
-	private MutationBehaviour getMutationBehaviour(final SuiNode node) {
-		return node.getPropertyStore().getSafe(MutationBehaviourProperty.class)
-				.map(MutationBehaviourProperty::getBehaviour)
-				.orElse(MutationBehaviour.DEFAULT);
-	}
 
 
 

@@ -26,9 +26,9 @@ public class SuiSceneTree {
 	 * @param nodeFactory the node factory (of the root node)
 	 * @return the created scene tree
 	 */
-	public static SuiSceneTree build(final NodeFactory nodeFactory, final SuiState state) {
+	public static SuiSceneTree build(final NodeFactory nodeFactory, final SuiState state, final Tags tags) {
 		long timeStart = System.currentTimeMillis();
-		final SuiNode rootNode = nodeFactory.create(state);
+		final SuiNode rootNode = nodeFactory.create(state, tags);
 		SuiProfiler.get().getBuildDuration().count(System.currentTimeMillis() - timeStart);
 		return new SuiSceneTree(rootNode);
 	}

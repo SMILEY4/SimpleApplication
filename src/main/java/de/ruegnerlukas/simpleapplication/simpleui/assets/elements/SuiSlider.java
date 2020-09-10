@@ -43,10 +43,11 @@ public final class SuiSlider {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiSlider.class, get().getEntry(SuiSlider.class).getProperties(), properties);
-		return state -> SuiNode.create(
+		return (state, tags) -> SuiNode.create(
 				SuiSlider.class,
 				List.of(properties),
-				state
+				state,
+				tags
 		);
 	}
 
