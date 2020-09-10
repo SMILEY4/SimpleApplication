@@ -8,7 +8,7 @@
 *.zip
 /libs
 /docs
-/wiki
+/wiki/.git
 /.idea
 /out
 /tests/
