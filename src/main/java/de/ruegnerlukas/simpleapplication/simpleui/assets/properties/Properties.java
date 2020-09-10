@@ -37,6 +37,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextCon
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -674,8 +675,8 @@ public final class Properties {
 	/**
 	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#DEFAULT}
 	 */
-	public static SuiProperty defaultMutationBehaviour() {
-		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.DEFAULT);
+	public static SuiProperty behaviourDefault() {
+		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.DEFAULT, null);
 	}
 
 
@@ -684,8 +685,8 @@ public final class Properties {
 	/**
 	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#STATIC_NODE}
 	 */
-	public static SuiProperty staticNode() {
-		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.STATIC_NODE);
+	public static SuiProperty behaviourStaticNode() {
+		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.STATIC_NODE, null);
 	}
 
 
@@ -694,8 +695,18 @@ public final class Properties {
 	/**
 	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#STATIC_SUBTREE}
 	 */
-	public static SuiProperty staticSubtree() {
-		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.STATIC_SUBTREE);
+	public static SuiProperty behaviourStaticSubtree() {
+		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.STATIC_SUBTREE, null);
+	}
+
+
+
+
+	/**
+	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#STATIC}
+	 */
+	public static SuiProperty behaviourStatic() {
+		return new MutationBehaviourProperty(MutationBehaviourProperty.MutationBehaviour.STATIC, null);
 	}
 
 
@@ -706,8 +717,21 @@ public final class Properties {
 	 * @return a {@link MutationBehaviourProperty}
 	 */
 	public static SuiProperty mutationBehaviour(final MutationBehaviourProperty.MutationBehaviour behaviour) {
+		return mutationBehaviour(behaviour, null);
+	}
+
+
+
+
+	/**
+	 * @param behaviour the {@link MutationBehaviourProperty.MutationBehaviour}.
+	 * @param condition the condition (or null). See table at {@link MutationBehaviourProperty}.
+	 * @return a {@link MutationBehaviourProperty}
+	 */
+	public static SuiProperty mutationBehaviour(final MutationBehaviourProperty.MutationBehaviour behaviour,
+												final TagConditionExpression condition) {
 		Validations.INPUT.notNull(behaviour).exception("The mutation behaviour can not be null.");
-		return new MutationBehaviourProperty(behaviour);
+		return new MutationBehaviourProperty(behaviour, condition);
 	}
 
 

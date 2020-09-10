@@ -30,7 +30,7 @@ import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Prope
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.preferredSize;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.showScrollbars;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.spacing;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.staticNode;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.behaviourStaticNode;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
 
 @SuppressWarnings ("ALL")
@@ -66,7 +66,7 @@ public class JFXTestApp extends Application {
 				id("scrollPane"),
 				fitToWidth(),
 				showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
-				staticNode(),
+				behaviourStaticNode(),
 				item(
 						vbox(
 								id("vbox"),
@@ -119,7 +119,7 @@ public class JFXTestApp extends Application {
 				id("scrollPane"),
 				fitToWidth(),
 				showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS),
-				staticNode(),
+				behaviourStaticNode(),
 				item(
 						vbox(
 								id("vbox"),
