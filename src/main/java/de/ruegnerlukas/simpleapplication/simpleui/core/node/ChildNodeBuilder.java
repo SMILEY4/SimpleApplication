@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
 import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
@@ -9,8 +10,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditio
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ChildNodeBuilder {
@@ -108,13 +111,41 @@ public class ChildNodeBuilder {
 	 * @param property the item list property
 	 */
 	private List<SuiNode> fromItemListProperty(final SuiState state, final ItemListProperty property, final Tags tags) {
+		List<SuiNode> childNodes;
 		if (property.getFactories().size() < CREATE_CHILD_LIST_ASYNC_CUTOFF) {
-			return property.getFactories().stream()
+			childNodes = property.getFactories().stream()
 					.map(factory -> factory.create(state, tags))
 					.collect(Collectors.toList());
 		} else {
-			return LoopUtils.asyncCollectingLoop(property.getFactories(), factory -> factory.create(state, tags));
+			childNodes = LoopUtils.asyncCollectingLoop(property.getFactories(), factory -> factory.create(state, tags));
 		}
+
+		if (checkValidIds(childNodes)) {
+			return childNodes;
+		} else {
+			Validations.STATE.fail().exception("The ids of the child nodes must be unique.");
+			return List.of();
+		}
+	}
+
+
+
+
+	/**
+	 * @param nodes the nodes
+	 * @return whether the ids of the given nodes are valid, i.e. no duplicate ids
+	 */
+	private boolean checkValidIds(final List<SuiNode> nodes) {
+		final Set<String> uniqueIds = new HashSet<>();
+		int idCounter = 0;
+		for (SuiNode node : nodes) {
+			final String id = node.getPropertyStore().getIdUnsafe();
+			if (id != null) {
+				uniqueIds.add(id);
+				idCounter++;
+			}
+		}
+		return uniqueIds.size() == idCounter;
 	}
 
 
