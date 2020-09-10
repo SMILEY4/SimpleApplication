@@ -9,8 +9,16 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.Slider;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class MinMaxProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<MinMaxProperty, MinMaxProperty, Boolean> COMPARATOR =
+			(a, b) -> NumberUtils.isEqual(a.getMin(), b.getMin()) && NumberUtils.isEqual(a.getMax(), b.getMax());
 
 	/**
 	 * the min value (inclusive)
@@ -33,18 +41,9 @@ public class MinMaxProperty extends SuiProperty {
 	 * @param max the max value (inclusive)
 	 */
 	public MinMaxProperty(final Number min, final Number max) {
-		super(MinMaxProperty.class);
+		super(MinMaxProperty.class, COMPARATOR);
 		this.min = min;
 		this.max = max;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return NumberUtils.isEqual(getMin(), ((MinMaxProperty) other).getMin())
-				&& NumberUtils.isEqual(getMax(), ((MinMaxProperty) other).getMax());
 	}
 
 

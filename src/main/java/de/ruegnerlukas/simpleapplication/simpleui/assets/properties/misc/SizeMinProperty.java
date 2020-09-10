@@ -9,9 +9,17 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 @Getter
 public class SizeMinProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<SizeMinProperty, SizeMinProperty, Boolean> COMPARATOR = (a, b) ->
+			NumberUtils.isEqual(a.getWidth(), b.getWidth()) && NumberUtils.isEqual(a.getHeight(), b.getHeight());
 
 	/**
 	 * The minimum width.
@@ -32,19 +40,9 @@ public class SizeMinProperty extends SuiProperty {
 	 * @param height the minimum height.
 	 */
 	public SizeMinProperty(final Number width, final Number height) {
-		super(SizeMinProperty.class);
+		super(SizeMinProperty.class, COMPARATOR);
 		this.width = width;
 		this.height = height;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		final SizeMinProperty sizeOther = (SizeMinProperty) other;
-		return NumberUtils.isEqual(this.getWidth(), sizeOther.getWidth())
-				&& NumberUtils.isEqual(this.getHeight(), sizeOther.getHeight());
 	}
 
 

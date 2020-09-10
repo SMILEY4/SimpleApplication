@@ -15,9 +15,26 @@ import lombok.Getter;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 public class ChoicesProperty<T> extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<ChoicesProperty, ChoicesProperty, Boolean> COMPARATOR = (a, b) -> {
+		if (a.getChoices().size() == b.getChoices().size()) {
+			for (int i = 0; i < a.getChoices().size(); i++) {
+				if (!Objects.equals(a.getChoices().get(i), b.getChoices().get(i))) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
+	};
 
 	/**
 	 * The list of choices
@@ -32,26 +49,8 @@ public class ChoicesProperty<T> extends SuiProperty {
 	 * @param choices the list of choices
 	 */
 	public ChoicesProperty(final List<T> choices) {
-		super(ChoicesProperty.class);
+		super(ChoicesProperty.class, COMPARATOR);
 		this.choices = choices;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		final ChoicesProperty otherProp = (ChoicesProperty) other;
-		if (getChoices().size() != otherProp.getChoices().size()) {
-			return false;
-		} else {
-			for (int i = 0; i < getChoices().size(); i++) {
-				if (!Objects.equals(getChoices().get(i), otherProp.getChoices().get(i))) {
-					return false;
-				}
-			}
-			return true;
-		}
 	}
 
 

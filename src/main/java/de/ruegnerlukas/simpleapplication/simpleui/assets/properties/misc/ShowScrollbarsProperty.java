@@ -8,9 +8,16 @@ import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 public class ShowScrollbarsProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<ShowScrollbarsProperty, ShowScrollbarsProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getHorizontal() == b.getHorizontal() && a.getVertical() == b.getVertical();
 
 	/**
 	 * The behaviour of the horizontal scrollbar.
@@ -32,18 +39,9 @@ public class ShowScrollbarsProperty extends SuiProperty {
 	 * @param vertical   the behaviour of the vertical scrollbar.
 	 */
 	public ShowScrollbarsProperty(final ScrollPane.ScrollBarPolicy horizontal, final ScrollPane.ScrollBarPolicy vertical) {
-		super(ShowScrollbarsProperty.class);
+		super(ShowScrollbarsProperty.class, COMPARATOR);
 		this.horizontal = Optional.ofNullable(horizontal).orElse(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		this.vertical = Optional.ofNullable(vertical).orElse(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return horizontal == ((ShowScrollbarsProperty) other).getHorizontal()
-				&& vertical == ((ShowScrollbarsProperty) other).getVertical();
 	}
 
 

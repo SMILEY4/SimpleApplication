@@ -9,6 +9,7 @@ import lombok.Getter;
 
 public class OnActionEventProperty extends AbstractEventListenerProperty<ActionEventData> {
 
+
 	/**
 	 * The listener for events with {@link ActionEventData}.
 	 */
@@ -19,10 +20,11 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 
 	/**
-	 * @param listener the listener for events with {@link ActionEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link ActionEventData}.
 	 */
-	public OnActionEventProperty(final SUIEventListener<ActionEventData> listener) {
-		super(OnActionEventProperty.class);
+	public OnActionEventProperty(final String propertyId, final SUIEventListener<ActionEventData> listener) {
+		super(OnActionEventProperty.class, propertyId);
 		this.listener = listener;
 	}
 

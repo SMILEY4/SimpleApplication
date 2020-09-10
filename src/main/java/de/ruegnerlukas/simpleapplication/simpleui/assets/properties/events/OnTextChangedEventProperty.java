@@ -11,7 +11,6 @@ import lombok.Getter;
 public class OnTextChangedEventProperty extends AbstractEventListenerProperty<TextContentEventData> {
 
 
-
 	/**
 	 * The listener for events with {@link TextContentEventData}.
 	 */
@@ -27,12 +26,12 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 
 
 
-
 	/**
-	 * @param listener the listener for events with {@link TextContentEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link TextContentEventData}.
 	 */
-	public OnTextChangedEventProperty(final SUIEventListener<TextContentEventData> listener) {
-		super(OnTextChangedEventProperty.class);
+	public OnTextChangedEventProperty(final String propertyId, final SUIEventListener<TextContentEventData> listener) {
+		super(OnTextChangedEventProperty.class, propertyId);
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> listener.onEvent(
 				TextContentEventData.builder()

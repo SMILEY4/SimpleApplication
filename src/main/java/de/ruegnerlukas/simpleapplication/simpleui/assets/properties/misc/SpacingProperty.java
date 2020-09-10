@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -9,14 +10,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class SpacingProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<SpacingProperty, SpacingProperty, Boolean> COMPARATOR =
+			(a, b) -> NumberUtils.isEqual(a.getSpacing(), b.getSpacing());
 
 	/**
 	 * The spacing value between the elements.
 	 */
 	@Getter
-	private final double spacing;
+	private final Number spacing;
 
 
 
@@ -24,17 +33,9 @@ public class SpacingProperty extends SuiProperty {
 	/**
 	 * @param spacing the spacing value between the elements.
 	 */
-	public SpacingProperty(final double spacing) {
-		super(SpacingProperty.class);
+	public SpacingProperty(final Number spacing) {
+		super(SpacingProperty.class, COMPARATOR);
 		this.spacing = spacing;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return spacing == ((SpacingProperty) other).getSpacing();
 	}
 
 
@@ -47,7 +48,7 @@ public class SpacingProperty extends SuiProperty {
 		public void build(final SuiNode node,
 						  final SpacingProperty property,
 						  final VBox fxNode) {
-			fxNode.setSpacing(property.getSpacing());
+			fxNode.setSpacing(property.getSpacing().doubleValue());
 		}
 
 
@@ -57,7 +58,7 @@ public class SpacingProperty extends SuiProperty {
 		public MutationResult update(final SpacingProperty property,
 									 final SuiNode node,
 									 final VBox fxNode) {
-			fxNode.setSpacing(property.getSpacing());
+			fxNode.setSpacing(property.getSpacing().doubleValue());
 			return MutationResult.MUTATED;
 		}
 
@@ -86,7 +87,7 @@ public class SpacingProperty extends SuiProperty {
 		public void build(final SuiNode node,
 						  final SpacingProperty property,
 						  final HBox fxNode) {
-			fxNode.setSpacing(property.getSpacing());
+			fxNode.setSpacing(property.getSpacing().doubleValue());
 		}
 
 
@@ -96,7 +97,7 @@ public class SpacingProperty extends SuiProperty {
 		public MutationResult update(final SpacingProperty property,
 									 final SuiNode node,
 									 final HBox fxNode) {
-			fxNode.setSpacing(property.getSpacing());
+			fxNode.setSpacing(property.getSpacing().doubleValue());
 			return MutationResult.MUTATED;
 		}
 

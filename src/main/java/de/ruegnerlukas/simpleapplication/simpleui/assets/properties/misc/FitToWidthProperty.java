@@ -9,7 +9,16 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class FitToWidthProperty extends SuiProperty {
+
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<FitToWidthProperty, FitToWidthProperty, Boolean> COMPARATOR =
+			(a, b) -> a.isFitToWidth() == b.isFitToWidth();
 
 
 	/**
@@ -25,16 +34,8 @@ public class FitToWidthProperty extends SuiProperty {
 	 * @param fitToWidth whether the element should fit the width of its parent element.
 	 */
 	public FitToWidthProperty(final boolean fitToWidth) {
-		super(FitToWidthProperty.class);
+		super(FitToWidthProperty.class, COMPARATOR);
 		this.fitToWidth = fitToWidth;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return fitToWidth == ((FitToWidthProperty) other).isFitToWidth();
 	}
 
 

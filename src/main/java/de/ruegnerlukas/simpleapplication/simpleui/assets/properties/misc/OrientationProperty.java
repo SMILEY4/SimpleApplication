@@ -9,7 +9,16 @@ import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class OrientationProperty extends SuiProperty {
+
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<OrientationProperty, OrientationProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getOrientation() == b.getOrientation();
 
 
 	/**
@@ -25,16 +34,8 @@ public class OrientationProperty extends SuiProperty {
 	 * @param orientation the orientation value
 	 */
 	public OrientationProperty(final Orientation orientation) {
-		super(OrientationProperty.class);
+		super(OrientationProperty.class, COMPARATOR);
 		this.orientation = orientation;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return orientation == ((OrientationProperty) other).getOrientation();
 	}
 
 

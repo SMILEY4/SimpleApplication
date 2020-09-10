@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -9,12 +10,21 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 
-import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 @Getter
 public class AnchorProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<AnchorProperty, AnchorProperty, Boolean> COMPARATOR =
+			(a, b) -> NumberUtils.isEqual(a.getTop(), b.getTop())
+					&& NumberUtils.isEqual(a.getBottom(), b.getBottom())
+					&& NumberUtils.isEqual(a.getLeft(), b.getLeft())
+					&& NumberUtils.isEqual(a.getRight(), b.getRight());
 
 	/**
 	 * The value for the top anchor or null.
@@ -46,23 +56,11 @@ public class AnchorProperty extends SuiProperty {
 	 * @param right  the value for the right anchor or null.
 	 */
 	public AnchorProperty(final Number top, final Number bottom, final Number left, final Number right) {
-		super(AnchorProperty.class);
+		super(AnchorProperty.class, COMPARATOR);
 		this.top = top;
 		this.bottom = bottom;
 		this.left = left;
 		this.right = right;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		final AnchorProperty anchorOther = (AnchorProperty) other;
-		return Objects.equals(getTop(), anchorOther.getTop())
-				&& Objects.equals(getBottom(), anchorOther.getBottom())
-				&& Objects.equals(getLeft(), anchorOther.getLeft())
-				&& Objects.equals(getRight(), anchorOther.getRight());
 	}
 
 

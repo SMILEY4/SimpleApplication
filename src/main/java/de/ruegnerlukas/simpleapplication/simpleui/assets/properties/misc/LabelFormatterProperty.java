@@ -9,9 +9,17 @@ import javafx.scene.control.Slider;
 import javafx.util.StringConverter;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class LabelFormatterProperty extends SuiProperty {
+
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<LabelFormatterProperty, LabelFormatterProperty, Boolean> COMPARATOR =
+			(a, b) -> a.getFormatter().equals(b.getFormatter());
 
 
 	/**
@@ -26,17 +34,9 @@ public class LabelFormatterProperty extends SuiProperty {
 	/**
 	 * @param formatter the label formatting function
 	 */
-	public LabelFormatterProperty(final Function<Double, String> formatter) {
-		super(LabelFormatterProperty.class);
+	public LabelFormatterProperty(final String propertyId, final Function<Double, String> formatter) {
+		super(LabelFormatterProperty.class, COMPARATOR, propertyId);
 		this.formatter = formatter;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return getFormatter().equals(((LabelFormatterProperty) other).getFormatter());
 	}
 
 

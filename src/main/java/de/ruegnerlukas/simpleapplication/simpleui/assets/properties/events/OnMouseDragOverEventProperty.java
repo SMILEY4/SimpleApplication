@@ -9,6 +9,7 @@ import lombok.Getter;
 
 public class OnMouseDragOverEventProperty extends AbstractEventListenerProperty<MouseDragEventData> {
 
+
 	/**
 	 * The listener for events with {@link MouseDragEventData}.
 	 */
@@ -19,10 +20,11 @@ public class OnMouseDragOverEventProperty extends AbstractEventListenerProperty<
 
 
 	/**
-	 * @param listener the listener for events with {@link MouseDragEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link MouseDragEventData}.
 	 */
-	public OnMouseDragOverEventProperty(final SUIEventListener<MouseDragEventData> listener) {
-		super(OnMouseDragOverEventProperty.class);
+	public OnMouseDragOverEventProperty(final String propertyId, final SUIEventListener<MouseDragEventData> listener) {
+		super(OnMouseDragOverEventProperty.class, propertyId);
 		this.listener = listener;
 	}
 

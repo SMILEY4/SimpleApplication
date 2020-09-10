@@ -20,10 +20,11 @@ public class OnKeyReleasedEventProperty extends AbstractEventListenerProperty<Ke
 
 
 	/**
-	 * @param listener the listener for events with {@link KeyEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link KeyEventData}.
 	 */
-	public OnKeyReleasedEventProperty(final SUIEventListener<KeyEventData> listener) {
-		super(OnKeyReleasedEventProperty.class);
+	public OnKeyReleasedEventProperty(final String propertyId, final SUIEventListener<KeyEventData> listener) {
+		super(OnKeyReleasedEventProperty.class, propertyId);
 		this.listener = listener;
 	}
 

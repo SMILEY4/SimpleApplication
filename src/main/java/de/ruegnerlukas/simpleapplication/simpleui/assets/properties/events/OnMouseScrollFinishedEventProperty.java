@@ -9,6 +9,7 @@ import lombok.Getter;
 
 public class OnMouseScrollFinishedEventProperty extends AbstractEventListenerProperty<MouseScrollEventData> {
 
+
 	/**
 	 * The listener for events with {@link MouseScrollEventData}.
 	 */
@@ -19,10 +20,11 @@ public class OnMouseScrollFinishedEventProperty extends AbstractEventListenerPro
 
 
 	/**
-	 * @param listener the listener for events with {@link MouseScrollEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link MouseScrollEventData}.
 	 */
-	public OnMouseScrollFinishedEventProperty(final SUIEventListener<MouseScrollEventData> listener) {
-		super(OnMouseScrollFinishedEventProperty.class);
+	public OnMouseScrollFinishedEventProperty(final String propertyId, final SUIEventListener<MouseScrollEventData> listener) {
+		super(OnMouseScrollFinishedEventProperty.class, propertyId);
 		this.listener = listener;
 	}
 

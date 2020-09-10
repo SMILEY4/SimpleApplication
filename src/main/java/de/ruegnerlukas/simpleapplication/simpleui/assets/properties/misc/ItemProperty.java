@@ -10,8 +10,14 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class ItemProperty extends SuiProperty {
 
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<ItemProperty, ItemProperty, Boolean> COMPARATOR = (a, b) -> false;
 
 	/**
 	 * The factory for creating the item/node.
@@ -26,7 +32,7 @@ public class ItemProperty extends SuiProperty {
 	 * Creates an item property without a factory.
 	 */
 	protected ItemProperty() {
-		super(ItemProperty.class);
+		super(ItemProperty.class, COMPARATOR);
 		this.factory = null;
 	}
 
@@ -37,18 +43,13 @@ public class ItemProperty extends SuiProperty {
 	 * @param item the factory for creating the item/node.
 	 */
 	public ItemProperty(final NodeFactory item) {
-		super(ItemProperty.class);
+		super(ItemProperty.class, COMPARATOR);
 		this.factory = item;
 	}
 
 
 
 
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		final ItemProperty otherItem = (ItemProperty) other;
-		return false; // TODO
-	}
 
 
 

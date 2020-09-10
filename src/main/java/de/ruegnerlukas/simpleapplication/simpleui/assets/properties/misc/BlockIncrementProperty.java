@@ -9,8 +9,16 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.Slider;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 public class BlockIncrementProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<BlockIncrementProperty, BlockIncrementProperty, Boolean> COMPARATOR =
+			(a, b) -> NumberUtils.isEqual(a.getIncrement(), b.getIncrement());
 
 	/**
 	 * The increment size.
@@ -25,16 +33,8 @@ public class BlockIncrementProperty extends SuiProperty {
 	 * @param increment the increment size
 	 */
 	public BlockIncrementProperty(final Number increment) {
-		super(BlockIncrementProperty.class);
+		super(BlockIncrementProperty.class, COMPARATOR);
 		this.increment = increment;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		return NumberUtils.isEqual(getIncrement(), ((BlockIncrementProperty) other).getIncrement());
 	}
 
 

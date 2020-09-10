@@ -9,9 +9,22 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
+import java.util.function.BiFunction;
+
 @Getter
 public class SizeProperty extends SuiProperty {
 
+
+	/**
+	 * The comparator function for this property type.
+	 */
+	private static final BiFunction<SizeProperty, SizeProperty, Boolean> COMPARATOR =
+			(a, b) -> NumberUtils.isEqual(a.getMinWidth(), b.getMinWidth())
+					&& NumberUtils.isEqual(a.getMinHeight(), b.getMinHeight())
+					&& NumberUtils.isEqual(a.getPreferredWidth(), b.getPreferredWidth())
+					&& NumberUtils.isEqual(a.getPreferredHeight(), b.getPreferredHeight())
+					&& NumberUtils.isEqual(a.getMaxWidth(), b.getMaxWidth())
+					&& NumberUtils.isEqual(a.getMaxHeight(), b.getMaxHeight());
 
 	/**
 	 * The minimum width.
@@ -59,27 +72,13 @@ public class SizeProperty extends SuiProperty {
 						final Number preferredWidth, final Number preferredHeight,
 						final Number maxWidth, final Number maxHeight) {
 
-		super(SizeProperty.class);
+		super(SizeProperty.class, COMPARATOR);
 		this.minWidth = minWidth;
 		this.minHeight = minHeight;
 		this.preferredWidth = preferredWidth;
 		this.preferredHeight = preferredHeight;
 		this.maxWidth = maxWidth;
 		this.maxHeight = maxHeight;
-	}
-
-
-
-
-	@Override
-	protected boolean isPropertyEqual(final SuiProperty other) {
-		final SizeProperty sizeOther = (SizeProperty) other;
-		return NumberUtils.isEqual(this.getMinWidth(), sizeOther.getMinWidth())
-				&& NumberUtils.isEqual(this.getMinHeight(), sizeOther.getMinHeight())
-				&& NumberUtils.isEqual(this.getPreferredWidth(), sizeOther.getPreferredWidth())
-				&& NumberUtils.isEqual(this.getPreferredHeight(), sizeOther.getPreferredHeight())
-				&& NumberUtils.isEqual(this.getMaxWidth(), sizeOther.getMaxWidth())
-				&& NumberUtils.isEqual(this.getMaxHeight(), sizeOther.getMaxHeight());
 	}
 
 

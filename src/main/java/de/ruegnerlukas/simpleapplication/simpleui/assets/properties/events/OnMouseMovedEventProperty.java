@@ -9,6 +9,7 @@ import lombok.Getter;
 
 public class OnMouseMovedEventProperty extends AbstractEventListenerProperty<MouseMoveEventData> {
 
+
 	/**
 	 * The listener for events with {@link MouseMoveEventData}.
 	 */
@@ -19,10 +20,11 @@ public class OnMouseMovedEventProperty extends AbstractEventListenerProperty<Mou
 
 
 	/**
-	 * @param listener the listener for events with {@link MouseMoveEventData}.
+	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+	 * @param listener   the listener for events with {@link MouseMoveEventData}.
 	 */
-	public OnMouseMovedEventProperty(final SUIEventListener<MouseMoveEventData> listener) {
-		super(OnMouseMovedEventProperty.class);
+	public OnMouseMovedEventProperty(final String propertyId, final SUIEventListener<MouseMoveEventData> listener) {
+		super(OnMouseMovedEventProperty.class, propertyId);
 		this.listener = listener;
 	}
 
