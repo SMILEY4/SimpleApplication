@@ -13,11 +13,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.TaggedSuiStateUpdate;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestUtils;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -72,10 +74,10 @@ public class MutationTest extends ApplicationTest {
 				)
 		);
 
-		SuiSceneController context = new SuiSceneController(state, vbox);
-		SuiNode original = context.getRootNode();
-		SuiNode target = vboxTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, vbox);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = vboxTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 
@@ -109,10 +111,10 @@ public class MutationTest extends ApplicationTest {
 				Properties.textContent("My Button")
 		);
 
-		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiNode original = context.getRootNode();
-		SuiNode target = factoryTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = factoryTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
 		PropertyTestUtils.assertTextContentProperty(mutatedNode, "My Button");
@@ -147,10 +149,10 @@ public class MutationTest extends ApplicationTest {
 				)
 		);
 
-		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiNode original = context.getRootNode();
-		SuiNode target = factoryTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = factoryTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiVBox.class);
 		assertThat(mutatedNode.getPropertyStore().has(SizeProperty.class)).isFalse();
@@ -176,10 +178,10 @@ public class MutationTest extends ApplicationTest {
 				Properties.id("myButton")
 		);
 
-		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiNode original = context.getRootNode();
-		SuiNode target = factoryTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = factoryTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
 		assertThat(mutatedNode.getPropertyStore().has(TextContentProperty.class)).isFalse();
@@ -206,10 +208,10 @@ public class MutationTest extends ApplicationTest {
 				Properties.textContent("Button")
 		);
 
-		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiNode original = context.getRootNode();
-		SuiNode target = factoryTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = factoryTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		TestUtils.assertNode(mutatedNode, SuiButton.class);
 		assertThat(mutatedNode).isEqualTo(original);
@@ -255,10 +257,10 @@ public class MutationTest extends ApplicationTest {
 				)
 		);
 
-		SuiSceneController context = new SuiSceneController(state, vbox);
-		SuiNode original = context.getRootNode();
-		SuiNode target = vboxTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, vbox);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = vboxTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.TOP_RIGHT);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.DEFAULT);
@@ -309,10 +311,10 @@ public class MutationTest extends ApplicationTest {
 				)
 		);
 
-		SuiSceneController context = new SuiSceneController(state, vbox);
-		SuiNode original = context.getRootNode();
-		SuiNode target = vboxTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, vbox);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = vboxTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.STATIC_NODE);
@@ -363,10 +365,10 @@ public class MutationTest extends ApplicationTest {
 				)
 		);
 
-		SuiSceneController context = new SuiSceneController(state, vbox);
-		SuiNode original = context.getRootNode();
-		SuiNode target = vboxTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, vbox);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = vboxTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		PropertyTestUtils.assertAlignment(mutatedNode, Pos.CENTER);
 		PropertyTestUtils.assertMutationBehaviour(mutatedNode, MutationBehaviourProperty.MutationBehaviour.STATIC_SUBTREE);
@@ -409,10 +411,10 @@ public class MutationTest extends ApplicationTest {
 				EventProperties.eventAction(e -> capturedEvents.add("from target"))
 		);
 
-		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiNode original = context.getRootNode();
-		SuiNode target = factoryTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = factoryTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		assertThat(mutatedNode).isNotEqualTo(target);
 		assertThat(mutatedNode).isEqualTo(original);
@@ -455,10 +457,10 @@ public class MutationTest extends ApplicationTest {
 				EventProperties.eventAction("myPropertyId", e -> capturedEvents.add("from target"))
 		);
 
-		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiNode original = context.getRootNode();
-		SuiNode target = factoryTarget.create(state);
-		SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		final SuiNode original = context.getRootNode();
+		final SuiNode target = factoryTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
 
 		assertThat(mutatedNode).isNotEqualTo(target);
 		assertThat(mutatedNode).isEqualTo(original);
@@ -475,6 +477,70 @@ public class MutationTest extends ApplicationTest {
 				Mockito.eq(original),
 				Mockito.any());
 
+	}
+
+
+
+
+	@Test
+	public void test_state_update_with_tags_expect_mutate_only_parts_of_tree() {
+
+		final TestState state = new TestState();
+
+		NodeFactory factoryOriginal = SuiVBox.vbox(
+				Properties.id("box"),
+				Properties.items(
+						SuiButton.button(
+								Properties.id("btn1"),
+								// todo: add behaviour: dont mutate on tested state update
+								Properties.textContent("Button 1")
+						),
+						SuiButton.button(
+								Properties.id("btn2"),
+								Properties.textContent("Button 2")
+						)
+				)
+		);
+
+		NodeFactory factoryTarget = SuiVBox.vbox(
+				Properties.id("box"),
+				Properties.items(
+						SuiButton.button(
+								Properties.id("btn1"),
+								// todo: add behaviour: dont mutate on tested state update
+								Properties.textContent("Mutated Button 1")
+						),
+						SuiButton.button(
+								Properties.id("btn2"),
+								Properties.textContent("Mutated Button 2")
+						)
+				)
+		);
+
+		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
+		final SuiNode original = context.getRootNode();
+
+		final SuiNode target = factoryTarget.create(state);
+		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target);
+
+		state.update(TestState.class, s -> s.text = "somethingElse");
+
+		state.update(TestState.class, (TaggedSuiStateUpdate<TestState>) s -> List.of("tag1", "tag2"));
+
+		assertThat(mutatedNode).isNotEqualTo(target);
+		assertThat(mutatedNode).isEqualTo(original);
+
+		final List<SuiNode> children = mutatedNode.getChildNodeStore().getUnmodifiable();
+		assertThat(children).isNotNull();
+		assertThat(children).hasSize(2);
+		assertThat(children).doesNotContainNull();
+
+		final VBox vbox = (VBox) mutatedNode.getFxNodeStore().get();
+		assertThat(vbox).isNotNull();
+		assertThat(vbox.getChildren()).hasSize(2);
+
+		assertThat(((Button)vbox.getChildren().get(0)).getText()).isEqualTo("Button 1");
+		assertThat(((Button)vbox.getChildren().get(1)).getText()).isEqualTo("Mutated Button 2");
 	}
 
 

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
@@ -77,21 +78,32 @@ public class NodeMutatorImpl implements NodeMutator {
 	public MutationResult mutateNode(final SuiNode original, final SuiNode target) {
 		final MutationBehaviour mutationBehaviour = getMutationBehaviour(original);
 
-		if (mutationBehaviour == MutationBehaviour.DEFAULT && original.getNodeType() != target.getNodeType()) {
-			return REQUIRES_REBUILD;
+		// todo: addition to behaviour-check: also check if update-tags match
+
+		switch (mutationBehaviour) {
+
+			case DEFAULT:
+				if (mutateProperties(original, target) == REQUIRES_REBUILD) {
+					return REQUIRES_REBUILD;
+				}
+				if (mutateChildren(original, target) == REQUIRES_REBUILD) {
+					return REQUIRES_REBUILD;
+				}
+				return MUTATED;
+
+			case STATIC_NODE:
+				if (mutateChildren(original, target) == REQUIRES_REBUILD) {
+					return REQUIRES_REBUILD;
+				}
+				return MUTATED;
+
+			case STATIC_SUBTREE:
+				return MUTATED;
+
+			default:
+				Validations.STATE.fail().exception("Unknown mutation behaviour: {}.", mutationBehaviour);
 		}
 
-		if (mutationBehaviour == MutationBehaviour.DEFAULT) {
-			if (mutateProperties(original, target) == REQUIRES_REBUILD) {
-				return REQUIRES_REBUILD;
-			}
-		}
-
-		if (mutationBehaviour != MutationBehaviour.STATIC_SUBTREE) {
-			if (mutateChildren(original, target) == REQUIRES_REBUILD) {
-				return REQUIRES_REBUILD;
-			}
-		}
 
 		return MUTATED;
 	}
