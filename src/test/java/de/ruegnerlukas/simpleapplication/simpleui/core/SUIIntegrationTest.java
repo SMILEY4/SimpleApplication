@@ -1,6 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
+import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateException;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.Node;
@@ -115,6 +121,39 @@ public class SUIIntegrationTest extends ApplicationTest {
 		phaser.arriveAndAwaitAdvance();
 		assertThat(fxButton.getText()).isEqualTo("counter = 0");
 		assertThat(testState.counter).isEqualTo(1);
+
+	}
+
+
+
+
+	@Test (expected = ValidateStateException.class)
+	public void test_build_children_with_duplicate_ids_expect_failed_validation_and_missing_children() {
+
+		final TestState state = new TestState();
+
+		NodeFactory nodeFactory = SuiVBox.vbox(
+				Properties.id("myVBox"),
+				Properties.items(
+						SuiButton.button(
+								Properties.id("sameId"),
+								Properties.textContent("Child Button 1")
+						),
+						SuiButton.button(
+								Properties.id("diffId"),
+								Properties.textContent("Child Button 2")
+						),
+						SuiButton.button(
+								Properties.id("sameId"),
+								Properties.textContent("Child Button 3")
+						)
+				)
+		);
+
+		final SuiSceneController context = new SuiSceneController(state, nodeFactory);
+		final SuiNode node = context.getRootNode();
+
+		assertThat(node.getChildNodeStore().count()).isEqualTo(0);
 
 	}
 
