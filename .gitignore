@@ -8,7 +8,7 @@
 *.zip
 /libs
 /docs
-/wiki
+/wiki/SimpleApplication.wiki/.git
 /.idea
 /out
 /tests/
