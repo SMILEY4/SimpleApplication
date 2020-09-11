@@ -101,23 +101,35 @@ public class InstanceProviderTest {
 
 
 	@Test
-	public void testNonSingleton() {
+	public void test_non_singleton_expect_different_provider_have_different_instance() {
 		final User userA = new Provider<>(User.class).get();
-		final User userB = new Provider<>(User.class).get();
+
+		final Provider<User> providerB = new Provider<>(User.class);
+		final User userB1 = providerB.get();
+		final User userB2 = providerB.get();
+
 		assertThat(userA).isNotNull();
 		assertThat(userA.getName()).isEqualTo(USER_NAME);
 		assertThat(userA.getId()).isEqualTo(USER_ID);
-		assertThat(userB).isNotNull();
-		assertThat(userB.getName()).isEqualTo(USER_NAME);
-		assertThat(userB.getId()).isEqualTo(USER_ID);
-		assertThat(userA).isNotEqualTo(userB);
+
+		assertThat(userB1).isNotNull();
+		assertThat(userB1.getName()).isEqualTo(USER_NAME);
+		assertThat(userB1.getId()).isEqualTo(USER_ID);
+
+		assertThat(userB2).isNotNull();
+		assertThat(userB2.getName()).isEqualTo(USER_NAME);
+		assertThat(userB2.getId()).isEqualTo(USER_ID);
+
+		assertThat(userA).isNotEqualTo(userB1);
+		assertThat(userA).isNotEqualTo(userB2);
+		assertThat(userB1).isEqualTo(userB2);
 	}
 
 
 
 
 	@Test
-	public void testSingleton() {
+	public void test_singleton_expect_different_provider_have_same_instance() {
 		final Administrator adminA = new Provider<>(Administrator.class).get();
 		final Administrator adminB = new Provider<>(Administrator.class).get();
 		assertThat(adminA).isNotNull();
@@ -132,10 +144,11 @@ public class InstanceProviderTest {
 
 
 	@Test
-	public void testOverride() {
+	public void test_register_factory_replaces_factory_with_same_identifier() {
 		final String TEST_FACTORY = "TestFactory";
 		ProviderService.registerFactory(new StringFactory(TEST_FACTORY, "a"));
 		assertThat(new Provider<String>(TEST_FACTORY).get()).isEqualTo("a");
+
 		ProviderService.registerFactory(new StringFactory(TEST_FACTORY, "b"));
 		assertThat(new Provider<String>(TEST_FACTORY).get()).isEqualTo("b");
 	}
@@ -144,7 +157,7 @@ public class InstanceProviderTest {
 
 
 	@Test (expected = ValidateStateException.class)
-	public void testNotExistent() {
+	public void test_request_non_existent_expect_null_and_failed_validation() {
 		final Object object = new Provider<>(Object.class).get();
 		assertThat(object).isNull();
 	}
@@ -153,7 +166,7 @@ public class InstanceProviderTest {
 
 
 	@Test
-	public void testByName() {
+	public void test_request_instance_by_string_id() {
 		final User user = new Provider<User>("MyUser").get();
 		assertThat(user).isNotNull();
 		assertThat(user.getName()).isEqualTo(MY_USER_NAME);
@@ -164,7 +177,7 @@ public class InstanceProviderTest {
 
 
 	@Test
-	public void testArrayProvider() {
+	public void test_array_provider() {
 		final User[] array = new ArrayProvider<User>("User Array").get();
 		assertThat(array).isNotNull();
 	}
@@ -173,7 +186,7 @@ public class InstanceProviderTest {
 
 
 	@Test
-	public void testListProvider() {
+	public void test_list_provider() {
 		final List<User> list = new ListProvider<User>("User List").get();
 		assertThat(list).isNotNull();
 	}
@@ -182,7 +195,7 @@ public class InstanceProviderTest {
 
 
 	@Test
-	public void testSetProvider() {
+	public void test_set_provider() {
 		final Set<User> set = new SetProvider<User>("User Set").get();
 		assertThat(set).isNotNull();
 	}
@@ -191,7 +204,7 @@ public class InstanceProviderTest {
 
 
 	@Test
-	public void testMapProvider() {
+	public void test_map_provider() {
 		final Map<String, User> map = new MapProvider<String, User>("User Map").get();
 		assertThat(map).isNotNull();
 	}
@@ -200,7 +213,7 @@ public class InstanceProviderTest {
 
 
 	@Test
-	public void testStringProvider() {
+	public void test_string_provider() {
 		final String str = new StringProvider("string").get();
 		assertThat(str).isEqualTo("The Test String");
 	}
