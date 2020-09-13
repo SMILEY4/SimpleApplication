@@ -77,12 +77,14 @@ MyService myService = myServiceProvider.get();
 When starting a new application an "ApplicationConfiguration" has to be created and configured. As an alternative to calling "ProviderService.registerFactory" directly, the factories can be added to the configuration instead.
 
 ```java
-final ApplicationConfiguration configuration = new ApplicationConfiguration();
-configuration.getProviderFactories().add(new StringFactory("app.name", "My Test App"));
-configuration.getProviderFactories().add(new StringFactory("app.version", "0.1"));
-configuration.getProviderFactories().add(new InstanceFactory<>(User.class) {...});
-...
-new Application(configuration).run();
+public static void main(String[] args) {
+    ApplicationConfiguration configuration = new ApplicationConfiguration();
+    configuration.getProviderFactories().add(new StringFactory("app.name", "My Test App"));
+    configuration.getProviderFactories().add(new StringFactory("app.version", "0.1"));
+    configuration.getProviderFactories().add(new InstanceFactory<>(User.class) {...});
+    ...
+    new Application(configuration).run();   
+}
 ```
 
   

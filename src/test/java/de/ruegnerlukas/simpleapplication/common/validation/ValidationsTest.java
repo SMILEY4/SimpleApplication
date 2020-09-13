@@ -120,6 +120,7 @@ public class ValidationsTest {
 	@Test
 	public void testContainsAtLeastCollection() {
 		assertFalse(Validations.STATE.containsAtLeast(List.of("a", "b"), 1).failed());
+		assertFalse(Validations.STATE.containsAtLeast(List.of("a", "b"), 2).failed());
 		assertTrue(Validations.STATE.containsAtLeast(List.of("a", "b"), 4).failed());
 		assertTrue(Validations.STATE.containsAtLeast((ArrayList) null, 1).failed());
 	}
@@ -130,6 +131,7 @@ public class ValidationsTest {
 	@Test
 	public void testContainsAtLeastArray() {
 		assertFalse(Validations.STATE.containsAtLeast(new String[]{"a", "b"}, 1).failed());
+		assertFalse(Validations.STATE.containsAtLeast(new String[]{"a", "b"}, 2).failed());
 		assertTrue(Validations.STATE.containsAtLeast(new String[]{"a", "b"}, 4).failed());
 		assertTrue(Validations.STATE.containsAtLeast((String[]) null, 1).failed());
 	}
@@ -140,6 +142,7 @@ public class ValidationsTest {
 	@Test
 	public void testContainsAtMostCollection() {
 		assertFalse(Validations.STATE.containsAtMost(List.of("a", "b"), 4).failed());
+		assertFalse(Validations.STATE.containsAtMost(List.of("a", "b"), 2).failed());
 		assertTrue(Validations.STATE.containsAtMost(List.of("a", "b"), 1).failed());
 		assertTrue(Validations.STATE.containsAtMost((ArrayList) null, 4).failed());
 	}
@@ -150,6 +153,7 @@ public class ValidationsTest {
 	@Test
 	public void testContainsAtMostArray() {
 		assertFalse(Validations.STATE.containsAtMost(new String[]{"a", "b"}, 4).failed());
+		assertFalse(Validations.STATE.containsAtMost(new String[]{"a", "b"}, 2).failed());
 		assertTrue(Validations.STATE.containsAtMost(new String[]{"a", "b"}, 1).failed());
 		assertTrue(Validations.STATE.containsAtMost((String[]) null, 4).failed());
 	}

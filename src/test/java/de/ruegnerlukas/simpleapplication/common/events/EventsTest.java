@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.events;
 
+import de.ruegnerlukas.simpleapplication.common.events.specializedevents.BooleanEvent;
 import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEvent;
 import de.ruegnerlukas.simpleapplication.common.events.specializedevents.StringEvent;
 import org.junit.Test;
@@ -102,7 +103,7 @@ public class EventsTest {
 
 		// create event sources
 		final StringEvent.StringEventSource sourceA = new StringEvent.StringEventSource();
-		final StringEvent.StringEventSource sourceB = new StringEvent.StringEventSource();
+		final BooleanEvent.BooleanEventSource sourceB = new BooleanEvent.BooleanEventSource();
 
 		// create listenable group
 		final ListenableEventSourceGroup groupListenable = new ListenableEventSourceGroup();
@@ -134,6 +135,23 @@ public class EventsTest {
 		// verify
 		verify(listenerA).onEvent(eq(EVENT_A));
 		verify(listenerB).onEvent(eq(EVENT_B));
+	}
+
+	@Test
+	public void test() {
+
+		StringEvent.StringEventSource sourceA = new StringEvent.StringEventSource();
+		StringEvent.StringEventSource sourceB = new StringEvent.StringEventSource();
+
+		TriggerableEventSourceGroup triggerableGroup = new TriggerableEventSourceGroup();
+		triggerableGroup.add(Channel.name("event.a"), sourceA);
+		triggerableGroup.add(Channel.name("event.b"), sourceB);
+
+		ListenableEventSourceGroup listenableGroup = new ListenableEventSourceGroup();
+		listenableGroup.add(Channel.name("event.a"), sourceA);
+		listenableGroup.add(Channel.name("event.b"), sourceB);
+
+
 	}
 
 

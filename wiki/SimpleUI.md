@@ -1,0 +1,3 @@
+## SimpleUI
+
+SimpleUI is an UI framework/library build on top of JavaFx. Its split into two general parts: The UI state and the scene tree. SimpleUI constructs the scene tree from the state which can then be shown to the user. The same state produces always the same scene. To create interactive interfaces, the state can be updated which then triggers SimpleUI to modify or rebuild the existing scene tree to match the new state.

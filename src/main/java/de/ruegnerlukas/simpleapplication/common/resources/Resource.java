@@ -85,7 +85,7 @@ public final class Resource {
 	 */
 	private Resource(final String path, final boolean internal) {
 		Validations.INPUT.notBlank(path).exception("The path must not be null or empty.");
-		this.path = path;
+		this.path = path.replace("\\", PATH_SEPARATOR_TOKEN);
 		this.internal = internal;
 	}
 

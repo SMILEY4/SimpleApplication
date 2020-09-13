@@ -3,8 +3,6 @@ package de.ruegnerlukas.simpleapplication.core.events;
 import de.ruegnerlukas.simpleapplication.common.events.Channel;
 import lombok.Getter;
 
-import java.util.Optional;
-
 public abstract class Publishable {
 
 
@@ -52,7 +50,7 @@ public abstract class Publishable {
 	 */
 	public Publishable(final Channel channel) {
 		metadata = new PublishableMeta(this);
-		metadata.setChannel(Optional.ofNullable(channel).orElse(Channel.type(this.getClass())));
+		metadata.setChannel(channel);
 	}
 
 

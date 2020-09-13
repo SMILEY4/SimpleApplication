@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -225,7 +226,7 @@ public class ApplicationTest {
 
 
 		public TestPlugin(final String id, final String displayName, final String version) {
-			super(new PluginInformation(id, displayName, version, false));
+			super(new PluginInformation(id, displayName, version, false, Set.of("")));
 		}
 
 
