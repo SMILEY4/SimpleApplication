@@ -8,7 +8,7 @@ interactive UIs.
 
 ## Overview
 
-- Getting Started
+- Getting Started❌
 - Core Systems
   - Provider System ✔️
   - Event System ✔️
@@ -18,7 +18,7 @@ interactive UIs.
 - Commons / Utilities
   - resources✔️
   - validations✔️
-- SimpleUI
+- SimpleUI 🚧
   - ...
 
 
