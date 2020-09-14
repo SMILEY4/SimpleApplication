@@ -405,6 +405,8 @@ state.addStateListener(new SuiStateListener() {
 
 ### 4.1 Overview
 
+when updating the ui state, the controller triggers the mutation process. 
+
 - state update triggers mutation
 - a new scene tree is build from the new state
 - the current tree is recursively compared with the new tree
