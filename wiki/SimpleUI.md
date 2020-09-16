@@ -1,6 +1,6 @@
 ## SimpleUI
 
-SimpleUI is an UI framework/library build on top of JavaFx. Its split into two general parts: The UI state and the scene tree. SimpleUI constructs the scene tree from the state which can then be shown to the user. The same state produces always the same scene. To create interactive interfaces, the state can be updated which then triggers SimpleUI to modify or rebuild the existing scene tree to match the new state.
+SimpleUI is an UI framework/library build on top of JavaFx. Its split into two general parts: The UI state and the scene tree. SimpleUI constructs the scene tree from the state and node factory which can then be shown to the user. The same state produces always the same scene. To create interactive interfaces, the state can be updated which then triggers SimpleUI to modify (or rebuild) the existing scene tree to match the new state.
 
 
 
@@ -405,28 +405,47 @@ state.addStateListener(new SuiStateListener() {
 
 ### 4.1 Overview
 
-when updating the ui state, the controller triggers the mutation process. 
+When updating the ui state, the controller triggers the mutation process. The controller takes the current state, applies the update and then builds a completely new scene tree from that updated state. This new tree gets than compared to the current scene tree. The mutation process then tries to modify the properties and child-nodes in such a way that the tree matches the new target tree. If a node can not be modified to match the target node, it gets rebuild completely, i.e. gets replaced by the node from the new tree.
 
-- state update triggers mutation
-- a new scene tree is build from the new state
-- the current tree is recursively compared with the new tree
-- if there is a difference between the old and new tree, the old tree will be modified so that it matches the new tree
-- if it is not possible to make the necessary modifications, the node or subtree rebuild / copied over from the new tree to replace the old node/subtree
+##### Example Walkthrough:
+
+![mutationExample](D:\LukasRuegner\Programmieren\Java\Workspace\SimpleApplication\wiki\mutationExample.png)
+
+**After updating the state, a few things have changed** (see "Current Tree" vs "Target Tree")
+
+1. The event-handler of "Button #3" was removed.
+
+2. the text of "Button #4" was changed.
+
+3. the "Label #5" was changed to a button.
+
+4. the new node "Checkbox #7*" was added to the vbox.
+
+**The mutation process does the following things** (see "Mutated Tree" for the result)
+
+1. start at root node and compare it -> neither the child nodes, nor the properties changed, it continues the process with the child nodes
+2. It the checks "VBox #2" - no properties have been changed here too and the process continues to check the child nodes of that vbox
+3. It checks the difference between "Label #5" and "Button #5" and tries to modify the node in the current tree. Since the basic type of the node changed (from a label to a button), it can not be mutated and has to be rebuild. To to that, the original node ("Label #5") gets replaced by the target node ("Button #5*")
+4. It continues to check the child nodes and finds the added node "Checkbox #7*". This this node did not exist in the original tree, so it can be moved/copied over from the target tree and added to the underlying javafx-node.
+5. After checking all children (and added children) of "VBox #2", it continues with "Button #3". It notices the removed property "event" and removes it from the node (in the current tree) and unterlying javafx-node.
+6. The last difference - the changed "text"-property of "Button #4" can also be mutated in the current tree by replacing it with the new property and then updating the unterlying javafx-node.
 
 
 
-### 4.2 Mutation of single Nodes
+### 4.2 Mutation of a Node
 
-- how properties are compared
-- how properties are modified
-  - compare all props, find added, removed, updated
-  - some nodes are excluded: itemProps, ..
+A few things can be changed about a node:
 
-- the use of the property-id of some props
+- add a new property
+- remove a property
+- modify an existing property
+  - how props are compared
+  - also note the prop-id
+- completely change out the node (new node in same place does not match the prev node at all)
 
 
 
-### 4.3 Mutation of Nodes with Children
+### 4.3 Mutation of Child-Nodes
 
 - how child nodes are compared
 - how child nodes are mutated
