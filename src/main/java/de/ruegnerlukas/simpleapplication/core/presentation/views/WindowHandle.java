@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @Getter
 public class WindowHandle {
@@ -49,12 +50,14 @@ public class WindowHandle {
 
 
 	/**
-	 * @param handleId the id of this handle
-	 * @param stage    the stage of this handle
+	 * @param handleId    the id of this handle
+	 * @param stage       the stage of this handle
+	 * @param closeAction the action triggered when the stage of this handle was closed.
 	 */
-	protected WindowHandle(final String handleId, final Stage stage) {
+	protected WindowHandle(final String handleId, final Stage stage, final Consumer<WindowHandle> closeAction) {
 		this.handleId = handleId;
 		this.stage = stage;
+		this.stage.setOnHidden(e -> closeAction.accept(this));
 	}
 
 
