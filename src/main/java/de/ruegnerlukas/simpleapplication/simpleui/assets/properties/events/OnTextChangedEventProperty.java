@@ -15,7 +15,7 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 	 * The listener for events with {@link TextContentEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<TextContentEventData> listener;
+	private final SuiEventListener<TextContentEventData> listener;
 
 	/**
 	 * The proxy for the actual change listener.
@@ -30,7 +30,7 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link TextContentEventData}.
 	 */
-	public OnTextChangedEventProperty(final String propertyId, final SUIEventListener<TextContentEventData> listener) {
+	public OnTextChangedEventProperty(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
 		super(OnTextChangedEventProperty.class, propertyId);
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> listener.onEvent(

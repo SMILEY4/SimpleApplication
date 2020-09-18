@@ -14,7 +14,7 @@ public class OnMousePressedEventProperty extends AbstractEventListenerProperty<M
 	 * The listener for events with {@link MouseButtonEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<MouseButtonEventData> listener;
+	private final SuiEventListener<MouseButtonEventData> listener;
 
 
 
@@ -23,7 +23,7 @@ public class OnMousePressedEventProperty extends AbstractEventListenerProperty<M
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link MouseButtonEventData}.
 	 */
-	public OnMousePressedEventProperty(final String propertyId, final SUIEventListener<MouseButtonEventData> listener) {
+	public OnMousePressedEventProperty(final String propertyId, final SuiEventListener<MouseButtonEventData> listener) {
 		super(OnMousePressedEventProperty.class, propertyId);
 		this.listener = listener;
 	}

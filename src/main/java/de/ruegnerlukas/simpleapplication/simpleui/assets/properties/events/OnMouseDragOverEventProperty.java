@@ -14,7 +14,7 @@ public class OnMouseDragOverEventProperty extends AbstractEventListenerProperty<
 	 * The listener for events with {@link MouseDragEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<MouseDragEventData> listener;
+	private final SuiEventListener<MouseDragEventData> listener;
 
 
 
@@ -23,7 +23,7 @@ public class OnMouseDragOverEventProperty extends AbstractEventListenerProperty<
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link MouseDragEventData}.
 	 */
-	public OnMouseDragOverEventProperty(final String propertyId, final SUIEventListener<MouseDragEventData> listener) {
+	public OnMouseDragOverEventProperty(final String propertyId, final SuiEventListener<MouseDragEventData> listener) {
 		super(OnMouseDragOverEventProperty.class, propertyId);
 		this.listener = listener;
 	}

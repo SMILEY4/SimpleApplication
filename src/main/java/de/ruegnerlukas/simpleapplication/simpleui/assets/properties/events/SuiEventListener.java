@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-public interface SUIEventListener<T> {
+public interface SuiEventListener<T> {
 
 
 	/**

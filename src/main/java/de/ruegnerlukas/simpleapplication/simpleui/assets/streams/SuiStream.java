@@ -1,9 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.streams;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SUIEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SuiEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources.CollectionStreamSource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources.EventStreamSource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources.ObservableStreamSource;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WritableValue;
 import javafx.util.Duration;
@@ -37,7 +38,7 @@ public interface SuiStream<IN, OUT> {
 	 * @param <T>        the generic type of the event data
 	 * @return the event listener to add to the event property.
 	 */
-	static <T> SUIEventListener<T> eventStream(final Class<T> sourceType, final Consumer<SuiStream<T, T>> stream) {
+	static <T> SuiEventListener<T> eventStream(final Class<T> sourceType, final Consumer<SuiStream<T, T>> stream) {
 		return eventStreamBridge(bridge -> stream.accept(SuiStream.from(bridge)));
 	}
 
@@ -50,8 +51,20 @@ public interface SuiStream<IN, OUT> {
 	 * @param <T>    the generic type of the event data
 	 * @return the event listener to add to the event property.
 	 */
-	static <T> SUIEventListener<T> eventStreamBridge(final Consumer<ObservableValue<T>> bridge) {
+	static <T> SuiEventListener<T> eventStreamBridge(final Consumer<ObservableValue<T>> bridge) {
 		return new EventStreamSource<>(bridge);
+	}
+
+	/**
+	 * Creates a new stream from the given collection. All elements in the collection will be processed immediately and synchronously.
+	 *
+	 * @param collection the collection of elements
+	 * @param stream     the consumer providing the created stream for further actions.
+	 */
+	static <T> void from(final Collection<T> collection, final Consumer<SuiStream<T, T>> stream) {
+		final CollectionStreamSource<T> collectionStreamSource = new CollectionStreamSource<>();
+		stream.accept(collectionStreamSource);
+		collectionStreamSource.acceptCollection(collection);
 	}
 
 

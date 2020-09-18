@@ -2,9 +2,12 @@ package de.ruegnerlukas.simpleapplication;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
@@ -18,6 +21,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.stream.IntStream;
 
 @SuppressWarnings ("CheckStyle")
 @Slf4j
@@ -50,6 +55,10 @@ public class SUITestApplicationWiki extends Application {
 //				)
 //		);
 
+		SuiEventListener<ActionEventData> listener = event -> System.out.println("Clicked!");
+		SuiButton.button(
+				EventProperties.eventAction(listener)
+		);
 
 		SuiSceneController suiSceneController = new SuiSceneController(uiState, MyState.class, state ->
 				SuiVBox.vbox(
@@ -60,6 +69,17 @@ public class SUITestApplicationWiki extends Application {
 								myComponent(state, "Button 2"),
 								myComponent(state, "Button 3")
 						)
+				)
+		);
+
+		SuiVBox.vbox(
+				Properties.spacing(5),
+				Properties.items(
+						IntStream.range(0, 10).mapToObj(
+								index -> SuiLabel.label(
+										Properties.id("label_" + index),
+										Properties.textContent("Item " + index)
+								))
 				)
 		);
 
@@ -76,6 +96,10 @@ public class SUITestApplicationWiki extends Application {
 			@Override
 			public void beforeUpdate(final SuiState state, final SuiStateUpdate<?> update) {
 			}
+
+
+
+
 			@Override
 			public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update, final Tags tags) {
 			}

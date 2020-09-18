@@ -14,7 +14,7 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 	 * The listener for events with {@link MouseMoveEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<MouseMoveEventData> listener;
+	private final SuiEventListener<MouseMoveEventData> listener;
 
 
 
@@ -23,7 +23,7 @@ public class OnMouseEnteredEventProperty extends AbstractEventListenerProperty<M
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link MouseMoveEventData}.
 	 */
-	public OnMouseEnteredEventProperty(final String propertyId, final SUIEventListener<MouseMoveEventData> listener) {
+	public OnMouseEnteredEventProperty(final String propertyId, final SuiEventListener<MouseMoveEventData> listener) {
 		super(OnMouseEnteredEventProperty.class, propertyId);
 		this.listener = listener;
 	}

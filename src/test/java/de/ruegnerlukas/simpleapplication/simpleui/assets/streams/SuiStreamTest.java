@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.streams;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SUIEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.JFXTimer;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
 import javafx.beans.property.SimpleObjectProperty;
@@ -24,7 +24,7 @@ public class SuiStreamTest extends ApplicationTest {
 
 		final List<String> collectedValues = new ArrayList<>();
 
-		SUIEventListener<String> eventListener = SuiStream.eventStream(String.class, stream -> stream.forEach(collectedValues::add));
+		SuiEventListener<String> eventListener = SuiStream.eventStream(String.class, stream -> stream.forEach(collectedValues::add));
 
 		assertThat(collectedValues).isEmpty();
 		eventListener.onEvent("a");
@@ -58,6 +58,20 @@ public class SuiStreamTest extends ApplicationTest {
 		assertThat(collectedValues).containsExactly("a", "b", "c", "d");
 		observable.setValue(null);
 		assertThat(collectedValues).containsExactly("a", "b", "c", "d", null);
+	}
+
+
+
+
+	@Test
+	public void test_source_is_collection() {
+
+		final List<Integer> collectedValues = new ArrayList<>();
+		final List<Integer> sourceCollection = List.of(1, 2, 4, 8, 16, 32);
+
+		SuiStream.from(sourceCollection, stream -> stream.collectInto(collectedValues));
+
+		assertThat(collectedValues).containsExactly(1, 2, 4, 8, 16, 32);
 	}
 
 
