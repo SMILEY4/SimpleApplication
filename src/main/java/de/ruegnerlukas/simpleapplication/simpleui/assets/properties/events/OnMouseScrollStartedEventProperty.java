@@ -14,7 +14,7 @@ public class OnMouseScrollStartedEventProperty extends AbstractEventListenerProp
 	 * The listener for events with {@link MouseScrollEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<MouseScrollEventData> listener;
+	private final SuiEventListener<MouseScrollEventData> listener;
 
 
 
@@ -23,7 +23,7 @@ public class OnMouseScrollStartedEventProperty extends AbstractEventListenerProp
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link MouseScrollEventData}.
 	 */
-	public OnMouseScrollStartedEventProperty(final String propertyId, final SUIEventListener<MouseScrollEventData> listener) {
+	public OnMouseScrollStartedEventProperty(final String propertyId, final SuiEventListener<MouseScrollEventData> listener) {
 		super(OnMouseScrollStartedEventProperty.class, propertyId);
 		this.listener = listener;
 	}

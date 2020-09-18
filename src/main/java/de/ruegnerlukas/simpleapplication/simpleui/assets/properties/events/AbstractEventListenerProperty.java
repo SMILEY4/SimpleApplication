@@ -31,7 +31,7 @@ public abstract class AbstractEventListenerProperty<T> extends SuiProperty {
 	/**
 	 * @return the event listener of this property
 	 */
-	public abstract SUIEventListener<T> getListener();
+	public abstract SuiEventListener<T> getListener();
 
 
 }

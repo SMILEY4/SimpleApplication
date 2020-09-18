@@ -14,7 +14,7 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 	 * The listener for events with {@link ScrollEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<ScrollEventData> listener;
+	private final SuiEventListener<ScrollEventData> listener;
 
 	/**
 	 * The proxy for the actual change listener.
@@ -29,7 +29,7 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link ScrollEventData}.
 	 */
-	public OnScrollHorizontalEventProperty(final String propertyId, final SUIEventListener<ScrollEventData> listener) {
+	public OnScrollHorizontalEventProperty(final String propertyId, final SuiEventListener<ScrollEventData> listener) {
 		super(OnScrollHorizontalEventProperty.class, propertyId);
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {

@@ -14,7 +14,7 @@ public class OnUncheckedEventProperty extends AbstractEventListenerProperty<Chec
 	 * The listener for events with {@link CheckedEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<CheckedEventData> listener;
+	private final SuiEventListener<CheckedEventData> listener;
 
 	/**
 	 * The proxy for the actual change listener.
@@ -29,7 +29,7 @@ public class OnUncheckedEventProperty extends AbstractEventListenerProperty<Chec
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link CheckedEventData}.
 	 */
-	public OnUncheckedEventProperty(final String propertyId, final SUIEventListener<CheckedEventData> listener) {
+	public OnUncheckedEventProperty(final String propertyId, final SuiEventListener<CheckedEventData> listener) {
 		super(OnUncheckedEventProperty.class, propertyId);
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {

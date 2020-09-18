@@ -18,7 +18,7 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 	 * The listener for events with {@link TextContentEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<TextContentEventData> listener;
+	private final SuiEventListener<TextContentEventData> listener;
 
 	/**
 	 * The event handler for listening to key events of text areas
@@ -34,7 +34,7 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link TextContentEventData}.
 	 */
-	public OnTextEnteredEventProperty(final String propertyId, final SUIEventListener<TextContentEventData> listener) {
+	public OnTextEnteredEventProperty(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
 		super(OnTextEnteredEventProperty.class, propertyId);
 		this.listener = listener;
 		this.textAreaEventHandler = e -> {

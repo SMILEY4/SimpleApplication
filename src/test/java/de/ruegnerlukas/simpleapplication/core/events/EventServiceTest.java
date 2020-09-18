@@ -378,9 +378,22 @@ public class EventServiceTest {
 
 
 	private Publishable publishable(final String channel) {
-		return new Publishable(Channel.name(channel)) {
-		};
+		return new MyTestEvent(Channel.name(channel));
 	}
+
+
+
+
+	static class MyTestEvent extends Publishable {
+
+
+		public MyTestEvent(final Channel channel) {
+			super(channel);
+		}
+
+	}
+
+
 
 
 

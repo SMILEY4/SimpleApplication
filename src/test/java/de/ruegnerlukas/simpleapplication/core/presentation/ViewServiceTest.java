@@ -17,8 +17,10 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
+import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandleData;
 import javafx.application.Platform;
 import javafx.geometry.Dimension2D;
+import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -376,7 +378,16 @@ public class ViewServiceTest extends ApplicationTest {
 				.id(id)
 				.size(new Dimension2D(100, 10))
 				.title(id)
-				.dataFactory(() -> Pane::new)
+				.dataFactory(() -> new WindowHandleData() {
+					@Override
+					public Parent getNode() {
+						return new Pane();
+					}
+					@Override
+					public void dispose() {
+
+					}
+				})
 				.icon(Resource.internal("testResources/icon.png"))
 				.build();
 	}

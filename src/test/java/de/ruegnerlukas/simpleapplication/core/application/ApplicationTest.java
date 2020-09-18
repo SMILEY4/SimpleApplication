@@ -100,7 +100,7 @@ public class ApplicationTest {
 		application.setCoreProviderConfiguration(new TestCoreProviderConfig(new TestEventService()));
 
 		application.run();
-		assertThat(plugin.getLoadedCounter()).isEqualTo(1);
+		assertThat(plugin.getLoadedCounter()).isEqualTo(1); // is 0
 		assertThat(plugin.getUnloadedCounter()).isEqualTo(0);
 
 		starter.stop();

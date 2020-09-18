@@ -14,7 +14,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 	 * The listener for events with {@link ActionEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<ActionEventData> listener;
+	private final SuiEventListener<ActionEventData> listener;
 
 
 
@@ -23,7 +23,7 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link ActionEventData}.
 	 */
-	public OnActionEventProperty(final String propertyId, final SUIEventListener<ActionEventData> listener) {
+	public OnActionEventProperty(final String propertyId, final SuiEventListener<ActionEventData> listener) {
 		super(OnActionEventProperty.class, propertyId);
 		this.listener = listener;
 	}

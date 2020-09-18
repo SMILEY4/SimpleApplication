@@ -17,9 +17,11 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextField;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.SuiStream;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -106,12 +108,20 @@ public class SUITestApplication {
 							anchorPane(
 									Properties.items(
 											SuiAnchorPaneItem.anchorPaneItem(
-													SuiSlider.slider(
-															Properties.minMax(-100, 100),
-															Properties.tickMarks(TickMarkProperty.TickMarkStyle.LABELED_TICKS, 50, 1, true),
-															Properties.labelFormatter(value -> value.intValue() + "m"),
-															Properties.blockIncrement(50)
+													SuiTextField.textField(
+															EventProperties.eventTextEntered(
+																	"my.listener",
+																	SuiStream.eventStream(TextContentEventData.class,
+																			stream -> stream
+																					.map(e -> e.getText())
+																					.forEach(e -> System.out.println(e))))
 													),
+//													SuiSlider.slider(
+//															Properties.minMax(-100, 100),
+//															Properties.tickMarks(TickMarkProperty.TickMarkStyle.LABELED_TICKS, 50, 1, true),
+//															Properties.labelFormatter(value -> value.intValue() + "m"),
+//															Properties.blockIncrement(50)
+//													),
 													Properties.anchor(100, null, 100, null)
 											)
 									)

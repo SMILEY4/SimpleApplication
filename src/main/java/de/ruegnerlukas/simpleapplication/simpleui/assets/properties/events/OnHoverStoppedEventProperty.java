@@ -14,7 +14,7 @@ public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<H
 	 * The listener for events with {@link HoverEventData}.
 	 */
 	@Getter
-	private final SUIEventListener<HoverEventData> listener;
+	private final SuiEventListener<HoverEventData> listener;
 
 	/**
 	 * The proxy for the actual change listener.
@@ -29,7 +29,7 @@ public class OnHoverStoppedEventProperty extends AbstractEventListenerProperty<H
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link HoverEventData}.
 	 */
-	public OnHoverStoppedEventProperty(final String propertyId, final SUIEventListener<HoverEventData> listener) {
+	public OnHoverStoppedEventProperty(final String propertyId, final SuiEventListener<HoverEventData> listener) {
 		super(OnHoverStoppedEventProperty.class, propertyId);
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {
