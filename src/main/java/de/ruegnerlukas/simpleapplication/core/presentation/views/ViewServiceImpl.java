@@ -147,7 +147,7 @@ public class ViewServiceImpl implements ViewService {
 		Validations.STATE.notNull(primaryStage).exception("The view service is not yet initialized / the primary stage is null.");
 		WindowHandle handle = getPrimaryWindowHandle();
 		if (handle == null) {
-			handle = new WindowHandle(WindowHandle.ID_PRIMARY, primaryStage);
+			handle = createWindowHandle(WindowHandle.ID_PRIMARY, primaryStage);
 			windowHandles.put(handle.getHandleId(), handle);
 		}
 		return showView(viewId, handle);
@@ -203,7 +203,7 @@ public class ViewServiceImpl implements ViewService {
 		final View view = views.get(viewId);
 		final Stage stage = new Stage();
 
-		final WindowHandle handle = new WindowHandle(createHandleId(), stage);
+		final WindowHandle handle = createWindowHandle(createHandleId(), stage);
 		handle.setView(view);
 		windowHandles.put(handle.getHandleId(), handle);
 
@@ -244,13 +244,38 @@ public class ViewServiceImpl implements ViewService {
 		Validations.INPUT.notNull(handle).exception("The handle may not be null.");
 		Validations.INPUT.containsKey(windowHandles, handle.getHandleId())
 				.exception("The handle '{}' was not found.", handle.getHandleId());
-		final Parent prevViewNode = handle.getCurrentRootNode();
 		handle.getStage().close();
+	}
+
+
+
+
+	/**
+	 * Called when a window was closed.
+	 *
+	 * @param handle the handle of the closed window
+	 */
+	private void onCloseWindow(final WindowHandle handle) {
+		final Parent prevViewNode = handle.getCurrentRootNode();
 		handle.getStage().getScene().setRoot(new Pane());
 		handle.disposeCurrentData();
 		windowHandles.remove(handle.getHandleId());
 		styleServiceProvider.get().disconnectNode(prevViewNode);
 		eventServiceProvider.get().publish(new EventClosePopup(handle.getView().getId(), handle));
+	}
+
+
+
+
+	/**
+	 * Creates a new window handle with a listener triggering {@link ViewServiceImpl#onCloseWindow}.
+	 *
+	 * @param handleId the id of the window handle
+	 * @param stage    the stage of the window
+	 * @return the created window handle
+	 */
+	private WindowHandle createWindowHandle(final String handleId, final Stage stage) {
+		return new WindowHandle(handleId, stage, this::onCloseWindow);
 	}
 
 

@@ -21,6 +21,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandleDat
 import javafx.application.Platform;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -45,11 +46,14 @@ public class ViewServiceTest extends ApplicationTest {
 
 	private StyleService styleService;
 
+	private Stage primaryState;
+
 
 
 
 	@Override
 	public void start(Stage stage) {
+		this.primaryState = stage;
 
 		eventService = eventService();
 		styleService = styleService();
@@ -192,6 +196,8 @@ public class ViewServiceTest extends ApplicationTest {
 
 			// close popup
 			viewService.closePopup(handle);
+
+			assertThat(viewService.isWindowHandleActive(handle)).isFalse();
 			assertThat(viewService.getWindowHandles(view.getId())).hasSize(0);
 
 			assertEvent(Channel.type(EventClosePopup.class));
@@ -202,6 +208,44 @@ public class ViewServiceTest extends ApplicationTest {
 				assertThat(event.getViewId()).isEqualTo(view.getId());
 				assertThat(event.getWindowHandle()).isEqualTo(handle);
 			});
+		});
+	}
+
+
+
+
+	@Test
+	public void testManuallyClosePopup() {
+		Platform.runLater(() -> {
+
+			final View view = view("test.view.popup");
+			viewService.registerView(view);
+			assertThat(viewService.findView(view.getId())).isPresent();
+
+			// open popup
+			final PopupConfiguration popupConfiguration = popupConfig(viewService.getPrimaryWindowHandle());
+			final WindowHandle handle = viewService.popupView(view.getId(), popupConfiguration);
+
+			// add "close"-button
+			final Button btn = new Button();
+			btn.setOnAction(e -> ((Stage) btn.getScene().getWindow()).close());
+			((Pane) handle.getCurrentRootNode()).getChildren().add(btn);
+
+			// close popup with button
+			btn.fire();
+
+			assertThat(viewService.isWindowHandleActive(handle)).isFalse();
+			assertThat(viewService.getWindowHandles(view.getId())).hasSize(0);
+
+			assertEvent(Channel.type(EventClosePopup.class));
+			Optional<Publishable> eventClose = getEventAny(Channel.type(EventClosePopup.class));
+			assertThat(eventClose).isPresent();
+			eventClose.ifPresent(publishable -> {
+				EventClosePopup event = (EventClosePopup) publishable;
+				assertThat(event.getViewId()).isEqualTo(view.getId());
+				assertThat(event.getWindowHandle()).isEqualTo(handle);
+			});
+
 		});
 	}
 
@@ -383,6 +427,10 @@ public class ViewServiceTest extends ApplicationTest {
 					public Parent getNode() {
 						return new Pane();
 					}
+
+
+
+
 					@Override
 					public void dispose() {
 
