@@ -3,19 +3,18 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OrientationProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.Separator;
 
 import java.util.List;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
-import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.get;
 
 public final class SuiSeparator {
 
@@ -30,9 +29,6 @@ public final class SuiSeparator {
 
 
 
-
-
-
 	/**
 	 * Creates a new separator node,
 	 *
@@ -42,7 +38,7 @@ public final class SuiSeparator {
 	public static NodeFactory separator(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiSeparator.class, get().getEntry(SuiSeparator.class).getProperties(), properties);
+		Properties.validate(SuiSeparator.class, properties);
 		return (state, tags) -> SuiNode.create(
 				SuiSeparator.class,
 				List.of(properties),

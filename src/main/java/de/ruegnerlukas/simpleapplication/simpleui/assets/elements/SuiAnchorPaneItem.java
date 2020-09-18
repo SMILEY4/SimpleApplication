@@ -1,7 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
@@ -9,6 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBu
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
 
@@ -38,6 +40,10 @@ public final class SuiAnchorPaneItem {
 	 * @return the factory for an anchor-pane child node
 	 */
 	public static NodeFactory anchorPaneItem(final NodeFactory factory, final SuiProperty... properties) {
+		Validations.INPUT.notNull(factory).exception("The node factory may not be null.");
+		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
+		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
+		Properties.validate(SuiAnchorPaneItem.class, properties);
 		final List<SuiProperty> list = new ArrayList<>();
 		list.add(new ItemListProperty(factory));
 		list.addAll(List.of(properties));

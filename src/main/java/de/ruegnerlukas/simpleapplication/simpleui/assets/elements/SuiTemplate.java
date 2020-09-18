@@ -12,8 +12,6 @@ import javafx.scene.Node;
 
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.get;
-
 public final class SuiTemplate {
 
 	// ==========================================================================
@@ -43,7 +41,7 @@ public final class SuiTemplate {
 	public static NodeFactory template(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiTemplate.class, get().getEntry(SuiTemplate.class).getProperties(), properties);
+		Properties.validate(SuiTemplate.class, properties);
 		return (state, tags) -> SuiNode.create(
 				SuiTemplate.class,
 				List.of(properties),

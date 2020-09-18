@@ -39,6 +39,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTex
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
@@ -68,7 +69,22 @@ public final class Properties {
 
 	/**
 	 * Checks whether the given properties are valid.
-	 * Throws an {@link IllegalPropertiesException} for if the list contains illegal properties (not contained in allowed list)
+	 * Throws an {@link IllegalPropertiesException} if the list contains illegal properties
+	 * (not registered ad the {@link de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry}).
+	 *
+	 * @param nodeType   the type of the node
+	 * @param properties the given properties to check
+	 */
+	public static void validate(final Class<?> nodeType, final SuiProperty... properties) {
+		validate(nodeType, SuiRegistry.get().getEntry(nodeType).getProperties(), properties);
+	}
+
+
+
+
+	/**
+	 * Checks whether the given properties are valid.
+	 * Throws an {@link IllegalPropertiesException} if the list contains illegal properties (not contained in allowed list)
 	 *
 	 * @param nodeType          the type of the node
 	 * @param allowedProperties the list of allowed properties
