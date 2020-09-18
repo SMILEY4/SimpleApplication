@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
@@ -10,13 +9,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTex
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.Label;
 
 import java.util.List;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
-import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.get;
 
 public final class SuiLabel {
 
@@ -29,6 +28,8 @@ public final class SuiLabel {
 	}
 
 
+
+
 	/**
 	 * Creates a new label node
 	 *
@@ -38,7 +39,7 @@ public final class SuiLabel {
 	public static NodeFactory label(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiLabel.class, get().getEntry(SuiLabel.class).getProperties(), properties);
+		Properties.validate(SuiLabel.class, properties);
 		return (state, tags) -> SuiNode.create(
 				SuiLabel.class,
 				List.of(properties),
@@ -46,6 +47,9 @@ public final class SuiLabel {
 				tags
 		);
 	}
+
+
+
 
 	/**
 	 * Register this node type at the given registry.
@@ -65,6 +69,8 @@ public final class SuiLabel {
 	}
 
 
+
+
 	private static class FxNodeBuilder implements AbstractFxNodeBuilder<Label> {
 
 
@@ -74,7 +80,6 @@ public final class SuiLabel {
 		}
 
 	}
-
 
 
 }

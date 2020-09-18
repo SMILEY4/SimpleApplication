@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextEnteredEventProperty;
@@ -13,13 +12,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextCon
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.TextField;
 
 import java.util.List;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
-import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.get;
 
 public final class SuiTextField {
 
@@ -43,7 +42,7 @@ public final class SuiTextField {
 	public static NodeFactory textField(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiTextField.class, get().getEntry(SuiTextField.class).getProperties(), properties);
+		Properties.validate(SuiTextField.class, properties);
 		return (state, tags) -> SuiNode.create(
 				SuiTextField.class,
 				List.of(properties),

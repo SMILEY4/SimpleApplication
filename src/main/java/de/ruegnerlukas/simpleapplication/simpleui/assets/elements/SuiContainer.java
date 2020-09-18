@@ -3,7 +3,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LayoutProperty;
@@ -12,6 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
 import javafx.scene.layout.Pane;
@@ -42,7 +42,7 @@ public final class SuiContainer {
 	public static NodeFactory container(final SuiProperty... properties) {
 		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiContainer.class, SuiRegistry.get().getEntry(SuiContainer.class).getProperties(), properties);
+		Properties.validate(SuiContainer.class, properties);
 		return (state, tags) -> SuiNode.create(
 				SuiContainer.class,
 				List.of(properties),
