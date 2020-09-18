@@ -74,10 +74,8 @@ public class EventServiceImpl implements EventService {
 	public synchronized void unsubscribe(final Channel channel, final EventListener<? extends Publishable> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener must not be null");
 		validateChannel(channel);
-		final List<Subscriber> subscriberList = subscribers.computeIfAbsent(channel, c -> new ArrayList<>());
-		subscriberList.removeAll(subscriberList.stream()
-				.filter(s -> s.getListener().equals(listener))
-				.collect(Collectors.toList()));
+		removeListenerFromSubscribers(channel, listener);
+		removeListenerFromAnySubscribers(listener);
 	}
 
 
@@ -86,6 +84,19 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public synchronized void unsubscribe(final EventListener<? extends Publishable> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener must not be null");
+		removeListenerFromSubscribers(listener);
+		removeListenerFromAnySubscribers(listener);
+	}
+
+
+
+
+	/**
+	 * Removes the given listener from the list of subscribers to specific channels.
+	 *
+	 * @param listener the listener to remove
+	 */
+	private void removeListenerFromSubscribers(final EventListener<? extends Publishable> listener) {
 		subscribers.forEach((channel, subscribers) -> {
 			List<Subscriber> toRemove = new ArrayList<>();
 			subscribers.forEach(subscriber -> {
@@ -95,13 +106,37 @@ public class EventServiceImpl implements EventService {
 			});
 			subscribers.removeAll(toRemove);
 		});
-		List<Subscriber> anyToRemove = new ArrayList<>();
-		anySubscribers.forEach(subscriber -> {
-			if (subscriber.getListener() == listener) {
-				anyToRemove.add(subscriber);
-			}
-		});
-		anySubscribers.removeAll(anyToRemove);
+	}
+
+
+
+
+	/**
+	 * Removes the given listener from the list of subscribers to the specific channels.
+	 *
+	 * @param channel  the channel to remove the listener from
+	 * @param listener the listener to remove
+	 */
+	private void removeListenerFromSubscribers(final Channel channel, final EventListener<? extends Publishable> listener) {
+		final List<Subscriber> subscriberList = subscribers.computeIfAbsent(channel, c -> new ArrayList<>());
+		subscriberList.removeAll(subscriberList.stream()
+				.filter(s -> s.getListener().equals(listener))
+				.collect(Collectors.toList()));
+	}
+
+
+
+
+	/**
+	 * Removes the given listener from the list of subscribers to all channels.
+	 *
+	 * @param listener the listener to remove
+	 */
+	private void removeListenerFromAnySubscribers(final EventListener<? extends Publishable> listener) {
+		anySubscribers.removeAll(anySubscribers.stream()
+				.filter(s -> s.getListener().equals(listener))
+				.collect(Collectors.toList())
+		);
 	}
 
 

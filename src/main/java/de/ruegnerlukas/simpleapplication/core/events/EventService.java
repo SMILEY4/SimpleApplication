@@ -34,6 +34,7 @@ public interface EventService {
 
 	/**
 	 * Unsubscribe the given listener from the given channel.
+	 * If the listener was subscribed to all channels automatically, it will be removed from all channels.
 	 *
 	 * @param channel  the {@link Channel}
 	 * @param listener the {@link EventListener}
