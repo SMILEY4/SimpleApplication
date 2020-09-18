@@ -24,7 +24,6 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -101,7 +100,7 @@ public class ApplicationTest {
 		application.setCoreProviderConfiguration(new TestCoreProviderConfig(new TestEventService()));
 
 		application.run();
-		assertThat(plugin.getLoadedCounter()).isEqualTo(1);
+		assertThat(plugin.getLoadedCounter()).isEqualTo(1); // is 0
 		assertThat(plugin.getUnloadedCounter()).isEqualTo(0);
 
 		starter.stop();
@@ -226,7 +225,7 @@ public class ApplicationTest {
 
 
 		public TestPlugin(final String id, final String displayName, final String version) {
-			super(new PluginInformation(id, displayName, version, false, Set.of("")));
+			super(new PluginInformation(id, displayName, version, false));
 		}
 
 
