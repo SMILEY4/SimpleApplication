@@ -42,7 +42,7 @@ public class EventServiceTest {
 
 
 	@Test
-	public void testUnscubscribe() {
+	public void testUnsubscribe() {
 
 		final EventService eventService = new EventServiceImpl();
 		final PublishableEventListener listenerA = Mockito.mock(PublishableEventListener.class);
@@ -76,6 +76,23 @@ public class EventServiceTest {
 	}
 
 
+
+	@Test
+	public void testUnsubscribeFromOnlyOne() {
+
+		final EventService eventService = new EventServiceImpl();
+		final PublishableEventListener listener = Mockito.mock(PublishableEventListener.class);
+
+		eventService.subscribe(listener);
+
+		eventService.unsubscribe(Channel.name("channel 2"), listener);
+
+		eventService.publish(publishable("channel 1"));
+		eventService.publish(publishable("channel 2"));
+		eventService.publish(publishable("channel 3"));
+
+		verify(listener, never()).onEvent(any());
+	}
 
 
 	@Test
