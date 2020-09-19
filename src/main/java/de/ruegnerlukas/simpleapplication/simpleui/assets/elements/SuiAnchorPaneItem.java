@@ -4,7 +4,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
@@ -46,7 +45,7 @@ public final class SuiAnchorPaneItem {
 		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
 		Properties.validate(SuiAnchorPaneItem.class, properties);
 		final List<SuiProperty> list = new ArrayList<>();
-		list.add(new ItemListProperty(factory));
+		list.add(new ItemProperty(factory));
 		list.addAll(List.of(properties));
 		return (state, tags) -> SuiNode.create(
 				SuiAnchorPaneItem.class,
