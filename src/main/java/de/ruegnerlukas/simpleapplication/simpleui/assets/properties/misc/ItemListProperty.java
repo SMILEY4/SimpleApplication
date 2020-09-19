@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -76,7 +78,7 @@ public class ItemListProperty extends SuiProperty {
 
 
 
-	public static class Builder implements PropFxNodeBuilder<ItemListProperty, Pane> {
+	public static class PaneBuilder implements PropFxNodeBuilder<ItemListProperty, Pane> {
 
 
 		@Override
@@ -88,6 +90,23 @@ public class ItemListProperty extends SuiProperty {
 							.map(child -> child.getFxNodeStore().get())
 							.collect(Collectors.toList())
 			);
+		}
+
+	}
+
+
+
+
+
+
+	public static class TabPaneBuilder implements PropFxNodeBuilder<ItemListProperty, TabPane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final ItemListProperty property,
+						  final TabPane fxNode) {
+			fxNode.getTabs().setAll(SuiTabPane.createTabs(node.getChildNodeStore().getUnmodifiable()));
 		}
 
 	}

@@ -31,6 +31,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMin
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabDisabledProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabTitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
 
@@ -57,7 +59,9 @@ public final class PropertyGroups {
 				PropertyEntry.of(MutationBehaviourProperty.class, new NoOpUpdatingBuilder()),
 				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.UpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.UpdatingBuilder()),
-				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder())
+				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder()),
+				PropertyEntry.of(TabTitleProperty.class, new TabTitleProperty.UpdatingBuilder()),
+				PropertyEntry.of(TabDisabledProperty.class, new TabDisabledProperty.UpdatingBuilder())
 		);
 	}
 

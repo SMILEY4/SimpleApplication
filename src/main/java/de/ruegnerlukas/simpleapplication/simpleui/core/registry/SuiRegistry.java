@@ -15,6 +15,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSeparator;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSpinner;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
@@ -124,6 +125,7 @@ public class SuiRegistry {
 			SuiScrollPane.register(this);
 			SuiVBox.register(this);
 			SuiHBox.register(this);
+			SuiTabPane.register(this);
 		}
 	}
 

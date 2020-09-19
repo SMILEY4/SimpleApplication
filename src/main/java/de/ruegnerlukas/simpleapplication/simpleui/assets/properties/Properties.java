@@ -35,6 +35,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpinnerFactoryProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabDisabledProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPaneMenuSideProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabTitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
@@ -44,7 +48,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TabPane;
 import javafx.util.StringConverter;
 
 import java.time.chrono.Chronology;
@@ -519,11 +525,21 @@ public final class Properties {
 
 
 	/**
+	 * @return an {@link AnchorProperty}
+	 */
+	public static SuiProperty anchorFitParent() {
+		return anchor(0, 0, 0, 0);
+	}
+
+
+
+
+	/**
 	 * @param top    the value for the top anchor or null.
 	 * @param bottom the value for the bottom anchor or null.
 	 * @param left   the value for the left anchor or null.
 	 * @param right  the value for the right anchor or null.
-	 * @return a {@link AnchorProperty}
+	 * @return an {@link AnchorProperty}
 	 */
 	public static SuiProperty anchor(final Number top, final Number bottom, final Number left, final Number right) {
 		return new AnchorProperty(top, bottom, left, right);
@@ -1057,5 +1073,49 @@ public final class Properties {
 		return new SpinnerFactoryProperty(propertyId, items, wrapAround);
 	}
 
+
+
+
+	/**
+	 * @param title the title of the tab.
+	 * @return the {@link TabTitleProperty}
+	 */
+	public static SuiProperty tabTitle(final String title) {
+		Validations.INPUT.notNull(title).exception("The title may not be null.");
+		return new TabTitleProperty(title);
+	}
+
+
+
+
+	/**
+	 * @param disabled whether the tab is disabled
+	 * @return the {@link TabDisabledProperty}
+	 */
+	public static SuiProperty tabDisabled(final boolean disabled) {
+		return new TabDisabledProperty(disabled);
+	}
+
+
+
+
+	/**
+	 * @param side the side of the tab menu
+	 * @return the {@link TabPaneMenuSideProperty}
+	 */
+	public static SuiProperty tabMenuSide(final Side side) {
+		return new TabPaneMenuSideProperty(side);
+	}
+
+
+
+
+	/**
+	 * @param tabClosingPolicy the tab closing policy
+	 * @return the {@link TabClosingPolicyProperty}
+	 */
+	public static SuiProperty tabClosingPolicy(final TabPane.TabClosingPolicy tabClosingPolicy) {
+		return new TabClosingPolicyProperty(tabClosingPolicy);
+	}
 
 }

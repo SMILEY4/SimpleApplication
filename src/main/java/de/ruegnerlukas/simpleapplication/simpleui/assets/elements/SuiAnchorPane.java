@@ -66,8 +66,8 @@ public final class SuiAnchorPane {
 		registry.registerProperties(SuiAnchorPane.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiAnchorPane.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiAnchorPane.class, List.of(
-				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null),
-				PropertyEntry.of(ItemProperty.class, new ItemProperty.Builder(), null)
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.PaneBuilder(), null),
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.PaneBuilder(), null)
 		));
 	}
 

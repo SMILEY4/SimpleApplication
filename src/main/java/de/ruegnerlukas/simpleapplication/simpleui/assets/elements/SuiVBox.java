@@ -72,8 +72,8 @@ public final class SuiVBox {
 				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.VBoxUpdatingBuilder()),
 				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.VBoxUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.VBoxUpdatingBuilder()),
-				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null),
-				PropertyEntry.of(ItemProperty.class, new ItemProperty.Builder(), null)
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.PaneBuilder(), null),
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.PaneBuilder(), null)
 		));
 	}
 

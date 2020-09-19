@@ -69,8 +69,8 @@ public final class SuiContainer {
 		registry.registerProperties(SuiContainer.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiContainer.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiContainer.class, List.of(
-				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null),
-				PropertyEntry.of(ItemProperty.class, new ItemProperty.Builder(), null),
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.PaneBuilder(), null),
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.PaneBuilder(), null),
 				PropertyEntry.of(LayoutProperty.class, new LayoutProperty.UpdatingBuilder())
 		));
 	}

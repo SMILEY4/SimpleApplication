@@ -12,6 +12,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseDragEventDa
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseMoveEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ScrollEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
@@ -41,6 +42,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMou
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollStartedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnScrollHorizontalEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSelectedDateEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSelectedTabEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTabClosedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextEnteredEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnUncheckedEventProperty;
@@ -730,7 +733,7 @@ public final class EventProperties {
 	 */
 	public static SuiProperty eventDatePickerAction(final String propertyId, final SuiEventListener<DatePickerActionEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
-		return new OnSelectedDateEventProperty<>(propertyId, listener);
+		return new OnSelectedDateEventProperty(propertyId, listener);
 	}
 
 
@@ -928,6 +931,31 @@ public final class EventProperties {
 	public static SuiProperty eventTextChanged(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnTextChangedEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * When the tab of a tab pane is selected.
+	 *
+	 * @param listener the listener for events with {@link TabActionEventData}.
+	 * @return a {@link OnSelectedTabEventProperty}
+	 */
+	public static SuiProperty eventSelectedTab(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnSelectedTabEventProperty(propertyId, listener);
+	}
+
+	/**
+	 * When the tab of a tab pane was closed by the user.
+	 *
+	 * @param listener the listener for events with {@link TabActionEventData}.
+	 * @return a {@link OnTabClosedEventProperty}
+	 */
+	public static SuiProperty eventClosedTab(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnTabClosedEventProperty(propertyId, listener);
 	}
 
 

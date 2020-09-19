@@ -7,9 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.DatePicker;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
-public class OnSelectedDateEventProperty<T> extends AbstractEventListenerProperty<DatePickerActionEventData> {
+public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<DatePickerActionEventData> {
 
 
 	/**
@@ -33,12 +31,12 @@ public class OnSelectedDateEventProperty<T> extends AbstractEventListenerPropert
 
 
 
-	public static class DatePickerUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedDateEventProperty<LocalDate>, DatePicker> {
+	public static class DatePickerUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedDateEventProperty, DatePicker> {
 
 
 		@Override
 		public void build(final SuiNode node,
-						  final OnSelectedDateEventProperty<LocalDate> property,
+						  final OnSelectedDateEventProperty property,
 						  final DatePicker fxNode) {
 			setListener(fxNode, property);
 		}
@@ -47,7 +45,7 @@ public class OnSelectedDateEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult update(final OnSelectedDateEventProperty<LocalDate> property,
+		public MutationResult update(final OnSelectedDateEventProperty property,
 									 final SuiNode node,
 									 final DatePicker fxNode) {
 			setListener(fxNode, property);
@@ -58,10 +56,10 @@ public class OnSelectedDateEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnSelectedDateEventProperty<LocalDate> property,
+		public MutationResult remove(final OnSelectedDateEventProperty property,
 									 final SuiNode node,
 									 final DatePicker fxNode) {
-			fxNode.setOnMouseClicked(null);
+			fxNode.setOnAction(null);
 			return MutationResult.MUTATED;
 		}
 
@@ -74,7 +72,7 @@ public class OnSelectedDateEventProperty<T> extends AbstractEventListenerPropert
 		 * @param fxNode   the fx node to listen to
 		 * @param property the property with the listener to add
 		 */
-		private void setListener(final DatePicker fxNode, final OnSelectedDateEventProperty<LocalDate> property) {
+		private void setListener(final DatePicker fxNode, final OnSelectedDateEventProperty property) {
 			fxNode.setOnAction(e -> property.getListener().onEvent(new DatePickerActionEventData(fxNode.getValue(), e)));
 		}
 

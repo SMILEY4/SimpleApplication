@@ -2,6 +2,8 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +22,13 @@ public class ChangeListenerProxy<T> {
 	 */
 	private Set<ObservableValue<T>> observables = new HashSet<>();
 
+	/**
+	 * Whether this proxy should pass on events.
+	 */
+	@Getter
+	@Setter
+	private boolean muted = false;
+
 
 
 
@@ -27,7 +36,24 @@ public class ChangeListenerProxy<T> {
 	 * @param listener the function called on a value change
 	 */
 	public ChangeListenerProxy(final BiConsumer<T, T> listener) {
-		this.changeListener = (value, prev, next) -> listener.accept(prev, next);
+		this.changeListener = (value, prev, next) -> {
+			if (!isMuted()) {
+				listener.accept(prev, next);
+			}
+		};
+	}
+
+
+
+
+	/**
+	 * Manually triggers a change event.
+	 *
+	 * @param prev the previous value
+	 * @param next the new value
+	 */
+	public void fireManually(final T prev, final T next) {
+		changeListener.changed(null, prev, next);
 	}
 
 
