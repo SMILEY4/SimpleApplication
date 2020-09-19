@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -61,7 +60,6 @@ public class ItemProperty extends SuiProperty {
 						  final Pane fxNode) {
 			if (node.getChildNodeStore().hasChildren()) {
 				SuiNode childNode = node.getChildNodeStore().get(0);
-				SuiServices.get().enrichWithFxNodes(childNode);
 				fxNode.getChildren().setAll(childNode.getFxNodeStore().get());
 			} else {
 				fxNode.getChildren().clear();
@@ -85,7 +83,6 @@ public class ItemProperty extends SuiProperty {
 			Node fxChildNode = null;
 			if (node.getChildNodeStore().hasChildren()) {
 				SuiNode childNode = node.getChildNodeStore().get(0);
-				SuiServices.get().enrichWithFxNodes(childNode);
 				fxChildNode = childNode.getFxNodeStore().get();
 			}
 			fxNode.setContent(fxChildNode);

@@ -82,6 +82,7 @@ public class SuiServices {
 	 * @param node the node to builds the javafx-node for
 	 */
 	public void enrichWithFxNodes(final SuiNode node) {
+		node.getChildNodeStore().stream().forEach(this::enrichWithFxNodes);
 		final RegistryEntry registryEntry = SuiRegistry.get().getEntry(node.getNodeType());
 		final Node fxNode = buildBaseFxNode(node, registryEntry);
 		applyProperties(node, registryEntry, fxNode);

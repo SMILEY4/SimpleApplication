@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -86,7 +85,6 @@ public class ItemListProperty extends SuiProperty {
 						  final Pane fxNode) {
 			fxNode.getChildren().setAll(
 					node.getChildNodeStore().stream()
-							.peek(child -> SuiServices.get().enrichWithFxNodes(child))
 							.map(child -> child.getFxNodeStore().get())
 							.collect(Collectors.toList())
 			);
