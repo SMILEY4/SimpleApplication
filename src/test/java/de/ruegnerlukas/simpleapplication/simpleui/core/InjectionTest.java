@@ -1,18 +1,18 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
-import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
+import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateException;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.DuplicatePropertiesException;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -126,7 +126,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 
-	@Test (expected = DuplicatePropertiesException.class)
+	@Test (expected = ValidateStateException.class)
 	public void test_conflict_exception_with_items_property_and_itemsinjectable_property() {
 		SuiVBox.vbox(
 				Properties.items(SuiButton.button(

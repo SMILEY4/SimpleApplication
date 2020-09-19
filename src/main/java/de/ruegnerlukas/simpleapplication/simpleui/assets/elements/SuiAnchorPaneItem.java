@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
@@ -66,7 +67,7 @@ public final class SuiAnchorPaneItem {
 	public static void register(final SuiRegistry registry) {
 		registry.registerBaseFxNodeBuilder(SuiAnchorPaneItem.class, new ChildItemNodeBuilder());
 		registry.registerProperties(SuiAnchorPaneItem.class, List.of(
-				PropertyEntry.of(ItemListProperty.class, new NoOpUpdatingBuilder()),
+				PropertyEntry.of(ItemProperty.class, new NoOpUpdatingBuilder()),
 				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder())
 		));
 	}

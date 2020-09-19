@@ -15,13 +15,9 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyle
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextField;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.SuiStream;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -29,8 +25,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Dimension2D;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane.anchorPane;
 
 @Slf4j
 public class SUITestApplication {
@@ -105,27 +99,36 @@ public class SUITestApplication {
 					.title(new StringProvider("application_name").get())
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
-							anchorPane(
+							SuiVBox.vbox(
 									Properties.items(
-											SuiAnchorPaneItem.anchorPaneItem(
-													SuiTextField.textField(
-															EventProperties.eventTextEntered(
-																	"my.listener",
-																	SuiStream.eventStream(TextContentEventData.class,
-																			stream -> stream
-																					.map(e -> e.getText())
-																					.forEach(e -> System.out.println(e))))
-													),
-//													SuiSlider.slider(
-//															Properties.minMax(-100, 100),
-//															Properties.tickMarks(TickMarkProperty.TickMarkStyle.LABELED_TICKS, 50, 1, true),
-//															Properties.labelFormatter(value -> value.intValue() + "m"),
-//															Properties.blockIncrement(50)
-//													),
-													Properties.anchor(100, null, 100, null)
+											SuiButton.button(
+													Properties.textContent("Button 1")
+											),
+											SuiButton.button(
+													Properties.textContent("Button 2")
+											)
+									),
+									Properties.item(
+											SuiButton.button(
+													Properties.textContent("Button 3")
 											)
 									)
 							)
+//							anchorPane(
+//									Properties.items(
+//											SuiAnchorPaneItem.anchorPaneItem(
+//													SuiTextField.textField(
+//															EventProperties.eventTextEntered(
+//																	"my.listener",
+//																	SuiStream.eventStream(TextContentEventData.class,
+//																			stream -> stream
+//																					.map(e -> e.getText())
+//																					.forEach(e -> System.out.println(e))))
+//													),
+//													Properties.anchor(100, null, 100, null)
+//											)
+//									)
+//							)
 
 					)))
 					.build();
