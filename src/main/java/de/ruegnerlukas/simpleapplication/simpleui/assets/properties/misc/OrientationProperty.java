@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -71,6 +72,45 @@ public class OrientationProperty extends SuiProperty {
 		public MutationResult remove(final OrientationProperty property,
 									 final SuiNode node,
 									 final Separator fxNode) {
+			fxNode.setOrientation(Orientation.HORIZONTAL);
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class SliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OrientationProperty, Slider> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final OrientationProperty property,
+						  final Slider fxNode) {
+			fxNode.setOrientation(property.getOrientation());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final OrientationProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
+			fxNode.setOrientation(property.getOrientation());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final OrientationProperty property,
+									 final SuiNode node,
+									 final Slider fxNode) {
 			fxNode.setOrientation(Orientation.HORIZONTAL);
 			return MutationResult.MUTATED;
 		}
