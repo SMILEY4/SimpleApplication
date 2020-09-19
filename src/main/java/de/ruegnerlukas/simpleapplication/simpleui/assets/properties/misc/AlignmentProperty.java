@@ -8,7 +8,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -281,7 +280,7 @@ public class AlignmentProperty extends SuiProperty {
 		 */
 		private void updateChildNodeOrder(final Pos alignment, final Pane pane) {
 			final Slider slider = SuiLabeledSlider.getSlider(pane);
-			final Label label = SuiLabeledSlider.getLabel(pane);
+			final TextField label = SuiLabeledSlider.getLabel(pane);
 
 			if (SuiLabeledSlider.isHorizontalLayout(alignment)) {
 				final HBox hbox = (HBox) pane;

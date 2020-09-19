@@ -6,9 +6,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGrou
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelFormatterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MinMaxProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OrientationProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
@@ -18,13 +20,15 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.util.List;
 import java.util.Set;
@@ -82,8 +86,10 @@ public final class SuiLabeledSlider {
 				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(TickMarkProperty.class, new TickMarkProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledSliderUpdatingBuilder()),
+				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(LabelSizeProperty.class, new LabelSizeProperty.LabeledSliderUpdatingBuilder()),
-				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.LabeledSliderUpdatingBuilder())
+				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.LabeledSliderUpdatingBuilder()),
+				PropertyEntry.of(EditableProperty.class, new EditableProperty.LabeledSliderUpdatingBuilder())
 		));
 	}
 
@@ -154,10 +160,10 @@ public final class SuiLabeledSlider {
 	 * @param pane the pane
 	 * @return the child label-node from the given pane
 	 */
-	public static Label getLabel(final Pane pane) {
+	public static TextField getLabel(final Pane pane) {
 		for (Node node : pane.getChildren()) {
-			if (node instanceof Label) {
-				return (Label) node;
+			if (node instanceof TextField) {
+				return (TextField) node;
 			}
 		}
 		return null;
@@ -171,34 +177,11 @@ public final class SuiLabeledSlider {
 
 		@Override
 		public Pane build(final SuiNode node) {
-
 			final Slider slider = buildSlider();
-			final Label label = buildLabel();
+			final TextField label = buildLabel();
 			final Pane box = buildBox(slider, label, isHorizontalLayout(getAlignment(node)));
-
-			slider.valueProperty().addListener((value, prev, next) -> label.setText(valueToString(node, next.doubleValue())));
-			label.setText(valueToString(node, slider.getValue()));
-
+			setupLogic(node, slider, label);
 			return box;
-		}
-
-
-
-
-		/**
-		 * Formats the given number by either using a provided label-formatter-property or by simply converting to a string.
-		 *
-		 * @param node  the node
-		 * @param value the value to format
-		 * @return the formatted value
-		 */
-		private String valueToString(final SuiNode node, final double value) {
-			final LabelFormatterProperty propFormatter = node.getPropertyStore().get(LabelFormatterProperty.class);
-			if (propFormatter == null) {
-				return String.valueOf(value);
-			} else {
-				return propFormatter.getFormatter().apply(value);
-			}
 		}
 
 
@@ -227,11 +210,12 @@ public final class SuiLabeledSlider {
 		/**
 		 * @return the label
 		 */
-		private Label buildLabel() {
-			final Label label = new Label();
+		private TextField buildLabel() {
+			final TextField label = new TextField();
 			label.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 			label.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 			label.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+			label.setEditable(true);
 			return label;
 		}
 
@@ -244,14 +228,106 @@ public final class SuiLabeledSlider {
 		 * @param horizontal whether the label is to the left or right of the slider
 		 * @return the hbox or vbox (depending on value of "horizontal")
 		 */
-		private Pane buildBox(final Slider slider, final Label label, final boolean horizontal) {
-			final Pane box = horizontal ? new HBox() : new VBox();
+		private Pane buildBox(final Node slider, final Node label, final boolean horizontal) {
+			final Pane box = horizontal ? buildHBox() : buildVBox();
 			box.getChildren().addAll(label, slider);
 			box.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 			box.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 			box.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);
 			return box;
 		}
+
+
+
+
+		/**
+		 * @return the hbox
+		 */
+		private HBox buildHBox() {
+			HBox box = new HBox();
+			box.setFillHeight(true);
+			return box;
+		}
+
+
+
+
+		/**
+		 * @return the vbox
+		 */
+		private VBox buildVBox() {
+			VBox box = new VBox();
+			box.setFillWidth(false);
+			return box;
+		}
+
+
+
+
+		/**
+		 * Setup the listeners and logic
+		 *
+		 * @param node   the simpleui-node
+		 * @param slider the slider
+		 * @param label  the label
+		 */
+		private void setupLogic(final SuiNode node, final Slider slider, final TextField label) {
+			slider.valueProperty().addListener((value, prev, next) -> label.setText(valueToString(node, next.doubleValue())));
+			label.setText(valueToString(node, slider.getValue()));
+
+			label.setOnAction(e -> {
+				final Double value = valueFromString(label.getText().trim(), slider.getValue(), slider.getMin(), slider.getMax());
+				if (value != null) {
+					slider.setValue(value);
+				}
+				label.setText(valueToString(node, slider.getValue()));
+			});
+		}
+
+
+
+
+		/**
+		 * Formats the given number by either using a provided label-formatter-property or by simply converting to a string.
+		 *
+		 * @param node  the node
+		 * @param value the value to format
+		 * @return the formatted value
+		 */
+		private String valueToString(final SuiNode node, final double value) {
+			final LabelFormatterProperty propFormatter = node.getPropertyStore().get(LabelFormatterProperty.class);
+			if (propFormatter == null) {
+				return String.valueOf(value);
+			} else {
+				return propFormatter.getFormatter().apply(value);
+			}
+		}
+
+
+
+
+		/**
+		 * @param string the string to convert to a value
+		 * @return the value or null, if the string could not be converted.
+		 */
+		private Double valueFromString(final String string, final double current, final double min, final double max) {
+			try {
+				final Expression expression = new ExpressionBuilder(string)
+						.variable("x")
+						.build()
+						.setVariable("x", current);
+				final double result = expression.evaluate();
+				return Math.max(min, Math.min(result, max));
+			} catch (Exception e) {
+				return null;
+			}
+//			try {
+//				return Double.parseDouble(string);
+//			} catch (Exception e) {
+//				return null;
+//			}
+		}
+
 
 	}
 

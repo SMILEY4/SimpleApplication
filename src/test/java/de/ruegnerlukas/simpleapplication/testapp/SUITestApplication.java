@@ -15,14 +15,18 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyle
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSeparator;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
@@ -112,23 +116,30 @@ public class SUITestApplication {
 					.title(new StringProvider("application_name").get())
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
-							SuiVBox.vbox(
-									Properties.spacing(20),
+							SuiAnchorPane.anchorPane(
 									Properties.items(
-											SuiChoiceBox.choiceBox(
-													Properties.choices(List.of(Pos.values()).stream().map(Enum::toString).collect(Collectors.toList())),
-													EventProperties.eventValueChangedType("listener", String.class, e -> {
-														state.update(TestUIState.class, s -> s.setAlignment(Pos.valueOf(e.getValue())));
-													})
-											),
-											SuiLabeledSlider.labeledSlider(
-													Properties.style("-fx-border-color: black;"),
-													Properties.alignment(state.getAlignment()),
-													Properties.spacing(15),
-													Properties.labelSize(40, 40, 40),
-													Properties.tickMarks(TickMarkProperty.TickMarkStyle.LABELED_TICKS, 20, 0, false),
-													Properties.labelFormatter("formatter", value ->
-															new DecimalFormat("###.#").format(value) + "cm")
+											SuiAnchorPaneItem.anchorPaneItem(
+													SuiVBox.vbox(
+															Properties.spacing(10),
+															Properties.items(
+																	SuiChoiceBox.choiceBox(
+																			Properties.id("cb"),
+																			Properties.choices(List.of(Pos.values()).stream().map(Enum::toString).collect(Collectors.toList())),
+																			EventProperties.eventValueChangedType("listener", String.class, e -> {
+																				state.update(TestUIState.class, s -> s.setAlignment(Pos.valueOf(e.getValue())));
+																			})
+																	),
+																	SuiSeparator.separator(
+																			Properties.id("separator"),
+																			Properties.minSize(0, 20)
+																	),
+																	buildSlider(state, 0),
+																	buildSlider(state, 1),
+																	buildSlider(state, 2),
+																	buildSlider(state, 3)
+															)
+													),
+													Properties.anchor(50, null, 50, null)
 											)
 									)
 							)
@@ -143,6 +154,20 @@ public class SUITestApplication {
 			log.info(System.lineSeparator() + "====== SUI STATS ======" + System.lineSeparator() + SuiProfiler.get().getStatisticsAsPrettyString());
 		}
 
+
+
+		private NodeFactory buildSlider(TestUIState state, int index) {
+			return SuiLabeledSlider.labeledSlider(
+					Properties.id("slider-" + index),
+					Properties.alignment(state.getAlignment()),
+					Properties.spacing(5),
+					Properties.labelSize(57),
+					Properties.tickMarks(TickMarkProperty.TickMarkStyle.NOTHING),
+					Properties.labelFormatter("formatter", value -> new DecimalFormat("0.0").format(value) + "cm"),
+					Properties.editable(true),
+					EventProperties.eventValueChangedType(".", Double.class, e -> System.out.println(e.getValue()))
+			);
+		}
 
 
 

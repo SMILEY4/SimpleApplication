@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -101,16 +101,19 @@ public class LabelSizeProperty extends SuiProperty {
 		 * @param property the property
 		 */
 		private void setSize(final SuiNode node, final Pane pane, final LabelSizeProperty property) {
-			final Label label = SuiLabeledSlider.getLabel(pane);
-			if (SuiLabeledSlider.isHorizontalLayout(SuiLabeledSlider.getAlignment(node))) {
-				label.setMinWidth(property.getMinSize().doubleValue());
-				label.setPrefWidth(property.getPrefSize().doubleValue());
-				label.setMaxWidth(property.getMaxSize().doubleValue());
-			} else {
-				label.setMinHeight(property.getMinSize().doubleValue());
-				label.setPrefHeight(property.getPrefSize().doubleValue());
-				label.setMaxHeight(property.getMaxSize().doubleValue());
-			}
+			final TextField label = SuiLabeledSlider.getLabel(pane);
+			label.setMinWidth(property.getMinSize().doubleValue());
+			label.setPrefWidth(property.getPrefSize().doubleValue());
+			label.setMaxWidth(property.getMaxSize().doubleValue());
+//			if (SuiLabeledSlider.isHorizontalLayout(SuiLabeledSlider.getAlignment(node))) {
+//				label.setMinWidth(property.getMinSize().doubleValue());
+//				label.setPrefWidth(property.getPrefSize().doubleValue());
+//				label.setMaxWidth(property.getMaxSize().doubleValue());
+//			} else {
+//				label.setMinHeight(property.getMinSize().doubleValue());
+//				label.setPrefHeight(property.getPrefSize().doubleValue());
+//				label.setMaxHeight(property.getMaxSize().doubleValue());
+//			}
 		}
 
 	}

@@ -968,12 +968,26 @@ public final class Properties {
 
 
 	/**
+	 * @param size the min, preferred and max size
+	 * @return a {@link LabelSizeProperty}
+	 */
+	public static SuiProperty labelSize(final Number size) {
+		return labelSize(size, size, size);
+	}
+
+
+
+
+	/**
 	 * @param minSize  the min width or height of the label.
 	 * @param prefSize the preferred width or height of the label.
 	 * @param maxSize  the max width or height of the label.
 	 * @return a {@link LabelSizeProperty}
 	 */
 	public static SuiProperty labelSize(final Number minSize, final Number prefSize, final Number maxSize) {
+		Validations.INPUT.notNull(minSize).exception("The min size may not be null.");
+		Validations.INPUT.notNull(prefSize).exception("The preferred size may not be null.");
+		Validations.INPUT.notNull(maxSize).exception("The max size may not be null.");
 		return new LabelSizeProperty(minSize, prefSize, maxSize);
 	}
 
