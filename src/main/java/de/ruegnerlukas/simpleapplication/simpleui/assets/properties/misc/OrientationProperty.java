@@ -1,12 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.Pane;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -73,9 +75,46 @@ public class OrientationProperty extends SuiProperty {
 			return MutationResult.MUTATED;
 		}
 
-
 	}
 
+
+
+
+
+
+	public static class LabeledSliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OrientationProperty, Pane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final OrientationProperty property,
+						  final Pane fxNode) {
+			SuiLabeledSlider.getSlider(fxNode).setOrientation(property.getOrientation());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final OrientationProperty property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			SuiLabeledSlider.getSlider(fxNode).setOrientation(property.getOrientation());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final OrientationProperty property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			SuiLabeledSlider.getSlider(fxNode).setOrientation(Orientation.HORIZONTAL);
+			return MutationResult.MUTATED;
+		}
+
+	}
 
 }
 

@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.SearchableComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
@@ -8,6 +9,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.layout.Pane;
 import lombok.Getter;
 
 public class OnValueChangedEventProperty<T> extends AbstractEventListenerProperty<ValueChangedEventData<T>> {
@@ -183,5 +186,95 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 		}
 
 	}
+
+
+
+
+
+
+	public static class LabeledSliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<Number>, Pane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final OnValueChangedEventProperty<Number> property,
+						  final Pane fxNode) {
+			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
+			property.getChangeListenerProxy().addTo(slider.valueProperty());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final OnValueChangedEventProperty<Number> property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
+			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
+					.map(prop -> (OnValueChangedEventProperty<Number>) prop)
+					.map(OnValueChangedEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(slider.valueProperty()));
+			property.getChangeListenerProxy().addTo(slider.valueProperty());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final OnValueChangedEventProperty<Number> property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
+			property.getChangeListenerProxy().removeFrom(slider.valueProperty());
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class SpinnerUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, Spinner<T>> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final OnValueChangedEventProperty<T> property,
+						  final Spinner<T> fxNode) {
+			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final OnValueChangedEventProperty<T> property,
+									 final SuiNode node,
+									 final Spinner<T> fxNode) {
+			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
+					.map(prop -> (OnValueChangedEventProperty<T>) prop)
+					.map(OnValueChangedEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(fxNode.valueProperty()));
+			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final OnValueChangedEventProperty<T> property,
+									 final SuiNode node,
+									 final Spinner<T> fxNode) {
+			property.getChangeListenerProxy().removeFrom(fxNode.valueProperty());
+			return MutationResult.MUTATED;
+		}
+
+	}
+
 
 }

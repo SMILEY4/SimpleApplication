@@ -795,6 +795,8 @@ class MyProperty extends SuiProperty {
 }
 ```
 
+- build: called once when the JavaFx-node is created.
+
 **The Updater**
 
 ```java
@@ -820,6 +822,9 @@ class MyProperty extends SuiProperty {
 
 }
 ```
+
+- update: called when the property of the given node was changed or added. The given property is the modified or added one. The given SimpleUI-node still has the old property or none. The real property of the node will be updated after this update-method.
+- remove: called when the property is removed. The SimpleUI-node still has the node at that point. It will be removed after this remove-method.
 
 If the JavaFx-node can not be modified, "MutationResult.REQUIRES_REBUILD" can be returned instead. This will trigger a complete rebuild of the node.
 

@@ -6,6 +6,7 @@ open module SimpleApplication {
 	requires transitive com.fasterxml.jackson.core;
 	requires transitive com.fasterxml.jackson.databind;
 	requires transitive com.fasterxml.jackson.annotation;
+	requires exp4j;
 	requires sysout.over.slf4j;
 	requires static lombok;
 
