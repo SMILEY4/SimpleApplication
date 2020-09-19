@@ -18,16 +18,15 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHan
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseMoveEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.SuiStream;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import lombok.AllArgsConstructor;
@@ -170,28 +169,27 @@ public class TestApplication {
 									)),
 
 									Properties.items(
-											SuiAnchorPaneItem.anchorPaneItem(
-													SuiContainer.container(
-															Properties.id("myContainer"),
-															Properties.layout("myLayout", ((parent, nodes) -> {
-																final double width = parent.getWidth();
-																final double height = parent.getHeight();
-																final Node node0 = nodes.get(0);
-																final Node node1 = nodes.get(1);
-																node0.resizeRelocate(0, 0, width, height / 2);
-																node1.resizeRelocate(0, height / 2, width, height / 2);
-															})),
-															Properties.items(
-																	SuiButton.button(
-																			Properties.id("btn1"),
-																			Properties.textContent("Child Button 1")
-																	),
-																	SuiButton.button(
-																			Properties.id("btn2"),
-																			Properties.textContent("Child Button 2")
-																	)
+											SuiContainer.container(
+													Properties.id("myContainer"),
+													Properties.layout("myLayout", ((parent, nodes) -> {
+														final double width = parent.getWidth();
+														final double height = parent.getHeight();
+														final Node node0 = nodes.get(0);
+														final Node node1 = nodes.get(1);
+														node0.resizeRelocate(0, 0, width, height / 2);
+														node1.resizeRelocate(0, height / 2, width, height / 2);
+													})),
+													Properties.items(
+															SuiButton.button(
+																	Properties.id("btn1"),
+																	Properties.textContent("Child Button 1")
+															),
+															SuiButton.button(
+																	Properties.id("btn2"),
+																	Properties.textContent("Child Button 2")
 															)
-													),
+													)
+											)
 //													choiceBox(
 //															Properties.choices(state.strings),
 //															Properties.choiceBoxConverter(String.class,
@@ -208,8 +206,6 @@ public class TestApplication {
 //																}
 //															})
 //													),
-													Properties.anchor(0, 0, 0, 0)
-											)
 									)
 							)
 

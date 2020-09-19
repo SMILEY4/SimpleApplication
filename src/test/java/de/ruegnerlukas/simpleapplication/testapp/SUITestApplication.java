@@ -16,7 +16,6 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHan
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSpinner;
@@ -105,48 +104,47 @@ public class SUITestApplication {
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							SuiAnchorPane.anchorPane(
 									Properties.items(
-											SuiAnchorPaneItem.anchorPaneItem(
-													SuiVBox.vbox(
-															Properties.spacing(10),
-															Properties.items(
-																	SuiHBox.hbox(
-																			Properties.id("min-max-box"),
-																			Properties.items(
-																					SuiSpinner.spinner(
-																							Properties.id("min"),
-																							Properties.integerSpinnerValues(".", -100, 100, 1, state.min),
-																							EventProperties.eventValueChangedType(".", Integer.class, e -> {
-																								state.update(TestUIState.class, s -> {
-																									s.setMin(e.getValue());
-																									s.setCurrent(Math.max(s.getCurrent(), s.getMin()));
-																								});
-																							})
-																					),
-																					SuiSpinner.spinner(
-																							Properties.id("max"),
-																							Properties.integerSpinnerValues(".", -100, 100, 1, state.max),
-																							EventProperties.eventValueChangedType(".", Integer.class, e -> {
-																								state.update(TestUIState.class, s -> {
-																									s.setMax(e.getValue());
-																									s.setCurrent(Math.min(s.getCurrent(), s.getMax()));
-																								});
-																							})
-																					)
+											SuiVBox.vbox(
+													Properties.anchor(100, null, 100, 0),
+													Properties.style("-fx-border-color: black;"),
+													Properties.spacing(10),
+													Properties.items(
+															SuiHBox.hbox(
+																	Properties.id("min-max-box"),
+																	Properties.items(
+																			SuiSpinner.spinner(
+																					Properties.id("min"),
+																					Properties.integerSpinnerValues(".", -100, 100, 1, state.min),
+																					EventProperties.eventValueChangedType(".", Integer.class, e -> {
+																						state.update(TestUIState.class, s -> {
+																							s.setMin(e.getValue());
+																							s.setCurrent(Math.max(s.getCurrent(), s.getMin()));
+																						});
+																					})
+																			),
+																			SuiSpinner.spinner(
+																					Properties.id("max"),
+																					Properties.integerSpinnerValues(".", -100, 100, 1, state.max),
+																					EventProperties.eventValueChangedType(".", Integer.class, e -> {
+																						state.update(TestUIState.class, s -> {
+																							s.setMax(e.getValue());
+																							s.setCurrent(Math.min(s.getCurrent(), s.getMax()));
+																						});
+																					})
 																			)
-																	),
-																	SuiSpinner.spinner(
-																			Properties.id("my-spinner"),
-																			Properties.editable(),
-																			Properties.listSpinnerValues(".", List.of("a", "b", "c", "d"), true),
-//																			Properties.floatingPointSpinnerValues(state.min + "." + state.max, state.min, state.max, 1.6, state.current),
-																			EventProperties.eventValueChangedType(".", String.class, e -> {
-																				System.out.println(e.getValue());
-//																				state.update(TestUIState.class, s -> s.setCurrent(e.getValue().doubleValue()));
-																			})
 																	)
+															),
+															SuiSpinner.spinner(
+																	Properties.id("my-spinner"),
+																	Properties.editable(),
+																	Properties.listSpinnerValues(".", List.of("a", "b", "c", "d"), true),
+//																			Properties.floatingPointSpinnerValues(state.min + "." + state.max, state.min, state.max, 1.6, state.current),
+																	EventProperties.eventValueChangedType(".", String.class, e -> {
+																		System.out.println(e.getValue());
+//																				state.update(TestUIState.class, s -> s.setCurrent(e.getValue().doubleValue()));
+																	})
 															)
-													),
-													Properties.anchor(50, null, 50, null)
+													)
 											)
 									)
 							)

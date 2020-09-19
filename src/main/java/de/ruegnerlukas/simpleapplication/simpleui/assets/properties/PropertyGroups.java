@@ -1,13 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePreferredProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFocusChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFocusLostEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFocusReceivedEventProperty;
@@ -31,6 +23,15 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMou
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollFinishedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollStartedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePreferredProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
 
 import java.util.List;
@@ -55,7 +56,8 @@ public final class PropertyGroups {
 		return List.of(
 				PropertyEntry.of(MutationBehaviourProperty.class, new NoOpUpdatingBuilder()),
 				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.UpdatingBuilder()),
-				PropertyEntry.of(StyleProperty.class, new StyleProperty.UpdatingBuilder())
+				PropertyEntry.of(StyleProperty.class, new StyleProperty.UpdatingBuilder()),
+				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder())
 		);
 	}
 
