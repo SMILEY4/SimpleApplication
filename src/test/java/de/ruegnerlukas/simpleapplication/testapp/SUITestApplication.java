@@ -16,15 +16,25 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHan
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiChoiceBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Dimension2D;
+import javafx.geometry.Pos;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.text.DecimalFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class SUITestApplication {
@@ -73,6 +83,9 @@ public class SUITestApplication {
 
 			private String text = "";
 
+			@Setter
+			private Pos alignment = Pos.CENTER_RIGHT;
+
 
 
 
@@ -100,35 +113,25 @@ public class SUITestApplication {
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							SuiVBox.vbox(
+									Properties.spacing(20),
 									Properties.items(
-											SuiButton.button(
-													Properties.textContent("Button 1")
+											SuiChoiceBox.choiceBox(
+													Properties.choices(List.of(Pos.values()).stream().map(Enum::toString).collect(Collectors.toList())),
+													EventProperties.eventValueChangedType("listener", String.class, e -> {
+														state.update(TestUIState.class, s -> s.setAlignment(Pos.valueOf(e.getValue())));
+													})
 											),
-											SuiButton.button(
-													Properties.textContent("Button 2")
-											)
-									),
-									Properties.item(
-											SuiButton.button(
-													Properties.textContent("Button 3")
+											SuiLabeledSlider.labeledSlider(
+													Properties.style("-fx-border-color: black;"),
+													Properties.alignment(state.getAlignment()),
+													Properties.spacing(15),
+													Properties.labelSize(40, 40, 40),
+													Properties.tickMarks(TickMarkProperty.TickMarkStyle.LABELED_TICKS, 20, 0, false),
+													Properties.labelFormatter("formatter", value ->
+															new DecimalFormat("###.#").format(value) + "cm")
 											)
 									)
 							)
-//							anchorPane(
-//									Properties.items(
-//											SuiAnchorPaneItem.anchorPaneItem(
-//													SuiTextField.textField(
-//															EventProperties.eventTextEntered(
-//																	"my.listener",
-//																	SuiStream.eventStream(TextContentEventData.class,
-//																			stream -> stream
-//																					.map(e -> e.getText())
-//																					.forEach(e -> System.out.println(e))))
-//													),
-//													Properties.anchor(100, null, 100, null)
-//											)
-//									)
-//							)
 
 					)))
 					.build();

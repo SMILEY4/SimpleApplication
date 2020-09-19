@@ -2,11 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Pane;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -190,6 +192,60 @@ public class TickMarkProperty extends SuiProperty {
 			fxNode.setMajorTickUnit(DEFAULT_MAJOR_TICK_UNIT);
 			fxNode.setMinorTickCount(DEFAULT_MINOR_TICK_COUNT);
 			fxNode.setSnapToTicks(DEFAULT_SNAP_TO_TICKS);
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class LabeledSliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<TickMarkProperty, Pane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final TickMarkProperty property,
+						  final Pane fxNode) {
+			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
+			slider.setShowTickMarks(property.getTickMarkStyle().isShowTickMarks());
+			slider.setShowTickLabels(property.getTickMarkStyle().isShowLabels());
+			slider.setMajorTickUnit(property.getMajorTickUnit().doubleValue());
+			slider.setMinorTickCount(property.getMinorTickCount());
+			slider.setSnapToTicks(property.isSnapToTicks());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final TickMarkProperty property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
+			slider.setShowTickMarks(property.getTickMarkStyle().isShowTickMarks());
+			slider.setShowTickLabels(property.getTickMarkStyle().isShowLabels());
+			slider.setMajorTickUnit(property.getMajorTickUnit().doubleValue());
+			slider.setMinorTickCount(property.getMinorTickCount());
+			slider.setSnapToTicks(property.isSnapToTicks());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final TickMarkProperty property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
+			slider.setShowTickMarks(DEFAULT_STYLE.isShowTickMarks());
+			slider.setShowTickLabels(DEFAULT_STYLE.isShowLabels());
+			slider.setMajorTickUnit(DEFAULT_MAJOR_TICK_UNIT);
+			slider.setMinorTickCount(DEFAULT_MINOR_TICK_COUNT);
+			slider.setSnapToTicks(DEFAULT_SNAP_TO_TICKS);
 			return MutationResult.MUTATED;
 		}
 

@@ -2,11 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
@@ -114,5 +116,55 @@ public class SpacingProperty extends SuiProperty {
 
 	}
 
+
+
+
+
+
+	public static class LabeledSliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<SpacingProperty, Pane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final SpacingProperty property,
+						  final Pane fxNode) {
+			if (SuiLabeledSlider.isHorizontalLayout(node)) {
+				((HBox) fxNode).setSpacing(property.getSpacing().doubleValue());
+			} else {
+				((VBox) fxNode).setSpacing(property.getSpacing().doubleValue());
+			}
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final SpacingProperty property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			if (SuiLabeledSlider.isHorizontalLayout(node)) {
+				((HBox) fxNode).setSpacing(property.getSpacing().doubleValue());
+			} else {
+				((VBox) fxNode).setSpacing(property.getSpacing().doubleValue());
+			}
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final SpacingProperty property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			if (SuiLabeledSlider.isHorizontalLayout(node)) {
+				((HBox) fxNode).setSpacing(0);
+			} else {
+				((VBox) fxNode).setSpacing(0);
+			}
+			return MutationResult.MUTATED;
+		}
+
+	}
 
 }

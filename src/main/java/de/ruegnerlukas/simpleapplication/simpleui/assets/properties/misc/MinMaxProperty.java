@@ -2,11 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Pane;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -86,6 +88,50 @@ public class MinMaxProperty extends SuiProperty {
 
 	}
 
+
+
+
+
+
+	public static class LabeledSliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<MinMaxProperty, Pane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final MinMaxProperty property,
+						  final Pane fxNode) {
+			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
+			slider.setMin(property.getMin().doubleValue());
+			slider.setMax(property.getMax().doubleValue());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final MinMaxProperty property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
+			slider.setMin(property.getMin().doubleValue());
+			slider.setMax(property.getMax().doubleValue());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MinMaxProperty property,
+									 final SuiNode node,
+									 final Pane fxNode) {
+			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
+			slider.setMin(-Double.MAX_VALUE);
+			slider.setMax(+Double.MAX_VALUE);
+			return MutationResult.MUTATED;
+		}
+
+	}
 
 }
 

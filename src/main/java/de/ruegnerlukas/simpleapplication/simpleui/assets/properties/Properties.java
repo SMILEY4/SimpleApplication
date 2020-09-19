@@ -20,6 +20,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Injecti
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelFormatterProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LayoutProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MinMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
@@ -962,5 +963,19 @@ public final class Properties {
 		Validations.INPUT.isNotNegative(minorTickCount).exception("The minor tick count may not be negative.");
 		return new TickMarkProperty(tickMarkStyle, majorTickUnit, minorTickCount, snapToTicks);
 	}
+
+
+
+
+	/**
+	 * @param minSize  the min width or height of the label.
+	 * @param prefSize the preferred width or height of the label.
+	 * @param maxSize  the max width or height of the label.
+	 * @return a {@link LabelSizeProperty}
+	 */
+	public static SuiProperty labelSize(final Number minSize, final Number prefSize, final Number maxSize) {
+		return new LabelSizeProperty(minSize, prefSize, maxSize);
+	}
+
 
 }
