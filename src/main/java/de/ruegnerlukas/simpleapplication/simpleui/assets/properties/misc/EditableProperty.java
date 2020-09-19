@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.ComboBoxBase;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -149,6 +150,45 @@ public class EditableProperty extends SuiProperty {
 									 final SuiNode node,
 									 final Pane fxNode) {
 			SuiLabeledSlider.getLabel(fxNode).setEditable(false);
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class SpinnerUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, Spinner> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final EditableProperty property,
+						  final Spinner fxNode) {
+			fxNode.setEditable(property.isEditable());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final EditableProperty property,
+									 final SuiNode node,
+									 final Spinner fxNode) {
+			fxNode.setEditable(property.isEditable());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final EditableProperty property,
+									 final SuiNode node,
+									 final Spinner fxNode) {
+			fxNode.setEditable(false);
 			return MutationResult.MUTATED;
 		}
 

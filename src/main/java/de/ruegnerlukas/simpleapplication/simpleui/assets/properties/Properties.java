@@ -33,6 +33,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMin
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpinnerFactoryProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
@@ -989,6 +990,71 @@ public final class Properties {
 		Validations.INPUT.notNull(prefSize).exception("The preferred size may not be null.");
 		Validations.INPUT.notNull(maxSize).exception("The max size may not be null.");
 		return new LabelSizeProperty(minSize, prefSize, maxSize);
+	}
+
+
+
+
+	/**
+	 * @param propertyId the id of the property.
+	 * @param min        the min value (inclusive)
+	 * @param max        the max value (inclusive)
+	 * @param stepSize   the amount to step by
+	 * @param value      the (initial) value
+	 * @return the {@link SpinnerFactoryProperty}
+	 */
+	public static SuiProperty integerSpinnerValues(final String propertyId,
+												   final int min,
+												   final int max,
+												   final int stepSize,
+												   final int value) {
+		Validations.INPUT.notNull(propertyId).exception("The propertyId may not be null.");
+		Validations.INPUT.isLessThan(min, max).exception(
+				"The min value must be smaller than the max value: min={}, max={}", min, max);
+		Validations.INPUT.isNotNegative(stepSize).exception("The step size may not be negative.");
+		Validations.INPUT.inRange(value, min, max).exception(
+				"The current value must be between the min and max value. min={}, max={}, current={}", min, max, value);
+		return new SpinnerFactoryProperty(propertyId, min, max, stepSize, value);
+	}
+
+
+
+
+	/**
+	 * @param propertyId the id of the property.
+	 * @param min        the min value (inclusive)
+	 * @param max        the max value (inclusive)
+	 * @param stepSize   the amount to step by
+	 * @param value      the (initial) value
+	 * @return the {@link SpinnerFactoryProperty}
+	 */
+	public static SuiProperty floatingPointSpinnerValues(final String propertyId,
+														 final double min,
+														 final double max,
+														 final double stepSize,
+														 final double value) {
+		Validations.INPUT.notNull(propertyId).exception("The propertyId may not be null.");
+		Validations.INPUT.isLessThan(min, max).exception(
+				"The min value must be smaller than the max value: min={}, max={}", min, max);
+		Validations.INPUT.isNotNegative(stepSize).exception("The step size may not be negative.");
+		Validations.INPUT.inRange(value, min, max).exception(
+				"The current value must be between the min and max value. min={}, max={}, current={}", min, max, value);
+		return new SpinnerFactoryProperty(propertyId, min, max, stepSize, value);
+	}
+
+
+
+
+	/**
+	 * @param propertyId the id of the property.
+	 * @param items      the items
+	 * @param wrapAround whether to wrap around or stop at the end/start
+	 * @return the {@link SpinnerFactoryProperty}
+	 */
+	public static SuiProperty listSpinnerValues(final String propertyId, final List<String> items, final boolean wrapAround) {
+		Validations.INPUT.notNull(propertyId).exception("The propertyId may not be null.");
+		Validations.INPUT.notNull(items).exception("The items-list must not be null.");
+		return new SpinnerFactoryProperty(propertyId, items, wrapAround);
 	}
 
 

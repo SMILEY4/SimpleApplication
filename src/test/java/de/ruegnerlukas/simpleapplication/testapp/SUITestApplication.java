@@ -18,27 +18,21 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPaneItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiChoiceBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSeparator;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiHBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSpinner;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Dimension2D;
-import javafx.geometry.Pos;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.text.DecimalFormat;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class SUITestApplication {
@@ -82,21 +76,14 @@ public class SUITestApplication {
 
 
 		@Getter
+		@Setter
 		private static class TestUIState extends SuiState {
 
 
-			private String text = "";
+			private int min = -2;
+			private int max = +2;
+			private double current = 0;
 
-			@Setter
-			private Pos alignment = Pos.CENTER_RIGHT;
-
-
-
-
-			public void setText(final String text) {
-				log.info("Setting text to \"{}\".", text);
-				this.text = text;
-			}
 
 		}
 
@@ -122,21 +109,41 @@ public class SUITestApplication {
 													SuiVBox.vbox(
 															Properties.spacing(10),
 															Properties.items(
-																	SuiChoiceBox.choiceBox(
-																			Properties.id("cb"),
-																			Properties.choices(List.of(Pos.values()).stream().map(Enum::toString).collect(Collectors.toList())),
-																			EventProperties.eventValueChangedType("listener", String.class, e -> {
-																				state.update(TestUIState.class, s -> s.setAlignment(Pos.valueOf(e.getValue())));
+																	SuiHBox.hbox(
+																			Properties.id("min-max-box"),
+																			Properties.items(
+																					SuiSpinner.spinner(
+																							Properties.id("min"),
+																							Properties.integerSpinnerValues(".", -100, 100, 1, state.min),
+																							EventProperties.eventValueChangedType(".", Integer.class, e -> {
+																								state.update(TestUIState.class, s -> {
+																									s.setMin(e.getValue());
+																									s.setCurrent(Math.max(s.getCurrent(), s.getMin()));
+																								});
+																							})
+																					),
+																					SuiSpinner.spinner(
+																							Properties.id("max"),
+																							Properties.integerSpinnerValues(".", -100, 100, 1, state.max),
+																							EventProperties.eventValueChangedType(".", Integer.class, e -> {
+																								state.update(TestUIState.class, s -> {
+																									s.setMax(e.getValue());
+																									s.setCurrent(Math.min(s.getCurrent(), s.getMax()));
+																								});
+																							})
+																					)
+																			)
+																	),
+																	SuiSpinner.spinner(
+																			Properties.id("my-spinner"),
+																			Properties.editable(),
+																			Properties.listSpinnerValues(".", List.of("a", "b", "c", "d"), true),
+//																			Properties.floatingPointSpinnerValues(state.min + "." + state.max, state.min, state.max, 1.6, state.current),
+																			EventProperties.eventValueChangedType(".", String.class, e -> {
+																				System.out.println(e.getValue());
+//																				state.update(TestUIState.class, s -> s.setCurrent(e.getValue().doubleValue()));
 																			})
-																	),
-																	SuiSeparator.separator(
-																			Properties.id("separator"),
-																			Properties.minSize(0, 20)
-																	),
-																	buildSlider(state, 0),
-																	buildSlider(state, 1),
-																	buildSlider(state, 2),
-																	buildSlider(state, 3)
+																	)
 															)
 													),
 													Properties.anchor(50, null, 50, null)
@@ -154,20 +161,6 @@ public class SUITestApplication {
 			log.info(System.lineSeparator() + "====== SUI STATS ======" + System.lineSeparator() + SuiProfiler.get().getStatisticsAsPrettyString());
 		}
 
-
-
-		private NodeFactory buildSlider(TestUIState state, int index) {
-			return SuiLabeledSlider.labeledSlider(
-					Properties.id("slider-" + index),
-					Properties.alignment(state.getAlignment()),
-					Properties.spacing(5),
-					Properties.labelSize(57),
-					Properties.tickMarks(TickMarkProperty.TickMarkStyle.NOTHING),
-					Properties.labelFormatter("formatter", value -> new DecimalFormat("0.0").format(value) + "cm"),
-					Properties.editable(true),
-					EventProperties.eventValueChangedType(".", Double.class, e -> System.out.println(e.getValue()))
-			);
-		}
 
 
 

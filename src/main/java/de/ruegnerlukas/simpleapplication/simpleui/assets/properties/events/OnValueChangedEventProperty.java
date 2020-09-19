@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -231,5 +232,49 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 		}
 
 	}
+
+
+
+
+
+
+	public static class SpinnerUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, Spinner<T>> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final OnValueChangedEventProperty<T> property,
+						  final Spinner<T> fxNode) {
+			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final OnValueChangedEventProperty<T> property,
+									 final SuiNode node,
+									 final Spinner<T> fxNode) {
+			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
+					.map(prop -> (OnValueChangedEventProperty<T>) prop)
+					.map(OnValueChangedEventProperty::getChangeListenerProxy)
+					.ifPresent(proxy -> proxy.removeFrom(fxNode.valueProperty()));
+			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final OnValueChangedEventProperty<T> property,
+									 final SuiNode node,
+									 final Spinner<T> fxNode) {
+			property.getChangeListenerProxy().removeFrom(fxNode.valueProperty());
+			return MutationResult.MUTATED;
+		}
+
+	}
+
 
 }
