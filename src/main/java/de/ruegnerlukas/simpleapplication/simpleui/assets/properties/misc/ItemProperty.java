@@ -8,11 +8,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
 
 public class ItemProperty extends SuiProperty {
+
 
 	/**
 	 * The comparator function for this property type.
@@ -48,6 +50,25 @@ public class ItemProperty extends SuiProperty {
 	}
 
 
+
+
+	public static class Builder implements PropFxNodeBuilder<ItemProperty, Pane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final ItemProperty property,
+						  final Pane fxNode) {
+			if (node.getChildNodeStore().hasChildren()) {
+				SuiNode childNode = node.getChildNodeStore().get(0);
+				SuiServices.get().enrichWithFxNodes(childNode);
+				fxNode.getChildren().setAll(childNode.getFxNodeStore().get());
+			} else {
+				fxNode.getChildren().clear();
+			}
+		}
+
+	}
 
 
 

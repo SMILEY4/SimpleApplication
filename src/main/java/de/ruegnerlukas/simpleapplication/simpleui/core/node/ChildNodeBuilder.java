@@ -40,7 +40,7 @@ public class ChildNodeBuilder {
 	 * @return the created child nodes
 	 */
 	public List<SuiNode> build(final SuiState state, final List<SuiProperty> properties, final Tags tags) {
-		if (checkEarlyOut(properties, tags)) {
+		if (checkForEarlyOut(properties, tags)) {
 			return List.of();
 		}
 		for (SuiProperty property : properties) {
@@ -63,7 +63,7 @@ public class ChildNodeBuilder {
 	 * @param properties the properties of the parent node
 	 * @return whether we can stop building the tree
 	 */
-	private boolean checkEarlyOut(final List<SuiProperty> properties, final Tags tags) {
+	private boolean checkForEarlyOut(final List<SuiProperty> properties, final Tags tags) {
 
 		if (tags == null) {
 			// null = we do not mutate -> no early out here

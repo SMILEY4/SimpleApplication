@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LayoutProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
@@ -69,6 +70,7 @@ public final class SuiContainer {
 		registry.registerProperties(SuiContainer.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiContainer.class, List.of(
 				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null),
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.Builder(), null),
 				PropertyEntry.of(LayoutProperty.class, new LayoutProperty.UpdatingBuilder())
 		));
 	}

@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Alignme
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
@@ -72,7 +73,8 @@ public final class SuiHBox {
 				PropertyEntry.of(FitToWidthProperty.class, new FitToHeightProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.HBoxUpdatingBuilder()),
-				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null)
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null),
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.Builder(), null)
 		));
 	}
 

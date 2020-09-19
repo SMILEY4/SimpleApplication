@@ -46,12 +46,13 @@ import javafx.scene.control.ScrollPane;
 import javafx.util.StringConverter;
 
 import java.time.chrono.Chronology;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class Properties {
@@ -69,7 +70,7 @@ public final class Properties {
 
 	/**
 	 * Checks whether the given properties are valid.
-	 * Throws an {@link IllegalPropertiesException} if the list contains illegal properties
+	 * Throws an exception if the list contains illegal properties
 	 * (not registered ad the {@link de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry}).
 	 *
 	 * @param nodeType   the type of the node
@@ -84,7 +85,7 @@ public final class Properties {
 
 	/**
 	 * Checks whether the given properties are valid.
-	 * Throws an {@link IllegalPropertiesException} if the list contains illegal properties (not contained in allowed list)
+	 * Throws an exception if the list contains illegal properties (not contained in allowed list)
 	 *
 	 * @param nodeType          the type of the node
 	 * @param allowedProperties the list of allowed properties
@@ -92,8 +93,24 @@ public final class Properties {
 	 */
 	public static void validate(final Class<?> nodeType, final Set<Class<? extends SuiProperty>> allowedProperties,
 								final SuiProperty... properties) {
-		checkIllegal(nodeType, allowedProperties, List.of(properties));
-		checkConflicting(List.of(properties));
+		final List<Class<? extends SuiProperty>> propKeyList = propertiesAsKeyList(properties);
+		final Set<Class<? extends SuiProperty>> propKeySet = new HashSet<>(propKeyList);
+		checkIllegal(nodeType, allowedProperties, propKeySet);
+		checkDuplicates(propKeyList);
+		checkConflicting(propKeySet);
+	}
+
+
+
+
+	/**
+	 * @param properties the properties
+	 * @return a list of keys of all the given properties.
+	 */
+	private static List<Class<? extends SuiProperty>> propertiesAsKeyList(final SuiProperty... properties) {
+		return Stream.of(properties)
+				.map(SuiProperty::getKey)
+				.collect(Collectors.toList());
 	}
 
 
@@ -101,45 +118,24 @@ public final class Properties {
 
 	/**
 	 * Checks whether the given properties are allowed.
-	 * Throws an {@link IllegalPropertiesException} for if the list contains illegal properties (not contained in allowed list)
+	 * Throws a validation exception if the list contains illegal properties (not contained in allowed list)
 	 *
 	 * @param nodeType          the type of the node
 	 * @param allowedProperties the list of allowed properties
 	 * @param properties        the given properties to check
 	 */
-	public static void checkIllegal(final Class<?> nodeType, final Set<Class<? extends SuiProperty>> allowedProperties,
-									final List<SuiProperty> properties) {
-		List<SuiProperty> illegal = findIllegal(allowedProperties, properties);
+	private static void checkIllegal(final Class<?> nodeType,
+									 final Set<Class<? extends SuiProperty>> allowedProperties,
+									 final Set<Class<? extends SuiProperty>> properties) {
+		Set<Class<? extends SuiProperty>> illegal = findIllegal(allowedProperties, properties);
 		if (!illegal.isEmpty()) {
-			throw new IllegalPropertiesException(nodeType, illegal);
-		}
-	}
-
-
-
-
-	/**
-	 * Checks whether the given properties do not conflict with each other, for example when a property type was added more than once.
-	 * Throws an {@link IllegalPropertiesException} for if the list contains conflicting properties.
-	 *
-	 * @param properties the given properties to check
-	 */
-	public static void checkConflicting(final List<SuiProperty> properties) {
-		final List<SuiProperty> duplicates = new ArrayList<>();
-		for (SuiProperty property : properties) {
-			final Class<? extends SuiProperty> key = property.getKey();
-			int count = 0;
-			for (SuiProperty p : properties) {
-				if (p.getKey().equals(key)) {
-					count++;
-				}
-			}
-			if (count > 1) {
-				duplicates.add(property);
-			}
-		}
-		if (!duplicates.isEmpty()) {
-			throw new DuplicatePropertiesException(duplicates);
+			final String message =
+					"Illegal properties for "
+							+ nodeType.getSimpleName()
+							+ " ["
+							+ properties.stream().map(Class::getSimpleName).collect(Collectors.joining(", "))
+							+ "]";
+			Validations.STATE.fail().exception(message);
 		}
 	}
 
@@ -153,15 +149,50 @@ public final class Properties {
 	 * @param properties        the list of properties to check
 	 * @return the list of illegal properties.
 	 */
-	public static List<SuiProperty> findIllegal(final Set<Class<? extends SuiProperty>> allowedProperties,
-												final List<SuiProperty> properties) {
-		List<SuiProperty> illegal = new ArrayList<>();
+	private static Set<Class<? extends SuiProperty>> findIllegal(final Set<Class<? extends SuiProperty>> allowedProperties,
+																 final Set<Class<? extends SuiProperty>> properties) {
+		final Set<Class<? extends SuiProperty>> illegal = new HashSet<>();
 		properties.forEach(property -> {
-			if (!allowedProperties.contains(property.getKey())) {
+			if (!allowedProperties.contains(property)) {
 				illegal.add(property);
 			}
 		});
 		return illegal;
+	}
+
+
+
+
+	/**
+	 * Checks that no property type was added more than once.
+	 * Throws a validation exception if the list contains duplicate properties.
+	 *
+	 * @param properties the given properties to check
+	 */
+	private static void checkDuplicates(final List<Class<? extends SuiProperty>> properties) {
+		final Set<Class<? extends SuiProperty>> items = new HashSet<>();
+		final List<Class<? extends SuiProperty>> duplicates = properties.stream()
+				.filter(p -> !items.add(p))
+				.collect(Collectors.toList());
+		if (!duplicates.isEmpty()) {
+			final String messageList = duplicates.stream().map(Object::toString).collect(Collectors.joining(", "));
+			Validations.STATE.fail().exception("Duplicate properties: [" + messageList + "]");
+		}
+	}
+
+
+
+
+	/**
+	 * Check if any properties in the given list conflict with any other of the properties.
+	 * Throws a validation exception if a conflict was found.
+	 *
+	 * @param properties the properties to check
+	 */
+	private static void checkConflicting(final Set<Class<? extends SuiProperty>> properties) {
+		if (properties.contains(ItemProperty.class) && properties.contains(ItemListProperty.class)) {
+			Validations.STATE.fail().exception("Conflicting Properties: \"ItemProperty\" and \"ItemListProperty\"");
+		}
 	}
 
 
