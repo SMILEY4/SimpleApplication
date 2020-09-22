@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.TabAwareTabPane;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
@@ -31,13 +31,13 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 
 
 
-	public static class TabPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnTabClosedEventProperty, TabAwareTabPane> {
+	public static class TabPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnTabClosedEventProperty, ExtendedTabPane> {
 
 
 		@Override
 		public void build(final SuiNode node,
 						  final OnTabClosedEventProperty property,
-						  final TabAwareTabPane fxNode) {
+						  final ExtendedTabPane fxNode) {
 			setListener(fxNode, property);
 		}
 
@@ -47,7 +47,7 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 		@Override
 		public MutationResult update(final OnTabClosedEventProperty property,
 									 final SuiNode node,
-									 final TabAwareTabPane fxNode) {
+									 final ExtendedTabPane fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -58,7 +58,7 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 		@Override
 		public MutationResult remove(final OnTabClosedEventProperty property,
 									 final SuiNode node,
-									 final TabAwareTabPane fxNode) {
+									 final ExtendedTabPane fxNode) {
 			fxNode.setOnTabClosed(null);
 			return MutationResult.MUTATED;
 		}
@@ -72,7 +72,7 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 		 * @param fxNode   the fx node to listen to
 		 * @param property the property with the listener to add
 		 */
-		private void setListener(final TabAwareTabPane fxNode, final OnTabClosedEventProperty property) {
+		private void setListener(final ExtendedTabPane fxNode, final OnTabClosedEventProperty property) {
 			fxNode.setOnTabClosed(tab -> property.getListener().onEvent(
 					TabActionEventData.builder()
 							.tab(tab)

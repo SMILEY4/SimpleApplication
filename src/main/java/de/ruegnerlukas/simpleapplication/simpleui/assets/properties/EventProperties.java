@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DividerDraggedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.HoverEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.KeyEventData;
@@ -17,6 +18,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEvent
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnCheckedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnDividerDraggedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFocusChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFocusLostEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFocusReceivedEventProperty;
@@ -947,6 +949,9 @@ public final class EventProperties {
 		return new OnSelectedTabEventProperty(propertyId, listener);
 	}
 
+
+
+
 	/**
 	 * When the tab of a tab pane was closed by the user.
 	 *
@@ -956,6 +961,20 @@ public final class EventProperties {
 	public static SuiProperty eventClosedTab(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnTabClosedEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * When the divider of a split pane was moved by the user.
+	 *
+	 * @param listener the listener for events with {@link DividerDraggedEventData}.
+	 * @return a {@link OnTabClosedEventProperty}
+	 */
+	public static SuiProperty dividerPositionListener(final String propertyId, final SuiEventListener<DividerDraggedEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnDividerDraggedEventProperty(propertyId, listener);
 	}
 
 

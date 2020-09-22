@@ -1,12 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
-import javafx.collections.ListChangeListener;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SuiListChangeListener;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
 import java.util.function.Consumer;
 
-public class TabAwareTabPane extends TabPane {
+public class ExtendedTabPane extends TabPane {
 
 
 	/**
@@ -21,18 +21,21 @@ public class TabAwareTabPane extends TabPane {
 	private boolean muteListener = false;
 
 
+
+
 	/**
 	 * Default constructor.
 	 */
-	public TabAwareTabPane() {
-		getTabs().addListener((ListChangeListener<Tab>) change -> {
-			while (change.next()) {
-				change.getAddedSubList().forEach(tab -> {
-					tab.setOnCloseRequest(e -> onCloseRequest(tab));
-					tab.setOnClosed(e -> onClosed(tab));
-				});
-			}
-		});
+	public ExtendedTabPane() {
+		getTabs().addListener(new SuiListChangeListener<>(
+				addedTab -> {
+					addedTab.setOnCloseRequest(e -> onCloseRequest(addedTab));
+					addedTab.setOnClosed(e -> onClosed(addedTab));
+				},
+				removedTab -> {
+					// to nothing
+				}
+		));
 	}
 
 
@@ -52,11 +55,13 @@ public class TabAwareTabPane extends TabPane {
 
 	/**
 	 * Mute/Unmute the listener for closed tabs.
+	 *
 	 * @param mute whether the listener should receive any event on closed tabs.
 	 */
 	public void muteOnTabClosed(final boolean mute) {
 		this.muteListener = mute;
 	}
+
 
 
 

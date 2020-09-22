@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -106,6 +107,23 @@ public class ItemProperty extends SuiProperty {
 						  final ItemListProperty property,
 						  final TabPane fxNode) {
 			fxNode.getTabs().setAll(SuiTabPane.createTabs(List.of(node.getChildNodeStore().get(0))));
+		}
+
+	}
+
+
+
+
+
+
+	public static class SplitPaneBuilder implements PropFxNodeBuilder<ItemListProperty, SplitPane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final ItemListProperty property,
+						  final SplitPane fxNode) {
+			fxNode.getItems().setAll(node.getChildNodeStore().get(0).getFxNodeStore().get());
 		}
 
 	}

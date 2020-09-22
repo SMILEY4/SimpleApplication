@@ -32,7 +32,7 @@ public interface SuiNodeChildTransformListener {
 						.collect(Collectors.toList());
 				pane.getChildren().removeAll(nodesToRemove);
 			} else {
-				operations.forEach(op -> op.applyTo(pane));
+				operations.forEach(op -> op.applyToFx(pane.getChildren()));
 			}
 		}
 	};

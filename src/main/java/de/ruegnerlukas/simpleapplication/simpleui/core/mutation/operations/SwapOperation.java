@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 import lombok.Getter;
 
 import java.util.List;
@@ -65,10 +64,10 @@ public class SwapOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final Pane pane) {
-		Node elementMax = pane.getChildren().remove(indexMax);
-		Node elementMin = pane.getChildren().set(indexMin, elementMax);
-		pane.getChildren().add(indexMax, elementMin);
+	public void applyToFx(final List<Node> nodes) {
+		Node elementMax = nodes.remove(indexMax);
+		Node elementMin = nodes.set(indexMin, elementMax);
+		nodes.add(indexMax, elementMin);
 	}
 
 

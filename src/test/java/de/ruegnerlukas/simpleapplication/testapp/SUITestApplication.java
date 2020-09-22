@@ -17,7 +17,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSplitPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
@@ -25,14 +25,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Dimension2D;
-import javafx.scene.control.TabPane;
+import javafx.geometry.Orientation;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Slf4j
 public class SUITestApplication {
@@ -79,8 +75,7 @@ public class SUITestApplication {
 		@Setter
 		private static class TestUIState extends SuiState {
 
-
-			private List<String> titles = new ArrayList<>(List.of("1", "2", "3"));
+			private boolean fixed = false;
 
 		}
 
@@ -101,22 +96,44 @@ public class SUITestApplication {
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							SuiAnchorPane.anchorPane(
 									Properties.items(
-											SuiTabPane.tabPane(
-													Properties.tabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS),
-													EventProperties.eventSelectedTab(".", e -> {
-														System.out.println("SELECTED: " + (e.getTab() == null ? "null" : e.getTab().getText()));
-													}),
-													EventProperties.eventClosedTab(".", e -> {
-														System.out.println("CLOSED: " + e.getTab().getText());
-													}),
+											SuiSplitPane.splitPane(
+													Properties.id("splitpane"),
 													Properties.anchorFitParent(),
+													Properties.orientation(Orientation.HORIZONTAL),
+													Properties.dividerPositions(state.isFixed(), 0.2, 0.8),
+													EventProperties.dividerPositionListener(".", e -> {
+														System.out.println(e.getDividerIndex() + ": " + e.getNextPosition());
+													}),
 													Properties.items(
-															state.titles.stream().map(title ->
-																	SuiButton.button(
-																			Properties.id("btn." + title),
-																			Properties.tabTitle("Tab " + title),
-																			Properties.textContent("Button " + title),
-																			EventProperties.eventAction(e -> state.update(TestUIState.class, s -> Collections.shuffle(s.titles)))
+															SuiAnchorPane.anchorPane(
+																	Properties.id("anchorpane.1"),
+																	Properties.item(
+																			SuiButton.button(
+																					Properties.id("btn.1"),
+																					Properties.anchorFitParent(),
+																					Properties.textContent("Button 1")
+																			)
+																	)
+															),
+															SuiAnchorPane.anchorPane(
+																	Properties.id("anchorpane.2"),
+																	Properties.item(
+																			SuiButton.button(
+																					Properties.id("btn.2"),
+																					Properties.anchorFitParent(),
+																					Properties.textContent("Button 2"),
+																					EventProperties.eventAction(".", e -> state.update(TestUIState.class, s -> s.setFixed(!s.isFixed())))
+																			)
+																	)
+															),
+															SuiAnchorPane.anchorPane(
+																	Properties.id("anchorpane.3"),
+																	Properties.item(
+																			SuiButton.button(
+																					Properties.id("btn.3"),
+																					Properties.anchorFitParent(),
+																					Properties.textContent("Button 3")
+																			)
 																	)
 															)
 													)

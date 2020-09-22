@@ -1,20 +1,32 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSplitPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnDividerDraggedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OrientationProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SplitDividerPositionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.OperationType;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.RemoveOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.Node;
+import javafx.scene.control.SplitPane;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
 
 public final class SuiSplitPane {
-
-
 
 
 	/**
@@ -41,9 +53,48 @@ public final class SuiSplitPane {
 				SuiSplitPane.class,
 				List.of(properties),
 				state,
-				tags
+				tags,
+				CHILD_LISTENER,
+				CHILD_TRANSFORM_LISTENER
 		);
 	}
+
+
+
+
+	/**
+	 * A child listener for to split panes.
+	 */
+	private static final SuiNodeChildListener CHILD_LISTENER = node -> {
+		final SplitPane pane = (SplitPane) node.getFxNodeStore().get();
+		if (pane != null) {
+			if (node.getChildNodeStore().hasChildren()) {
+				pane.getItems().setAll(node.getChildNodeStore().stream()
+						.map(child -> child.getFxNodeStore().get())
+						.collect(Collectors.toList()));
+			} else {
+				pane.getItems().clear();
+			}
+		}
+	};
+
+	/**
+	 * A child transform listener for to split panes.
+	 */
+	private static final SuiNodeChildTransformListener CHILD_TRANSFORM_LISTENER = (node, type, operations) -> {
+		final SplitPane pane = (SplitPane) node.getFxNodeStore().get();
+		if (pane != null) {
+			if (type == OperationType.REMOVE) {
+				List<Node> nodesToRemove = operations.stream()
+						.map(op -> (RemoveOperation) op)
+						.map(op -> op.getNode().getFxNodeStore().get())
+						.collect(Collectors.toList());
+				pane.getItems().removeAll(nodesToRemove);
+			} else {
+				operations.forEach(op -> op.applyToFx(pane.getItems()));
+			}
+		}
+	};
 
 
 
@@ -59,22 +110,23 @@ public final class SuiSplitPane {
 		registry.registerProperties(SuiSplitPane.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiSplitPane.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiSplitPane.class, List.of(
-				// todo: vert or horz line (orientation)
-				// todo: items (any amount)
-				// todo: divider positions
-				// todo: move divider listener (-> with index when more than one divider)
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.SplitPaneBuilder(), null),
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.SplitPaneBuilder(), null),
+				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.SplitPaneUpdatingBuilder()),
+				PropertyEntry.of(SplitDividerPositionProperty.class, new SplitDividerPositionProperty.SplitPaneUpdatingBuilder()),
+				PropertyEntry.of(OnDividerDraggedEventProperty.class, new OnDividerDraggedEventProperty.SplitPaneUpdatingBuilder())
 		));
 	}
 
 
 
 
-	private static class FxNodeBuilder implements AbstractFxNodeBuilder<Node> {
+	private static class FxNodeBuilder implements AbstractFxNodeBuilder<SplitPane> {
 
 
 		@Override
-		public Node build(final SuiNode node) {
-			return null;
+		public SplitPane build(final SuiNode node) {
+			return new ExtendedSplitPane();
 		}
 
 	}

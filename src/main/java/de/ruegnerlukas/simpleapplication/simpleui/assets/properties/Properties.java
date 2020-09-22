@@ -34,6 +34,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePre
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpinnerFactoryProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SplitDividerPositionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabDisabledProperty;
@@ -1116,6 +1117,29 @@ public final class Properties {
 	 */
 	public static SuiProperty tabClosingPolicy(final TabPane.TabClosingPolicy tabClosingPolicy) {
 		return new TabClosingPolicyProperty(tabClosingPolicy);
+	}
+
+
+
+
+	/**
+	 * @param positions the positions of the dividers
+	 * @return the {@link SplitDividerPositionProperty}
+	 */
+	public static SuiProperty dividerPositions(final Number... positions) {
+		return dividerPositions(false, positions);
+	}
+
+
+
+
+	/**
+	 * @param fixed     whether the user can drag the dividers to change their positions.
+	 * @param positions the positions of the dividers
+	 * @return the {@link SplitDividerPositionProperty}
+	 */
+	public static SuiProperty dividerPositions(final boolean fixed, final Number... positions) {
+		return new SplitDividerPositionProperty(fixed, positions);
 	}
 
 }

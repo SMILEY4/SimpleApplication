@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import javafx.scene.layout.Pane;
+import javafx.scene.Node;
 import lombok.Getter;
 
 import java.util.List;
@@ -70,8 +70,8 @@ public class ReplaceOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final Pane pane) {
-		pane.getChildren().set(index, nextNode.getFxNodeStore().get());
+	public void applyToFx(final List<Node> nodes) {
+		nodes.set(index, nextNode.getFxNodeStore().get());
 	}
 
 }

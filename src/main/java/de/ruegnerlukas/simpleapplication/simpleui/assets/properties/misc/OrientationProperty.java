@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -156,6 +157,40 @@ public class OrientationProperty extends SuiProperty {
 
 	}
 
+
+	public static class SplitPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<OrientationProperty, SplitPane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final OrientationProperty property,
+						  final SplitPane fxNode) {
+			fxNode.setOrientation(property.getOrientation());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final OrientationProperty property,
+									 final SuiNode node,
+									 final SplitPane fxNode) {
+			fxNode.setOrientation(property.getOrientation());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final OrientationProperty property,
+									 final SuiNode node,
+									 final SplitPane fxNode) {
+			fxNode.setOrientation(Orientation.HORIZONTAL);
+			return MutationResult.MUTATED;
+		}
+
+	}
 }
 
 
