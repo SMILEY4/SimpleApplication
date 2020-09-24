@@ -11,6 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiDatePicker;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiMenuBar;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSeparator;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSlider;
@@ -121,6 +122,7 @@ public class SuiRegistry {
 			SuiSlider.register(this);
 			SuiLabeledSlider.register(this);
 			SuiSpinner.register(this);
+			SuiMenuBar.register(this);
 			SuiContainer.register(this);
 			SuiAnchorPane.register(this);
 			SuiScrollPane.register(this);

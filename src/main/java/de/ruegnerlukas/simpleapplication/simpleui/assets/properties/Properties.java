@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiAbstractMenuItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
@@ -22,6 +23,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemPro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelFormatterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LayoutProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MenuContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MinMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OrientationProperty;
@@ -1140,6 +1142,28 @@ public final class Properties {
 	 */
 	public static SuiProperty dividerPositions(final boolean fixed, final Number... positions) {
 		return new SplitDividerPositionProperty(fixed, positions);
+	}
+
+
+
+
+	/**
+	 * @param items the menu items
+	 * @return the {@link MenuContentProperty}
+	 */
+	public static SuiProperty menuBarContent(final SuiAbstractMenuItem... items) {
+		return menuBarContent(List.of(items));
+	}
+
+
+
+
+	/**
+	 * @param items the menu items
+	 * @return the {@link MenuContentProperty}
+	 */
+	public static SuiProperty menuBarContent(final List<SuiAbstractMenuItem> items) {
+		return new MenuContentProperty(items);
 	}
 
 }
