@@ -34,7 +34,7 @@ An element that allows the user to switch between different views/tabs.
 
 ### SuiSplitPane
 
-A element that can display multiple other views inside of it. The user can control the size of the view via dividers.
+An element that can display multiple other views inside of it. The user can control the size of the view via dividers.
 
 **Properties:**
 
@@ -62,3 +62,29 @@ A element that can display multiple other views inside of it. The user can contr
 
 
 
+### SuiMenuBar
+
+An element usually placed at the very top containing buttons-like expandable menus.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- MenuContentProperty
+
+  Defines the content of the menu-bar via a list of "SuiAbstractMenuItem". Each element in this list of the sup-type "SuiMenu" creates a top level entry in the menu-bar.
+
+  Types of menu-items:
+
+  - SuiMenu: an entry containing multiple sub-menu-entries
+  - SuiMenuItem: a simple entry displaying a text. Triggers an event when clicked.
+  - SuiCheckMenuItem: a simple entry displaying a text and a toggle between selected and not selected. Triggers an event when toggled with the new state.
+  - SuiSeparatorMenuItem: an entry displaying a simple small line for better organizing the menu  
+
+- SystemMenuBarProperty
+
+  Whether to use the menu bar of the operating system if it supports it.

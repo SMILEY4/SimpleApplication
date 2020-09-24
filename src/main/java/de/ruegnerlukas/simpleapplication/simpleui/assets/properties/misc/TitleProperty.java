@@ -12,18 +12,18 @@ import lombok.Getter;
 
 import java.util.function.BiFunction;
 
-public class TabTitleProperty extends SuiProperty {
+public class TitleProperty extends SuiProperty {
 
 
 	/**
 	 * The comparator function for this property type.
 	 */
-	private static final BiFunction<TabTitleProperty, TabTitleProperty, Boolean> COMPARATOR =
+	private static final BiFunction<TitleProperty, TitleProperty, Boolean> COMPARATOR =
 			(a, b) -> a.getTitle().equals(b.getTitle());
 
 
 	/**
-	 * The title of the tab
+	 * The title of the element (used for tabs, titled-panes, ...).
 	 */
 	@Getter
 	private final String title;
@@ -32,22 +32,22 @@ public class TabTitleProperty extends SuiProperty {
 
 
 	/**
-	 * @param title the title of the tab
+	 * @param title the title of the tab (used for tabs, titled-panes, ...).
 	 */
-	public TabTitleProperty(final String title) {
-		super(TabTitleProperty.class, COMPARATOR);
+	public TitleProperty(final String title) {
+		super(TitleProperty.class, COMPARATOR);
 		this.title = title;
 	}
 
 
 
 
-	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<TabTitleProperty, Node> {
+	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<TitleProperty, Node> {
 
 
 		@Override
 		public void build(final SuiNode node,
-						  final TabTitleProperty property,
+						  final TitleProperty property,
 						  final Node fxNode) {
 			setTabTitle(fxNode, property.getTitle());
 
@@ -57,7 +57,7 @@ public class TabTitleProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final TabTitleProperty property,
+		public MutationResult update(final TitleProperty property,
 									 final SuiNode node,
 									 final Node fxNode) {
 			setTabTitle(fxNode, property.getTitle());
@@ -68,7 +68,7 @@ public class TabTitleProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final TabTitleProperty property,
+		public MutationResult remove(final TitleProperty property,
 									 final SuiNode node,
 									 final Node fxNode) {
 			setTabTitle(fxNode, "no-title");

@@ -41,7 +41,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StylePr
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabDisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPaneMenuSideProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabTitleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
@@ -1080,12 +1080,12 @@ public final class Properties {
 
 
 	/**
-	 * @param title the title of the tab.
-	 * @return the {@link TabTitleProperty}
+	 * @param title the title of the element (used for tabs, titled-panes, ...).
+	 * @return the {@link TitleProperty}
 	 */
-	public static SuiProperty tabTitle(final String title) {
+	public static SuiProperty title(final String title) {
 		Validations.INPUT.notNull(title).exception("The title may not be null.");
-		return new TabTitleProperty(title);
+		return new TitleProperty(title);
 	}
 
 

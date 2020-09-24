@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemLis
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPaneMenuSideProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabTitleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -175,8 +175,8 @@ public final class SuiTabPane {
 	 */
 	public static Tab createTab(final SuiNode node) {
 		final String title = node.getPropertyStore()
-				.getSafe(TabTitleProperty.class)
-				.map(TabTitleProperty::getTitle)
+				.getSafe(TitleProperty.class)
+				.map(TitleProperty::getTitle)
 				.orElse("no-title");
 		return new Tab(title, node.getFxNodeStore().get());
 	}

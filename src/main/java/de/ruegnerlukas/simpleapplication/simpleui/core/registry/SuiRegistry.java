@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.registry;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiChoiceBox;
@@ -130,6 +131,7 @@ public class SuiRegistry {
 			SuiHBox.register(this);
 			SuiTabPane.register(this);
 			SuiSplitPane.register(this);
+			SuiAccordion.register(this);
 		}
 	}
 

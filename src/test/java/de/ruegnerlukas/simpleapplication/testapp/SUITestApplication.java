@@ -15,25 +15,23 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyle
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiMenuBar;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiCheckMenuItem;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiMenu;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiMenuItem;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiSeparatorMenuItem;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Dimension2D;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Slf4j
 public class SUITestApplication {
@@ -81,6 +79,8 @@ public class SUITestApplication {
 		private static class TestUIState extends SuiState {
 
 
+			public List<String> elements = new ArrayList<>(List.of("1", "2", "3"));
+
 			private boolean fixed = false;
 
 		}
@@ -102,30 +102,22 @@ public class SUITestApplication {
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							SuiAnchorPane.anchorPane(
 									Properties.items(
-											SuiMenuBar.menuBar(
-													Properties.anchor(0, null, 0, 0),
-													Properties.menuBarContent(
-															new SuiMenu("_File",
-																	new SuiMenuItem("New", new KeyCodeCombination(KeyCode.N, KeyCombination.SHORTCUT_DOWN), () -> System.out.println("new")),
-																	new SuiMenuItem("Open", new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN), () -> System.out.println("open")),
-																	new SuiMenu("Open Recent",
-																			new SuiMenuItem("Project A", () -> System.out.println("A")),
-																			new SuiMenuItem("Project B", () -> System.out.println("B")),
-																			new SuiMenuItem("Project C", () -> System.out.println("C"))
-																	),
-																	new SuiMenuItem("Close", new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN), () -> System.out.println("close"))
-															),
-															new SuiMenu("_Edit",
-																	new SuiCheckMenuItem("Cut", s -> System.out.println("cut: " + s)),
-																	new SuiCheckMenuItem("Copy", true, s -> System.out.println("copy: " + s)),
-																	new SuiCheckMenuItem("Paste", s -> System.out.println("paste: " + s))
-															),
-															new SuiMenu("_Help",
-																	new SuiMenuItem("Help", () -> System.out.println("help")),
-																	new SuiMenuItem("Update", () -> System.out.println("update")),
-																	new SuiSeparatorMenuItem(),
-																	new SuiMenuItem("About", () -> System.out.println("about"))
-															)
+											SuiAccordion.accordion(
+													EventProperties.eventAccordionExpanded(".", e -> {
+														System.out.println("expanded: " + e.getPrevExpandedTitle() + " => " + e.getExpandedTitle());
+													}),
+													Properties.items(
+															state.elements.stream().map(
+																	element -> SuiButton.button(
+																			Properties.id("btn" + element),
+																			Properties.textContent("Button " + element),
+																			Properties.title("Section " + element),
+																			EventProperties.eventAction(e -> {
+																				state.update(TestUIState.class, s -> {
+																					s.elements.add(""+new Random().nextInt(999));
+																				});
+																			})
+																	))
 													)
 											)
 									)

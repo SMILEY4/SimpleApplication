@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.AccordionExpandedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
@@ -16,6 +17,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnAccordionExpandedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnCheckedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnDividerDraggedEventProperty;
@@ -972,9 +974,25 @@ public final class EventProperties {
 	 * @param listener the listener for events with {@link DividerDraggedEventData}.
 	 * @return a {@link OnTabClosedEventProperty}
 	 */
-	public static SuiProperty dividerPositionListener(final String propertyId, final SuiEventListener<DividerDraggedEventData> listener) {
+	public static SuiProperty eventDividerPositionListener(final String propertyId,
+														   final SuiEventListener<DividerDraggedEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnDividerDraggedEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * When a new section of the accordion was expanded
+	 *
+	 * @param listener the listener for events with {@link AccordionExpandedEventData}.
+	 * @return a {@link OnAccordionExpandedEventProperty}
+	 */
+	public static SuiProperty eventAccordionExpanded(final String propertyId,
+													 final SuiEventListener<AccordionExpandedEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnAccordionExpandedEventProperty(propertyId, listener);
 	}
 
 
