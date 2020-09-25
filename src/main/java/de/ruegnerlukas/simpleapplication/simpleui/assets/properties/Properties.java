@@ -15,6 +15,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Editabl
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectableItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectableItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
@@ -27,6 +29,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MenuCon
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MinMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OrientationProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PreserveRatioProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
@@ -41,9 +44,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StylePr
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabDisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPaneMenuSideProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
@@ -54,6 +57,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.util.StringConverter;
 
 import java.time.chrono.Chronology;
@@ -1165,5 +1169,40 @@ public final class Properties {
 	public static SuiProperty menuBarContent(final List<SuiAbstractMenuItem> items) {
 		return new MenuContentProperty(items);
 	}
+
+
+
+
+	/**
+	 * @param image the image
+	 * @return the {@link ImageProperty}
+	 */
+	public static SuiProperty image(final Image image) {
+		return new ImageProperty(image);
+	}
+
+
+
+
+	/**
+	 * @param width  the width of the image
+	 * @param height the height of the image
+	 * @return the {@link ImageSizeProperty}
+	 */
+	public static SuiProperty imageSize(final ImageSizeProperty.ImageDimension width, final ImageSizeProperty.ImageDimension height) {
+		return new ImageSizeProperty(width, height);
+	}
+
+
+
+
+	/**
+	 * @param preserveRatio whether an image should preserve its ratio.
+	 * @return the {@link PreserveRatioProperty}
+	 */
+	public static SuiProperty preserveRatio(final boolean preserveRatio) {
+		return new PreserveRatioProperty(preserveRatio);
+	}
+
 
 }

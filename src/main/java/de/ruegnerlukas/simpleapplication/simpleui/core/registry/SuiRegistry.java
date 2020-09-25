@@ -10,6 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiDatePicker;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiHBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiImage;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiMenuBar;
@@ -123,6 +124,7 @@ public class SuiRegistry {
 			SuiSlider.register(this);
 			SuiLabeledSlider.register(this);
 			SuiSpinner.register(this);
+			SuiImage.register(this);
 			SuiMenuBar.register(this);
 			SuiContainer.register(this);
 			SuiAnchorPane.register(this);

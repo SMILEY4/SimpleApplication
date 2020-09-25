@@ -12,7 +12,7 @@ An element that allows the user to switch between different views/tabs.
 
 - ItemListProperty, ItemProperty
 
-  Each item will be added to the tab pane as the content of a new tab. The title of the tab is specified by the "TabTitleProperty" of the child item.
+  Each item will be added to the tab pane as the content of a new tab. The title of the tab is specified by the "TitleProperty" of the child item.
 
 - TabPaneMenuSideProperty
 
@@ -88,3 +88,58 @@ An element usually placed at the very top containing buttons-like expandable men
 - SystemMenuBarProperty
 
   Whether to use the menu bar of the operating system if it supports it.
+
+
+
+### SuiAccordion
+
+An element containing any number of expandable sections. Only one of these sections can be expanded at any time.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- ItemListProperty, ItemProperty
+
+  Each item will be added as a new section. The title of the section is specified by the "TitleProperty" of the child item.
+
+- OnAccordionExpandedEventProperty
+
+  A listener that is called when the user expands one of the sections.
+
+
+
+### SuiImage
+
+An element displaying an image.
+
+**Properties:**
+
+- all common properties
+
+- all common event properties
+
+- ImageProperty
+
+  Defines what image to show
+
+- ImageSizeProperty
+
+  Defines the size of the element. Since the element does not accept the common region properties, this property is the only way to control the width and height.
+
+  The size is defined as "ImageDimensions" for width and height. There are 4 types of these dimensions:
+
+  - UNDEFINED: no value has to be set. The size of the original image will be used for this axis (or 0). 
+  - ABSOLUTE: the given values is the fixed size of an axis in pixels.
+  - RELATIVE: the resulting size is the size of the original image multiplied by the given value. 
+  - PARENT-RELATIVE: the element size is always the size of its parent multiplied by the given value.
+
+  No min or max values are directly possible here. One workaround is to put the image element into an container and give that one a min/max size. The size of the image should then be defined with "parent-relative".
+
+- PreserveRatioProperty
+
+  Whether the element should aways keep the same aspect ratio as the original image. The width is always kept as defined in the ImageSizeProperty and the height is then calculated. The height of the ImageSizeProperty is then always ignored and can be set to "undefined".

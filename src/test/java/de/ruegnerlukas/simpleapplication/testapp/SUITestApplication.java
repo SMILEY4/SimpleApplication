@@ -15,23 +15,24 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyle
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiImage;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Dimension2D;
+import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Slf4j
 public class SUITestApplication {
@@ -102,22 +103,18 @@ public class SUITestApplication {
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							SuiAnchorPane.anchorPane(
 									Properties.items(
-											SuiAccordion.accordion(
-													EventProperties.eventAccordionExpanded(".", e -> {
-														System.out.println("expanded: " + e.getPrevExpandedTitle() + " => " + e.getExpandedTitle());
-													}),
-													Properties.items(
-															state.elements.stream().map(
-																	element -> SuiButton.button(
-																			Properties.id("btn" + element),
-																			Properties.textContent("Button " + element),
-																			Properties.title("Section " + element),
-																			EventProperties.eventAction(e -> {
-																				state.update(TestUIState.class, s -> {
-																					s.elements.add(""+new Random().nextInt(999));
-																				});
-																			})
-																	))
+											SuiVBox.vbox(
+													Properties.anchorFitParent(),
+													Properties.item(
+															SuiImage.image(
+																	Properties.id("img"),
+																	Properties.anchor(100, 100, 100, 100),
+																	Properties.image(new Image(Resource.internal("testResources/test-image.png").getPath())),
+																	Properties.imageSize(
+																			ImageSizeProperty.ImageDimension.parentRelative(0.5),
+																			ImageSizeProperty.ImageDimension.undefined()),
+																	Properties.preserveRatio(true)
+															)
 													)
 											)
 									)
