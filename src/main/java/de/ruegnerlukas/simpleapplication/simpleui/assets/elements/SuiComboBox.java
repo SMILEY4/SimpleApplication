@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
@@ -85,7 +85,7 @@ public final class SuiComboBox {
 		registry.registerProperties(SuiComboBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiComboBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiComboBox.class, List.of(
-				PropertyEntry.of(ChoicesProperty.class, new ChoicesProperty.ComboBoxUpdatingBuilder<>()),
+				PropertyEntry.of(ContentItemsProperty.class, new ContentItemsProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxBaseUpdatingBuilder()),

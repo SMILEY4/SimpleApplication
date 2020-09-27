@@ -17,22 +17,22 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiImage;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiList;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Dimension2D;
-import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 public class SUITestApplication {
@@ -103,19 +103,15 @@ public class SUITestApplication {
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							SuiAnchorPane.anchorPane(
 									Properties.items(
-											SuiVBox.vbox(
+											SuiList.list(
+													Properties.id("list"),
 													Properties.anchorFitParent(),
-													Properties.item(
-															SuiImage.image(
-																	Properties.id("img"),
-																	Properties.anchor(100, 100, 100, 100),
-																	Properties.image(new Image(Resource.internal("testResources/test-image.png").getPath())),
-																	Properties.imageSize(
-																			ImageSizeProperty.ImageDimension.parentRelative(0.5),
-																			ImageSizeProperty.ImageDimension.undefined()),
-																	Properties.preserveRatio(true)
-															)
-													)
+													Properties.contentItems(IntStream.range(0, 100).mapToObj(i -> "Element " + i).collect(Collectors.toList())),
+													EventProperties.eventItemsSelected(".", e -> {
+														System.out.println("items selected: " + e.getSelection());
+													}),
+													Properties.multiselect(),
+													Properties.promptText("List is Empty")
 											)
 									)
 							)

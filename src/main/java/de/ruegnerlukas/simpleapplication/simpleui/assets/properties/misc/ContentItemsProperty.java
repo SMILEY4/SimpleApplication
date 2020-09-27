@@ -11,19 +11,20 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-public class ChoicesProperty<T> extends SuiProperty {
+public class ContentItemsProperty<T> extends SuiProperty {
 
 
 	/**
 	 * The comparator function for this property type.
 	 */
-	private static final BiFunction<ChoicesProperty, ChoicesProperty, Boolean> COMPARATOR = (a, b) -> {
+	private static final BiFunction<ContentItemsProperty, ContentItemsProperty, Boolean> COMPARATOR = (a, b) -> {
 		if (a.getChoices().size() == b.getChoices().size()) {
 			for (int i = 0; i < a.getChoices().size(); i++) {
 				if (!Objects.equals(a.getChoices().get(i), b.getChoices().get(i))) {
@@ -48,20 +49,20 @@ public class ChoicesProperty<T> extends SuiProperty {
 	/**
 	 * @param choices the list of choices
 	 */
-	public ChoicesProperty(final List<T> choices) {
-		super(ChoicesProperty.class, COMPARATOR);
+	public ContentItemsProperty(final List<T> choices) {
+		super(ContentItemsProperty.class, COMPARATOR);
 		this.choices = choices;
 	}
 
 
 
 
-	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoicesProperty<T>, ChoiceBox<T>> {
+	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ContentItemsProperty<T>, ChoiceBox<T>> {
 
 
 		@Override
 		public void build(final SuiNode node,
-						  final ChoicesProperty<T> property,
+						  final ContentItemsProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			setItems(node, property, fxNode);
 		}
@@ -70,7 +71,7 @@ public class ChoicesProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final ChoicesProperty<T> property,
+		public MutationResult update(final ContentItemsProperty<T> property,
 									 final SuiNode node,
 									 final ChoiceBox<T> fxNode) {
 			setItems(node, property, fxNode);
@@ -81,7 +82,7 @@ public class ChoicesProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final ChoicesProperty<T> property,
+		public MutationResult remove(final ContentItemsProperty<T> property,
 									 final SuiNode node,
 									 final ChoiceBox<T> fxNode) {
 			final T prevValue = fxNode.getSelectionModel().getSelectedItem();
@@ -104,7 +105,7 @@ public class ChoicesProperty<T> extends SuiProperty {
 		 * @param property the choices-property
 		 * @param fxNode   the javafx choicebox
 		 */
-		private void setItems(final SuiNode node, final ChoicesProperty<T> property, final ChoiceBox<T> fxNode) {
+		private void setItems(final SuiNode node, final ContentItemsProperty<T> property, final ChoiceBox<T> fxNode) {
 
 			final T prevValue = fxNode.getSelectionModel().getSelectedItem();
 
@@ -180,12 +181,12 @@ public class ChoicesProperty<T> extends SuiProperty {
 
 
 
-	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoicesProperty<T>, ComboBox<T>> {
+	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ContentItemsProperty<T>, ComboBox<T>> {
 
 
 		@Override
 		public void build(final SuiNode node,
-						  final ChoicesProperty<T> property,
+						  final ContentItemsProperty<T> property,
 						  final ComboBox<T> fxNode) {
 			setItems(node, property, fxNode);
 		}
@@ -194,7 +195,7 @@ public class ChoicesProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final ChoicesProperty<T> property,
+		public MutationResult update(final ContentItemsProperty<T> property,
 									 final SuiNode node,
 									 final ComboBox<T> fxNode) {
 			setItems(node, property, fxNode);
@@ -205,7 +206,7 @@ public class ChoicesProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final ChoicesProperty<T> property,
+		public MutationResult remove(final ContentItemsProperty<T> property,
 									 final SuiNode node,
 									 final ComboBox<T> fxNode) {
 			final T prevValue = fxNode.getSelectionModel().getSelectedItem();
@@ -228,7 +229,7 @@ public class ChoicesProperty<T> extends SuiProperty {
 		 * @param property the choices-property
 		 * @param fxNode   the javafx choicebox
 		 */
-		private void setItems(final SuiNode node, final ChoicesProperty<T> property, final ComboBox<T> fxNode) {
+		private void setItems(final SuiNode node, final ContentItemsProperty<T> property, final ComboBox<T> fxNode) {
 
 			final T prevValue = fxNode.getValue();
 
@@ -331,6 +332,46 @@ public class ChoicesProperty<T> extends SuiProperty {
 			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
 					.map(prop -> (OnValueChangedEventProperty<T>) prop)
 					.ifPresent(property -> property.getListener().onEvent(new ValueChangedEventData<>(nextItem, prevItem)));
+		}
+
+
+	}
+
+
+
+
+
+
+	public static class ListViewUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ContentItemsProperty<T>, ListView<T>> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final ContentItemsProperty<T> property,
+						  final ListView<T> fxNode) {
+			fxNode.getItems().setAll(property.getChoices());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final ContentItemsProperty<T> property,
+									 final SuiNode node,
+									 final ListView<T> fxNode) {
+			fxNode.getItems().setAll(property.getChoices());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final ContentItemsProperty<T> property,
+									 final SuiNode node,
+									 final ListView<T> fxNode) {
+			fxNode.getItems().clear();
+			return MutationResult.MUTATED;
 		}
 
 

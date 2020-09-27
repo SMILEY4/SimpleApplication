@@ -143,3 +143,34 @@ An element displaying an image.
 - PreserveRatioProperty
 
   Whether the element should aways keep the same aspect ratio as the original image. The width is always kept as defined in the ImageSizeProperty and the height is then calculated. The height of the ImageSizeProperty is then always ignored and can be set to "undefined".
+
+
+
+### SuiList
+
+An element displaying a scrollable list of items.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- ContentItemsProperty
+
+  Defines the items displayed in the list
+
+- OnItemSelectedEventProperty
+
+  A listener that is called when the user selects an item / multiple items.
+
+- MultiselectProperty
+
+  Whether to allow the user to select more than one item at the same time.
+
+- PromptTextProperty
+
+  Specifies the text displayed in the list when it does not show any items (i.e. is empty).
+

@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerAction
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DividerDraggedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.HoverEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ItemSelectedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.KeyEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseButtonEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseDragEventData;
@@ -27,6 +28,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFoc
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnHoverChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnHoverStartedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnHoverStoppedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnItemSelectedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnKeyPressedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnKeyReleasedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnKeyTypedEventProperty;
@@ -993,6 +995,18 @@ public final class EventProperties {
 													 final SuiEventListener<AccordionExpandedEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnAccordionExpandedEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * todo
+	 */
+	public static <T> SuiProperty eventItemsSelected(final String propertyId,
+													 final SuiEventListener<ItemSelectedEventData<T>> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnItemSelectedEventProperty<>(propertyId, listener);
 	}
 
 

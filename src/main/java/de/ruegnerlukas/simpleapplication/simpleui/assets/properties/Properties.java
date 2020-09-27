@@ -8,8 +8,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Alignme
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChronologyProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
@@ -27,6 +27,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelSi
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LayoutProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MenuContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MinMaxProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MultiselectProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OrientationProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PreserveRatioProperty;
@@ -672,11 +673,11 @@ public final class Properties {
 
 	/**
 	 * @param choices the list of possible choices. The class of the choice should have an implementation of the equals-method.
-	 * @return an {@link ChoicesProperty}
+	 * @return an {@link ContentItemsProperty}
 	 */
-	public static <T> SuiProperty choices(final List<T> choices) {
+	public static <T> SuiProperty contentItems(final List<T> choices) {
 		Validations.INPUT.notNull(choices).exception("The choices can not be null.");
-		return new ChoicesProperty<>(List.copyOf(choices));
+		return new ContentItemsProperty<>(List.copyOf(choices));
 	}
 
 
@@ -687,8 +688,8 @@ public final class Properties {
 	 * @param converter the converter for the displayed choice box items
 	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> SuiProperty choicesConverter(final Class<T> type, final StringConverter<T> converter) {
-		return choicesConverter(null, type, converter);
+	public static <T> SuiProperty contentItemConverter(final Class<T> type, final StringConverter<T> converter) {
+		return contentItemConverter(null, type, converter);
 	}
 
 
@@ -700,7 +701,7 @@ public final class Properties {
 	 * @param converter  the converter for the displayed choice box items
 	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> SuiProperty choicesConverter(final String propertyId, final Class<T> type, final StringConverter<T> converter) {
+	public static <T> SuiProperty contentItemConverter(final String propertyId, final Class<T> type, final StringConverter<T> converter) {
 		Validations.INPUT.notNull(type).exception("The type can not be null.");
 		Validations.INPUT.notNull(converter).exception("The converter can not be null.");
 		return new ChoicesConverterProperty<>(propertyId, converter);
@@ -715,10 +716,10 @@ public final class Properties {
 	 * @param toString   converter from an object to a string
 	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> SuiProperty choicesConverter(final Class<T> type,
-												   final ChoicesConverterProperty.FromStringConverter<T> fromString,
-												   final ChoicesConverterProperty.ToStringConverter<T> toString) {
-		return choicesConverter(null, type, fromString, toString);
+	public static <T> SuiProperty contentItemConverter(final Class<T> type,
+													   final ChoicesConverterProperty.FromStringConverter<T> fromString,
+													   final ChoicesConverterProperty.ToStringConverter<T> toString) {
+		return contentItemConverter(null, type, fromString, toString);
 	}
 
 
@@ -731,10 +732,10 @@ public final class Properties {
 	 * @param toString   converter from an object to a string
 	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> SuiProperty choicesConverter(final String propertyId,
-												   final Class<T> type,
-												   final ChoicesConverterProperty.FromStringConverter<T> fromString,
-												   final ChoicesConverterProperty.ToStringConverter<T> toString) {
+	public static <T> SuiProperty contentItemConverter(final String propertyId,
+													   final Class<T> type,
+													   final ChoicesConverterProperty.FromStringConverter<T> fromString,
+													   final ChoicesConverterProperty.ToStringConverter<T> toString) {
 		Validations.INPUT.notNull(type).exception("The type can not be null.");
 		Validations.INPUT.notNull(fromString).exception("The converter from strings can not be null.");
 		Validations.INPUT.notNull(toString).exception("The converter to strings can not be null.");
@@ -1202,6 +1203,29 @@ public final class Properties {
 	 */
 	public static SuiProperty preserveRatio(final boolean preserveRatio) {
 		return new PreserveRatioProperty(preserveRatio);
+	}
+
+
+
+
+	/**
+	 * Enabled multiselect.
+	 *
+	 * @return the {@link MultiselectProperty}
+	 */
+	public static SuiProperty multiselect() {
+		return multiselect(true);
+	}
+
+
+
+
+	/**
+	 * @param allowMultiselect whether multi-select is enabled
+	 * @return the {@link MultiselectProperty}
+	 */
+	public static SuiProperty multiselect(final boolean allowMultiselect) {
+		return new MultiselectProperty(allowMultiselect);
 	}
 
 
