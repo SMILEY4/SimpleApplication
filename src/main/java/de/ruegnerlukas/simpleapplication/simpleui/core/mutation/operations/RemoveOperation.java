@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import javafx.scene.layout.Pane;
+import javafx.scene.Node;
 import lombok.Getter;
 
 import java.util.List;
@@ -63,8 +63,8 @@ public class RemoveOperation extends BaseOperation {
 
 
 	@Override
-	public void applyTo(final Pane pane) {
-		pane.getChildren().remove(index);
+	public void applyToFx(final List<Node> nodes) {
+		nodes.remove(index);
 	}
 
 }

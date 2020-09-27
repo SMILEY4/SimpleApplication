@@ -9,13 +9,16 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Mutatio
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class ChildNodeBuilder {
 
 
@@ -137,15 +140,15 @@ public class ChildNodeBuilder {
 	 */
 	private boolean checkValidIds(final List<SuiNode> nodes) {
 		final Set<String> uniqueIds = new HashSet<>();
-		int idCounter = 0;
-		for (SuiNode node : nodes) {
-			final String id = node.getPropertyStore().getIdUnsafe();
-			if (id != null) {
-				uniqueIds.add(id);
-				idCounter++;
-			}
+		final Set<String> duplicateIds = nodes.stream()
+				.map(node -> node.getPropertyStore().getIdUnsafe())
+				.filter(Objects::nonNull)
+				.filter(id -> !uniqueIds.add(id))
+				.collect(Collectors.toSet());
+		if (!duplicateIds.isEmpty()) {
+			log.warn("Found duplicate ids: {}.", duplicateIds);
 		}
-		return uniqueIds.size() == idCounter;
+		return duplicateIds.isEmpty();
 	}
 
 

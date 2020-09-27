@@ -5,7 +5,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBoxBase;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
 
@@ -109,6 +112,61 @@ public class PromptTextProperty extends SuiProperty {
 									 final ComboBoxBase<T> fxNode) {
 			fxNode.setPromptText("");
 			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class ListViewUpdatingBuilder implements PropFxNodeUpdatingBuilder<PromptTextProperty, ListView<?>> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final PromptTextProperty property,
+						  final ListView<?> fxNode) {
+			fxNode.setPlaceholder(buildPlaceholder(property.getText()));
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final PromptTextProperty property,
+									 final SuiNode node,
+									 final ListView<?> fxNode) {
+			fxNode.setPlaceholder(buildPlaceholder(property.getText()));
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final PromptTextProperty property,
+									 final SuiNode node,
+									 final ListView<?> fxNode) {
+			fxNode.setPlaceholder(null);
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		/**
+		 * Build the placeholder label with the given text.
+		 *
+		 * @param text the text to display
+		 * @return the created label
+		 */
+		private Label buildPlaceholder(final String text) {
+			Label label = new Label();
+			label.setText(text);
+			label.setAlignment(Pos.CENTER);
+			return label;
 		}
 
 	}

@@ -1,10 +1,15 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import javafx.scene.control.Accordion;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -76,7 +81,24 @@ public class ItemListProperty extends SuiProperty {
 
 
 
-	public static class Builder implements PropFxNodeBuilder<ItemListProperty, Pane> {
+	public interface ItemListFactory {
+
+
+		/**
+		 * Build a list of node factories
+		 *
+		 * @return the list of node factories
+		 */
+		List<NodeFactory> build();
+
+	}
+
+
+
+
+
+
+	public static class PaneBuilder implements PropFxNodeBuilder<ItemListProperty, Pane> {
 
 
 		@Override
@@ -97,16 +119,59 @@ public class ItemListProperty extends SuiProperty {
 
 
 
-	public interface ItemListFactory {
+	public static class TabPaneBuilder implements PropFxNodeBuilder<ItemListProperty, TabPane> {
 
 
-		/**
-		 * Build a list of node factories
-		 *
-		 * @return the list of node factories
-		 */
-		List<NodeFactory> build();
+		@Override
+		public void build(final SuiNode node,
+						  final ItemListProperty property,
+						  final TabPane fxNode) {
+			fxNode.getTabs().setAll(SuiTabPane.createTabs(node.getChildNodeStore().getUnmodifiable()));
+		}
 
 	}
+
+
+
+
+
+
+	public static class SplitPaneBuilder implements PropFxNodeBuilder<ItemListProperty, SplitPane> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final ItemListProperty property,
+						  final SplitPane fxNode) {
+			fxNode.getItems().setAll(
+					node.getChildNodeStore().stream()
+							.map(child -> child.getFxNodeStore().get())
+							.collect(Collectors.toList())
+			);
+
+		}
+
+	}
+
+
+
+
+
+
+	public static class AccordionBuilder implements PropFxNodeBuilder<ItemListProperty, Accordion> {
+
+
+		@Override
+		public void build(final SuiNode node,
+						  final ItemListProperty property,
+						  final Accordion fxNode) {
+			fxNode.getPanes().setAll(node.getChildNodeStore().stream()
+					.map(SuiAccordion::createTitlePane)
+					.collect(Collectors.toList())
+			);
+		}
+
+	}
+
 
 }

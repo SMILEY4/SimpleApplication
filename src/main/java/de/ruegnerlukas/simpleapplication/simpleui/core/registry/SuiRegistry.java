@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.registry;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiChoiceBox;
@@ -9,12 +10,17 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiDatePicker;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiHBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiImage;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiList;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiMenuBar;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSeparator;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSpinner;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSplitPane;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
@@ -119,11 +125,17 @@ public class SuiRegistry {
 			SuiSlider.register(this);
 			SuiLabeledSlider.register(this);
 			SuiSpinner.register(this);
+			SuiImage.register(this);
+			SuiMenuBar.register(this);
+			SuiList.register(this);
 			SuiContainer.register(this);
 			SuiAnchorPane.register(this);
 			SuiScrollPane.register(this);
 			SuiVBox.register(this);
 			SuiHBox.register(this);
+			SuiTabPane.register(this);
+			SuiSplitPane.register(this);
+			SuiAccordion.register(this);
 		}
 	}
 

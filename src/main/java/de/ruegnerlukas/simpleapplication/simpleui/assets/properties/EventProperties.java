@@ -1,27 +1,34 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.AccordionExpandedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DividerDraggedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.HoverEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ItemSelectedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.KeyEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseButtonEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseDragEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseMoveEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ScrollEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnAccordionExpandedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnCheckedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnDividerDraggedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFocusChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFocusLostEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnFocusReceivedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnHoverChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnHoverStartedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnHoverStoppedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnItemSelectedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnKeyPressedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnKeyReleasedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnKeyTypedEventProperty;
@@ -41,6 +48,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMou
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollStartedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnScrollHorizontalEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSelectedDateEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSelectedTabEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTabClosedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextEnteredEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnUncheckedEventProperty;
@@ -730,7 +739,7 @@ public final class EventProperties {
 	 */
 	public static SuiProperty eventDatePickerAction(final String propertyId, final SuiEventListener<DatePickerActionEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
-		return new OnSelectedDateEventProperty<>(propertyId, listener);
+		return new OnSelectedDateEventProperty(propertyId, listener);
 	}
 
 
@@ -928,6 +937,76 @@ public final class EventProperties {
 	public static SuiProperty eventTextChanged(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnTextChangedEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * When the tab of a tab pane is selected.
+	 *
+	 * @param listener the listener for events with {@link TabActionEventData}.
+	 * @return a {@link OnSelectedTabEventProperty}
+	 */
+	public static SuiProperty eventSelectedTab(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnSelectedTabEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * When the tab of a tab pane was closed by the user.
+	 *
+	 * @param listener the listener for events with {@link TabActionEventData}.
+	 * @return a {@link OnTabClosedEventProperty}
+	 */
+	public static SuiProperty eventClosedTab(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnTabClosedEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * When the divider of a split pane was moved by the user.
+	 *
+	 * @param listener the listener for events with {@link DividerDraggedEventData}.
+	 * @return a {@link OnTabClosedEventProperty}
+	 */
+	public static SuiProperty eventDividerPositionListener(final String propertyId,
+														   final SuiEventListener<DividerDraggedEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnDividerDraggedEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * When a new section of the accordion was expanded
+	 *
+	 * @param listener the listener for events with {@link AccordionExpandedEventData}.
+	 * @return a {@link OnAccordionExpandedEventProperty}
+	 */
+	public static SuiProperty eventAccordionExpanded(final String propertyId,
+													 final SuiEventListener<AccordionExpandedEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnAccordionExpandedEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * todo
+	 */
+	public static <T> SuiProperty eventItemsSelected(final String propertyId,
+													 final SuiEventListener<ItemSelectedEventData<T>> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnItemSelectedEventProperty<>(propertyId, listener);
 	}
 
 

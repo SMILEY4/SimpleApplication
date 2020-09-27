@@ -73,8 +73,8 @@ public final class SuiHBox {
 				PropertyEntry.of(FitToWidthProperty.class, new FitToHeightProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.HBoxUpdatingBuilder()),
-				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.Builder(), null),
-				PropertyEntry.of(ItemProperty.class, new ItemProperty.Builder(), null)
+				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.PaneBuilder(), null),
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.PaneBuilder(), null)
 		));
 	}
 

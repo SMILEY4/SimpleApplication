@@ -3,17 +3,20 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiAbstractMenuItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChronologyProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectableItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectableItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
@@ -22,9 +25,12 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemPro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelFormatterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LayoutProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MenuContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MinMaxProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MultiselectProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OrientationProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PreserveRatioProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
@@ -34,9 +40,14 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePre
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpinnerFactoryProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SplitDividerPositionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabDisabledProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPaneMenuSideProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
@@ -44,7 +55,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.util.StringConverter;
 
 import java.time.chrono.Chronology;
@@ -519,11 +533,21 @@ public final class Properties {
 
 
 	/**
+	 * @return an {@link AnchorProperty}
+	 */
+	public static SuiProperty anchorFitParent() {
+		return anchor(0, 0, 0, 0);
+	}
+
+
+
+
+	/**
 	 * @param top    the value for the top anchor or null.
 	 * @param bottom the value for the bottom anchor or null.
 	 * @param left   the value for the left anchor or null.
 	 * @param right  the value for the right anchor or null.
-	 * @return a {@link AnchorProperty}
+	 * @return an {@link AnchorProperty}
 	 */
 	public static SuiProperty anchor(final Number top, final Number bottom, final Number left, final Number right) {
 		return new AnchorProperty(top, bottom, left, right);
@@ -649,11 +673,11 @@ public final class Properties {
 
 	/**
 	 * @param choices the list of possible choices. The class of the choice should have an implementation of the equals-method.
-	 * @return an {@link ChoicesProperty}
+	 * @return an {@link ContentItemsProperty}
 	 */
-	public static <T> SuiProperty choices(final List<T> choices) {
+	public static <T> SuiProperty contentItems(final List<T> choices) {
 		Validations.INPUT.notNull(choices).exception("The choices can not be null.");
-		return new ChoicesProperty<>(List.copyOf(choices));
+		return new ContentItemsProperty<>(List.copyOf(choices));
 	}
 
 
@@ -664,8 +688,8 @@ public final class Properties {
 	 * @param converter the converter for the displayed choice box items
 	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> SuiProperty choicesConverter(final Class<T> type, final StringConverter<T> converter) {
-		return choicesConverter(null, type, converter);
+	public static <T> SuiProperty contentItemConverter(final Class<T> type, final StringConverter<T> converter) {
+		return contentItemConverter(null, type, converter);
 	}
 
 
@@ -677,7 +701,7 @@ public final class Properties {
 	 * @param converter  the converter for the displayed choice box items
 	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> SuiProperty choicesConverter(final String propertyId, final Class<T> type, final StringConverter<T> converter) {
+	public static <T> SuiProperty contentItemConverter(final String propertyId, final Class<T> type, final StringConverter<T> converter) {
 		Validations.INPUT.notNull(type).exception("The type can not be null.");
 		Validations.INPUT.notNull(converter).exception("The converter can not be null.");
 		return new ChoicesConverterProperty<>(propertyId, converter);
@@ -692,10 +716,10 @@ public final class Properties {
 	 * @param toString   converter from an object to a string
 	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> SuiProperty choicesConverter(final Class<T> type,
-												   final ChoicesConverterProperty.FromStringConverter<T> fromString,
-												   final ChoicesConverterProperty.ToStringConverter<T> toString) {
-		return choicesConverter(null, type, fromString, toString);
+	public static <T> SuiProperty contentItemConverter(final Class<T> type,
+													   final ChoicesConverterProperty.FromStringConverter<T> fromString,
+													   final ChoicesConverterProperty.ToStringConverter<T> toString) {
+		return contentItemConverter(null, type, fromString, toString);
 	}
 
 
@@ -708,10 +732,10 @@ public final class Properties {
 	 * @param toString   converter from an object to a string
 	 * @return an {@link ChoicesConverterProperty}
 	 */
-	public static <T> SuiProperty choicesConverter(final String propertyId,
-												   final Class<T> type,
-												   final ChoicesConverterProperty.FromStringConverter<T> fromString,
-												   final ChoicesConverterProperty.ToStringConverter<T> toString) {
+	public static <T> SuiProperty contentItemConverter(final String propertyId,
+													   final Class<T> type,
+													   final ChoicesConverterProperty.FromStringConverter<T> fromString,
+													   final ChoicesConverterProperty.ToStringConverter<T> toString) {
 		Validations.INPUT.notNull(type).exception("The type can not be null.");
 		Validations.INPUT.notNull(fromString).exception("The converter from strings can not be null.");
 		Validations.INPUT.notNull(toString).exception("The converter to strings can not be null.");
@@ -1055,6 +1079,153 @@ public final class Properties {
 		Validations.INPUT.notNull(propertyId).exception("The propertyId may not be null.");
 		Validations.INPUT.notNull(items).exception("The items-list must not be null.");
 		return new SpinnerFactoryProperty(propertyId, items, wrapAround);
+	}
+
+
+
+
+	/**
+	 * @param title the title of the element (used for tabs, titled-panes, ...).
+	 * @return the {@link TitleProperty}
+	 */
+	public static SuiProperty title(final String title) {
+		Validations.INPUT.notNull(title).exception("The title may not be null.");
+		return new TitleProperty(title);
+	}
+
+
+
+
+	/**
+	 * @param disabled whether the tab is disabled
+	 * @return the {@link TabDisabledProperty}
+	 */
+	public static SuiProperty tabDisabled(final boolean disabled) {
+		return new TabDisabledProperty(disabled);
+	}
+
+
+
+
+	/**
+	 * @param side the side of the tab menu
+	 * @return the {@link TabPaneMenuSideProperty}
+	 */
+	public static SuiProperty tabMenuSide(final Side side) {
+		return new TabPaneMenuSideProperty(side);
+	}
+
+
+
+
+	/**
+	 * @param tabClosingPolicy the tab closing policy
+	 * @return the {@link TabClosingPolicyProperty}
+	 */
+	public static SuiProperty tabClosingPolicy(final TabPane.TabClosingPolicy tabClosingPolicy) {
+		return new TabClosingPolicyProperty(tabClosingPolicy);
+	}
+
+
+
+
+	/**
+	 * @param positions the positions of the dividers
+	 * @return the {@link SplitDividerPositionProperty}
+	 */
+	public static SuiProperty dividerPositions(final Number... positions) {
+		return dividerPositions(false, positions);
+	}
+
+
+
+
+	/**
+	 * @param fixed     whether the user can drag the dividers to change their positions.
+	 * @param positions the positions of the dividers
+	 * @return the {@link SplitDividerPositionProperty}
+	 */
+	public static SuiProperty dividerPositions(final boolean fixed, final Number... positions) {
+		return new SplitDividerPositionProperty(fixed, positions);
+	}
+
+
+
+
+	/**
+	 * @param items the menu items
+	 * @return the {@link MenuContentProperty}
+	 */
+	public static SuiProperty menuBarContent(final SuiAbstractMenuItem... items) {
+		return menuBarContent(List.of(items));
+	}
+
+
+
+
+	/**
+	 * @param items the menu items
+	 * @return the {@link MenuContentProperty}
+	 */
+	public static SuiProperty menuBarContent(final List<SuiAbstractMenuItem> items) {
+		return new MenuContentProperty(items);
+	}
+
+
+
+
+	/**
+	 * @param image the image
+	 * @return the {@link ImageProperty}
+	 */
+	public static SuiProperty image(final Image image) {
+		return new ImageProperty(image);
+	}
+
+
+
+
+	/**
+	 * @param width  the width of the image
+	 * @param height the height of the image
+	 * @return the {@link ImageSizeProperty}
+	 */
+	public static SuiProperty imageSize(final ImageSizeProperty.ImageDimension width, final ImageSizeProperty.ImageDimension height) {
+		return new ImageSizeProperty(width, height);
+	}
+
+
+
+
+	/**
+	 * @param preserveRatio whether an image should preserve its ratio.
+	 * @return the {@link PreserveRatioProperty}
+	 */
+	public static SuiProperty preserveRatio(final boolean preserveRatio) {
+		return new PreserveRatioProperty(preserveRatio);
+	}
+
+
+
+
+	/**
+	 * Enabled multiselect.
+	 *
+	 * @return the {@link MultiselectProperty}
+	 */
+	public static SuiProperty multiselect() {
+		return multiselect(true);
+	}
+
+
+
+
+	/**
+	 * @param allowMultiselect whether multi-select is enabled
+	 * @return the {@link MultiselectProperty}
+	 */
+	public static SuiProperty multiselect(final boolean allowMultiselect) {
+		return new MultiselectProperty(allowMultiselect);
 	}
 
 

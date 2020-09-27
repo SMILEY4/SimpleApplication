@@ -17,18 +17,22 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiSlider;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiList;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Dimension2D;
-import javafx.geometry.Orientation;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 public class SUITestApplication {
@@ -76,10 +80,9 @@ public class SUITestApplication {
 		private static class TestUIState extends SuiState {
 
 
-			private int min = -2;
-			private int max = +2;
-			private double current = 0;
+			public List<String> elements = new ArrayList<>(List.of("1", "2", "3"));
 
+			private boolean fixed = false;
 
 		}
 
@@ -95,20 +98,20 @@ public class SUITestApplication {
 			final View view = View.builder()
 					.id("sui.test.view")
 					.size(new Dimension2D(500, 400))
-					.maxSize(new Dimension2D(600, 600))
 					.title(new StringProvider("application_name").get())
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							SuiAnchorPane.anchorPane(
 									Properties.items(
-											SuiVBox.vbox(
-													Properties.anchor(100, null, 100, 0),
-													Properties.style("-fx-border-color: black;"),
-													Properties.items(
-															SuiSlider.slider(
-																	Properties.orientation(Orientation.VERTICAL)
-															)
-													)
+											SuiList.list(
+													Properties.id("list"),
+													Properties.anchorFitParent(),
+													Properties.contentItems(IntStream.range(0, 100).mapToObj(i -> "Element " + i).collect(Collectors.toList())),
+													EventProperties.eventItemsSelected(".", e -> {
+														System.out.println("items selected: " + e.getSelection());
+													}),
+													Properties.multiselect(),
+													Properties.promptText("List is Empty")
 											)
 									)
 							)
@@ -122,6 +125,30 @@ public class SUITestApplication {
 
 			log.info(System.lineSeparator() + "====== SUI STATS ======" + System.lineSeparator() + SuiProfiler.get().getStatisticsAsPrettyString());
 		}
+
+
+//		private NodeFactory killerGridOfDoom(int cols, int rows, String tabTitle) {
+//			return SuiVBox.vbox(
+//					Properties.id("grid"+tabTitle),
+//					Properties.tabTitle(tabTitle),
+//					Properties.items(
+//							IntStream.range(0, rows).mapToObj(row ->
+//									SuiHBox.hbox(
+//											Properties.id(row + ".cols"),
+//											Properties.items(
+//													IntStream.range(0, cols).mapToObj(col ->
+//															SuiButton.button(
+//																	Properties.id(col + "." + row),
+//																	Properties.textContent(col + "." + row),
+//																	Properties.minSize(0, 0)
+//															)
+//													)
+//											)
+//									)
+//							)
+//					)
+//			);
+//		}
 
 
 
