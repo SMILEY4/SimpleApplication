@@ -1001,7 +1001,10 @@ public final class EventProperties {
 
 
 	/**
-	 * todo
+	 * When an item was selected by the user
+	 *
+	 * @param listener the listener for events with {@link ItemSelectedEventData}.
+	 * @return an {@link OnItemSelectedEventProperty}
 	 */
 	public static <T> SuiProperty eventItemsSelected(final String propertyId,
 													 final SuiEventListener<ItemSelectedEventData<T>> listener) {
@@ -1009,5 +1012,21 @@ public final class EventProperties {
 		return new OnItemSelectedEventProperty<>(propertyId, listener);
 	}
 
+
+
+
+	/**
+	 * When an item was selected by the user
+	 *
+	 * @param listener the listener for events with {@link ItemSelectedEventData}.
+	 * @param type     a marker for the type of the selected items
+	 * @return an {@link OnItemSelectedEventProperty}
+	 */
+	public static <T> SuiProperty eventItemsSelected(final String propertyId,
+													 final Class<T> type,
+													 final SuiEventListener<ItemSelectedEventData<T>> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnItemSelectedEventProperty<>(propertyId, listener);
+	}
 
 }

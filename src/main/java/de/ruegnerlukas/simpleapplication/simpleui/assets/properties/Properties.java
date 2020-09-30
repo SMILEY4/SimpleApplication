@@ -33,6 +33,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Orienta
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PreserveRatioProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SelectedItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;
@@ -740,6 +741,18 @@ public final class Properties {
 		Validations.INPUT.notNull(fromString).exception("The converter from strings can not be null.");
 		Validations.INPUT.notNull(toString).exception("The converter to strings can not be null.");
 		return new ChoicesConverterProperty<>(propertyId, fromString, toString);
+	}
+
+
+
+
+	/**
+	 * @param selectedItem the selected item
+	 * @param <T>          the generic type of the item
+	 * @return an {@link SelectedItemProperty}
+	 */
+	public static <T> SuiProperty selectedItem(final T selectedItem) {
+		return new SelectedItemProperty<>(selectedItem);
 	}
 
 

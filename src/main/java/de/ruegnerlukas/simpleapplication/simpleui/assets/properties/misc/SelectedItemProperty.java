@@ -18,7 +18,7 @@ public class SelectedItemProperty<T> extends SuiProperty {
 	 * The comparator function for this property type.
 	 */
 	private static final BiFunction<SelectedItemProperty, SelectedItemProperty, Boolean> COMPARATOR =
-			(a, b) -> a.getSelected().equals(b.getSelected());
+			(a, b) -> Objects.equals(a.getSelected(), b.getSelected());
 
 	/**
 	 * The selected item.

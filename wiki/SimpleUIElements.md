@@ -1,3 +1,173 @@
+
+
+### SuiAccordion
+
+An element containing any number of expandable sections. Only one of these sections can be expanded at any time.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- ItemListProperty, ItemProperty
+
+  Each item will be added as a new section. The title of the section is specified by the "TitleProperty" of the child item.
+
+- OnAccordionExpandedEventProperty
+
+  A listener that is called when the user expands one of the sections.
+
+
+
+
+
+### SuiAnchorPane
+
+An container that allows child nodes to anchor to its edges.
+
+The anchors are defined by the"AnchorProperty" of the child nodes. E.g. an anchor for the top-side of "10.0" keeps the distance of the top side of the child node at a distance of 10 pixels to the top side of the anchor pane. If the anchor for a side is set to null, the side is not restricted and can be any distance.  
+
+**Properties:**
+
+- all common properties
+- all common region properties
+- all common event properties
+
+- ItemListProperty, ItemProperty
+
+  Specifies the items of the anchor pane. The items are laid out using the "AnchorProperty" of the child nodes.
+
+
+
+### SuiButton
+
+An element that can trigger an action when pressed
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- TextContentProperty
+
+  Specifies the text shown inside the button
+
+- WrapTextProperty
+
+  Whether the text inside the button should wrap into the next line if it is too long.
+
+- OnActionEventProperty
+
+  A listener that is called when the button is pressed
+
+
+
+### SuiCheckbox
+
+An element that can be in one of the two states "selected" or "not selected".
+
+**Properties:**
+
+- all common properties
+- all common region properties
+- all common event properties
+
+- TextContentProperty
+
+  Specifies the text of the label shown next to the box
+
+- WrapTextProperty
+
+  Whether the label should wrap into the next line if it is too long.
+
+- OnActionEventProperty
+
+  A listener that is called when the box is pressed (either selected or deselected)
+
+- OnCheckedEventProperty
+
+  A listener that is called when the box was selected.
+
+- OnUncheckedEventProperty
+
+  A listener that is called when the box was deselected.
+
+
+
+### SuiChoiceBox
+
+An element where the user can select an item from a predefined list of items.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- ContentItemsProperty
+
+  Defines the list of items available to select from. 
+
+- SelectedItemProperty
+
+  Defines the selected item of the choicebox
+
+- ChoicesConverterProperty
+
+  Specifies how to convert the item from a java object to the string to display (and vice versa).
+
+- OnValueChangedEventProperty
+
+  A listener that is called when the user selects a new item or a new item is selected automatically.
+
+
+
+### SuiComboBox
+
+An element where the user can select an item from a predefined list of items. In addition, the user can type in the value to select by hand or search for an item.
+
+ **Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- ContentItemsProperty
+
+  Defines the list of items available to select from. 
+
+- ChoicesConverterProperty
+
+  Specifies how to convert the item from a java object to the string to display (and vice versa).
+
+- OnValueChangedEventProperty
+
+  A listener that is called when the user selects a new item or a new item is selected automatically.
+
+- EditableProperty
+
+  Whether the user can type in values manually. This property can not be used in combination with "SearchableProperty"
+
+- SearchableProperty
+
+  Whether the user can filter the list of available items. This property can not be used in combination with "EditableProperty"
+
+- PromptTextProperty
+
+  The text to show when no item is selected
+
+
+
 ### SuiTabPane
 
 An element that allows the user to switch between different views/tabs.
@@ -88,28 +258,6 @@ An element usually placed at the very top containing buttons-like expandable men
 - SystemMenuBarProperty
 
   Whether to use the menu bar of the operating system if it supports it.
-
-
-
-### SuiAccordion
-
-An element containing any number of expandable sections. Only one of these sections can be expanded at any time.
-
-**Properties:**
-
-- all common properties
-
-- all common region properties
-
-- all common event properties
-
-- ItemListProperty, ItemProperty
-
-  Each item will be added as a new section. The title of the section is specified by the "TitleProperty" of the child item.
-
-- OnAccordionExpandedEventProperty
-
-  A listener that is called when the user expands one of the sections.
 
 
 
