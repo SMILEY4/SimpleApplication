@@ -214,7 +214,9 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 
 	@Test
 	public void test_choicebox_with_real_user_interaction() {
-
+		if(shouldSkipFxTest()) {
+			return;
+		}
 
 		// setup
 		class TestState extends SuiState {

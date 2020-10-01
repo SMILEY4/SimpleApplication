@@ -24,6 +24,9 @@ public class SuiAccordionTest extends SuiElementTest {
 
 	@Test
 	public void test_expanding_sections_triggers_actions() {
+		if(shouldSkipFxTest()) {
+			return;
+		}
 
 		// build accordion with fixed sections and capture all events in a list
 		final Phaser phaser = new Phaser(2);

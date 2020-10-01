@@ -21,6 +21,9 @@ public class SuiCheckboxTest extends SuiElementTest {
 
 	@Test
 	public void test_pressing_checkbox_triggers_actions() {
+		if(shouldSkipFxTest()) {
+			return;
+		}
 
 		final Phaser phaser = new Phaser(3);
 		final List<ActionEventData> capturedActionEvents = new ArrayList<>();

@@ -14,4 +14,5 @@ jobs:
       with:
         java-version: 11.0.5
     - name: Build with Maven
+#      run: mvn -B package -Dtestfx.headless=true -DskipFxTests=true --file pom.xml
       run: mvn -B package -Dtestfx.headless=true --file pom.xml

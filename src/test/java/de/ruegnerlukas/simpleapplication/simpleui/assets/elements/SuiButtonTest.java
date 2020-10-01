@@ -20,6 +20,9 @@ public class SuiButtonTest extends SuiElementTest {
 
 	@Test
 	public void test_pressing_button_triggers_action() {
+		if(shouldSkipFxTest()) {
+			return;
+		}
 
 		final Phaser phaser = new Phaser(2);
 		final List<ActionEventData> capturedEvents = new ArrayList<>();
