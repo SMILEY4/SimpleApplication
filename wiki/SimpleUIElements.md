@@ -168,6 +168,36 @@ An element where the user can select an item from a predefined list of items. In
 
 
 
+### SuiContainer
+
+A generic container that can hold any number of child elements. A custom layout function for the children can be provided.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- ItemListProperty, ItemProperty
+
+  Defines the child elements of the container.
+
+- LayoutProperty
+
+  Specifies the layout function and can be used to set the position and size of the child elements.
+
+  To lay out the nodes, it is recommended to use the following methods of the child nodes:
+
+  - relocate(x, y) to set the position relative to the container position
+  - resize(w, h) to set the size
+  - resizeRelocate(x, y, w, h) to set the position and size at the same time
+
+  
+
+
+
 ### SuiTabPane
 
 An element that allows the user to switch between different views/tabs.
