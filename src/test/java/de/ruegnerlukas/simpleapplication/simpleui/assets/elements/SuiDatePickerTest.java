@@ -61,15 +61,15 @@ public class SuiDatePickerTest extends SuiElementTest {
 		// enter text for first time
 		syncJfxThread(100, () -> clickOn(datePicker, MouseButton.PRIMARY));
 		syncJfxThread(100, () -> type(
-				KeyCode.DIGIT2,
+				KeyCode.getKeyCode("2"),
 				KeyCode.PERIOD,
-				KeyCode.DIGIT1,
-				KeyCode.DIGIT0,
+				KeyCode.getKeyCode("1"),
+				KeyCode.getKeyCode("0"),
 				KeyCode.PERIOD,
-				KeyCode.DIGIT2,
-				KeyCode.DIGIT0,
-				KeyCode.DIGIT2,
-				KeyCode.DIGIT0,
+				KeyCode.getKeyCode("2"),
+				KeyCode.getKeyCode("0"),
+				KeyCode.getKeyCode("2"),
+				KeyCode.getKeyCode("0"),
 				KeyCode.ENTER
 		));
 		assertThat(datePicker.getValue()).isAfterOrEqualTo(LocalDate.of(2020, Month.OCTOBER, 2));

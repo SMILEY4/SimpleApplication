@@ -1188,6 +1188,17 @@ public final class Properties {
 
 
 	/**
+	 * @param resource the resource for the image
+	 * @return the {@link ImageProperty}
+	 */
+	public static SuiProperty image(final Resource resource) {
+		return image(new Image(resource.getPath()));
+	}
+
+
+
+
+	/**
 	 * @param image the image
 	 * @return the {@link ImageProperty}
 	 */
