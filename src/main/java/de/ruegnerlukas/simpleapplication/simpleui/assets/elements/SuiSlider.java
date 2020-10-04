@@ -67,10 +67,10 @@ public final class SuiSlider {
 		registry.registerProperties(SuiSlider.class, List.of(
 				PropertyEntry.of(MinMaxProperty.class, new MinMaxProperty.SliderUpdatingBuilder()),
 				PropertyEntry.of(BlockIncrementProperty.class, new BlockIncrementProperty.SliderUpdatingBuilder()),
-				PropertyEntry.of(LabelFormatterProperty.class, new LabelFormatterProperty.SliderUpdatingBuilder()),
-				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.SliderUpdatingBuilder()),
 				PropertyEntry.of(TickMarkProperty.class, new TickMarkProperty.SliderUpdatingBuilder()),
-				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.SliderUpdatingBuilder())
+				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.SliderUpdatingBuilder()),
+				PropertyEntry.of(LabelFormatterProperty.class, new LabelFormatterProperty.SliderUpdatingBuilder()),
+				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.SliderUpdatingBuilder())
 		));
 	}
 

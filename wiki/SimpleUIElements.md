@@ -194,7 +194,303 @@ A generic container that can hold any number of child elements. A custom layout 
   - resize(w, h) to set the size
   - resizeRelocate(x, y, w, h) to set the position and size at the same time
 
-  
+
+
+
+### SuiDatePicker
+
+An element that allows the user to pick an element from an "popup"-calender or enter the date manually.
+
+**Properties:**
+
+- all common properties
+
+- all common event properties
+
+- PromtTextProperty
+
+  The text to display when no date is selected.
+
+- EditableProperty
+
+  Whether the user can type in a date manually.
+
+- ChronologyProperty
+
+  Specifies the calendar system to be used for parsing, displaying, and choosing dates.
+
+- OnSelectedDateEventProperty
+
+  A listener triggered when a new valid date is selected.
+
+
+
+### SuiImage
+
+An element displaying an image.
+
+**Properties:**
+
+- all common properties
+
+- all common event properties
+
+- ImageProperty
+
+  Defines what image to show
+
+- ImageSizeProperty
+
+  Defines the size of the element. Since the element does not accept the common region properties, this property is the only way to control the width and height.
+
+  The size is defined as "ImageDimensions" for width and height. There are 4 types of these dimensions:
+
+  - UNDEFINED: no value has to be set. The size of the original image will be used for this axis (or 0). 
+  - ABSOLUTE: the given values is the fixed size of an axis in pixels.
+  - RELATIVE: the resulting size is the size of the original image multiplied by the given value. 
+  - PARENT-RELATIVE: the element size is always the size of its parent multiplied by the given value.
+
+  No min or max values are directly possible here. One workaround is to put the image element into an container and give that one a min/max size. The size of the image should then be defined with "parent-relative".
+
+- PreserveRatioProperty
+
+  Whether the element should aways keep the same aspect ratio as the original image. The width is always kept as defined in the ImageSizeProperty and the height is then calculated. The height of the ImageSizeProperty is then always ignored and can be set to "undefined".
+
+
+
+### SuiLabeledSlider
+
+A slider to select a value in a specific range with a label next to it showing the current value. Values can also be entered manually via the label (if enabled).
+
+When selecting a value via the label, the "number" has to be typed in without the formatting applied by a label-formatter. Simple math expressions are also allowed and evaluated automatically.
+
+If a value is entered that is outside the range, the closest valid value will be picked instead (i.e. either the min or max value).
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- MinMaxProperty
+
+  Defines the range to select the values from. The min and max values are included.
+
+- BlockIncrementProperty
+
+  Specifies the amount by which to adjust the slider if the track of the slider is clicked.
+
+- TickMarkProperty
+
+  Defines the style of the tick marks and how many to show
+
+- Alignment Property
+
+  Defines the layout of the label relative to the slider element
+
+  - e.g.: BOTTOM_CENTER = the label is centered below the slider
+  - e.g.: CENTER_LEFT = the label is centered to the left side of the slider
+
+- OrientationProperty
+
+  Whether the slider is a vertical or horizontal slider.
+
+- SpacingProperty
+
+  Specifies the space between the slider and label
+
+- EditableProperty
+
+  Whether the user can enter values via the label.
+
+- LabelFormatterProperty
+
+  The property providing the formatter that converts the current value into the text shown in the label and the tick marks.
+
+- LabelSizeProperty
+
+  Defines the exact with of the label.
+
+- OnValueChangedEventProperty
+
+  A listener triggered when the selected value was changed to a new valid value.
+
+
+
+
+
+### SuiList
+
+An element displaying a scrollable list of items.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- ContentItemsProperty
+
+  Defines the items displayed in the list
+
+- OnItemSelectedEventProperty
+
+  A listener that is called when the user selects an item / multiple items.
+
+- MultiselectProperty
+
+  Whether to allow the user to select more than one item at the same time.
+
+- PromptTextProperty
+
+  Specifies the text displayed in the list when it does not show any items (i.e. is empty).
+
+
+
+### SuiMenuBar
+
+An element usually placed at the very top containing buttons-like expandable menus.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- MenuContentProperty
+
+  Defines the content of the menu-bar via a list of "SuiAbstractMenuItem". Each element in this list of the sup-type "SuiMenu" creates a top level entry in the menu-bar.
+
+  Types of menu-items:
+
+  - SuiMenu: an entry containing multiple sub-menu-entries
+  - SuiMenuItem: a simple entry displaying a text. Triggers an event when clicked.
+  - SuiCheckMenuItem: a simple entry displaying a text and a toggle between selected and not selected. Triggers an event when toggled with the new state.
+  - SuiSeparatorMenuItem: an entry displaying a simple small line for better organizing the menu  
+
+- SystemMenuBarProperty
+
+  Whether to use the menu bar of the operating system if it supports it.
+
+
+
+### SuiScrollPane
+
+
+
+### SuiSeparator
+
+
+
+### SuiSlider
+
+A slider to select a value in a specific range.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- MinMaxProperty
+
+  Defines the range to select the values from. The min and max values are included.
+
+- BlockIncrementProperty
+
+  Specifies the amount by which to adjust the slider if the track of the slider is clicked.
+
+- TickMarkProperty
+
+  Defines the style of the tick marks and how many to show
+
+- OrientationProperty
+
+  Whether the slider is a vertical or horizontal slider.
+
+- LabelFormatterProperty
+
+  Defines a formatter for the tick marks taking in the value of the mark and outputting the string to display at that position.
+
+- OnValueChangedEventProperty
+
+  A listener triggered when the selected value was changed to a new valid value.
+
+
+
+### SuiSpinner
+
+An element where the user can cycle through a set/range of elements.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- SpinnerFactoryProperty
+
+  Defines the behavior of the spinner. There are three types:
+
+  - Properties.integerSpinnerValues
+
+    The user can cycle through a defined range of integer numbers with a specific step size
+
+  - Properties.floatingPointSpinnerValues
+
+    Same as "Properties.integerSpinnerValues" but with floating point numbers
+
+  - Properties.listSpinnerValues
+
+    The user can cycle through a list of strings.
+
+- EditableProperty
+
+  Whether the user can type in values manually
+
+- OnValueChangedEventProperty
+
+  A listener that is triggered when the value was changed to a valid new one
+
+
+
+### SuiSplitPane
+
+An element that can display multiple other views inside of it. The user can control the size of the view via dividers.
+
+**Properties:**
+
+- all common properties
+
+- all common region properties
+
+- all common event properties
+
+- ItemListProperty, ItemProperty
+
+  Each item will be added as a new visible view to the split pane. Items will be added from left to right or top to bottom.
+
+- OrientationProperty
+
+  Whether the views are divided horizontally (left to right) or vertically  (top to bottom).
+
+- SplitDividerPositionProperty
+
+  Defines the initial positions of all dividers as percentages. If the "fixed"-flag is set, the dividers can not be dragged by the user
+
+- OnDividerDraggedEventProperty
+
+  A listener that is called when the user moved a divider. The divider is identified by an index into the list of all dividers.
 
 
 
@@ -232,123 +528,12 @@ An element that allows the user to switch between different views/tabs.
 
 
 
-### SuiSplitPane
-
-An element that can display multiple other views inside of it. The user can control the size of the view via dividers.
-
-**Properties:**
-
-- all common properties
-
-- all common region properties
-
-- all common event properties
-
-- ItemListProperty, ItemProperty
-
-  Each item will be added as a new visible view to the split pane. Items will be added from left to right or top to bottom.
-
-- OrientationProperty
-
-  Whether the views are divided horizontally (left to right) or vertically  (top to bottom).
-
-- SplitDividerPositionProperty
-
-  Defines the initial positions of all dividers as percentages. If the "fixed"-flag is set, the dividers can not be dragged by the user
-
-- OnDividerDraggedEventProperty
-
-  A listener that is called when the user moved a divider. The divider is identified by an index into the list of all dividers.
+### SuiTextArea
 
 
 
-### SuiMenuBar
-
-An element usually placed at the very top containing buttons-like expandable menus.
-
-**Properties:**
-
-- all common properties
-
-- all common region properties
-
-- all common event properties
-
-- MenuContentProperty
-
-  Defines the content of the menu-bar via a list of "SuiAbstractMenuItem". Each element in this list of the sup-type "SuiMenu" creates a top level entry in the menu-bar.
-
-  Types of menu-items:
-
-  - SuiMenu: an entry containing multiple sub-menu-entries
-  - SuiMenuItem: a simple entry displaying a text. Triggers an event when clicked.
-  - SuiCheckMenuItem: a simple entry displaying a text and a toggle between selected and not selected. Triggers an event when toggled with the new state.
-  - SuiSeparatorMenuItem: an entry displaying a simple small line for better organizing the menu  
-
-- SystemMenuBarProperty
-
-  Whether to use the menu bar of the operating system if it supports it.
+### SuiTextField
 
 
 
-### SuiImage
-
-An element displaying an image.
-
-**Properties:**
-
-- all common properties
-
-- all common event properties
-
-- ImageProperty
-
-  Defines what image to show
-
-- ImageSizeProperty
-
-  Defines the size of the element. Since the element does not accept the common region properties, this property is the only way to control the width and height.
-
-  The size is defined as "ImageDimensions" for width and height. There are 4 types of these dimensions:
-
-  - UNDEFINED: no value has to be set. The size of the original image will be used for this axis (or 0). 
-  - ABSOLUTE: the given values is the fixed size of an axis in pixels.
-  - RELATIVE: the resulting size is the size of the original image multiplied by the given value. 
-  - PARENT-RELATIVE: the element size is always the size of its parent multiplied by the given value.
-
-  No min or max values are directly possible here. One workaround is to put the image element into an container and give that one a min/max size. The size of the image should then be defined with "parent-relative".
-
-- PreserveRatioProperty
-
-  Whether the element should aways keep the same aspect ratio as the original image. The width is always kept as defined in the ImageSizeProperty and the height is then calculated. The height of the ImageSizeProperty is then always ignored and can be set to "undefined".
-
-
-
-### SuiList
-
-An element displaying a scrollable list of items.
-
-**Properties:**
-
-- all common properties
-
-- all common region properties
-
-- all common event properties
-
-- ContentItemsProperty
-
-  Defines the items displayed in the list
-
-- OnItemSelectedEventProperty
-
-  A listener that is called when the user selects an item / multiple items.
-
-- MultiselectProperty
-
-  Whether to allow the user to select more than one item at the same time.
-
-- PromptTextProperty
-
-  Specifies the text displayed in the list when it does not show any items (i.e. is empty).
-
+### SuiVBox
