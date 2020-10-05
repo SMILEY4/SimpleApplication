@@ -38,10 +38,16 @@ public class ImageSizeProperty extends SuiProperty {
 	@Getter
 	private final ImageDimension height;
 
+	/**
+	 * A listener to the parent node responsible for the width.
+	 */
 	@Getter
 	@Setter
 	private ChangeListener<Parent> parentWidthListener;
 
+	/**
+	 * A listener to the parent node responsible for the height.
+	 */
 	@Getter
 	@Setter
 	private ChangeListener<Parent> parentHeightListener;

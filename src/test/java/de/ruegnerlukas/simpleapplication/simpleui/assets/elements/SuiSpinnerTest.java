@@ -91,6 +91,7 @@ public class SuiSpinnerTest extends SuiElementTest {
 
 		@SuppressWarnings ("unchecked") final Spinner<Integer> spinner = (Spinner<Integer>) controller.getRootFxNode();
 		show(spinner);
+		capturedEvents.clear();
 
 		// increment value once
 		syncJfxThread(spinner::increment);
