@@ -33,6 +33,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Orienta
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PreserveRatioProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SelectedItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;
@@ -746,6 +747,18 @@ public final class Properties {
 
 
 	/**
+	 * @param selectedItem the selected item
+	 * @param <T>          the generic type of the item
+	 * @return an {@link SelectedItemProperty}
+	 */
+	public static <T> SuiProperty selectedItem(final T selectedItem) {
+		return new SelectedItemProperty<>(selectedItem);
+	}
+
+
+
+
+	/**
 	 * @return an {@link MutationBehaviourProperty} with {@link MutationBehaviourProperty.MutationBehaviour#DEFAULT}
 	 */
 	public static SuiProperty behaviourDefault() {
@@ -896,6 +909,10 @@ public final class Properties {
 	 * @return a {@link MinMaxProperty}
 	 */
 	public static SuiProperty minMax(final Number min, final Number max) {
+		if (min != null && max != null) {
+			Validations.INPUT.isGreaterThan(max.doubleValue(), min.doubleValue())
+					.exception("The max value must be less than the min value: min={}, max={}", min, max);
+		}
 		return new MinMaxProperty(
 				min == null ? -Double.MAX_VALUE : min,
 				max == null ? +Double.MAX_VALUE : max);
@@ -1020,65 +1037,57 @@ public final class Properties {
 
 
 	/**
-	 * @param propertyId the id of the property.
 	 * @param min        the min value (inclusive)
 	 * @param max        the max value (inclusive)
 	 * @param stepSize   the amount to step by
 	 * @param value      the (initial) value
 	 * @return the {@link SpinnerFactoryProperty}
 	 */
-	public static SuiProperty integerSpinnerValues(final String propertyId,
-												   final int min,
+	public static SuiProperty integerSpinnerValues(final int min,
 												   final int max,
 												   final int stepSize,
 												   final int value) {
-		Validations.INPUT.notNull(propertyId).exception("The propertyId may not be null.");
 		Validations.INPUT.isLessThan(min, max).exception(
 				"The min value must be smaller than the max value: min={}, max={}", min, max);
 		Validations.INPUT.isNotNegative(stepSize).exception("The step size may not be negative.");
 		Validations.INPUT.inRange(value, min, max).exception(
 				"The current value must be between the min and max value. min={}, max={}, current={}", min, max, value);
-		return new SpinnerFactoryProperty(propertyId, min, max, stepSize, value);
+		return new SpinnerFactoryProperty(min, max, stepSize, value);
 	}
 
 
 
 
 	/**
-	 * @param propertyId the id of the property.
 	 * @param min        the min value (inclusive)
 	 * @param max        the max value (inclusive)
 	 * @param stepSize   the amount to step by
 	 * @param value      the (initial) value
 	 * @return the {@link SpinnerFactoryProperty}
 	 */
-	public static SuiProperty floatingPointSpinnerValues(final String propertyId,
-														 final double min,
+	public static SuiProperty floatingPointSpinnerValues(final double min,
 														 final double max,
 														 final double stepSize,
 														 final double value) {
-		Validations.INPUT.notNull(propertyId).exception("The propertyId may not be null.");
 		Validations.INPUT.isLessThan(min, max).exception(
 				"The min value must be smaller than the max value: min={}, max={}", min, max);
 		Validations.INPUT.isNotNegative(stepSize).exception("The step size may not be negative.");
 		Validations.INPUT.inRange(value, min, max).exception(
 				"The current value must be between the min and max value. min={}, max={}, current={}", min, max, value);
-		return new SpinnerFactoryProperty(propertyId, min, max, stepSize, value);
+		return new SpinnerFactoryProperty(min, max, stepSize, value);
 	}
 
 
 
 
 	/**
-	 * @param propertyId the id of the property.
 	 * @param items      the items
 	 * @param wrapAround whether to wrap around or stop at the end/start
 	 * @return the {@link SpinnerFactoryProperty}
 	 */
-	public static SuiProperty listSpinnerValues(final String propertyId, final List<String> items, final boolean wrapAround) {
-		Validations.INPUT.notNull(propertyId).exception("The propertyId may not be null.");
+	public static SuiProperty listSpinnerValues(final List<String> items, final boolean wrapAround) {
 		Validations.INPUT.notNull(items).exception("The items-list must not be null.");
-		return new SpinnerFactoryProperty(propertyId, items, wrapAround);
+		return new SpinnerFactoryProperty(items, wrapAround);
 	}
 
 
@@ -1169,6 +1178,17 @@ public final class Properties {
 	 */
 	public static SuiProperty menuBarContent(final List<SuiAbstractMenuItem> items) {
 		return new MenuContentProperty(items);
+	}
+
+
+
+
+	/**
+	 * @param resource the resource for the image
+	 * @return the {@link ImageProperty}
+	 */
+	public static SuiProperty image(final Resource resource) {
+		return image(new Image(resource.getPath()));
 	}
 
 

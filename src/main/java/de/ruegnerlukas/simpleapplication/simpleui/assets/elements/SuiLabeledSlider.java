@@ -82,14 +82,14 @@ public final class SuiLabeledSlider {
 		registry.registerProperties(SuiLabeledSlider.class, List.of(
 				PropertyEntry.of(MinMaxProperty.class, new MinMaxProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(BlockIncrementProperty.class, new BlockIncrementProperty.LabeledSliderUpdatingBuilder()),
-				PropertyEntry.of(LabelFormatterProperty.class, new LabelFormatterProperty.LabeledSliderUpdatingBuilder()),
-				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(TickMarkProperty.class, new TickMarkProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.LabeledSliderUpdatingBuilder()),
-				PropertyEntry.of(LabelSizeProperty.class, new LabelSizeProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.LabeledSliderUpdatingBuilder()),
-				PropertyEntry.of(EditableProperty.class, new EditableProperty.LabeledSliderUpdatingBuilder())
+				PropertyEntry.of(EditableProperty.class, new EditableProperty.LabeledSliderUpdatingBuilder()),
+				PropertyEntry.of(LabelFormatterProperty.class, new LabelFormatterProperty.LabeledSliderUpdatingBuilder()),
+				PropertyEntry.of(LabelSizeProperty.class, new LabelSizeProperty.LabeledSliderUpdatingBuilder()),
+				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.LabeledSliderUpdatingBuilder())
 		));
 	}
 
@@ -230,7 +230,7 @@ public final class SuiLabeledSlider {
 		 */
 		private Pane buildBox(final Node slider, final Node label, final boolean horizontal) {
 			final Pane box = horizontal ? buildHBox() : buildVBox();
-			box.getChildren().addAll(label, slider);
+			box.getChildren().addAll(slider, label);
 			box.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 			box.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 			box.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_PREF_SIZE);

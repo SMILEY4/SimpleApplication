@@ -109,18 +109,16 @@ public class SpinnerFactoryProperty extends SuiProperty {
 
 
 	/**
-	 * @param propertyId   see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param min          the min value.
 	 * @param max          the max value.
 	 * @param stepSize     the amount to step by.
 	 * @param initialValue the initial value
 	 */
-	public SpinnerFactoryProperty(final String propertyId,
-								  final int min,
+	public SpinnerFactoryProperty(final int min,
 								  final int max,
 								  final int stepSize,
 								  final int initialValue) {
-		super(SpinnerFactoryProperty.class, COMPARATOR, propertyId);
+		super(SpinnerFactoryProperty.class, COMPARATOR);
 		this.max = max;
 		this.min = min;
 		this.stepSize = stepSize;
@@ -134,18 +132,16 @@ public class SpinnerFactoryProperty extends SuiProperty {
 
 
 	/**
-	 * @param propertyId   see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param min          the min value.
 	 * @param max          the max value.
 	 * @param stepSize     the amount to step by.
 	 * @param initialValue the initial value
 	 */
-	public SpinnerFactoryProperty(final String propertyId,
-								  final double min,
+	public SpinnerFactoryProperty(final double min,
 								  final double max,
 								  final double stepSize,
 								  final double initialValue) {
-		super(SpinnerFactoryProperty.class, COMPARATOR, propertyId);
+		super(SpinnerFactoryProperty.class, COMPARATOR);
 		this.max = max;
 		this.min = min;
 		this.stepSize = stepSize;
@@ -159,12 +155,11 @@ public class SpinnerFactoryProperty extends SuiProperty {
 
 
 	/**
-	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param items      the items
 	 * @param wrapAround whether to wrap around or stop at the end/start
 	 */
-	public SpinnerFactoryProperty(final String propertyId, final List<String> items, final boolean wrapAround) {
-		super(SpinnerFactoryProperty.class, COMPARATOR, propertyId);
+	public SpinnerFactoryProperty(final List<String> items, final boolean wrapAround) {
+		super(SpinnerFactoryProperty.class, COMPARATOR);
 		this.max = null;
 		this.min = null;
 		this.stepSize = null;

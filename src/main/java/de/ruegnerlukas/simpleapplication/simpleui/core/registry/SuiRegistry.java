@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiCheckbox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiContainer;
@@ -117,6 +118,7 @@ public class SuiRegistry {
 			SuiSeparator.register(this);
 			SuiLabel.register(this);
 			SuiButton.register(this);
+			SuiCheckbox.register(this);
 			SuiChoiceBox.register(this);
 			SuiComboBox.register(this);
 			SuiTextField.register(this);

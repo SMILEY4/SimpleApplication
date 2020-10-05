@@ -36,7 +36,7 @@ public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<
 			if (next) {
 				listener.onEvent(
 						FocusEventData.builder()
-								.focused(false)
+								.focused(true)
 								.build()
 				);
 			}
