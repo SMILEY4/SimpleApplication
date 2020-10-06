@@ -18,7 +18,16 @@ An element containing any number of expandable sections. Only one of these secti
 
 - OnAccordionExpandedEventProperty
 
-  A listener that is called when the user expands one of the sections.
+  A listener that is called when the user expands or collapses one of the sections. The event carries the title of the interacted section and the state of the other sections.
+  
+  There are 3 possible scenarios
+  
+  - no section was expanded and the user expands section A
+    - event {title=A, expanded=true}
+  - A was expanded and user expands B (collapsing A)
+    - event {title=B, expanded=true}
+  - B was expanded and user collapses B
+    - event {title=B, expanded=false}
 
 
 

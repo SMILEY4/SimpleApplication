@@ -1,14 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
@@ -17,6 +16,7 @@ import lombok.Getter;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 public class ItemProperty extends SuiProperty {
 
@@ -132,14 +132,19 @@ public class ItemProperty extends SuiProperty {
 
 
 
-	public static class AccordionBuilder implements PropFxNodeBuilder<ItemListProperty, Accordion> {
+
+
+
+	public static class AccordionBuilder implements PropFxNodeBuilder<ItemListProperty, ExtendedAccordion> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final ItemListProperty property,
-						  final Accordion fxNode) {
-			fxNode.getPanes().add(SuiAccordion.createTitlePane(node));
+		public void build(final SuiNode node, final ItemListProperty property, final ExtendedAccordion fxNode) {
+			if (node.getChildNodeStore().hasChildren()) {
+				fxNode.setSections(Stream.of(node.getChildNodeStore().get(0)));
+			} else {
+				fxNode.clearSections();
+			}
 		}
 
 	}

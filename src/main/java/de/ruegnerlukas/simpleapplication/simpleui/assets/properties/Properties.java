@@ -1037,10 +1037,10 @@ public final class Properties {
 
 
 	/**
-	 * @param min        the min value (inclusive)
-	 * @param max        the max value (inclusive)
-	 * @param stepSize   the amount to step by
-	 * @param value      the (initial) value
+	 * @param min      the min value (inclusive)
+	 * @param max      the max value (inclusive)
+	 * @param stepSize the amount to step by
+	 * @param value    the (initial) value
 	 * @return the {@link SpinnerFactoryProperty}
 	 */
 	public static SuiProperty integerSpinnerValues(final int min,
@@ -1059,10 +1059,10 @@ public final class Properties {
 
 
 	/**
-	 * @param min        the min value (inclusive)
-	 * @param max        the max value (inclusive)
-	 * @param stepSize   the amount to step by
-	 * @param value      the (initial) value
+	 * @param min      the min value (inclusive)
+	 * @param max      the max value (inclusive)
+	 * @param stepSize the amount to step by
+	 * @param value    the (initial) value
 	 * @return the {@link SpinnerFactoryProperty}
 	 */
 	public static SuiProperty floatingPointSpinnerValues(final double min,
@@ -1247,6 +1247,8 @@ public final class Properties {
 	public static SuiProperty multiselect(final boolean allowMultiselect) {
 		return new MultiselectProperty(allowMultiselect);
 	}
+
+
 
 
 }

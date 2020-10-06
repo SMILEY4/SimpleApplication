@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.AccordionExpandedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
@@ -988,11 +988,11 @@ public final class EventProperties {
 	/**
 	 * When a new section of the accordion was expanded
 	 *
-	 * @param listener the listener for events with {@link AccordionExpandedEventData}.
+	 * @param listener the listener for events with {@link SectionEventData}.
 	 * @return a {@link OnAccordionExpandedEventProperty}
 	 */
 	public static SuiProperty eventAccordionExpanded(final String propertyId,
-													 final SuiEventListener<AccordionExpandedEventData> listener) {
+													 final SuiEventListener<SectionEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnAccordionExpandedEventProperty(propertyId, listener);
 	}

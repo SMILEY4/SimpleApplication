@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SuiListChangeListener;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiListChangeListener;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.SplitPane;

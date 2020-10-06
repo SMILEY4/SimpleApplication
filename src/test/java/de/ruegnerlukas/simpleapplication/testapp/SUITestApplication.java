@@ -15,9 +15,10 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyle
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiList;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
@@ -28,11 +29,6 @@ import javafx.geometry.Dimension2D;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Slf4j
 public class SUITestApplication {
@@ -80,9 +76,7 @@ public class SUITestApplication {
 		private static class TestUIState extends SuiState {
 
 
-			public List<String> elements = new ArrayList<>(List.of("1", "2", "3"));
-
-			private boolean fixed = false;
+			public String expandedSection = "";
 
 		}
 
@@ -97,21 +91,49 @@ public class SUITestApplication {
 
 			final View view = View.builder()
 					.id("sui.test.view")
-					.size(new Dimension2D(500, 400))
+					.size(new Dimension2D(600, 500))
 					.title(new StringProvider("application_name").get())
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
 							SuiAnchorPane.anchorPane(
 									Properties.items(
-											SuiList.list(
-													Properties.id("list"),
-													Properties.anchorFitParent(),
-													Properties.contentItems(IntStream.range(0, 100).mapToObj(i -> "Element " + i).collect(Collectors.toList())),
-													EventProperties.eventItemsSelected(".", e -> {
-														System.out.println("items selected: " + e.getSelection());
+											SuiLabel.label(
+													Properties.id("label"),
+													Properties.textContent(state.expandedSection),
+													Properties.anchor(0, null, 0, 0)
+											),
+											SuiAccordion.accordion(
+													Properties.id("accordion"),
+													Properties.anchor(50, 0, 0, 0),
+													EventProperties.eventAccordionExpanded(".", e -> {
+														if (e.isExpanded()) {
+															state.update(TestUIState.class, s -> s.setExpandedSection(e.getSectionTitle()));
+														} else {
+															state.update(TestUIState.class, s -> s.setExpandedSection("none"));
+														}
 													}),
-													Properties.multiselect(),
-													Properties.promptText("List is Empty")
+													Properties.items(
+															SuiButton.button(
+																	Properties.id("btn1"),
+																	Properties.textContent("Button 1"),
+																	Properties.title("Section 1")
+															),
+															SuiButton.button(
+																	Properties.id("btn2"),
+																	Properties.textContent("Button 2"),
+																	Properties.title("Section 2")
+															),
+															SuiButton.button(
+																	Properties.id("btn3"),
+																	Properties.textContent("Button 3"),
+																	Properties.title("Section 3")
+															),
+															SuiButton.button(
+																	Properties.id("btn4"),
+																	Properties.textContent("Button 4"),
+																	Properties.title("Section 4")
+															)
+													)
 											)
 									)
 							)

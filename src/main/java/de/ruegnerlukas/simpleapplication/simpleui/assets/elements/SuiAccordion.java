@@ -1,12 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnAccordionExpandedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -14,11 +14,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.TitledPane;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
 
@@ -62,34 +59,12 @@ public final class SuiAccordion {
 	 * A child listener applicable to {@link Accordion}s.
 	 */
 	private static final SuiNodeChildListener CHILD_LISTENER = node -> {
-		final Accordion accordion = (Accordion) node.getFxNodeStore().get();
+		final ExtendedAccordion accordion = (ExtendedAccordion) node.getFxNodeStore().get();
 		if (accordion != null) {
 			if (node.getChildNodeStore().hasChildren()) {
-				final List<TitledPane> prevTitlePanes = new ArrayList<>(accordion.getPanes());
-				final List<TitledPane> titledPanes = node.getChildNodeStore().stream()
-						.map(child -> {
-							/*
-							reuse titled panes to prevent javafx "issue":
-							setting new child nodes causes accordion.expanedPane to be set to null for split-second,
-							starting an animation that sets the content to invisible,
-							event if we set a new expanded pane in the meantime.
-							 */
-							TitledPane childTitledPane = null;
-							for (int i = 0; i < prevTitlePanes.size(); i++) {
-								if (prevTitlePanes.get(i).getContent() == child.getFxNodeStore().get()) {
-									childTitledPane = prevTitlePanes.remove(i);
-									break;
-								}
-							}
-							if (childTitledPane == null) {
-								childTitledPane = createTitlePane(child);
-							}
-							return childTitledPane;
-						})
-						.collect(Collectors.toList());
-				accordion.getPanes().setAll(titledPanes);
+				accordion.setSections(node.getChildNodeStore().stream());
 			} else {
-				accordion.getPanes().clear();
+				accordion.clearSections();
 			}
 		}
 	};
@@ -117,28 +92,12 @@ public final class SuiAccordion {
 
 
 
-	/**
-	 * Creates a new title pane from the given simpleui-node
-	 *
-	 * @param node the node
-	 * @return the created title pane
-	 */
-	public static TitledPane createTitlePane(final SuiNode node) {
-		final String title = node.getPropertyStore().getSafe(TitleProperty.class)
-				.map(TitleProperty::getTitle)
-				.orElse("");
-		return new TitledPane(title, node.getFxNodeStore().get());
-	}
-
-
-
-
-	private static class FxNodeBuilder implements AbstractFxNodeBuilder<Accordion> {
+	private static class FxNodeBuilder implements AbstractFxNodeBuilder<ExtendedAccordion> {
 
 
 		@Override
-		public Accordion build(final SuiNode node) {
-			return new Accordion();
+		public ExtendedAccordion build(final SuiNode node) {
+			return new ExtendedAccordion();
 		}
 
 	}

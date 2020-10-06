@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SuiListChangeListener;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiListChangeListener;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 

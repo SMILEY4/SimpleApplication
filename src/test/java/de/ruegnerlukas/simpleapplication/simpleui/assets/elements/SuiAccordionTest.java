@@ -1,12 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.AccordionExpandedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
-import javafx.application.Platform;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Labeled;
 import javafx.scene.input.MouseButton;
@@ -14,7 +13,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Phaser;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,8 +27,7 @@ public class SuiAccordionTest extends SuiElementTest {
 		}
 
 		// build accordion with fixed sections and capture all events in a list
-		final Phaser phaser = new Phaser(2);
-		final List<AccordionExpandedEventData> capturedEvents = new ArrayList<>();
+		final List<SectionEventData> capturedEvents = new ArrayList<>();
 		final Accordion accordion = (Accordion) new SuiSceneController(
 				SuiAccordion.accordion(
 						Properties.items(
@@ -51,34 +48,36 @@ public class SuiAccordionTest extends SuiElementTest {
 										Properties.title("Section 3")
 								)
 						),
-						EventProperties.eventAccordionExpanded(".", e -> {
-							capturedEvents.add(e);
-							phaser.arrive();
-						})
+						EventProperties.eventAccordionExpanded(".", capturedEvents::add)
 				)
 		).getRootFxNode();
 
 		show(accordion);
+		capturedEvents.clear();
 
 		// expand section 2
-		Platform.runLater(() -> clickOn(accordion.getPanes().get(2), MouseButton.PRIMARY));
-		phaser.arriveAndAwaitAdvance();
-		assertExpandSection(capturedEvents, "Section 2");
+		syncJfxThread(100, () -> clickOn(accordion.getPanes().get(2), MouseButton.PRIMARY));
 		assertThat(accordion.getExpandedPane().getText()).isEqualTo("Section 2");
+		assertThat(capturedEvents).hasSize(1);
+		assertThat(capturedEvents.get(0).getSectionTitle()).isEqualTo("Section 2");
+		assertThat(capturedEvents.get(0).isExpanded()).isEqualTo(true);
+		capturedEvents.clear();
 
 		// expand section 1
-		Platform.runLater(() -> clickOn(accordion.getPanes().get(1), MouseButton.PRIMARY));
-		phaser.arriveAndAwaitAdvance();
-		assertCollapseSection(capturedEvents, "Section 2");
-		phaser.arriveAndAwaitAdvance();
-		assertExpandSection(capturedEvents, "Section 1");
+		syncJfxThread(100, () -> clickOn(accordion.getPanes().get(1), MouseButton.PRIMARY));
 		assertThat(accordion.getExpandedPane().getText()).isEqualTo("Section 1");
+		assertThat(capturedEvents).hasSize(1);
+		assertThat(capturedEvents.get(0).getSectionTitle()).isEqualTo("Section 1");
+		assertThat(capturedEvents.get(0).isExpanded()).isEqualTo(true);
+		capturedEvents.clear();
 
 		// collapse section 1
-		Platform.runLater(() -> clickOn(accordion.getPanes().get(1), MouseButton.PRIMARY));
-		phaser.arriveAndAwaitAdvance();
-		assertCollapseSection(capturedEvents, "Section 1");
+		syncJfxThread(100, () -> clickOn(accordion.getPanes().get(1), MouseButton.PRIMARY));
 		assertThat(accordion.getExpandedPane()).isNull();
+		assertThat(capturedEvents).hasSize(1);
+		assertThat(capturedEvents.get(0).getSectionTitle()).isEqualTo("Section 1");
+		assertThat(capturedEvents.get(0).isExpanded()).isEqualTo(false);
+		capturedEvents.clear();
 
 	}
 
@@ -96,7 +95,7 @@ public class SuiAccordionTest extends SuiElementTest {
 		}
 
 		// build accordion with section from the state and capture all events in a list
-		final List<AccordionExpandedEventData> capturedEvents = new ArrayList<>();
+		final List<SectionEventData> capturedEvents = new ArrayList<>();
 		final TestState testState = new TestState();
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
@@ -148,7 +147,7 @@ public class SuiAccordionTest extends SuiElementTest {
 		}
 
 		// build accordion with section from the state and capture all events in a list
-		final List<AccordionExpandedEventData> capturedEvents = new ArrayList<>();
+		final List<SectionEventData> capturedEvents = new ArrayList<>();
 		final TestState testState = new TestState();
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
@@ -176,30 +175,13 @@ public class SuiAccordionTest extends SuiElementTest {
 		syncJfxThread(() -> testState.update(TestState.class, state -> state.sections.remove("1")));
 
 		// check that the collapse-event was triggered and the sections modified.
-		assertCollapseSection(capturedEvents, "Section 1");
+		assertThat(capturedEvents).hasSize(1);
+		assertThat(capturedEvents.get(0).getSectionTitle()).isEqualTo("Section 1");
+		assertThat(capturedEvents.get(0).isExpanded()).isEqualTo(false);
+		capturedEvents.clear();
 		assertThat(accordion.getExpandedPane()).isNull();
 		assertThat(accordion.getPanes().stream().map(Labeled::getText).collect(Collectors.toList()))
 				.containsExactly("Section 0");
-	}
-
-
-
-
-	private void assertExpandSection(final List<AccordionExpandedEventData> capturedEvents, final String title) {
-		assertThat(capturedEvents).hasSizeGreaterThanOrEqualTo(1);
-		AccordionExpandedEventData event = capturedEvents.remove(0);
-		assertThat(event.getPrevExpandedTitle()).isEqualTo(null);
-		assertThat(event.getExpandedTitle()).isEqualTo(title);
-	}
-
-
-
-
-	private void assertCollapseSection(final List<AccordionExpandedEventData> capturedEvents, final String title) {
-		assertThat(capturedEvents).hasSizeGreaterThanOrEqualTo(1);
-		AccordionExpandedEventData event = capturedEvents.remove(0);
-		assertThat(event.getPrevExpandedTitle()).isEqualTo(title);
-		assertThat(event.getExpandedTitle()).isEqualTo(null);
 	}
 
 
