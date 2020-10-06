@@ -114,6 +114,7 @@ public class SUITestApplication {
 														}
 													}),
 													Properties.expandedSection(state.getExpandedSection()),
+													Properties.animated(false),
 													Properties.items(
 															SuiButton.button(
 																	Properties.id("btn1"),

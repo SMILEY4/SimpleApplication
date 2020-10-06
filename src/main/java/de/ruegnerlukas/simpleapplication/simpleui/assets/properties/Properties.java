@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiAbstractMenuItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnimateProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChronologyProperty;
@@ -1258,6 +1259,17 @@ public final class Properties {
 	 */
 	public static SuiProperty expandedSection(final String title) {
 		return new ExpandedSectionProperty(title);
+	}
+
+
+
+
+	/**
+	 * @param animate the animation of an element should be played
+	 * @return the {@link AnimateProperty}
+	 */
+	public static SuiProperty animated(final boolean animate) {
+		return new AnimateProperty(animate);
 	}
 
 

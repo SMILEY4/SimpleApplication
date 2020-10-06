@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.Ex
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnAccordionExpandedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnimateProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ExpandedSectionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
@@ -14,7 +15,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-import javafx.scene.control.Accordion;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public final class SuiAccordion {
 
 
 	/**
-	 * A child listener applicable to {@link Accordion}s.
+	 * A child listener applicable to {@link ExtendedAccordion}s.
 	 */
 	private static final SuiNodeChildListener CHILD_LISTENER = node -> {
 		final ExtendedAccordion accordion = (ExtendedAccordion) node.getFxNodeStore().get();
@@ -87,6 +87,7 @@ public final class SuiAccordion {
 				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.AccordionBuilder(), null),
 				PropertyEntry.of(ItemProperty.class, new ItemProperty.AccordionBuilder(), null),
 				PropertyEntry.of(ExpandedSectionProperty.class, new ExpandedSectionProperty.AccordionUpdatingBuilder()),
+				PropertyEntry.of(AnimateProperty.class, new AnimateProperty.AccordionUpdatingBuilder()),
 				PropertyEntry.of(OnAccordionExpandedEventProperty.class, new OnAccordionExpandedEventProperty.AccordionUpdatingBuilder())
 		));
 	}

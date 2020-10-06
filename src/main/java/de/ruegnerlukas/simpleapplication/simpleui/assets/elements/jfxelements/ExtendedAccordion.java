@@ -37,6 +37,11 @@ public class ExtendedAccordion extends Accordion {
 	 */
 	private final Map<TitledPane, ChangeListener<Boolean>> expandedTitlePaneListeners = new HashMap<>();
 
+	/**
+	 * Whether the expand and collapse of sections should be animated
+	 */
+	private boolean animate = true;
+
 
 
 
@@ -45,7 +50,8 @@ public class ExtendedAccordion extends Accordion {
 	 */
 	public ExtendedAccordion() {
 		getPanes().addListener(new SuiListChangeListener<>(
-				addedElement -> Platform.runLater(() -> addedElement.expandedProperty().addListener(createTitlePaneExpandListener(addedElement))),
+				addedElement -> Platform.runLater(() ->
+						addedElement.expandedProperty().addListener(createTitlePaneExpandListener(addedElement))),
 				removedElement -> removedElement.expandedProperty().removeListener(expandedTitlePaneListeners.remove(removedElement))
 		));
 	}
@@ -131,6 +137,19 @@ public class ExtendedAccordion extends Accordion {
 
 
 	/**
+	 * Whether the expand and collapse of sections should be animated
+	 *
+	 * @param animate whether the animation should play
+	 */
+	public void setAnimated(final boolean animate) {
+		this.animate = animate;
+		getPanes().forEach(pane -> pane.setAnimated(animate));
+	}
+
+
+
+
+	/**
 	 * Handles muting the listener before executing the given action and un-mutes it again when it is done
 	 *
 	 * @param action the action to perform
@@ -194,7 +213,9 @@ public class ExtendedAccordion extends Accordion {
 		final String title = node.getPropertyStore().getSafe(TitleProperty.class)
 				.map(TitleProperty::getTitle)
 				.orElse("");
-		return new TitledPane(title, node.getFxNodeStore().get());
+		TitledPane titledPane = new TitledPane(title, node.getFxNodeStore().get());
+		titledPane.setAnimated(animate);
+		return titledPane;
 	}
 
 
