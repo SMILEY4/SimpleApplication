@@ -119,7 +119,7 @@ public class SuiAccordionTest extends SuiElementTest {
 		assertThat(accordion.getPanes().stream().map(Labeled::getText).collect(Collectors.toList()))
 				.containsExactly("Section 0", "Section 1", "Section 2", "Section 3");
 
-		// remove and add a section
+		// remove a section that is not expanded and add a new section
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
 			state.sections.remove("0");
 			state.sections.add("4");
@@ -174,15 +174,69 @@ public class SuiAccordionTest extends SuiElementTest {
 		// remove currently expanded section
 		syncJfxThread(() -> testState.update(TestState.class, state -> state.sections.remove("1")));
 
-		// check that the collapse-event was triggered and the sections modified.
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getSectionTitle()).isEqualTo("Section 1");
-		assertThat(capturedEvents.get(0).isExpanded()).isEqualTo(false);
-		capturedEvents.clear();
+		// check that no event was triggered and the sections modified
+		assertThat(capturedEvents).isEmpty();
 		assertThat(accordion.getExpandedPane()).isNull();
 		assertThat(accordion.getPanes().stream().map(Labeled::getText).collect(Collectors.toList()))
 				.containsExactly("Section 0");
 	}
+
+
+
+	@Test
+	public void test_expanded_section_property() {
+
+		class TestState extends SuiState {
+
+			public final List<String> sections = new ArrayList<>(List.of("0", "1", "2", "3"));
+
+			public String section = "Section 1";
+
+		}
+
+		// build accordion with section from the state and capture all events in a list
+		final List<SectionEventData> capturedEvents = new ArrayList<>();
+		final TestState testState = new TestState();
+		final SuiSceneController controller = new SuiSceneController(
+				testState,
+				TestState.class,
+				state -> SuiAccordion.accordion(
+						Properties.expandedSection(state.section),
+						Properties.items(
+								state.sections.stream().map(section -> SuiAnchorPane.anchorPane(
+										Properties.id("section-" + section),
+										Properties.title("Section " + section)
+								))
+						),
+						EventProperties.eventAccordionExpanded(".", capturedEvents::add)
+				)
+		);
+		final Accordion accordion = (Accordion) controller.getRootFxNode();
+		show(accordion);
+
+		// test initially expanded section
+		assertThat(accordion.getExpandedPane()).isNotNull();
+		assertThat(accordion.getExpandedPane().getText()).isEqualTo("Section 1");
+		assertThat(capturedEvents).isEmpty();
+
+		// set new section as expanded
+		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.section = "Section 3"));
+		assertThat(accordion.getExpandedPane()).isNotNull();
+		assertThat(accordion.getExpandedPane().getText()).isEqualTo("Section 3");
+		assertThat(capturedEvents).isEmpty();
+
+		// set no section as expanded
+		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.section = null));
+		assertThat(accordion.getExpandedPane()).isNull();
+		assertThat(capturedEvents).isEmpty();
+
+		// set unknown section as expanded
+		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.section = "Unknown"));
+		assertThat(accordion.getExpandedPane()).isNull();
+		assertThat(capturedEvents).isEmpty();
+
+	}
+
 
 
 }

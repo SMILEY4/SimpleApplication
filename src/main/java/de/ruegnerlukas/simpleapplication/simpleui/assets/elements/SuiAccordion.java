@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.Ex
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnAccordionExpandedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ExpandedSectionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
@@ -85,6 +86,7 @@ public final class SuiAccordion {
 		registry.registerProperties(SuiAccordion.class, List.of(
 				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.AccordionBuilder(), null),
 				PropertyEntry.of(ItemProperty.class, new ItemProperty.AccordionBuilder(), null),
+				PropertyEntry.of(ExpandedSectionProperty.class, new ExpandedSectionProperty.AccordionUpdatingBuilder()),
 				PropertyEntry.of(OnAccordionExpandedEventProperty.class, new OnAccordionExpandedEventProperty.AccordionUpdatingBuilder())
 		));
 	}

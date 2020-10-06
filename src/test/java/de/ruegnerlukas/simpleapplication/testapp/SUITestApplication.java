@@ -76,7 +76,7 @@ public class SUITestApplication {
 		private static class TestUIState extends SuiState {
 
 
-			public String expandedSection = "";
+			public String expandedSection = "Section 2";
 
 		}
 
@@ -106,32 +106,38 @@ public class SUITestApplication {
 													Properties.id("accordion"),
 													Properties.anchor(50, 0, 0, 0),
 													EventProperties.eventAccordionExpanded(".", e -> {
+														System.out.println("EVENT " + e.getSectionTitle() + " " + e.isExpanded());
 														if (e.isExpanded()) {
 															state.update(TestUIState.class, s -> s.setExpandedSection(e.getSectionTitle()));
 														} else {
 															state.update(TestUIState.class, s -> s.setExpandedSection("none"));
 														}
 													}),
+													Properties.expandedSection(state.getExpandedSection()),
 													Properties.items(
 															SuiButton.button(
 																	Properties.id("btn1"),
 																	Properties.textContent("Button 1"),
-																	Properties.title("Section 1")
+																	Properties.title("Section 1"),
+																	EventProperties.eventAction(".", e -> state.update(TestUIState.class, s -> s.setExpandedSection("Section 2")))
 															),
 															SuiButton.button(
 																	Properties.id("btn2"),
 																	Properties.textContent("Button 2"),
-																	Properties.title("Section 2")
+																	Properties.title("Section 2"),
+																	EventProperties.eventAction(".", e -> state.update(TestUIState.class, s -> s.setExpandedSection("Section 3")))
 															),
 															SuiButton.button(
 																	Properties.id("btn3"),
 																	Properties.textContent("Button 3"),
-																	Properties.title("Section 3")
+																	Properties.title("Section 3"),
+																	EventProperties.eventAction(".", e -> state.update(TestUIState.class, s -> s.setExpandedSection("Section 4")))
 															),
 															SuiButton.button(
 																	Properties.id("btn4"),
 																	Properties.textContent("Button 4"),
-																	Properties.title("Section 4")
+																	Properties.title("Section 4"),
+																	EventProperties.eventAction(".", e -> state.update(TestUIState.class, s -> s.setExpandedSection("Section 1")))
 															)
 													)
 											)
@@ -147,30 +153,6 @@ public class SUITestApplication {
 
 			log.info(System.lineSeparator() + "====== SUI STATS ======" + System.lineSeparator() + SuiProfiler.get().getStatisticsAsPrettyString());
 		}
-
-
-//		private NodeFactory killerGridOfDoom(int cols, int rows, String tabTitle) {
-//			return SuiVBox.vbox(
-//					Properties.id("grid"+tabTitle),
-//					Properties.tabTitle(tabTitle),
-//					Properties.items(
-//							IntStream.range(0, rows).mapToObj(row ->
-//									SuiHBox.hbox(
-//											Properties.id(row + ".cols"),
-//											Properties.items(
-//													IntStream.range(0, cols).mapToObj(col ->
-//															SuiButton.button(
-//																	Properties.id(col + "." + row),
-//																	Properties.textContent(col + "." + row),
-//																	Properties.minSize(0, 0)
-//															)
-//													)
-//											)
-//									)
-//							)
-//					)
-//			);
-//		}
 
 
 

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
@@ -145,6 +146,7 @@ public class ItemProperty extends SuiProperty {
 			} else {
 				fxNode.clearSections();
 			}
+			callOtherPropBuilder(SuiAccordion.class, ExpandedSectionProperty.class, node, fxNode);
 		}
 
 	}

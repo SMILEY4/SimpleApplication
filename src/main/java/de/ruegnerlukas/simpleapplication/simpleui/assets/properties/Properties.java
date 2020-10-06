@@ -12,6 +12,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Chronol
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ExpandedSectionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
@@ -1249,6 +1250,15 @@ public final class Properties {
 	}
 
 
+
+
+	/**
+	 * @param title the title of the expanded section or null to collapse all.
+	 * @return the {@link ExpandedSectionProperty}
+	 */
+	public static SuiProperty expandedSection(final String title) {
+		return new ExpandedSectionProperty(title);
+	}
 
 
 }
