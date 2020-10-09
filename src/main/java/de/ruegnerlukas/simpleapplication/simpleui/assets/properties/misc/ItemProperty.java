@@ -66,8 +66,7 @@ public class ItemProperty extends SuiProperty {
 						  final ItemProperty property,
 						  final Pane fxNode) {
 			if (node.getChildNodeStore().hasChildren()) {
-				SuiNode childNode = node.getChildNodeStore().get(0);
-				fxNode.getChildren().setAll(childNode.getFxNodeStore().get());
+				fxNode.getChildren().setAll(node.getChildNodeStore().getOne().getFxNodeStore().get());
 			} else {
 				fxNode.getChildren().clear();
 			}
@@ -89,8 +88,7 @@ public class ItemProperty extends SuiProperty {
 						  final ScrollPane fxNode) {
 			Node fxChildNode = null;
 			if (node.getChildNodeStore().hasChildren()) {
-				SuiNode childNode = node.getChildNodeStore().get(0);
-				fxChildNode = childNode.getFxNodeStore().get();
+				fxChildNode = node.getChildNodeStore().getOne().getFxNodeStore().get();
 			}
 			fxNode.setContent(fxChildNode);
 		}
@@ -109,7 +107,7 @@ public class ItemProperty extends SuiProperty {
 		public void build(final SuiNode node,
 						  final ItemListProperty property,
 						  final TabPane fxNode) {
-			fxNode.getTabs().setAll(SuiTabPane.createTabs(List.of(node.getChildNodeStore().get(0))));
+			fxNode.getTabs().setAll(SuiTabPane.createTabs(List.of(node.getChildNodeStore().getOne())));
 		}
 
 	}
@@ -126,7 +124,7 @@ public class ItemProperty extends SuiProperty {
 		public void build(final SuiNode node,
 						  final ItemListProperty property,
 						  final SplitPane fxNode) {
-			fxNode.getItems().setAll(node.getChildNodeStore().get(0).getFxNodeStore().get());
+			fxNode.getItems().setAll(node.getChildNodeStore().getOne().getFxNodeStore().get());
 		}
 
 	}
@@ -142,7 +140,7 @@ public class ItemProperty extends SuiProperty {
 		@Override
 		public void build(final SuiNode node, final ItemListProperty property, final ExtendedAccordion fxNode) {
 			if (node.getChildNodeStore().hasChildren()) {
-				fxNode.setSections(Stream.of(node.getChildNodeStore().get(0)));
+				fxNode.setSections(Stream.of(node.getChildNodeStore().getOne()));
 			} else {
 				fxNode.clearSections();
 			}

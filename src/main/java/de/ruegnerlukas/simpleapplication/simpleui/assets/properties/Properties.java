@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Alignme
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnimateProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.CheckedProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChronologyProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
@@ -16,6 +17,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Editabl
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ExpandedSectionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IconProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
@@ -1270,6 +1272,30 @@ public final class Properties {
 	 */
 	public static SuiProperty animated(final boolean animate) {
 		return new AnimateProperty(animate);
+	}
+
+
+
+
+	/**
+	 * @param imgResource the resource pointing to the image
+	 * @param width       the width of the icon. The height is then calculated automatically to keep the original aspect ratio
+	 * @param gap         the gap between the icon and the text content
+	 * @return the {@link IconProperty}
+	 */
+	public static SuiProperty icon(final Resource imgResource, final Number width, final Number gap) {
+		return new IconProperty(imgResource, width, gap);
+	}
+
+
+
+
+	/**
+	 * @param checked whether the box is checked
+	 * @return the {@link CheckedProperty}
+	 */
+	public static SuiProperty checked(final boolean checked) {
+		return new CheckedProperty(checked);
 	}
 
 

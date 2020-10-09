@@ -105,10 +105,9 @@ public class ItemListProperty extends SuiProperty {
 		public void build(final SuiNode node,
 						  final ItemListProperty property,
 						  final Pane fxNode) {
-			fxNode.getChildren().setAll(
-					node.getChildNodeStore().stream()
-							.map(child -> child.getFxNodeStore().get())
-							.collect(Collectors.toList())
+			fxNode.getChildren().setAll(node.getChildNodeStore().stream()
+					.map(child -> child.getFxNodeStore().get())
+					.collect(Collectors.toList())
 			);
 		}
 

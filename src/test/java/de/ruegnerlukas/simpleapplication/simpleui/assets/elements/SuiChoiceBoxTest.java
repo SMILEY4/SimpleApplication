@@ -100,20 +100,13 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B", 2));
 
 		// ... and an event was triggered
-		// todo: check if we really want to trigger an event here
-		assertThat(collectedEvents).hasSize(1);
-		assertThat(collectedEvents.get(0).getPrevValue()).isNull();
-		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("B", 2));
-		collectedEvents.clear();
+		assertThat(collectedEvents).isEmpty();
 
 		// set selected value to unknown item
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
 			state.selectedItem = new TestItem("X", -1);
 		}));
-
-		// unknown item is now selected
-		// todo: check if we really want to allow selecting items not in list
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("X", -1));
+		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B", 2));
 
 	}
 
@@ -178,10 +171,7 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 		assertThat(choiceBox.getItems().get(1)).isEqualTo(new TestItem("B2", 20));
 		assertThat(choiceBox.getItems().get(2)).isEqualTo(new TestItem("C2", 30));
 		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B2", 20));
-		assertThat(collectedEvents).hasSize(1);
-		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("B2", 20));
-		assertThat(collectedEvents.get(0).getPrevValue()).isNull();
-		collectedEvents.clear();
+		assertThat(collectedEvents).isEmpty();
 
 		// remove some items -> [B2]
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.SearchableComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
@@ -9,7 +10,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import lombok.Getter;
@@ -57,24 +57,20 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 
 
-	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ContentItemsProperty<T>, ChoiceBox<T>> {
+	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ContentItemsProperty<T>, ExtendedChoiceBox<T>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final ContentItemsProperty<T> property,
-						  final ChoiceBox<T> fxNode) {
-			setItems(node, property, fxNode);
+		public void build(final SuiNode node, final ContentItemsProperty<T> property, final ExtendedChoiceBox<T> fxNode) {
+			fxNode.setItems(property.getChoices());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final ContentItemsProperty<T> property,
-									 final SuiNode node,
-									 final ChoiceBox<T> fxNode) {
-			setItems(node, property, fxNode);
+		public MutationResult update(final ContentItemsProperty<T> property, final SuiNode node, final ExtendedChoiceBox<T> fxNode) {
+			fxNode.setItems(property.getChoices());
 			return MutationResult.MUTATED;
 		}
 
@@ -82,97 +78,10 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final ContentItemsProperty<T> property,
-									 final SuiNode node,
-									 final ChoiceBox<T> fxNode) {
-			final T prevValue = fxNode.getSelectionModel().getSelectedItem();
-			removeListeners(node, fxNode);
-			fxNode.getItems().clear();
-			addListener(node, fxNode);
-			if (prevValue != null) {
-				callListeners(node, prevValue, null);
-			}
+		public MutationResult remove(final ContentItemsProperty<T> property, final SuiNode node, final ExtendedChoiceBox<T> fxNode) {
+			fxNode.clearItems();
 			return MutationResult.MUTATED;
 		}
-
-
-
-
-		/**
-		 * Set the items without triggering the listeners or changing the currently selected value.
-		 *
-		 * @param node     the simpleui node
-		 * @param property the choices-property
-		 * @param fxNode   the javafx choicebox
-		 */
-		private void setItems(final SuiNode node, final ContentItemsProperty<T> property, final ChoiceBox<T> fxNode) {
-
-			final T prevValue = fxNode.getSelectionModel().getSelectedItem();
-
-			removeListeners(node, fxNode);
-			fxNode.getItems().setAll(property.getChoices());
-			if (fxNode.getItems().contains(prevValue)) {
-				fxNode.setValue(prevValue);
-			}
-			addListener(node, fxNode);
-
-			final T nextValue = fxNode.getSelectionModel().getSelectedIndex() != -1 ? fxNode.getSelectionModel().getSelectedItem() : null;
-			if (!Objects.equals(prevValue, nextValue)) {
-				callListeners(node, prevValue, nextValue);
-			}
-		}
-
-
-
-
-		/**
-		 * Removes the listeners from the choicebox if any exist
-		 *
-		 * @param node   the simpleui node
-		 * @param fxNode the javafx choicebox
-		 */
-		private void removeListeners(final SuiNode node, final ChoiceBox<T> fxNode) {
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<T>) prop)
-					.map(OnValueChangedEventProperty::getChangeListenerProxy)
-					.ifPresent(listener -> listener.removeFrom(fxNode.getSelectionModel().selectedItemProperty()));
-		}
-
-
-
-
-		/**
-		 * Adds the listener back to the choicebox if any existed
-		 *
-		 * @param node   the simpleui node
-		 * @param fxNode the javafx choicebox
-		 */
-		private void addListener(final SuiNode node, final ChoiceBox<T> fxNode) {
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<T>) prop)
-					.map(OnValueChangedEventProperty::getChangeListenerProxy)
-					.ifPresent(listener -> listener.addTo(fxNode.getSelectionModel().selectedItemProperty()));
-		}
-
-
-
-
-		/**
-		 * Manually calls the listeners of the choicebox if any exist
-		 *
-		 * @param node     the simpleui node
-		 * @param prevItem the previous selected item
-		 * @param nextItem the new selected item
-		 */
-		private void callListeners(final SuiNode node,
-								   final T prevItem,
-								   final T nextItem) {
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<T>) prop)
-					.map(OnValueChangedEventProperty::getListener)
-					.ifPresent(listener -> listener.onEvent(new ValueChangedEventData<>(nextItem, prevItem)));
-		}
-
 
 	}
 

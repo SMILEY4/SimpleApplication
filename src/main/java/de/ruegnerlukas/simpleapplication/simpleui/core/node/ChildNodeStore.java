@@ -58,8 +58,8 @@ public class ChildNodeStore extends ChildNodeOperations {
 	 * @param childTransformListener the listener for child transform operations
 	 */
 	private ChildNodeStore(final List<SuiNode> children,
-						  final SuiNodeChildListener childListener,
-						  final SuiNodeChildTransformListener childTransformListener) {
+						   final SuiNodeChildListener childListener,
+						   final SuiNodeChildTransformListener childTransformListener) {
 		super(childListener, childTransformListener);
 		this.children.addAll(children);
 		children.forEach(node -> {
@@ -101,6 +101,16 @@ public class ChildNodeStore extends ChildNodeOperations {
 	public SuiNode get(final int index) {
 		Validations.INPUT.isValidIndex(index, children).exception("The given index is not valid ({}).", index);
 		return children.get(index);
+	}
+
+
+
+
+	/**
+	 * @return one child node or null if no children exist
+	 */
+	public SuiNode getOne() {
+		return hasChildren() ? children.get(0) : null;
 	}
 
 

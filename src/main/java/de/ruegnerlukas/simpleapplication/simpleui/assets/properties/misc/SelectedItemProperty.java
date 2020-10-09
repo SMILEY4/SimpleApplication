@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import javafx.scene.control.ChoiceBox;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -40,28 +40,20 @@ public class SelectedItemProperty<T> extends SuiProperty {
 
 
 
-	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<SelectedItemProperty<T>, ChoiceBox<T>> {
+	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<SelectedItemProperty<T>, ExtendedChoiceBox<T>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final SelectedItemProperty<T> property,
-						  final ChoiceBox<T> fxNode) {
-			if (!Objects.equals(fxNode.getSelectionModel().getSelectedItem(), property.getSelected())) {
-				fxNode.getSelectionModel().select(property.getSelected());
-			}
+		public void build(final SuiNode node, final SelectedItemProperty<T> property, final ExtendedChoiceBox<T> fxNode) {
+			fxNode.selectItem(property.getSelected());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final SelectedItemProperty<T> property,
-									 final SuiNode node,
-									 final ChoiceBox<T> fxNode) {
-			if (!Objects.equals(fxNode.getSelectionModel().getSelectedItem(), property.getSelected())) {
-				fxNode.getSelectionModel().select(property.getSelected());
-			}
+		public MutationResult update(final SelectedItemProperty<T> property, final SuiNode node, final ExtendedChoiceBox<T> fxNode) {
+			fxNode.selectItem(property.getSelected());
 			return MutationResult.MUTATED;
 		}
 
@@ -69,9 +61,7 @@ public class SelectedItemProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final SelectedItemProperty<T> property,
-									 final SuiNode node,
-									 final ChoiceBox<T> fxNode) {
+		public MutationResult remove(final SelectedItemProperty<T> property, final SuiNode node, final ExtendedChoiceBox<T> fxNode) {
 			return MutationResult.MUTATED;
 		}
 
