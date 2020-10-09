@@ -35,9 +35,9 @@ public class SuiComboBoxTest extends SuiElementTest {
 						Properties.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
-								new TestItem("C", 3)
-						)),
-//						Properties.selectedItem(new TestItem("B", 2)), // todo: no selected-item-prop for combobox ??
+								new TestItem("C", 3)),
+								new TestItem("B", 2)
+						),
 						Properties.contentItemConverter(".", TestItem.class,
 								str -> new TestItem(str.split(":")[0].trim(), Integer.parseInt(str.split(":")[1].trim())),
 								item -> item != null ? (item.name + ": " + item.number) : "null"
@@ -98,7 +98,7 @@ public class SuiComboBoxTest extends SuiElementTest {
 				TestState.class,
 				state -> SuiComboBox.comboBox(
 						Properties.maxSize(100, 40),
-						Properties.contentItems(state.items),
+						Properties.contentItems(state.items, null),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
 				)
 		);
@@ -111,9 +111,9 @@ public class SuiComboBoxTest extends SuiElementTest {
 		syncJfxThread(100, () -> type(KeyCode.DOWN));
 		syncJfxThread(100, () -> type(KeyCode.DOWN));
 		syncJfxThread(100, () -> type(KeyCode.ENTER));
-		assertThat(comboBox.getValue()).isEqualTo(new TestItem("B", 2)); // TODO: selected item does no longer reflect state -> check
+		assertThat(comboBox.getValue()).isEqualTo(new TestItem("B", 2));
 		assertThat(collectedEvents).hasSize(2);
-		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("A", 1)); // todo: check: when selecting with keys, events get triggered before pressing enter
+		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("A", 1));
 		assertThat(collectedEvents.get(0).getPrevValue()).isNull();
 		assertThat(collectedEvents.get(1).getValue()).isEqualTo(new TestItem("B", 2));
 		assertThat(collectedEvents.get(1).getPrevValue()).isEqualTo(new TestItem("A", 1));
@@ -162,7 +162,7 @@ public class SuiComboBoxTest extends SuiElementTest {
 				TestState.class,
 				state -> SuiComboBox.comboBox(
 						Properties.maxSize(100, 40),
-						Properties.contentItems(state.items),
+						Properties.contentItems(state.items,null),
 						Properties.searchable(),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add),
 						Properties.contentItemConverter(".", TestItem.class,
@@ -180,15 +180,15 @@ public class SuiComboBoxTest extends SuiElementTest {
 		syncJfxThread(100, () -> type(KeyCode.DOWN));
 		syncJfxThread(100, () -> type(KeyCode.DOWN));
 		syncJfxThread(100, () -> type(KeyCode.ENTER));
-		assertThat(comboBox.getValue()).isEqualTo(new TestItem("B", 2)); // TODO: selected item does no longer reflect state -> check
+		assertThat(comboBox.getValue()).isEqualTo(new TestItem("B", 2));
 		assertThat(collectedEvents).hasSize(1);
 		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("B", 2));
 		assertThat(collectedEvents.get(0).getPrevValue()).isNull();
 		collectedEvents.clear();
 
 		// select same item again -> item still selected, no event
-		syncJfxThread(200, () -> clickOn(comboBox, MouseButton.PRIMARY));
-		syncJfxThread(100, () -> type(KeyCode.ENTER));
+		syncJfxThread(100, () -> clickOn(comboBox, MouseButton.PRIMARY));
+		syncJfxThread(200, () -> type(KeyCode.ENTER));
 		assertThat(comboBox.getValue()).isEqualTo(new TestItem("B", 2));
 		assertThat(collectedEvents).isEmpty();
 
@@ -238,7 +238,7 @@ public class SuiComboBoxTest extends SuiElementTest {
 				TestState.class,
 				state -> SuiComboBox.comboBox(
 						Properties.maxSize(100, 40),
-						Properties.contentItems(state.items),
+						Properties.contentItems(state.items, null),
 						Properties.editable(),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add),
 						Properties.contentItemConverter(".", TestItem.class,
@@ -256,8 +256,8 @@ public class SuiComboBoxTest extends SuiElementTest {
 		syncJfxThread(100, () -> type(KeyCode.DOWN));
 		syncJfxThread(100, () -> type(KeyCode.DOWN));
 		syncJfxThread(100, () -> type(KeyCode.ENTER));
-		assertThat(comboBox.getValue()).isEqualTo(new TestItem("B", 2)); // TODO: selected item does no longer reflect state -> check
-		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("A", 1)); // todo: check: when selecting with keys, events get triggered before pressing enter
+		assertThat(comboBox.getValue()).isEqualTo(new TestItem("B", 2));
+		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("A", 1));
 		assertThat(collectedEvents.get(0).getPrevValue()).isNull();
 		assertThat(collectedEvents.get(1).getValue()).isEqualTo(new TestItem("B", 2));
 		assertThat(collectedEvents.get(1).getPrevValue()).isEqualTo(new TestItem("A", 1));
@@ -275,14 +275,12 @@ public class SuiComboBoxTest extends SuiElementTest {
 		collectedEvents.clear();
 
 		// edit and select unknown item "X"
-		syncJfxThread(200, () -> clickOn(comboBox, MouseButton.PRIMARY)); // todo: check: do i want to allow unknown items ? -> maybe enable with prop ?
+		syncJfxThread(200, () -> clickOn(comboBox, MouseButton.PRIMARY));
 		syncJfxThread(100, () -> eraseText(2));
 		syncJfxThread(200, () -> type(KeyCode.X, KeyCode.DIGIT9));
 		syncJfxThread(200, () -> type(KeyCode.ENTER));
-		assertThat(comboBox.getValue()).isEqualTo(new TestItem("X", 9));
-		assertThat(collectedEvents).hasSize(1);
-		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("X", 9));
-		assertThat(collectedEvents.get(0).getPrevValue()).isEqualTo(new TestItem("C", 3));
+		assertThat(comboBox.getValue()).isEqualTo(new TestItem("C", 3));
+		assertThat(collectedEvents).isEmpty();
 
 	}
 

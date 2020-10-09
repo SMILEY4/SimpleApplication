@@ -30,9 +30,9 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 						Properties.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
-								new TestItem("C", 3)
-						)),
-						Properties.selectedItem(new TestItem("B", 2)),
+								new TestItem("C", 3)),
+								new TestItem("B", 2)
+						),
 						Properties.contentItemConverter(".", TestItem.class,
 								str -> new TestItem(str.split(":")[0].trim(), Integer.parseInt(str.split(":")[1].trim())),
 								item -> item.name + ": " + item.number
@@ -80,9 +80,9 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 						Properties.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
-								new TestItem("C", 3)
-						)),
-						Properties.selectedItem(state.selectedItem),
+								new TestItem("C", 3)),
+								state.selectedItem
+						),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
 				)
 		);
@@ -95,18 +95,14 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
 			state.selectedItem = new TestItem("B", 2);
 		}));
-
-		// correct item is now selected ...
 		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B", 2));
-
-		// ... and an event was triggered
 		assertThat(collectedEvents).isEmpty();
 
 		// set selected value to unknown item
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
 			state.selectedItem = new TestItem("X", -1);
 		}));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B", 2));
+		assertThat(choiceBox.getValue()).isEqualTo(null);
 
 	}
 
@@ -138,8 +134,7 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiChoiceBox.choiceBox(
-						Properties.selectedItem(state.selected),
-						Properties.contentItems(state.items),
+						Properties.contentItems(state.items, state.selected),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
 				)
 		);
@@ -230,8 +225,8 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiChoiceBox.choiceBox(
-						Properties.selectedItem(state.selected),
-						Properties.contentItems(state.items),
+//						Properties.selectedItem(state.selected),
+						Properties.contentItems(state.items, state.selected),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
 				)
 		);

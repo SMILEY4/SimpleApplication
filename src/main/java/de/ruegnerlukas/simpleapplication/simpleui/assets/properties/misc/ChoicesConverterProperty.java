@@ -1,12 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.util.StringConverter;
 import lombok.Getter;
 
@@ -108,11 +108,11 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 
-	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoicesConverterProperty<T>, ComboBox<T>> {
+	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoicesConverterProperty<T>, ExtendedComboBox<T>> {
 
 
 		@Override
-		public void build(final SuiNode node, final ChoicesConverterProperty<T> property, final ComboBox<T> fxNode) {
+		public void build(final SuiNode node, final ChoicesConverterProperty<T> property, final ExtendedComboBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 		}
 
@@ -120,7 +120,7 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final ChoicesConverterProperty<T> property, final SuiNode node, final ComboBox<T> fxNode) {
+		public MutationResult update(final ChoicesConverterProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 			return MutationResult.MUTATED;
 		}
@@ -129,7 +129,7 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final ChoicesConverterProperty<T> property, final SuiNode node, final ComboBox<T> fxNode) {
+		public MutationResult remove(final ChoicesConverterProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
 			fxNode.setConverter(null);
 			return MutationResult.MUTATED;
 		}

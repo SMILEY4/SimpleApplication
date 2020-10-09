@@ -16,7 +16,8 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHan
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiCheckbox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
@@ -27,6 +28,9 @@ import javafx.geometry.Dimension2D;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 @Slf4j
 public class SUITestApplication {
@@ -74,17 +78,48 @@ public class SUITestApplication {
 		private static class TestUIState extends SuiState {
 
 
-			public String expandedSection = "Section 2";
+			private boolean english = false;
 
-			public boolean checked = true;
-
-
+			private String selected = null;
 
 
-			public void setChecked(final boolean checked) {
-				System.out.println("state.checked = " + checked);
-				this.checked = checked;
+
+
+			public void setEnglish(final boolean english) {
+				System.out.println("set english = " + english);
+				this.english = english;
 			}
+
+
+
+
+			public void setSelected(final String selected) {
+				System.out.println("set selected = " + selected);
+				this.selected = selected;
+			}
+
+
+
+
+			public static final Map<String, String> TO_ENGLISH = Map.of(
+					"Montag", "Monday",
+					"Dienstag", "Tuesday",
+					"Mittwoch", "Wednesday",
+					"Donnerstag", "Thursday",
+					"Freitag", "Friday",
+					"Samstag", "Saturday",
+					"Sonntag", "Sunday"
+			);
+
+			public static final Map<String, String> TO_GERMAN = Map.of(
+					"Monday", "Montag",
+					"Tuesday", "Dienstag",
+					"Wednesday", "Mittwoch",
+					"Thursday", "Donnerstag",
+					"Friday", "Freitag",
+					"Saturday", "Samstag",
+					"Sunday", "Sonntag"
+			);
 
 		}
 
@@ -103,15 +138,40 @@ public class SUITestApplication {
 					.title(new StringProvider("application_name").get())
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
-							SuiCheckbox.checkbox(
-									Properties.id("btn"),
-									Properties.checked(state.checked),
-									Properties.textContent("My Button"),
-									Properties.icon(Resource.internal("testResources/icon.png"), 15, 5),
-									EventProperties.eventChecked(".", e -> {
-										System.out.println("checked=" + e.isChecked());
-										state.update(TestUIState.class, s -> s.setChecked(e.isChecked()));
-									})
+							SuiVBox.vbox(
+									Properties.id("vbox"),
+									Properties.items(
+											SuiButton.button(
+													Properties.id("button"),
+													Properties.textContent(state.isEnglish() ? "To German" : "To English"),
+													EventProperties.eventAction(e -> {
+														state.update(TestUIState.class, s -> {
+															if (s.getSelected() != null) {
+																if (s.isEnglish()) {
+																	s.setSelected(TestUIState.TO_GERMAN.get(s.getSelected()));
+																} else {
+																	s.setSelected(TestUIState.TO_ENGLISH.get(s.getSelected()));
+																}
+															}
+															s.setEnglish(!s.isEnglish());
+														});
+													})
+											),
+											SuiComboBox.comboBox(
+													Properties.id("combo-box"),
+													Properties.contentItems(
+															state.isEnglish() ? new ArrayList<>(TestUIState.TO_GERMAN.keySet()) : new ArrayList<>(TestUIState.TO_ENGLISH.keySet()),
+															state.getSelected()),
+													EventProperties.eventValueChangedType(".", String.class, e -> {
+														System.out.println("EVENT " + e.getPrevValue() + " -> " + e.getValue());
+														state.update(TestUIState.class, s -> {
+															s.setSelected(e.getValue());
+														});
+													}),
+													Properties.searchable(true),
+													Properties.editable(false)
+											)
+									)
 							)
 					)))
 					.build();

@@ -54,24 +54,15 @@ public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
 	 *
 	 * @param items the new available items to select from.
 	 */
-	public void setItems(final List<T> items) {
-		final T prevSelected = getValue();
-		boolean selectionCleared = withMutedListeners(() -> {
-			boolean deselected = false;
+	public void setItems(final List<T> items, final T selectedItem) {
+		withMutedListeners(() -> {
 			getItems().setAll(items);
-			if (getItems().contains(prevSelected)) {
-				setValue(prevSelected);
+			if (getItems().contains(selectedItem)) {
+				setValue(selectedItem);
 			} else {
 				setValue(null);
-				if (prevSelected != null) {
-					deselected = true;
-				}
 			}
-			return deselected;
 		});
-		if (selectionCleared) {
-			notifyListener(prevSelected, null);
-		}
 	}
 
 
@@ -106,7 +97,7 @@ public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
 	 */
 	public void selectItem(final T item) {
 		withMutedListeners(() -> {
-			if (getItems().stream().anyMatch(i -> Objects.equals(i, item))) {
+			if (item == null || getItems().stream().anyMatch(i -> Objects.equals(i, item))) {
 				if (!Objects.equals(getValue(), item)) {
 					getSelectionModel().select(item);
 				}

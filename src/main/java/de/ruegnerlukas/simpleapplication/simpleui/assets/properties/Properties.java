@@ -37,7 +37,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Orienta
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PreserveRatioProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SelectedItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;
@@ -65,6 +64,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.util.StringConverter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.chrono.Chronology;
 import java.util.Collection;
@@ -76,6 +76,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 public final class Properties {
 
 
@@ -680,9 +681,14 @@ public final class Properties {
 	 * @param choices the list of possible choices. The class of the choice should have an implementation of the equals-method.
 	 * @return an {@link ContentItemsProperty}
 	 */
-	public static <T> SuiProperty contentItems(final List<T> choices) {
+	public static <T> SuiProperty contentItems(final List<T> choices, final T selectedChoice) {
 		Validations.INPUT.notNull(choices).exception("The choices can not be null.");
-		return new ContentItemsProperty<>(List.copyOf(choices));
+		if (selectedChoice != null && !choices.contains(selectedChoice)) {
+			log.warn("Available choices must contain the selected choice: {}, {}. Selecting none", selectedChoice, choices);
+			return new ContentItemsProperty<>(List.copyOf(choices), null);
+		} else {
+			return new ContentItemsProperty<>(List.copyOf(choices), selectedChoice);
+		}
 	}
 
 
@@ -745,18 +751,6 @@ public final class Properties {
 		Validations.INPUT.notNull(fromString).exception("The converter from strings can not be null.");
 		Validations.INPUT.notNull(toString).exception("The converter to strings can not be null.");
 		return new ChoicesConverterProperty<>(propertyId, fromString, toString);
-	}
-
-
-
-
-	/**
-	 * @param selectedItem the selected item
-	 * @param <T>          the generic type of the item
-	 * @return an {@link SelectedItemProperty}
-	 */
-	public static <T> SuiProperty selectedItem(final T selectedItem) {
-		return new SelectedItemProperty<>(selectedItem);
 	}
 
 

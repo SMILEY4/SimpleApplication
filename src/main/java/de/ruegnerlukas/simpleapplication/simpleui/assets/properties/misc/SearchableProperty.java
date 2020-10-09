@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import javafx.scene.Node;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -54,34 +54,30 @@ public class SearchableProperty extends SuiProperty {
 
 
 
-	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<SearchableProperty, Node> {
+	public static class ComboBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<SearchableProperty, ExtendedComboBox<?>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final SearchableProperty property,
-						  final Node fxNode) {
-			// do nothing, decision is made when building javafx node. For an example, see SuiComboBox.FxNodeBuilder
+		public void build(final SuiNode node, final SearchableProperty property, final ExtendedComboBox<?> fxNode) {
+			fxNode.setSearchable(property.isSearchable());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final SearchableProperty property,
-									 final SuiNode node,
-									 final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+		public MutationResult update(final SearchableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
+			fxNode.setSearchable(property.isSearchable());
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public MutationResult remove(final SearchableProperty property,
-									 final SuiNode node,
-									 final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+		public MutationResult remove(final SearchableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
+			fxNode.setSearchable(false);
+			return MutationResult.MUTATED;
 		}
 
 	}
