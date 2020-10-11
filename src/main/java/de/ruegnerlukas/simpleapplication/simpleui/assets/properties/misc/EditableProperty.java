@@ -2,11 +2,11 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Pane;
@@ -82,24 +82,24 @@ public class EditableProperty extends SuiProperty {
 
 
 
-	public static class ComboBoxBaseUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, ComboBoxBase<?>> {
+	public static class ComboBoxBaseUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, ExtendedComboBox<?>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final EditableProperty property,
-						  final ComboBoxBase<?> fxNode) {
-			fxNode.setEditable(property.isEditable());
+		public void build(final SuiNode node, final EditableProperty property, final ExtendedComboBox<?> fxNode) {
+			fxNode.setType(property.isEditable()
+					? ExtendedComboBox.ComboBoxType.EDITABLE
+					: (isSearchable(node) ? ExtendedComboBox.ComboBoxType.SEARCHABLE : ExtendedComboBox.ComboBoxType.DEFAULT));
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final EditableProperty property,
-									 final SuiNode node,
-									 final ComboBoxBase<?> fxNode) {
-			fxNode.setEditable(property.isEditable());
+		public MutationResult update(final EditableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
+			fxNode.setType(property.isEditable()
+					? ExtendedComboBox.ComboBoxType.EDITABLE
+					: (isSearchable(node) ? ExtendedComboBox.ComboBoxType.SEARCHABLE : ExtendedComboBox.ComboBoxType.DEFAULT));
 			return MutationResult.MUTATED;
 		}
 
@@ -107,11 +107,24 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final EditableProperty property,
-									 final SuiNode node,
-									 final ComboBoxBase<?> fxNode) {
-			fxNode.setEditable(false);
+		public MutationResult remove(final EditableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
+			fxNode.setType(isSearchable(node) ? ExtendedComboBox.ComboBoxType.SEARCHABLE : ExtendedComboBox.ComboBoxType.DEFAULT);
 			return MutationResult.MUTATED;
+		}
+
+
+
+
+		/**
+		 * Checks if the given node has the searchable-property and returns its the value
+		 *
+		 * @param node the node to check
+		 * @return the value of the searchable-property
+		 */
+		private boolean isSearchable(final SuiNode node) {
+			return node.getPropertyStore().getSafe(SearchableProperty.class)
+					.map(SearchableProperty::isSearchable)
+					.orElse(false);
 		}
 
 	}

@@ -71,6 +71,51 @@ public class SuiComboBoxTest extends SuiElementTest {
 
 
 
+	@Test
+	public void testtest() {
+		if(shouldSkipFxTest()) {
+			return;
+		}
+
+		// setup
+		class TestState extends SuiState {
+
+
+			private List<String> items = new ArrayList<>(List.of(
+					"A",
+					"B",
+					"C"
+			));
+
+		}
+
+		final TestState testState = new TestState();
+		final List<ValueChangedEventData<TestItem>> collectedEvents = new ArrayList<>();
+
+		final SuiSceneController controller = new SuiSceneController(
+				testState,
+				TestState.class,
+				state -> SuiComboBox.comboBox(
+						Properties.maxSize(100, 40),
+						Properties.contentItems(state.items, null),
+						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
+				)
+		);
+
+		@SuppressWarnings ("unchecked") final ComboBox<TestItem> comboBox = (ComboBox<TestItem>) controller.getRootFxNode();
+		show(comboBox);
+
+		// select a new item -> item selected + event
+		syncJfxThread(200, () -> this.clickOn(comboBox, MouseButton.PRIMARY));
+
+		syncJfxThread(200, () -> this.clickOn("B"));
+		assertThat(comboBox.getValue()).isEqualTo("B");
+
+	}
+
+
+
+
 
 	@Test
 	public void test_real_user_interaction_non_editable() {
@@ -112,11 +157,9 @@ public class SuiComboBoxTest extends SuiElementTest {
 		syncJfxThread(100, () -> type(KeyCode.DOWN));
 		syncJfxThread(100, () -> type(KeyCode.ENTER));
 		assertThat(comboBox.getValue()).isEqualTo(new TestItem("B", 2));
-		assertThat(collectedEvents).hasSize(2);
-		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("A", 1));
-		assertThat(collectedEvents.get(0).getPrevValue()).isNull();
-		assertThat(collectedEvents.get(1).getValue()).isEqualTo(new TestItem("B", 2));
-		assertThat(collectedEvents.get(1).getPrevValue()).isEqualTo(new TestItem("A", 1));
+		assertThat(collectedEvents).hasSize(1);
+		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("B", 2));
+		assertThat(collectedEvents.get(0).getPrevValue()).isEqualTo(null);
 		collectedEvents.clear();
 
 		// select same item again -> item still selected, no event
@@ -176,7 +219,7 @@ public class SuiComboBoxTest extends SuiElementTest {
 		show(comboBox);
 
 		// select a new item -> item selected + event
-		syncJfxThread(200, () -> clickOn(comboBox, MouseButton.PRIMARY));
+		syncJfxThread(100, () -> clickOn(comboBox, MouseButton.PRIMARY));
 		syncJfxThread(100, () -> type(KeyCode.DOWN));
 		syncJfxThread(100, () -> type(KeyCode.DOWN));
 		syncJfxThread(100, () -> type(KeyCode.ENTER));
@@ -252,15 +295,14 @@ public class SuiComboBoxTest extends SuiElementTest {
 		show(comboBox);
 
 		// select a new item -> item selected + event
-		syncJfxThread(200, () -> clickOnArrowButton(comboBox));
-		syncJfxThread(100, () -> type(KeyCode.DOWN));
-		syncJfxThread(100, () -> type(KeyCode.DOWN));
-		syncJfxThread(100, () -> type(KeyCode.ENTER));
+		syncJfxThread(1000, () -> clickOnArrowButton(comboBox));
+		syncJfxThread(1000, () -> type(KeyCode.DOWN));
+		syncJfxThread(1000, () -> type(KeyCode.DOWN));
+		syncJfxThread(1000, () -> type(KeyCode.ENTER));
 		assertThat(comboBox.getValue()).isEqualTo(new TestItem("B", 2));
-		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("A", 1));
-		assertThat(collectedEvents.get(0).getPrevValue()).isNull();
-		assertThat(collectedEvents.get(1).getValue()).isEqualTo(new TestItem("B", 2));
-		assertThat(collectedEvents.get(1).getPrevValue()).isEqualTo(new TestItem("A", 1));
+		assertThat(collectedEvents).hasSize(1);
+		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("B", 2));
+		assertThat(collectedEvents.get(0).getPrevValue()).isEqualTo(null);
 		collectedEvents.clear();
 
 		// edit and select item "C"

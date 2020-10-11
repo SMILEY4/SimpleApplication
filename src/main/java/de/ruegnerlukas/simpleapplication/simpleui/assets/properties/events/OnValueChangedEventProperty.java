@@ -92,7 +92,7 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 		@Override
 		public void build(final SuiNode node, final OnValueChangedEventProperty<T> property, final ExtendedComboBox<T> fxNode) {
-			fxNode.setSelectedItemListener(property.getListenerProxy());
+			fxNode.setListener(property.getListenerProxy());
 		}
 
 
@@ -100,7 +100,7 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 		@Override
 		public MutationResult update(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
-			fxNode.setSelectedItemListener(property.getListenerProxy());
+			fxNode.setListener(property.getListenerProxy());
 			return MutationResult.MUTATED;
 		}
 
@@ -109,7 +109,7 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 		@Override
 		public MutationResult remove(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
-			fxNode.setSelectedItemListener(null);
+			fxNode.setListener(null);
 			return MutationResult.MUTATED;
 		}
 

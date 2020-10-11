@@ -59,7 +59,9 @@ public class SearchableProperty extends SuiProperty {
 
 		@Override
 		public void build(final SuiNode node, final SearchableProperty property, final ExtendedComboBox<?> fxNode) {
-			fxNode.setSearchable(property.isSearchable());
+			fxNode.setType(property.isSearchable()
+					? ExtendedComboBox.ComboBoxType.SEARCHABLE
+					: (isEditable(node) ? ExtendedComboBox.ComboBoxType.EDITABLE : ExtendedComboBox.ComboBoxType.DEFAULT));
 		}
 
 
@@ -67,7 +69,9 @@ public class SearchableProperty extends SuiProperty {
 
 		@Override
 		public MutationResult update(final SearchableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
-			fxNode.setSearchable(property.isSearchable());
+			fxNode.setType(property.isSearchable()
+					? ExtendedComboBox.ComboBoxType.SEARCHABLE
+					: (isEditable(node) ? ExtendedComboBox.ComboBoxType.EDITABLE : ExtendedComboBox.ComboBoxType.DEFAULT));
 			return MutationResult.MUTATED;
 		}
 
@@ -76,8 +80,23 @@ public class SearchableProperty extends SuiProperty {
 
 		@Override
 		public MutationResult remove(final SearchableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
-			fxNode.setSearchable(false);
+			fxNode.setType(isEditable(node) ? ExtendedComboBox.ComboBoxType.EDITABLE : ExtendedComboBox.ComboBoxType.DEFAULT);
 			return MutationResult.MUTATED;
+		}
+
+
+
+
+		/**
+		 * Checks if the given node has the editable-property and returns its the value
+		 *
+		 * @param node the node to check
+		 * @return the value of the editable-property
+		 */
+		private boolean isEditable(final SuiNode node) {
+			return node.getPropertyStore().getSafe(EditableProperty.class)
+					.map(EditableProperty::isEditable)
+					.orElse(false);
 		}
 
 	}

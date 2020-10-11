@@ -43,6 +43,8 @@ public class ContentItemsProperty<T> extends SuiProperty {
 	private final T selectedChoice;
 
 
+
+
 	/**
 	 * @param choices the list of choices
 	 */

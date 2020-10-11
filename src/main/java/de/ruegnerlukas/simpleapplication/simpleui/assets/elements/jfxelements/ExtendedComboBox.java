@@ -1,44 +1,67 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
+import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableBiConsumer;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.ComboBox;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
-@Slf4j
 public class ExtendedComboBox<T> extends ComboBox<T> {
+
+
+	/**
+	 * The possible  types of combo-boxes
+	 */
+	public enum ComboBoxType {
+
+		/**
+		 * items can only be selected via the list of all items
+		 */
+		DEFAULT,
+
+		/**
+		 * items can be selected via the text input field
+		 */
+		EDITABLE,
+
+		/**
+		 * The list of items can be filtered with the text input field
+		 */
+		SEARCHABLE;
+	}
+
+
+
+
 
 
 	/**
 	 * The listener for selected items
 	 */
-	private BiConsumer<T, T> listener;
+	private MutableBiConsumer<T, T> listener = new MutableBiConsumer<>();
+
 
 	/**
-	 * Whether the listener should be triggered.
+	 * The selected item before opening the dropdown
 	 */
-	private boolean muted = false;
+	private T lastSelectedValue = null;
+
+
+	/**
+	 * The behaviour type of this combobox
+	 */
+	private ComboBoxType type = ComboBoxType.DEFAULT;
 
 	/**
 	 * The filterable list of items.
 	 */
-	private FilteredList<T> filteredList = new FilteredList<>(FXCollections.observableArrayList());
-
-	/**
-	 * The selected value before opening the drop-down
-	 */
-	private T lastSelectedValue = null;
-
-	private boolean searchable = false;
+	private final FilteredList<T> filteredList = new FilteredList<>(FXCollections.observableArrayList());
 
 
 
@@ -47,131 +70,101 @@ public class ExtendedComboBox<T> extends ComboBox<T> {
 	 * Default constructor
 	 */
 	public ExtendedComboBox() {
+
 		this.setItems(filteredList);
+
 		this.getSelectionModel().selectedItemProperty().addListener((value, prev, next) -> {
-			if (!searchable) {
-				if (next != null && !filteredList.getSource().contains(next)) {
-					withMutedListeners(() -> selectItem(prev));
-				} else {
-					notifyListener(prev, next);
-				}
-			} else {
-				notifyListener(prev, next);
+			if (type == ComboBoxType.EDITABLE && !isShowing()) {
+				onSelectedItemOutsideMenu(prev, next);
 			}
 		});
+
+		this.showingProperty().addListener((value, prev, next) -> {
+			if (next) {
+				onOpenMenu();
+			} else {
+				onCloseMenu();
+			}
+		});
+
 		this.getEditor().textProperty().addListener((value, prev, next) -> {
-			if (searchable) {
+			if (type == ComboBoxType.SEARCHABLE) {
 				onSearching(next);
 			}
 		});
-		this.showingProperty().addListener((value, prev, next) -> {
-			if (searchable) {
-				onShowing(next);
-			}
-		});
+
 	}
 
 
 
 
 	/**
-	 * Set the listener for selected items
-	 *
-	 * @param listener the listener or null
+	 * Called when the dropdown menu opens
 	 */
-	public void setSelectedItemListener(final BiConsumer<T, T> listener) {
-		this.listener = listener;
+	private void onOpenMenu() {
+		lastSelectedValue = getValue();
+		if (type == ComboBoxType.SEARCHABLE) {
+			Platform.runLater(() -> listener.runMuted(() -> {
+				setEditable(true);
+				// clear text twice, otherwise it will not be set the first time the user opens the dropdown. WHYYY ?!?!
+				getEditor().setText("");
+				getEditor().setText("");
+			}));
+		}
 	}
 
 
 
 
 	/**
-	 * Whether this is a searchable combo-box
-	 *
-	 * @param searchable whether this is a searchable combo-box
+	 * Called when the dropdown menu closes
 	 */
-	public void setSearchable(final boolean searchable) {
-		this.searchable = searchable;
-	}
-
-
-
-
-	/**
-	 * Sets/Replaces the available items without unnecessarily triggering the listener or changing the currently selected item if possible.
-	 * If the selected item was removed this way, the listener will receive an event.
-	 *
-	 * @param items the new available items to select from.
-	 */
-	public void setItems(final List<T> items, final T selectedItem) {
-		withMutedListeners(() -> {
-			filteredList.getSource().setAll((Collection) items);
-			setValue(selectedItem);
-		});
-	}
-
-
-
-
-	/**
-	 * Removes all currently available items and selected item. Only removing the selected item will trigger the listener.
-	 */
-	public void clearItems() {
-		withMutedListeners(() -> {
-			filteredList.getSource().clear();
-			getSelectionModel().select(null);
-		});
-	}
-
-
-
-
-	/**
-	 * Select the given item without triggering the listener.
-	 * If the item is not in the list of available items, the selected item will not change
-	 *
-	 * @param item the item to select
-	 */
-	public void selectItem(final T item) {
-		withMutedListeners(() -> {
-			if (item == null || getItems().stream().anyMatch(i -> Objects.equals(i, item))) {
-				if (!Objects.equals(getValue(), item)) {
-					getSelectionModel().select(item);
-				}
-			} else {
-				log.warn("Could not select item {}: item not in list.", item);
-			}
-		});
-	}
-
-
-
-
-	/**
-	 * @param isShowing whether the contents of the combobox is now showing
-	 */
-	private void onShowing(final boolean isShowing) {
-		this.muted = isShowing;
-		this.setEditable(isShowing);
-		if (isShowing) {
-			lastSelectedValue = getValue();
-			Platform.runLater(() -> withMutedListeners(() -> getEditor().setText("")));
-		} else {
-			if (filteredList.size() == 0) {
-				withMutedListeners(() -> {
+	private void onCloseMenu() {
+		final T selectedValue = getValue();
+		final int filteredSize = filteredList.size();
+		boolean shouldTriggerListener = true;
+		if (type == ComboBoxType.SEARCHABLE) {
+			setEditable(false);
+			listener.runMuted(() -> {
+				// reset predicate or otherwise the dropdown will be very small next time depending on last predicate.
+				filteredList.setPredicate(null);
+				getSelectionModel().select(selectedValue);
+			});
+			if (filteredSize == 0) {
+				listener.runMuted(() -> {
 					onSearching(asString(lastSelectedValue, ""));
 					getSelectionModel().select(lastSelectedValue);
 				});
 			} else {
-				withMutedListeners(() -> {
-					if (lastSelectedValue != null && getValue() == null) {
-						getSelectionModel().select(lastSelectedValue);
-					}
-				});
-				if (!Objects.equals(lastSelectedValue, getValue())) {
-					notifyListener(lastSelectedValue, getValue());
+				if (lastSelectedValue != null && selectedValue == null) {
+					shouldTriggerListener = false;
+					listener.runMuted(() -> getSelectionModel().select(lastSelectedValue));
 				}
+			}
+		}
+		if (shouldTriggerListener && !Objects.equals(lastSelectedValue, selectedValue)) {
+			notifyListener(lastSelectedValue, selectedValue);
+		}
+	}
+
+
+
+
+	/**
+	 * Called when an item was selected without opening the dropdown menu
+	 *
+	 * @param prev the previous selected item
+	 * @param next the new selected item
+	 */
+	private void onSelectedItemOutsideMenu(final T prev, final T next) {
+		if (!listener.isMuted()) {
+			return;
+		}
+		if (!Objects.equals(prev, next)) {
+			if (isValidItem(next)) {
+				notifyListener(lastSelectedValue, getValue());
+			} else {
+				listener.runMuted(() -> setValue(prev));
 			}
 		}
 	}
@@ -213,46 +206,76 @@ public class ExtendedComboBox<T> extends ComboBox<T> {
 
 
 	/**
-	 * Notifies the listener when a new item was selected. The listener is only triggered when one exists and is not muted
+	 * Checks whether the item is a valid item (i.e. is in the list of available items or is null)
 	 *
-	 * @param prev the previously selected item
-	 * @param next the now selected item
+	 * @param item the item to check
+	 * @return whether the given item is valid for this dropdown
+	 */
+	private boolean isValidItem(final T item) {
+		return item == null || getItems().stream().anyMatch(item::equals);
+	}
+
+
+
+
+	/**
+	 * Calls the listener with the given values
+	 *
+	 * @param prev the previously selected value
+	 * @param next the new selected value
 	 */
 	private void notifyListener(final T prev, final T next) {
-		if (!muted && listener != null) {
-			listener.accept(prev, next);
-		}
+		listener.accept(prev, next);
 	}
 
 
 
 
 	/**
-	 * Run the given action with a return value without triggering any listeners while doing so
+	 * Sets the listener to the given one
 	 *
-	 * @param action the action to run
-	 * @param <R>    the type of the return value
-	 * @return the value returned by the given action
+	 * @param listener the listener or null
 	 */
-	private <R> R withMutedListeners(final Supplier<R> action) {
-		SimpleObjectProperty<R> result = new SimpleObjectProperty<>();
-		withMutedListeners(() -> result.set(action.get()));
-		return result.get();
+	public void setListener(final BiConsumer<T, T> listener) {
+		this.listener.setConsumer(listener);
 	}
 
 
 
 
 	/**
-	 * Run the given action with without triggering any listeners while doing so.
+	 * Sets the behaviour type of this combobox
 	 *
-	 * @param action the action to run
+	 * @param type the new type
 	 */
-	private void withMutedListeners(final Runnable action) {
-		muted = true;
-		action.run();
-		muted = false;
+	public void setType(final ComboBoxType type) {
+		this.type = type;
+		this.setEditable(type == ComboBoxType.EDITABLE);
 	}
+
+
+	/**
+	 * Removes all items  without triggering the listener.
+	 */
+	public void clearItems() {
+		setItems(List.of(), null);
+	}
+
+
+	/**
+	 * Sets the available items of this combobox without triggering the listener.
+	 *
+	 * @param items        the items
+	 * @param selectedItem the item from the list to select
+	 */
+	public void setItems(final List<T> items, final T selectedItem) {
+		listener.runMuted(() -> {
+			filteredList.getSource().setAll((Collection) items);
+			getSelectionModel().select(selectedItem);
+		});
+	}
+
+
 
 
 }
