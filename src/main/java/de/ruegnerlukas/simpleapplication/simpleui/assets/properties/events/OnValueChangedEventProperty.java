@@ -54,7 +54,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 
-	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ExtendedChoiceBox<T>> {
+	public static class ChoiceBoxUpdatingBuilder<T>
+			implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ExtendedChoiceBox<T>> {
 
 
 		@Override
@@ -87,7 +88,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 
-	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ExtendedComboBox<T>> {
+	public static class ComboBoxUpdatingBuilder<T>
+			implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ExtendedComboBox<T>> {
 
 
 		@Override

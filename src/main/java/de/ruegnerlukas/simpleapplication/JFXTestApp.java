@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.testapp;
+package de.ruegnerlukas.simpleapplication;
 
 
 import de.ruegnerlukas.simpleapplication.core.presentation.Anchors;
@@ -27,7 +27,7 @@ public class JFXTestApp extends Application {
 
 		final ExtendedComboBox<String> comboBox = new ExtendedComboBox<>();
 		comboBox.setItems(List.of("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"), "Samstag");
-		comboBox.setType(ExtendedComboBox.ComboBoxType.SEARCHABLE);
+		comboBox.setType(ExtendedComboBox.ComboBoxType.EDITABLE);
 		comboBox.setListener((prev, next) -> {
 			System.out.println("EVENT: " + prev + " -> " + next);
 		});

@@ -121,6 +121,9 @@ public class PromptTextProperty extends SuiProperty {
 
 
 
+
+
+
 	public static class ListViewUpdatingBuilder implements PropFxNodeUpdatingBuilder<PromptTextProperty, ListView<?>> {
 
 

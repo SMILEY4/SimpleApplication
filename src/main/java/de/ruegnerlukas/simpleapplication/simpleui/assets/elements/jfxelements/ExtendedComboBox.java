@@ -157,12 +157,13 @@ public class ExtendedComboBox<T> extends ComboBox<T> {
 	 * @param next the new selected item
 	 */
 	private void onSelectedItemOutsideMenu(final T prev, final T next) {
-		if (!listener.isMuted()) {
+		if (listener.isMuted()) {
 			return;
 		}
 		if (!Objects.equals(prev, next)) {
 			if (isValidItem(next)) {
-				notifyListener(lastSelectedValue, getValue());
+				notifyListener(prev, next);
+				lastSelectedValue = next;
 			} else {
 				listener.runMuted(() -> setValue(prev));
 			}
@@ -272,6 +273,7 @@ public class ExtendedComboBox<T> extends ComboBox<T> {
 		listener.runMuted(() -> {
 			filteredList.getSource().setAll((Collection) items);
 			getSelectionModel().select(selectedItem);
+			lastSelectedValue = selectedItem;
 		});
 	}
 

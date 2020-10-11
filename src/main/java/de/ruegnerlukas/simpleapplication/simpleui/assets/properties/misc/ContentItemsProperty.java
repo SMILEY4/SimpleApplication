@@ -39,6 +39,9 @@ public class ContentItemsProperty<T> extends SuiProperty {
 	@Getter
 	private final List<T> choices;
 
+	/**
+	 * The choice to select from the list of choices (or null)
+	 */
 	@Getter
 	private final T selectedChoice;
 
@@ -47,6 +50,7 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 	/**
 	 * @param choices the list of choices
+	 * @param selectedChoice the choice to select from the list of choices (or null)
 	 */
 	public ContentItemsProperty(final List<T> choices, final T selectedChoice) {
 		super(ContentItemsProperty.class, COMPARATOR);

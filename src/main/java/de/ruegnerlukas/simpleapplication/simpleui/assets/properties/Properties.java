@@ -682,6 +682,18 @@ public final class Properties {
 	 * @param choices the list of possible choices. The class of the choice should have an implementation of the equals-method.
 	 * @return an {@link ContentItemsProperty}
 	 */
+	public static <T> SuiProperty contentItems(final List<T> choices) {
+		return contentItems(choices, null);
+	}
+
+
+
+
+	/**
+	 * @param choices        the list of possible choices. The class of the choice should have an implementation of the equals-method.
+	 * @param selectedChoice the choice to select from the list of choices (or null)
+	 * @return an {@link ContentItemsProperty}
+	 */
 	public static <T> SuiProperty contentItems(final List<T> choices, final T selectedChoice) {
 		Validations.INPUT.notNull(choices).exception("The choices can not be null.");
 		if (selectedChoice != null && !choices.contains(selectedChoice)) {

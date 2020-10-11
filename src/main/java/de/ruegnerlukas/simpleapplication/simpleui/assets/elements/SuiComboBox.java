@@ -93,7 +93,7 @@ public final class SuiComboBox {
 		registry.registerProperties(SuiComboBox.class, List.of(
 				PropertyEntry.of(ContentItemsProperty.class, new ContentItemsProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ComboBoxUpdatingBuilder<>()),
-				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxBaseUpdatingBuilder()),
+				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxUpdatingBuilder()),
 				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.ComboBoxUpdatingBuilder()),
 				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ComboBoxBaseUpdatingBuilder<>()),
 				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ComboBoxUpdatingBuilder<>())

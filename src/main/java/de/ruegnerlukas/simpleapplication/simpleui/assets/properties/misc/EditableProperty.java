@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Pane;
@@ -82,7 +83,7 @@ public class EditableProperty extends SuiProperty {
 
 
 
-	public static class ComboBoxBaseUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, ExtendedComboBox<?>> {
+	public static class ComboBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, ExtendedComboBox<?>> {
 
 
 		@Override
@@ -126,6 +127,40 @@ public class EditableProperty extends SuiProperty {
 					.map(SearchableProperty::isSearchable)
 					.orElse(false);
 		}
+
+	}
+
+
+
+
+
+
+	public static class DatePickerUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, DatePicker> {
+
+
+		@Override
+		public void build(final SuiNode node, final EditableProperty property, final DatePicker fxNode) {
+			fxNode.setEditable(property.isEditable());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final EditableProperty property, final SuiNode node, final DatePicker fxNode) {
+			fxNode.setEditable(property.isEditable());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final EditableProperty property, final SuiNode node, final DatePicker fxNode) {
+			fxNode.setEditable(false);
+			return MutationResult.MUTATED;
+		}
+
 
 	}
 
