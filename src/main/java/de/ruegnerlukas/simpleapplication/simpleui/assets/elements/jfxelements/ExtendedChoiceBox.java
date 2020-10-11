@@ -5,7 +5,6 @@ import javafx.scene.control.ChoiceBox;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 
 @Slf4j
@@ -78,27 +77,6 @@ public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
 		if (selectionCleared) {
 			notifyListener(prevSelected, null);
 		}
-	}
-
-
-
-
-	/**
-	 * Select the given item without triggering the listener.
-	 * If the item is not in the list of available items, the selected item will not change
-	 *
-	 * @param item the item to select
-	 */
-	public void selectItem(final T item) {
-		listener.runMuted(() -> {
-			if (item == null || getItems().stream().anyMatch(i -> Objects.equals(i, item))) {
-				if (!Objects.equals(getValue(), item)) {
-					getSelectionModel().select(item);
-				}
-			} else {
-				log.warn("Could not select item {}: item not in list.", item);
-			}
-		});
 	}
 
 

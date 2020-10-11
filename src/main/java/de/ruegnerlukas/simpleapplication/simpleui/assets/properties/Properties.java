@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiAbstractMenuItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
@@ -826,7 +827,7 @@ public final class Properties {
 	 * @param layoutFunction the function used to calculate the layout of the child nodes
 	 * @return a {@link MutationBehaviourProperty}
 	 */
-	public static SuiProperty layout(final String propertyId, final LayoutProperty.LayoutFunction layoutFunction) {
+	public static SuiProperty layout(final String propertyId, final ExtendedPane.LayoutFunction layoutFunction) {
 		Validations.INPUT.notEmpty(propertyId).exception("The layout id can not be null or empty.");
 		Validations.INPUT.notNull(layoutFunction).exception("The layout function can not be null.");
 		return new LayoutProperty(propertyId, layoutFunction);
