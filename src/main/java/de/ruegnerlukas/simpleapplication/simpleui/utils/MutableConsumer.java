@@ -3,9 +3,9 @@ package de.ruegnerlukas.simpleapplication.simpleui.utils;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
-public class MutableBiConsumer<T, U> extends MutableWrapper implements BiConsumer<T, U> {
+public class MutableConsumer<T> extends MutableWrapper implements Consumer<T> {
 
 
 	/**
@@ -13,7 +13,7 @@ public class MutableBiConsumer<T, U> extends MutableWrapper implements BiConsume
 	 */
 	@Getter
 	@Setter
-	private BiConsumer<T, U> consumer;
+	private Consumer<T> consumer;
 
 
 
@@ -21,7 +21,7 @@ public class MutableBiConsumer<T, U> extends MutableWrapper implements BiConsume
 	/**
 	 * Default constructor with no actual consumer.
 	 */
-	public MutableBiConsumer() {
+	public MutableConsumer() {
 		this(null);
 	}
 
@@ -31,7 +31,7 @@ public class MutableBiConsumer<T, U> extends MutableWrapper implements BiConsume
 	/**
 	 * @param consumer the actual consumer
 	 */
-	public MutableBiConsumer(final BiConsumer<T, U> consumer) {
+	public MutableConsumer(final Consumer<T> consumer) {
 		this.consumer = consumer;
 	}
 
@@ -39,9 +39,9 @@ public class MutableBiConsumer<T, U> extends MutableWrapper implements BiConsume
 
 
 	@Override
-	public void accept(final T t, final U u) {
+	public void accept(final T t) {
 		if (!isMuted() && consumer != null) {
-			consumer.accept(t, u);
+			consumer.accept(t);
 		}
 	}
 

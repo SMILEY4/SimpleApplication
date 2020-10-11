@@ -1,13 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
-import javafx.beans.property.SimpleObjectProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableBiConsumer;
 import javafx.scene.control.ChoiceBox;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 @Slf4j
 public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
@@ -16,12 +15,7 @@ public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
 	/**
 	 * The listener for selected items
 	 */
-	private BiConsumer<T, T> listener;
-
-	/**
-	 * Whether the listener should be triggered.
-	 */
-	private boolean muted = false;
+	private final MutableBiConsumer<T, T> listener = new MutableBiConsumer<>();
 
 
 
@@ -42,7 +36,7 @@ public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
 	 * @param listener the listener or null
 	 */
 	public void setSelectedItemListener(final BiConsumer<T, T> listener) {
-		this.listener = listener;
+		this.listener.setConsumer(listener);
 	}
 
 
@@ -55,7 +49,7 @@ public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
 	 * @param items the new available items to select from.
 	 */
 	public void setItems(final List<T> items, final T selectedItem) {
-		withMutedListeners(() -> {
+		listener.runMuted(() -> {
 			getItems().setAll(items);
 			if (getItems().contains(selectedItem)) {
 				setValue(selectedItem);
@@ -73,7 +67,7 @@ public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
 	 */
 	public void clearItems() {
 		final T prevSelected = getValue();
-		boolean selectionCleared = withMutedListeners(() -> {
+		boolean selectionCleared = listener.runMuted(() -> {
 			boolean deselected = false;
 			getItems().clear();
 			if (prevSelected != null) {
@@ -96,7 +90,7 @@ public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
 	 * @param item the item to select
 	 */
 	public void selectItem(final T item) {
-		withMutedListeners(() -> {
+		listener.runMuted(() -> {
 			if (item == null || getItems().stream().anyMatch(i -> Objects.equals(i, item))) {
 				if (!Objects.equals(getValue(), item)) {
 					getSelectionModel().select(item);
@@ -111,45 +105,13 @@ public class ExtendedChoiceBox<T> extends ChoiceBox<T> {
 
 
 	/**
-	 * Notifies the listener when a new item was selected. The listener is only triggered when one exists and is not muted
+	 * Notifies the listener when a new item was selected.
 	 *
 	 * @param prev the previously selected item
 	 * @param next the now selected item
 	 */
 	private void notifyListener(final T prev, final T next) {
-		if (!muted && listener != null) {
-			listener.accept(prev, next);
-		}
-	}
-
-
-
-
-	/**
-	 * Run the given action with a return value without triggering any listeners while doing so
-	 *
-	 * @param action the action to run
-	 * @param <R>    the type of the return value
-	 * @return the value returned by the given action
-	 */
-	private <R> R withMutedListeners(final Supplier<R> action) {
-		SimpleObjectProperty<R> result = new SimpleObjectProperty<>();
-		withMutedListeners(() -> result.set(action.get()));
-		return result.get();
-	}
-
-
-
-
-	/**
-	 * Run the given action with without triggering any listeners while doing so.
-	 *
-	 * @param action the action to run
-	 */
-	private void withMutedListeners(final Runnable action) {
-		muted = true;
-		action.run();
-		muted = false;
+		listener.accept(prev, next);
 	}
 
 

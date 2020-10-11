@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
+import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableConsumer;
 import javafx.scene.control.CheckBox;
 
 import java.util.function.Consumer;
@@ -10,12 +11,7 @@ public class ExtendedCheckbox extends CheckBox {
 	/**
 	 * The listener of this checkbox or null
 	 */
-	private Consumer<Boolean> listener;
-
-	/**
-	 * Whether the listener should receive events
-	 */
-	private boolean muted = false;
+	private final MutableConsumer<Boolean> listener = new MutableConsumer<>();
 
 
 
@@ -25,9 +21,7 @@ public class ExtendedCheckbox extends CheckBox {
 	 */
 	public ExtendedCheckbox() {
 		selectedProperty().addListener((value, prev, next) -> {
-			if (!muted && listener != null) {
-				listener.accept(next);
-			}
+			listener.accept(next);
 		});
 	}
 
@@ -40,7 +34,7 @@ public class ExtendedCheckbox extends CheckBox {
 	 * @param listener the new listener or null
 	 */
 	public void setListener(final Consumer<Boolean> listener) {
-		this.listener = listener;
+		this.listener.setConsumer(listener);
 	}
 
 
@@ -52,9 +46,7 @@ public class ExtendedCheckbox extends CheckBox {
 	 * @param selected whether to check/uncheck the box
 	 */
 	public void select(final boolean selected) {
-		muted = true;
-		this.setSelected(selected);
-		muted = false;
+		listener.runMuted(() -> setSelected(selected));
 	}
 
 

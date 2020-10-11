@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiListChangeListener;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableBiConsumer;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.Accordion;
@@ -22,15 +23,9 @@ public class ExtendedAccordion extends Accordion {
 
 
 	/**
-	 * The listener for expanding sections.
+	 * The mutable listener wrapper for expanding sections.
 	 */
-	private BiConsumer<String, Boolean> expandedSectionListener = null;
-
-
-	/**
-	 * Whether the {@link ExtendedAccordion#expandedSectionListener} should be triggered.
-	 */
-	private boolean listenerMuted = false;
+	private final MutableBiConsumer<String, Boolean> expandedSectionListener = new MutableBiConsumer<>();
 
 	/**
 	 * The map of expanded change listener for each title pane
@@ -63,7 +58,7 @@ public class ExtendedAccordion extends Accordion {
 	 * @param listener the listener for expanding and collapsing sections
 	 */
 	public void setExpandedSectionChangedListener(final BiConsumer<String, Boolean> listener) {
-		this.expandedSectionListener = listener;
+		this.expandedSectionListener.setConsumer(listener);
 	}
 
 
@@ -78,7 +73,7 @@ public class ExtendedAccordion extends Accordion {
 		final Optional<TitledPane> titlePane = getPanes().stream()
 				.filter(pane -> pane.getText().equals(title))
 				.findFirst();
-		withMutedListeners(() -> setExpandedPane(titlePane.orElse(null)));
+		expandedSectionListener.runMuted(() -> setExpandedPane(titlePane.orElse(null)));
 	}
 
 
@@ -90,7 +85,7 @@ public class ExtendedAccordion extends Accordion {
 	 * @param childNodes the child nodes
 	 */
 	public void setSections(final Stream<SuiNode> childNodes) {
-		withMutedListeners(() -> {
+		expandedSectionListener.runMuted(() -> {
 			if (getPanes().isEmpty()) {
 				getPanes().setAll(childNodes
 						.map(this::createTitlePane)
@@ -130,7 +125,7 @@ public class ExtendedAccordion extends Accordion {
 	 * Removes all sections
 	 */
 	public void clearSections() {
-		withMutedListeners(() -> getPanes().clear());
+		expandedSectionListener.runMuted(() -> getPanes().clear());
 	}
 
 
@@ -144,23 +139,6 @@ public class ExtendedAccordion extends Accordion {
 	public void setAnimated(final boolean animate) {
 		this.animate = animate;
 		getPanes().forEach(pane -> pane.setAnimated(animate));
-	}
-
-
-
-
-	/**
-	 * Handles muting the listener before executing the given action and un-mutes it again when it is done
-	 *
-	 * @param action the action to perform
-	 */
-	private void withMutedListeners(final Runnable action) {
-		listenerMuted = true;
-		try {
-			action.run();
-		} finally {
-			listenerMuted = false;
-		}
 	}
 
 
@@ -189,7 +167,7 @@ public class ExtendedAccordion extends Accordion {
 	 */
 	private void onExpandedChanged(final TitledPane section, final boolean expanded) {
 		final boolean allCollapsed = !expanded && getPanes().stream().filter(TitledPane::isExpanded).map(Labeled::getText).count() == 0;
-		if (expandedSectionListener != null && !listenerMuted) {
+		if (expandedSectionListener != null) {
 			if (allCollapsed) {
 				expandedSectionListener.accept(section.getText(), false);
 			} else {

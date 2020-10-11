@@ -44,7 +44,7 @@ public class ExtendedComboBox<T> extends ComboBox<T> {
 	/**
 	 * The listener for selected items
 	 */
-	private MutableBiConsumer<T, T> listener = new MutableBiConsumer<>();
+	private final MutableBiConsumer<T, T> listener = new MutableBiConsumer<>();
 
 
 	/**
