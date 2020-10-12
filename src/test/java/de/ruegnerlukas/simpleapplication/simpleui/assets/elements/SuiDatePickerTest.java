@@ -10,7 +10,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import org.junit.Test;
 
-import java.time.LocalDate;
 import java.time.Month;
 import java.time.chrono.Chronology;
 import java.util.ArrayList;
@@ -72,49 +71,18 @@ public class SuiDatePickerTest extends SuiElementTest {
 				KeyCode.getKeyCode("0"),
 				KeyCode.ENTER
 		));
-		assertThat(datePicker.getValue()).isAfterOrEqualTo(LocalDate.of(2020, Month.OCTOBER, 2));
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getItem()).isEqualTo(LocalDate.of(2020, Month.OCTOBER, 2));
-		capturedEvents.clear();
+		assertDate(datePicker, 2020, Month.OCTOBER, 2);
+		assertEvent(capturedEvents, 2020, Month.OCTOBER, 2);
 
 		// enter new text 14.02.2021
-		syncJfxThread(100, () -> clickOn(datePicker, MouseButton.PRIMARY));
-		syncJfxThread(100, () -> type(KeyCode.BACK_SPACE, 10));
-		syncJfxThread(100, () -> type(
-				KeyCode.getKeyCode("1"),
-				KeyCode.getKeyCode("4"),
-				KeyCode.PERIOD,
-				KeyCode.getKeyCode("2"),
-				KeyCode.PERIOD,
-				KeyCode.getKeyCode("2"),
-				KeyCode.getKeyCode("0"),
-				KeyCode.getKeyCode("2"),
-				KeyCode.getKeyCode("1"),
-				KeyCode.ENTER
-		));
-		assertThat(datePicker.getValue()).isAfterOrEqualTo(LocalDate.of(2021, Month.FEBRUARY, 14));
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getItem()).isEqualTo(LocalDate.of(2021, Month.FEBRUARY, 14));
-		capturedEvents.clear();
+		enterDateTyping(datePicker, 2021, Month.FEBRUARY, 14);
+		assertDate(datePicker, 2021, Month.FEBRUARY, 14);
+		assertEvent(capturedEvents, 2021, Month.FEBRUARY, 14);
 
 		// enter same text again
-		syncJfxThread(100, () -> clickOn(datePicker, MouseButton.PRIMARY));
-		syncJfxThread(100, () -> type(KeyCode.BACK_SPACE, 10));
-		syncJfxThread(100, () -> type(
-				KeyCode.getKeyCode("1"),
-				KeyCode.getKeyCode("4"),
-				KeyCode.PERIOD,
-				KeyCode.getKeyCode("2"),
-				KeyCode.PERIOD,
-				KeyCode.getKeyCode("2"),
-				KeyCode.getKeyCode("0"),
-				KeyCode.getKeyCode("2"),
-				KeyCode.getKeyCode("1"),
-				KeyCode.ENTER
-		));
-		assertThat(datePicker.getValue()).isAfterOrEqualTo(LocalDate.of(2021, Month.FEBRUARY, 14));
-		assertThat(capturedEvents).hasSize(0);
-
+		enterDateTyping(datePicker, 2021, Month.FEBRUARY, 14);
+		assertDate(datePicker, 2021, Month.FEBRUARY, 14);
+		assertNoEvent(capturedEvents);
 
 		// enter invalid text
 		syncJfxThread(100, () -> clickOn(datePicker, MouseButton.PRIMARY));
@@ -125,8 +93,8 @@ public class SuiDatePickerTest extends SuiElementTest {
 				KeyCode.getKeyCode("C"),
 				KeyCode.ENTER
 		));
-		assertThat(datePicker.getValue()).isAfterOrEqualTo(LocalDate.of(2021, Month.FEBRUARY, 14));
-		assertThat(capturedEvents).hasSize(0);
+		assertDate(datePicker, 2021, Month.FEBRUARY, 14);
+		assertNoEvent(capturedEvents);
 
 	}
 

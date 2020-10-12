@@ -112,33 +112,23 @@ public class SuiSliderTest extends SuiElementTest {
 			state.setMin(10);
 			state.setMax(90);
 		}));
-		assertThat((int)slider.getMin()).isEqualTo(10);
-		assertThat((int)slider.getMax()).isEqualTo(90);
-		assertThat((int)slider.getValue()).isEqualTo(50);
-		assertThat(capturedEvents).isEmpty();
+		assertSlider(slider, 10, 90, 50);
+		assertNoEvent(capturedEvents);
 
 		// mutate state -> set min to 30, expect new value = 30
 		syncJfxThread(() -> slider.setValue(25));
 		capturedEvents.clear();
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.setMin(30)));
-		assertThat((int)slider.getMin()).isEqualTo(30);
-		assertThat((int)slider.getMax()).isEqualTo(90);
-		assertThat((int)slider.getValue()).isEqualTo(30);
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(30);
-		assertThat(capturedEvents.get(0).getPrevValue().intValue()).isEqualTo(25);
+		assertSlider(slider, 30, 90, 30);
+		assertNoEvent(capturedEvents);
 
 		// mutate state -> set max to 70, expect new value = 70
 		syncJfxThread(() -> slider.setValue(75));
 		capturedEvents.clear();
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.setMax(70)));
-		assertThat((int)slider.getMin()).isEqualTo(30);
-		assertThat((int)slider.getMax()).isEqualTo(70);
-		assertThat((int)slider.getValue()).isEqualTo(70);
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(70);
-		assertThat(capturedEvents.get(0).getPrevValue().intValue()).isEqualTo(75);
-		capturedEvents.clear();
+		assertSlider(slider, 30, 70, 70);
+		assertNoEvent(capturedEvents);
+
 
 		// mutate state -> set min/max to -10/2
 		syncJfxThread(() -> slider.setValue(50));
@@ -147,14 +137,8 @@ public class SuiSliderTest extends SuiElementTest {
 			state.setMin(-10);
 			state.setMax(2);
 		}));
-		assertThat((int)slider.getMin()).isEqualTo(-10);
-		assertThat((int)slider.getMax()).isEqualTo(2);
-		assertThat((int)slider.getValue()).isEqualTo(2);
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(2);
-		assertThat(capturedEvents.get(0).getPrevValue().intValue()).isEqualTo(50);
-		capturedEvents.clear();
-
+		assertSlider(slider, -10, 2, 2);
+		assertNoEvent(capturedEvents);
 	}
 
 

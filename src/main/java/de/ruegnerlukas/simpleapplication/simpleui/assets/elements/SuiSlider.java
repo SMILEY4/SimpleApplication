@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
@@ -14,7 +15,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-import javafx.scene.control.Slider;
 
 import java.util.List;
 
@@ -77,12 +77,12 @@ public final class SuiSlider {
 
 
 
-	private static class FxNodeBuilder implements AbstractFxNodeBuilder<Slider> {
+	private static class FxNodeBuilder implements AbstractFxNodeBuilder<ExtendedSlider> {
 
 
 		@Override
-		public Slider build(final SuiNode node) {
-			final Slider slider = new Slider();
+		public ExtendedSlider build(final SuiNode node) {
+			final ExtendedSlider slider = new ExtendedSlider();
 			slider.setShowTickMarks(TickMarkProperty.DEFAULT_STYLE.isShowTickMarks());
 			slider.setShowTickLabels(TickMarkProperty.DEFAULT_STYLE.isShowLabels());
 			slider.setMajorTickUnit(TickMarkProperty.DEFAULT_MAJOR_TICK_UNIT);

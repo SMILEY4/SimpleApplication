@@ -53,9 +53,10 @@ public class ImageProperty extends SuiProperty {
 						  final ImageView fxNode) {
 			fxNode.setImage(property.getImage());
 			node.getPropertyStore().getSafe(ImageSizeProperty.class).ifPresent(sizeProp -> {
-				final PropFxNodeBuilder builder = SuiRegistry.get()
-						.getEntry(SuiImage.class)
-						.getPropFxNodeBuilders().get(ImageSizeProperty.class);
+				@SuppressWarnings ("unchecked") final PropFxNodeBuilder<ImageSizeProperty, ImageView> builder =
+						(PropFxNodeBuilder<ImageSizeProperty, ImageView>) SuiRegistry.get()
+								.getEntry(SuiImage.class)
+								.getPropFxNodeBuilders().get(ImageSizeProperty.class);
 				if (builder != null) {
 					builder.build(node, sizeProp, fxNode);
 				}
@@ -71,9 +72,10 @@ public class ImageProperty extends SuiProperty {
 									 final ImageView fxNode) {
 			fxNode.setImage(property.getImage());
 			node.getPropertyStore().getSafe(ImageSizeProperty.class).ifPresent(sizeProp -> {
-				final PropFxNodeUpdater updater = SuiRegistry.get()
-						.getEntry(SuiImage.class)
-						.getPropFxNodeUpdaters().get(ImageSizeProperty.class);
+				@SuppressWarnings ("unchecked") final PropFxNodeUpdater<ImageSizeProperty, ImageView> updater =
+						(PropFxNodeUpdater<ImageSizeProperty, ImageView>) SuiRegistry.get()
+								.getEntry(SuiImage.class)
+								.getPropFxNodeUpdaters().get(ImageSizeProperty.class);
 				if (updater != null) {
 					updater.update(sizeProp, node, fxNode);
 				}
@@ -90,9 +92,10 @@ public class ImageProperty extends SuiProperty {
 									 final ImageView fxNode) {
 			fxNode.setImage(property.getImage());
 			node.getPropertyStore().getSafe(ImageSizeProperty.class).ifPresent(sizeProp -> {
-				final PropFxNodeUpdater updater = SuiRegistry.get()
-						.getEntry(SuiImage.class)
-						.getPropFxNodeUpdaters().get(ImageSizeProperty.class);
+				@SuppressWarnings ("unchecked") final PropFxNodeUpdater<ImageSizeProperty, ImageView> updater =
+						(PropFxNodeUpdater<ImageSizeProperty, ImageView>) SuiRegistry.get()
+								.getEntry(SuiImage.class)
+								.getPropFxNodeUpdaters().get(ImageSizeProperty.class);
 				if (updater != null) {
 					updater.update(sizeProp, node, fxNode);
 				}

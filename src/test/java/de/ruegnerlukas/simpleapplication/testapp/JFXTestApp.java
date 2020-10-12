@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication;
+package de.ruegnerlukas.simpleapplication.testapp;
 
 
 import de.ruegnerlukas.simpleapplication.core.presentation.Anchors;

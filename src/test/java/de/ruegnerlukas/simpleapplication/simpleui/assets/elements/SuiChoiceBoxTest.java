@@ -7,8 +7,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -40,16 +38,14 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 				)
 		).getRootFxNode();
 
-		// assert choicebox-has correct items
-		assertThat(choiceBox.getItems()).hasSize(3);
-		assertThat(choiceBox.getItems().get(0)).isEqualTo(new TestItem("A", 1));
-		assertThat(choiceBox.getItems().get(1)).isEqualTo(new TestItem("B", 2));
-		assertThat(choiceBox.getItems().get(2)).isEqualTo(new TestItem("C", 3));
+		assertItems(choiceBox, List.of(
+				new TestItem("A", 1),
+				new TestItem("B", 2),
+				new TestItem("C", 3)
+		));
 
-		// correct item is selected
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B", 2));
+		assertSelected(choiceBox, new TestItem("B", 2));
 
-		// and the converter was added
 		assertThat(choiceBox.converterProperty().get().fromString("X: -1")).isEqualTo(new TestItem("X", -1));
 		assertThat(choiceBox.converterProperty().get().toString(new TestItem("X", -1))).isEqualTo("X: -1");
 
@@ -89,20 +85,20 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 		@SuppressWarnings ("unchecked") final ChoiceBox<TestItem> choiceBox = (ChoiceBox<TestItem>) controller.getRootFxNode();
 
 		// no value selected at first
-		assertThat(choiceBox.getValue()).isNull();
+		assertSelected(choiceBox, null);
 
 		// set selected value in state
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
 			state.selectedItem = new TestItem("B", 2);
 		}));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B", 2));
-		assertThat(collectedEvents).isEmpty();
+		assertSelected(choiceBox, new TestItem("B", 2));
+		assertNoEvent(collectedEvents);
 
 		// set selected value to unknown item
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
 			state.selectedItem = new TestItem("X", -1);
 		}));
-		assertThat(choiceBox.getValue()).isEqualTo(null);
+		assertSelected(choiceBox, null);
 
 	}
 
@@ -141,16 +137,17 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 		@SuppressWarnings ("unchecked") final ChoiceBox<TestItem> choiceBox = (ChoiceBox<TestItem>) controller.getRootFxNode();
 
 		// correct items were added to choice-box -> [A, B, C]
-		assertThat(choiceBox.getItems()).hasSize(3);
-		assertThat(choiceBox.getItems().get(0)).isEqualTo(new TestItem("A", 1));
-		assertThat(choiceBox.getItems().get(1)).isEqualTo(new TestItem("B", 2));
-		assertThat(choiceBox.getItems().get(2)).isEqualTo(new TestItem("C", 3));
+		assertItems(choiceBox, List.of(
+				new TestItem("A", 1),
+				new TestItem("B", 2),
+				new TestItem("C", 3)
+		));
 
 		// remove all items -> []
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
 			state.items.clear();
 		}));
-		assertThat(choiceBox.getItems()).hasSize(0);
+		assertItems(choiceBox, List.of());
 
 		// add all items and select one -> [A2, B2, C2]
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
@@ -161,36 +158,40 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 			));
 			state.selected = new TestItem("B2", 20);
 		}));
-		assertThat(choiceBox.getItems()).hasSize(3);
-		assertThat(choiceBox.getItems().get(0)).isEqualTo(new TestItem("A2", 10));
-		assertThat(choiceBox.getItems().get(1)).isEqualTo(new TestItem("B2", 20));
-		assertThat(choiceBox.getItems().get(2)).isEqualTo(new TestItem("C2", 30));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B2", 20));
-		assertThat(collectedEvents).isEmpty();
+
+		assertItems(choiceBox, List.of(
+				new TestItem("A2", 10),
+				new TestItem("B2", 20),
+				new TestItem("C2", 30)
+		));
+		assertNoEvent(collectedEvents);
 
 		// remove some items -> [B2]
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
 			state.items.remove(new TestItem("A2", 10));
 			state.items.remove(new TestItem("C2", 30));
 		}));
-		assertThat(choiceBox.getItems()).hasSize(1);
-		assertThat(choiceBox.getItems().get(0)).isEqualTo(new TestItem("B2", 20));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B2", 20));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B2", 20));
-		assertThat(collectedEvents).isEmpty();
+		assertItems(choiceBox, List.of(new TestItem("B2", 20)));
+		assertSelected(choiceBox, new TestItem("B2", 20));
+		assertNoEvent(collectedEvents);
 
 		// add some items -> [B2, X1, X2]
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
 			state.items.add(new TestItem("X1", -1));
 			state.items.add(new TestItem("X2", -2));
 		}));
-		assertThat(choiceBox.getItems()).hasSize(3);
-		assertThat(choiceBox.getItems().get(0)).isEqualTo(new TestItem("B2", 20));
-		assertThat(choiceBox.getItems().get(1)).isEqualTo(new TestItem("X1", -1));
-		assertThat(choiceBox.getItems().get(2)).isEqualTo(new TestItem("X2", -2));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B2", 20));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B2", 20));
-		assertThat(collectedEvents).isEmpty();
+
+		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
+			state.items.remove(new TestItem("A2", 10));
+			state.items.remove(new TestItem("C2", 30));
+		}));
+		assertItems(choiceBox, List.of(
+				new TestItem("B2", 20),
+				new TestItem("X1", -1),
+				new TestItem("X2", -2)
+		));
+		assertSelected(choiceBox, new TestItem("B2", 20));
+		assertNoEvent(collectedEvents);
 
 	}
 
@@ -199,7 +200,7 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 
 	@Test
 	public void test_choicebox_with_real_user_interaction() {
-		if(shouldSkipFxTest()) {
+		if (shouldSkipFxTest()) {
 			return;
 		}
 
@@ -234,26 +235,19 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 		show(choiceBox);
 
 		// select a new item -> item selected + event
-		syncJfxThread(200, () -> this.clickOn(choiceBox, MouseButton.PRIMARY));
-		syncJfxThread(100, () -> type(KeyCode.DOWN));
-		syncJfxThread(100, () -> type(KeyCode.ENTER));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B", 2)); // TODO: selected item does no longer reflect state -> check
-		assertThat(collectedEvents).hasSize(1);
-		assertThat(collectedEvents.get(0).getValue()).isEqualTo(new TestItem("B", 2));
-		assertThat(collectedEvents.get(0).getPrevValue()).isNull();
-		collectedEvents.clear();
+		selectItem(choiceBox, 1);
+		assertSelected(choiceBox, new TestItem("B", 2));
+		assertEvent(collectedEvents, null, new TestItem("B", 2));
 
 		// select same item again -> item still selected, no event
-		syncJfxThread(200, () -> this.clickOn(choiceBox, MouseButton.PRIMARY));
-		syncJfxThread(100, () -> type(KeyCode.ENTER));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B", 2));
-		assertThat(collectedEvents).isEmpty();
+		selectItem(choiceBox, 0);
+		assertSelected(choiceBox, new TestItem("B", 2));
+		assertNoEvent(collectedEvents);
 
 		// escape selecting item -> item still selected, no event
-		syncJfxThread(200, () -> this.clickOn(choiceBox, MouseButton.PRIMARY));
-		syncJfxThread(100, () -> type(KeyCode.ESCAPE));
-		assertThat(choiceBox.getValue()).isEqualTo(new TestItem("B", 2));
-		assertThat(collectedEvents).isEmpty();
+		selectItem(choiceBox, 0);
+		assertSelected(choiceBox, new TestItem("B", 2));
+		assertNoEvent(collectedEvents);
 
 	}
 

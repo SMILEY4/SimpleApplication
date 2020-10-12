@@ -3,17 +3,19 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.BiConsumer;
 
+@Slf4j
 public class OnValueChangedEventProperty<T> extends AbstractEventListenerProperty<ValueChangedEventData<T>> {
 
 
@@ -122,28 +124,20 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 
-	public static class SliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<Number>, Slider> {
+	public static class SliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<Number>, ExtendedSlider> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnValueChangedEventProperty<Number> property,
-						  final Slider fxNode) {
-			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		public void build(final SuiNode node, final OnValueChangedEventProperty<Number> property, final ExtendedSlider fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
-									 final Slider fxNode) {
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<Number>) prop)
-					.map(OnValueChangedEventProperty::getChangeListenerProxy)
-					.ifPresent(proxy -> proxy.removeFrom(fxNode.valueProperty()));
-			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		public MutationResult update(final OnValueChangedEventProperty<Number> property, final SuiNode node, final ExtendedSlider fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 			return MutationResult.MUTATED;
 		}
 
@@ -151,10 +145,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
-									 final Slider fxNode) {
-			property.getChangeListenerProxy().removeFrom(fxNode.valueProperty());
+		public MutationResult remove(final OnValueChangedEventProperty<Number> property, final SuiNode node, final ExtendedSlider fxNode) {
+			fxNode.setListener(null);
 			return MutationResult.MUTATED;
 		}
 
@@ -169,26 +161,26 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnValueChangedEventProperty<Number> property,
-						  final Pane fxNode) {
-			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
-			property.getChangeListenerProxy().addTo(slider.valueProperty());
+		public void build(final SuiNode node, final OnValueChangedEventProperty<Number> property, final Pane fxNode) {
+			final ExtendedSlider slider = SuiLabeledSlider.getSlider(fxNode);
+			if (slider != null) {
+				slider.setListener(property.getListenerProxy());
+			} else {
+				log.warn("Slider not found. Can not set listener");
+			}
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
-									 final Pane fxNode) {
-			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<Number>) prop)
-					.map(OnValueChangedEventProperty::getChangeListenerProxy)
-					.ifPresent(proxy -> proxy.removeFrom(slider.valueProperty()));
-			property.getChangeListenerProxy().addTo(slider.valueProperty());
+		public MutationResult update(final OnValueChangedEventProperty<Number> property, final SuiNode node, final Pane fxNode) {
+			final ExtendedSlider slider = SuiLabeledSlider.getSlider(fxNode);
+			if (slider != null) {
+				slider.setListener(property.getListenerProxy());
+			} else {
+				log.warn("Slider not found. Can not set listener");
+			}
 			return MutationResult.MUTATED;
 		}
 
@@ -196,11 +188,13 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
-									 final Pane fxNode) {
-			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
-			property.getChangeListenerProxy().removeFrom(slider.valueProperty());
+		public MutationResult remove(final OnValueChangedEventProperty<Number> property, final SuiNode node, final Pane fxNode) {
+			final ExtendedSlider slider = SuiLabeledSlider.getSlider(fxNode);
+			if (slider != null) {
+				slider.setListener(null);
+			} else {
+				log.warn("Slider not found. Can not set listener");
+			}
 			return MutationResult.MUTATED;
 		}
 

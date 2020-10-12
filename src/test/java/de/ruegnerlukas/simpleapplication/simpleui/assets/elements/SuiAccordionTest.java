@@ -7,22 +7,17 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.Labeled;
-import javafx.scene.input.MouseButton;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class SuiAccordionTest extends SuiElementTest {
 
 
 	@Test
 	public void test_expanding_sections_triggers_actions() {
-		if(shouldSkipFxTest()) {
+		if (shouldSkipFxTest()) {
 			return;
 		}
 
@@ -56,28 +51,19 @@ public class SuiAccordionTest extends SuiElementTest {
 		capturedEvents.clear();
 
 		// expand section 2
-		syncJfxThread(100, () -> clickOn(accordion.getPanes().get(2), MouseButton.PRIMARY));
-		assertThat(accordion.getExpandedPane().getText()).isEqualTo("Section 2");
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getSectionTitle()).isEqualTo("Section 2");
-		assertThat(capturedEvents.get(0).isExpanded()).isEqualTo(true);
-		capturedEvents.clear();
+		expandOrCollapse(accordion, 2);
+		assertExpanded(accordion, "Section 2");
+		assertEvent(capturedEvents, "Section 2", true);
 
 		// expand section 1
-		syncJfxThread(100, () -> clickOn(accordion.getPanes().get(1), MouseButton.PRIMARY));
-		assertThat(accordion.getExpandedPane().getText()).isEqualTo("Section 1");
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getSectionTitle()).isEqualTo("Section 1");
-		assertThat(capturedEvents.get(0).isExpanded()).isEqualTo(true);
-		capturedEvents.clear();
+		expandOrCollapse(accordion, 1);
+		assertExpanded(accordion, "Section 1");
+		assertEvent(capturedEvents, "Section 1", true);
 
 		// collapse section 1
-		syncJfxThread(100, () -> clickOn(accordion.getPanes().get(1), MouseButton.PRIMARY));
-		assertThat(accordion.getExpandedPane()).isNull();
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getSectionTitle()).isEqualTo("Section 1");
-		assertThat(capturedEvents.get(0).isExpanded()).isEqualTo(false);
-		capturedEvents.clear();
+		expandOrCollapse(accordion, 1);
+		assertExpanded(accordion, null);
+		assertEvent(capturedEvents, "Section 1", false);
 
 	}
 
@@ -116,8 +102,7 @@ public class SuiAccordionTest extends SuiElementTest {
 		// expand "section 1" as preparation, ignore event and assert sections
 		accordion.setExpandedPane(accordion.getPanes().get(1));
 		capturedEvents.clear();
-		assertThat(accordion.getPanes().stream().map(Labeled::getText).collect(Collectors.toList()))
-				.containsExactly("Section 0", "Section 1", "Section 2", "Section 3");
+		assertSections(accordion, "Section 0", "Section 1", "Section 2", "Section 3");
 
 		// remove a section that is not expanded and add a new section
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> {
@@ -126,11 +111,9 @@ public class SuiAccordionTest extends SuiElementTest {
 		}));
 
 		// check that no events were triggered and the sections have been modified
-		assertThat(capturedEvents).isEmpty();
-		assertThat(accordion.getExpandedPane().getText()).isEqualTo("Section 1");
-		assertThat(accordion.getPanes().stream().map(Labeled::getText).collect(Collectors.toList()))
-				.containsExactly("Section 1", "Section 2", "Section 3", "Section 4");
-
+		assertNoEvent(capturedEvents);
+		assertExpanded(accordion, "Section 1");
+		assertSections(accordion, "Section 1", "Section 2", "Section 3", "Section 4");
 	}
 
 
@@ -168,18 +151,17 @@ public class SuiAccordionTest extends SuiElementTest {
 		// expand "section 1" as preparation, ignore event and assert sections
 		accordion.setExpandedPane(accordion.getPanes().get(1));
 		capturedEvents.clear();
-		assertThat(accordion.getPanes().stream().map(Labeled::getText).collect(Collectors.toList()))
-				.containsExactly("Section 0", "Section 1");
+		assertSections(accordion, "Section 0", "Section 1");
 
 		// remove currently expanded section
 		syncJfxThread(() -> testState.update(TestState.class, state -> state.sections.remove("1")));
 
 		// check that no event was triggered and the sections modified
-		assertThat(capturedEvents).isEmpty();
-		assertThat(accordion.getExpandedPane()).isNull();
-		assertThat(accordion.getPanes().stream().map(Labeled::getText).collect(Collectors.toList()))
-				.containsExactly("Section 0");
+		assertNoEvent(capturedEvents);
+		assertExpanded(accordion, null);
+		assertSections(accordion, "Section 0");
 	}
+
 
 
 
@@ -187,6 +169,7 @@ public class SuiAccordionTest extends SuiElementTest {
 	public void test_expanded_section_property() {
 
 		class TestState extends SuiState {
+
 
 			public final List<String> sections = new ArrayList<>(List.of("0", "1", "2", "3"));
 
@@ -215,28 +198,25 @@ public class SuiAccordionTest extends SuiElementTest {
 		show(accordion);
 
 		// test initially expanded section
-		assertThat(accordion.getExpandedPane()).isNotNull();
-		assertThat(accordion.getExpandedPane().getText()).isEqualTo("Section 1");
-		assertThat(capturedEvents).isEmpty();
+		assertExpanded(accordion, "Section 1");
+		assertNoEvent(capturedEvents);
 
 		// set new section as expanded
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.section = "Section 3"));
-		assertThat(accordion.getExpandedPane()).isNotNull();
-		assertThat(accordion.getExpandedPane().getText()).isEqualTo("Section 3");
-		assertThat(capturedEvents).isEmpty();
+		assertExpanded(accordion, "Section 3");
+		assertNoEvent(capturedEvents);
 
 		// set no section as expanded
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.section = null));
-		assertThat(accordion.getExpandedPane()).isNull();
-		assertThat(capturedEvents).isEmpty();
+		assertExpanded(accordion, null);
+		assertNoEvent(capturedEvents);
 
 		// set unknown section as expanded
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.section = "Unknown"));
-		assertThat(accordion.getExpandedPane()).isNull();
-		assertThat(capturedEvents).isEmpty();
+		assertExpanded(accordion, null);
+		assertNoEvent(capturedEvents);
 
 	}
-
 
 
 }
