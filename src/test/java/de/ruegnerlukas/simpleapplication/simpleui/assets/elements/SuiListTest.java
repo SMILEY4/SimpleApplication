@@ -21,7 +21,7 @@ public class SuiListTest extends SuiElementTest {
 
 
 	@Test
-	public void test_pressing_button_triggers_action() {
+	public void test_create_list() {
 
 		@SuppressWarnings ("unchecked") final ListView<TestItem> list = (ListView<TestItem>) new SuiSceneController(
 				SuiList.list(
@@ -194,9 +194,7 @@ public class SuiListTest extends SuiElementTest {
 				new TestItem("D", 4)
 		));
 		assertThat(listView.getSelectionModel().getSelectedItem()).isNull();
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getSelection()).isEmpty();
-		capturedEvents.clear();
+		assertNoEvent(capturedEvents);
 	}
 
 

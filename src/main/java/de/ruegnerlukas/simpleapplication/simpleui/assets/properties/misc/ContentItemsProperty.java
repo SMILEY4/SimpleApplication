@@ -3,11 +3,11 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedListView;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import javafx.scene.control.ListView;
 import lombok.Getter;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 
 	/**
-	 * @param choices the list of choices
+	 * @param choices        the list of choices
 	 * @param selectedChoice the choice to select from the list of choices (or null)
 	 */
 	public ContentItemsProperty(final List<T> choices, final T selectedChoice) {
@@ -128,24 +128,20 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 
 
-	public static class ListViewUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ContentItemsProperty<T>, ListView<T>> {
+	public static class ListViewUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ContentItemsProperty<T>, ExtendedListView<T>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final ContentItemsProperty<T> property,
-						  final ListView<T> fxNode) {
-			fxNode.getItems().setAll(property.getChoices());
+		public void build(final SuiNode node, final ContentItemsProperty<T> property, final ExtendedListView<T> fxNode) {
+			fxNode.setItems(property.getChoices());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final ContentItemsProperty<T> property,
-									 final SuiNode node,
-									 final ListView<T> fxNode) {
-			fxNode.getItems().setAll(property.getChoices());
+		public MutationResult update(final ContentItemsProperty<T> property, final SuiNode node, final ExtendedListView<T> fxNode) {
+			fxNode.setItems(property.getChoices());
 			return MutationResult.MUTATED;
 		}
 
@@ -153,10 +149,8 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final ContentItemsProperty<T> property,
-									 final SuiNode node,
-									 final ListView<T> fxNode) {
-			fxNode.getItems().clear();
+		public MutationResult remove(final ContentItemsProperty<T> property, final SuiNode node, final ExtendedListView<T> fxNode) {
+			fxNode.clearItems();
 			return MutationResult.MUTATED;
 		}
 
