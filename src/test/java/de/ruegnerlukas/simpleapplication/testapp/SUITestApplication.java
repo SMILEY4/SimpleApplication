@@ -164,9 +164,6 @@ public class SUITestApplication {
 															state.getSelected()),
 													EventProperties.eventValueChangedType(".", String.class, e -> {
 														System.out.println("EVENT " + e.getPrevValue() + " -> " + e.getValue());
-														state.update(TestUIState.class, s -> {
-															s.setSelected(e.getValue());
-														});
 													}),
 													Properties.searchable(true),
 													Properties.editable(false)

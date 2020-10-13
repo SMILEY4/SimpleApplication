@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
+import org.junit.After;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.time.LocalDate;
@@ -52,9 +53,22 @@ public class SuiElementTest extends ApplicationTest {
 
 
 
+	@After
+	public void cleanup() {
+		syncJfxThread(() -> {
+			getStage().setScene(null);
+			getStage().hide();
+		});
+		delay(100);
+	}
+
+
+
+
 	public void show(final Parent node) {
 		syncJfxThread(() -> {
 			getStage().setScene(new Scene(node));
+			getStage().show();
 			getStage().sizeToScene();
 		});
 		delay(100);
@@ -242,7 +256,7 @@ public class SuiElementTest extends ApplicationTest {
 
 
 	public void clickButton(final ButtonBase button) {
-		syncJfxThread(() -> clickOn(button, MouseButton.PRIMARY));
+		syncJfxThread(100, () -> clickOn(button, MouseButton.PRIMARY));
 	}
 
 
@@ -260,7 +274,18 @@ public class SuiElementTest extends ApplicationTest {
 
 
 	public void selectItem(final ComboBox<?> comboBox, final int index) {
-		syncJfxThread(200, () -> this.clickOn(comboBox, MouseButton.PRIMARY));
+		selectItem(comboBox, false, index);
+	}
+
+
+
+
+	public void selectItem(final ComboBox<?> comboBox, final boolean editable, final int index) {
+		if (editable) {
+			syncJfxThread(200, () -> clickOnArrowButton(comboBox));
+		} else {
+			syncJfxThread(200, () -> clickOn(comboBox, MouseButton.PRIMARY));
+		}
 		for (int i = 0; i < (index + 1); i++) {
 			syncJfxThread(100, () -> type(KeyCode.DOWN));
 		}
@@ -283,7 +308,7 @@ public class SuiElementTest extends ApplicationTest {
 		for (KeyCode key : keys) {
 			syncJfxThread(100, () -> type(key));
 		}
-		syncJfxThread(100, () -> type(KeyCode.ESCAPE));
+		syncJfxThread(100, () -> type(KeyCode.ENTER));
 	}
 
 

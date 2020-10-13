@@ -272,7 +272,7 @@ public class SuiComboBoxTest extends SuiElementTest {
 		show(comboBox);
 
 		// select a new item -> item selected + event
-		selectItem(comboBox, 1);
+		selectItem(comboBox, true, 1);
 		assertSelected(comboBox, new TestItem("B", 2));
 		assertEvent(collectedEvents, null, new TestItem("B", 2));
 
