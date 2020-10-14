@@ -6,7 +6,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DividerDraggedEv
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import javafx.scene.control.SplitPane;
 import lombok.Getter;
 
 import java.util.function.BiConsumer;
@@ -48,27 +47,20 @@ public class OnDividerDraggedEventProperty extends AbstractEventListenerProperty
 
 
 
-	public static class SplitPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnDividerDraggedEventProperty, SplitPane> {
+	public static class SplitPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnDividerDraggedEventProperty, ExtendedSplitPane> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnDividerDraggedEventProperty property,
-						  final SplitPane fxNode) {
-			((ExtendedSplitPane) fxNode).addDividerListener(property.getChangeListener());
+		public void build(final SuiNode node, final OnDividerDraggedEventProperty property, final ExtendedSplitPane fxNode) {
+			fxNode.setDividerListener(property.getChangeListener());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnDividerDraggedEventProperty property,
-									 final SuiNode node,
-									 final SplitPane fxNode) {
-			node.getPropertyStore().getSafe(OnDividerDraggedEventProperty.class)
-					.map(OnDividerDraggedEventProperty::getChangeListener)
-					.ifPresent(((ExtendedSplitPane) fxNode)::removeDividerListener);
-			((ExtendedSplitPane) fxNode).addDividerListener(property.getChangeListener());
+		public MutationResult update(final OnDividerDraggedEventProperty property, final SuiNode node, final ExtendedSplitPane fxNode) {
+			fxNode.setDividerListener(property.getChangeListener());
 			return MutationResult.MUTATED;
 		}
 
@@ -76,10 +68,8 @@ public class OnDividerDraggedEventProperty extends AbstractEventListenerProperty
 
 
 		@Override
-		public MutationResult remove(final OnDividerDraggedEventProperty property,
-									 final SuiNode node,
-									 final SplitPane fxNode) {
-			((ExtendedSplitPane) fxNode).removeDividerListener(property.getChangeListener());
+		public MutationResult remove(final OnDividerDraggedEventProperty property, final SuiNode node, final ExtendedSplitPane fxNode) {
+			fxNode.setDividerListener(null);
 			return MutationResult.MUTATED;
 		}
 

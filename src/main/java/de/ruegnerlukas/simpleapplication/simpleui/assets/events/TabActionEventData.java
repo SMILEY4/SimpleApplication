@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.events;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.Tab;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +16,7 @@ public class TabActionEventData {
 	/**
 	 * The tab.
 	 */
-	private final Tab tab;
+	private final String title;
 
 	/**
 	 * The original javafx event.

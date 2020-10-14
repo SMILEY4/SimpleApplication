@@ -5,7 +5,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventDa
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import javafx.scene.control.Tab;
 import lombok.Getter;
+
+import java.util.function.Consumer;
 
 public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabActionEventData> {
 
@@ -17,6 +20,13 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 	private final SuiEventListener<TabActionEventData> listener;
 
 
+	/**
+	 * The actual listener.
+	 */
+	@Getter
+	private final Consumer<Tab> proxyListener;
+
+
 
 
 	/**
@@ -26,6 +36,12 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 	public OnTabClosedEventProperty(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
 		super(OnTabClosedEventProperty.class, propertyId);
 		this.listener = listener;
+		this.proxyListener = tab -> getListener().onEvent(
+				TabActionEventData.builder()
+						.title(tab.getText())
+						.source(null)
+						.build()
+		);
 	}
 
 
@@ -35,20 +51,16 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnTabClosedEventProperty property,
-						  final ExtendedTabPane fxNode) {
-			setListener(fxNode, property);
+		public void build(final SuiNode node, final OnTabClosedEventProperty property, final ExtendedTabPane fxNode) {
+			fxNode.setOnTabClosed(property.getProxyListener());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnTabClosedEventProperty property,
-									 final SuiNode node,
-									 final ExtendedTabPane fxNode) {
-			setListener(fxNode, property);
+		public MutationResult update(final OnTabClosedEventProperty property, final SuiNode node, final ExtendedTabPane fxNode) {
+			fxNode.setOnTabClosed(property.getProxyListener());
 			return MutationResult.MUTATED;
 		}
 
@@ -56,30 +68,11 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 
 
 		@Override
-		public MutationResult remove(final OnTabClosedEventProperty property,
-									 final SuiNode node,
-									 final ExtendedTabPane fxNode) {
+		public MutationResult remove(final OnTabClosedEventProperty property, final SuiNode node, final ExtendedTabPane fxNode) {
 			fxNode.setOnTabClosed(null);
 			return MutationResult.MUTATED;
 		}
 
-
-
-
-		/**
-		 * Attaches the listener to the given fx node.
-		 *
-		 * @param fxNode   the fx node to listen to
-		 * @param property the property with the listener to add
-		 */
-		private void setListener(final ExtendedTabPane fxNode, final OnTabClosedEventProperty property) {
-			fxNode.setOnTabClosed(tab -> property.getListener().onEvent(
-					TabActionEventData.builder()
-							.tab(tab)
-							.source(null)
-							.build()
-			));
-		}
 
 	}
 

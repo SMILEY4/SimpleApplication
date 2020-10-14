@@ -4,6 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -11,7 +12,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -100,14 +100,12 @@ public class ItemProperty extends SuiProperty {
 
 
 
-	public static class TabPaneBuilder implements PropFxNodeBuilder<ItemListProperty, TabPane> {
+	public static class TabPaneBuilder implements PropFxNodeBuilder<ItemListProperty, ExtendedTabPane> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final ItemListProperty property,
-						  final TabPane fxNode) {
-			fxNode.getTabs().setAll(SuiTabPane.createTabs(List.of(node.getChildNodeStore().getOne())));
+		public void build(final SuiNode node, final ItemListProperty property, final ExtendedTabPane fxNode) {
+			fxNode.setTabs(SuiTabPane.createTabs(List.of(node.getChildNodeStore().getOne())));
 		}
 
 	}

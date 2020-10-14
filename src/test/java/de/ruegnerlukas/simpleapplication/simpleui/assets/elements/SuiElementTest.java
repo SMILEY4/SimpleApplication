@@ -46,7 +46,6 @@ public class SuiElementTest extends ApplicationTest {
 	public void start(Stage stage) {
 		SuiRegistry.initialize();
 		this.stage = stage;
-		this.stage.setAlwaysOnTop(true);
 		this.stage.show();
 	}
 
@@ -68,6 +67,7 @@ public class SuiElementTest extends ApplicationTest {
 	public void show(final Parent node) {
 		syncJfxThread(() -> {
 			getStage().setScene(new Scene(node));
+			getStage().setAlwaysOnTop(true);
 			getStage().show();
 			getStage().sizeToScene();
 		});

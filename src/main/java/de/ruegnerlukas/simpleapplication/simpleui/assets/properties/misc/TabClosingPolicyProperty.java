@@ -44,9 +44,7 @@ public class TabClosingPolicyProperty extends SuiProperty {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final TabClosingPolicyProperty property,
-						  final TabPane fxNode) {
+		public void build(final SuiNode node, final TabClosingPolicyProperty property, final TabPane fxNode) {
 			fxNode.setTabClosingPolicy(property.getTabClosingPolicy());
 		}
 
@@ -54,9 +52,7 @@ public class TabClosingPolicyProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final TabClosingPolicyProperty property,
-									 final SuiNode node,
-									 final TabPane fxNode) {
+		public MutationResult update(final TabClosingPolicyProperty property, final SuiNode node, final TabPane fxNode) {
 			fxNode.setTabClosingPolicy(property.getTabClosingPolicy());
 			return MutationResult.MUTATED;
 		}
@@ -65,9 +61,7 @@ public class TabClosingPolicyProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final TabClosingPolicyProperty property,
-									 final SuiNode node,
-									 final TabPane fxNode) {
+		public MutationResult remove(final TabClosingPolicyProperty property, final SuiNode node, final TabPane fxNode) {
 			fxNode.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 			return MutationResult.MUTATED;
 		}

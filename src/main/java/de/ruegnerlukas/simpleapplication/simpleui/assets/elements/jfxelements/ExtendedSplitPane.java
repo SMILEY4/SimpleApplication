@@ -2,15 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiListChangeListener;
-import javafx.application.Platform;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableBiConsumer;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.SplitPane;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -22,17 +20,10 @@ public class ExtendedSplitPane extends SplitPane {
 	 */
 	private final Map<Divider, ChangeListener<Number>> internalDividerPosListeners = new HashMap<>();
 
-
 	/**
-	 * The divider listeners ( List<index,prevPos,nextPos> ).
+	 * The divider listener ( <index,<prevPos,nextPos>> ).
 	 */
-	private final List<BiConsumer<Integer, Pair<Number, Number>>> dividerListeners = new ArrayList<>();
-
-	/**
-	 * Whether the (external) divider listeners should receive events.
-	 */
-	private boolean muted = false;
-
+	private final MutableBiConsumer<Integer, Pair<Number, Number>> dividerListener = new MutableBiConsumer<>();
 
 	/**
 	 * Whether the user can change the positions of the dividers
@@ -50,11 +41,11 @@ public class ExtendedSplitPane extends SplitPane {
 	public ExtendedSplitPane() {
 		getDividers().addListener(new SuiListChangeListener<>(
 				addedDiv -> {
-					muted = true;
-					ChangeListener<Number> listener = (v, p, n) -> onDividerMove(addedDiv, p, n);
-					internalDividerPosListeners.put(addedDiv, listener);
-					addedDiv.positionProperty().addListener(listener);
-					Platform.runLater(() -> muted = false);
+					dividerListener.runMuted(() -> {
+						final ChangeListener<Number> listener = (v, p, n) -> onDividerMove(addedDiv, p, n);
+						internalDividerPosListeners.put(addedDiv, listener);
+						addedDiv.positionProperty().addListener(listener);
+					});
 				},
 				removedDiv -> removedDiv.positionProperty().removeListener(internalDividerPosListeners.get(removedDiv))
 		));
@@ -64,24 +55,13 @@ public class ExtendedSplitPane extends SplitPane {
 
 
 	/**
-	 * Adds the given divider listener.
+	 * Sets the given divider listener.
 	 *
-	 * @param listener the position listener. Gets called with the index of the divider and a pair of the previous and next position.
+	 * @param listener the position listener or null.
+	 *                 Gets called with the index of the divider and a pair of the previous and next position.
 	 */
-	public void addDividerListener(final BiConsumer<Integer, Pair<Number, Number>> listener) {
-		dividerListeners.add(listener);
-	}
-
-
-
-
-	/**
-	 * Removes the given divider listener.
-	 *
-	 * @param listener the position listener to remove.
-	 */
-	public void removeDividerListener(final BiConsumer<Integer, Pair<Number, Number>> listener) {
-		dividerListeners.remove(listener);
+	public void setDividerListener(final BiConsumer<Integer, Pair<Number, Number>> listener) {
+		dividerListener.setConsumer(listener);
 	}
 
 
@@ -100,9 +80,7 @@ public class ExtendedSplitPane extends SplitPane {
 			divider.setPosition(prevPos.doubleValue());
 			divider.positionProperty().addListener(internalDividerPosListeners.get(divider));
 		} else {
-			if (!muted) {
-				dividerListeners.forEach(listener -> listener.accept(getDividers().indexOf(divider), Pair.of(prevPos, nextPos)));
-			}
+			dividerListener.accept(getDividers().indexOf(divider), Pair.of(prevPos, nextPos));
 		}
 	}
 
@@ -111,9 +89,7 @@ public class ExtendedSplitPane extends SplitPane {
 
 	@Override
 	public void setDividerPosition(final int dividerIndex, final double position) {
-		muteDividerPositionListeners();
-		super.setDividerPosition(dividerIndex, position);
-		unmuteDividerPositionListeners();
+		dividerListener.runMuted(() -> super.setDividerPosition(dividerIndex, position));
 	}
 
 
@@ -121,31 +97,8 @@ public class ExtendedSplitPane extends SplitPane {
 
 	@Override
 	public void setDividerPositions(final double... positions) {
-		muteDividerPositionListeners();
-		super.setDividerPositions(positions);
-		unmuteDividerPositionListeners();
+		dividerListener.runMuted(() -> super.setDividerPositions(positions));
 	}
 
-
-
-
-	/**
-	 * Mutes the position listeners of all dividers
-	 */
-	public void muteDividerPositionListeners() {
-		internalDividerPosListeners.forEach((divider, listener) -> divider.positionProperty().removeListener(listener));
-		muted = true;
-	}
-
-
-
-
-	/**
-	 * Unmutes the position listeners of all dividers
-	 */
-	public void unmuteDividerPositionListeners() {
-		internalDividerPosListeners.forEach((divider, listener) -> divider.positionProperty().addListener(listener));
-		muted = false;
-	}
 
 }

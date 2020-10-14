@@ -48,7 +48,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Spinner
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SplitDividerPositionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabDisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPaneMenuSideProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
@@ -1114,17 +1113,6 @@ public final class Properties {
 	public static SuiProperty title(final String title) {
 		Validations.INPUT.notNull(title).exception("The title may not be null.");
 		return new TitleProperty(title);
-	}
-
-
-
-
-	/**
-	 * @param disabled whether the tab is disabled
-	 * @return the {@link TabDisabledProperty}
-	 */
-	public static SuiProperty tabDisabled(final boolean disabled) {
-		return new TabDisabledProperty(disabled);
 	}
 
 

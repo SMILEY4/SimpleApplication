@@ -45,9 +45,7 @@ public class TabPaneMenuSideProperty extends SuiProperty {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final TabPaneMenuSideProperty property,
-						  final TabPane fxNode) {
+		public void build(final SuiNode node, final TabPaneMenuSideProperty property, final TabPane fxNode) {
 			fxNode.setSide(property.getSide());
 		}
 
@@ -55,9 +53,7 @@ public class TabPaneMenuSideProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final TabPaneMenuSideProperty property,
-									 final SuiNode node,
-									 final TabPane fxNode) {
+		public MutationResult update(final TabPaneMenuSideProperty property, final SuiNode node, final TabPane fxNode) {
 			fxNode.setSide(property.getSide());
 			return MutationResult.MUTATED;
 		}
@@ -66,9 +62,7 @@ public class TabPaneMenuSideProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final TabPaneMenuSideProperty property,
-									 final SuiNode node,
-									 final TabPane fxNode) {
+		public MutationResult remove(final TabPaneMenuSideProperty property, final SuiNode node, final TabPane fxNode) {
 			fxNode.setSide(Side.TOP);
 			return MutationResult.MUTATED;
 		}
