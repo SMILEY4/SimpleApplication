@@ -1092,13 +1092,16 @@ public final class Properties {
 
 
 	/**
-	 * @param items      the items
-	 * @param wrapAround whether to wrap around or stop at the end/start
+	 * @param items        the items
+	 * @param initialValue the initial value
+	 * @param wrapAround   whether to wrap around or stop at the end/start
 	 * @return the {@link SpinnerFactoryProperty}
 	 */
-	public static SuiProperty listSpinnerValues(final List<String> items, final boolean wrapAround) {
+	public static SuiProperty listSpinnerValues(final List<String> items, final String initialValue, final boolean wrapAround) {
 		Validations.INPUT.notNull(items).exception("The items-list must not be null.");
-		return new SpinnerFactoryProperty(items, wrapAround);
+		Validations.INPUT.contains(items, initialValue)
+				.exception("The initial value {} must be in the list of items.", initialValue);
+		return new SpinnerFactoryProperty(items, initialValue, wrapAround);
 	}
 
 

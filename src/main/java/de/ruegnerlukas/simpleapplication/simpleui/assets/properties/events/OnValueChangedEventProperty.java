@@ -4,11 +4,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlid
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSpinner;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import javafx.scene.control.Spinner;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -205,28 +205,20 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 
-	public static class SpinnerUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, Spinner<T>> {
+	public static class SpinnerUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ExtendedSpinner<T>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnValueChangedEventProperty<T> property,
-						  final Spinner<T> fxNode) {
-			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		public void build(final SuiNode node, final OnValueChangedEventProperty<T> property, final ExtendedSpinner<T> fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
-									 final Spinner<T> fxNode) {
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<T>) prop)
-					.map(OnValueChangedEventProperty::getChangeListenerProxy)
-					.ifPresent(proxy -> proxy.removeFrom(fxNode.valueProperty()));
-			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		public MutationResult update(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedSpinner<T> fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 			return MutationResult.MUTATED;
 		}
 
@@ -234,10 +226,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
-									 final Spinner<T> fxNode) {
-			property.getChangeListenerProxy().removeFrom(fxNode.valueProperty());
+		public MutationResult remove(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedSpinner<T> fxNode) {
+			fxNode.setListener(null);
 			return MutationResult.MUTATED;
 		}
 

@@ -173,9 +173,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final EditableProperty property,
-						  final Pane fxNode) {
+		public void build(final SuiNode node, final EditableProperty property, final Pane fxNode) {
 			SuiLabeledSlider.getLabel(fxNode).setEditable(property.isEditable());
 		}
 
@@ -183,9 +181,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final EditableProperty property,
-									 final SuiNode node,
-									 final Pane fxNode) {
+		public MutationResult update(final EditableProperty property, final SuiNode node, final Pane fxNode) {
 			SuiLabeledSlider.getLabel(fxNode).setEditable(property.isEditable());
 			return MutationResult.MUTATED;
 		}
@@ -194,9 +190,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final EditableProperty property,
-									 final SuiNode node,
-									 final Pane fxNode) {
+		public MutationResult remove(final EditableProperty property, final SuiNode node, final Pane fxNode) {
 			SuiLabeledSlider.getLabel(fxNode).setEditable(false);
 			return MutationResult.MUTATED;
 		}
@@ -208,13 +202,11 @@ public class EditableProperty extends SuiProperty {
 
 
 
-	public static class SpinnerUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, Spinner> {
+	public static class SpinnerUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, Spinner<?>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final EditableProperty property,
-						  final Spinner fxNode) {
+		public void build(final SuiNode node, final EditableProperty property, final Spinner<?> fxNode) {
 			fxNode.setEditable(property.isEditable());
 		}
 
@@ -222,9 +214,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final EditableProperty property,
-									 final SuiNode node,
-									 final Spinner fxNode) {
+		public MutationResult update(final EditableProperty property, final SuiNode node, final Spinner<?> fxNode) {
 			fxNode.setEditable(property.isEditable());
 			return MutationResult.MUTATED;
 		}
@@ -233,9 +223,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final EditableProperty property,
-									 final SuiNode node,
-									 final Spinner fxNode) {
+		public MutationResult remove(final EditableProperty property, final SuiNode node, final Spinner<?> fxNode) {
 			fxNode.setEditable(false);
 			return MutationResult.MUTATED;
 		}

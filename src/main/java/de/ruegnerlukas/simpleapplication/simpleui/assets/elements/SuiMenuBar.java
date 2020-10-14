@@ -76,8 +76,7 @@ public final class SuiMenuBar {
 
 		@Override
 		public MenuBar build(final SuiNode node) {
-			MenuBar menuBar = new MenuBar();
-			return menuBar;
+			return new MenuBar();
 		}
 
 	}
