@@ -1,18 +1,21 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.SearchableComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSpinner;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Spinner;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.function.BiConsumer;
+
+@Slf4j
 public class OnValueChangedEventProperty<T> extends AbstractEventListenerProperty<ValueChangedEventData<T>> {
 
 
@@ -23,7 +26,13 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 	private final SuiEventListener<ValueChangedEventData<T>> listener;
 
 	/**
-	 * The proxy for the actual change listener.
+	 * The proxy for the actual listener.
+	 */
+	@Getter
+	private final BiConsumer<T, T> listenerProxy;
+
+	/**
+	 * The proxy for the actual listener. todo: replace with cleaner listener systems (see choicebox)
 	 */
 	@Getter
 	private final ChangeListenerProxy<T> changeListenerProxy;
@@ -38,37 +47,30 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 	public OnValueChangedEventProperty(final String propertyId, final SuiEventListener<ValueChangedEventData<T>> listener) {
 		super(OnValueChangedEventProperty.class, propertyId);
 		this.listener = listener;
+		this.listenerProxy = (prev, next) -> listener.onEvent(new ValueChangedEventData<>(next, prev));
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> listener.onEvent(
 				new ValueChangedEventData<>(next, prev))
 		);
-
 	}
 
 
 
 
-	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ChoiceBox<T>> {
+	public static class ChoiceBoxUpdatingBuilder<T>
+			implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ExtendedChoiceBox<T>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnValueChangedEventProperty<T> property,
-						  final ChoiceBox<T> fxNode) {
-			property.getChangeListenerProxy().addTo(fxNode.getSelectionModel().selectedItemProperty());
+		public void build(final SuiNode node, final OnValueChangedEventProperty<T> property, final ExtendedChoiceBox<T> fxNode) {
+			fxNode.setSelectedItemListener(property.getListenerProxy());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
-									 final ChoiceBox<T> fxNode) {
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<T>) prop)
-					.map(OnValueChangedEventProperty::getChangeListenerProxy)
-					.ifPresent(proxy -> proxy.removeFrom(fxNode.getSelectionModel().selectedItemProperty()));
-			property.getChangeListenerProxy().addTo(fxNode.getSelectionModel().selectedItemProperty());
+		public MutationResult update(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedChoiceBox<T> fxNode) {
+			fxNode.setSelectedItemListener(property.getListenerProxy());
 			return MutationResult.MUTATED;
 		}
 
@@ -76,10 +78,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
-									 final ChoiceBox<T> fxNode) {
-			property.getChangeListenerProxy().removeFrom(fxNode.getSelectionModel().selectedItemProperty());
+		public MutationResult remove(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedChoiceBox<T> fxNode) {
+			fxNode.setSelectedItemListener(null);
 			return MutationResult.MUTATED;
 		}
 
@@ -90,40 +90,21 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 
-	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ComboBox<T>> {
+	public static class ComboBoxUpdatingBuilder<T>
+			implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ExtendedComboBox<T>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnValueChangedEventProperty<T> property,
-						  final ComboBox<T> fxNode) {
-			if (fxNode instanceof SearchableComboBox) {
-				property.getChangeListenerProxy().addTo(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
-			} else {
-				property.getChangeListenerProxy().addTo(fxNode.getSelectionModel().selectedItemProperty());
-			}
+		public void build(final SuiNode node, final OnValueChangedEventProperty<T> property, final ExtendedComboBox<T> fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
-									 final ComboBox<T> fxNode) {
-			if (fxNode instanceof SearchableComboBox) {
-				node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-						.map(prop -> (OnValueChangedEventProperty<T>) prop)
-						.map(OnValueChangedEventProperty::getChangeListenerProxy)
-						.ifPresent(proxy -> proxy.removeFrom(((SearchableComboBox<T>) fxNode).getSelectedValueProperty()));
-				property.getChangeListenerProxy().addTo(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
-			} else {
-				node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-						.map(prop -> (OnValueChangedEventProperty<T>) prop)
-						.map(OnValueChangedEventProperty::getChangeListenerProxy)
-						.ifPresent(proxy -> proxy.removeFrom(fxNode.getSelectionModel().selectedItemProperty()));
-				property.getChangeListenerProxy().addTo(fxNode.getSelectionModel().selectedItemProperty());
-			}
+		public MutationResult update(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 			return MutationResult.MUTATED;
 		}
 
@@ -131,14 +112,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
-									 final ComboBox<T> fxNode) {
-			if (fxNode instanceof SearchableComboBox) {
-				property.getChangeListenerProxy().removeFrom(((SearchableComboBox<T>) fxNode).getSelectedValueProperty());
-			} else {
-				property.getChangeListenerProxy().removeFrom(fxNode.getSelectionModel().selectedItemProperty());
-			}
+		public MutationResult remove(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
+			fxNode.setListener(null);
 			return MutationResult.MUTATED;
 		}
 
@@ -149,28 +124,20 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 
-	public static class SliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<Number>, Slider> {
+	public static class SliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<Number>, ExtendedSlider> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnValueChangedEventProperty<Number> property,
-						  final Slider fxNode) {
-			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		public void build(final SuiNode node, final OnValueChangedEventProperty<Number> property, final ExtendedSlider fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
-									 final Slider fxNode) {
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<Number>) prop)
-					.map(OnValueChangedEventProperty::getChangeListenerProxy)
-					.ifPresent(proxy -> proxy.removeFrom(fxNode.valueProperty()));
-			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		public MutationResult update(final OnValueChangedEventProperty<Number> property, final SuiNode node, final ExtendedSlider fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 			return MutationResult.MUTATED;
 		}
 
@@ -178,10 +145,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
-									 final Slider fxNode) {
-			property.getChangeListenerProxy().removeFrom(fxNode.valueProperty());
+		public MutationResult remove(final OnValueChangedEventProperty<Number> property, final SuiNode node, final ExtendedSlider fxNode) {
+			fxNode.setListener(null);
 			return MutationResult.MUTATED;
 		}
 
@@ -196,26 +161,26 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnValueChangedEventProperty<Number> property,
-						  final Pane fxNode) {
-			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
-			property.getChangeListenerProxy().addTo(slider.valueProperty());
+		public void build(final SuiNode node, final OnValueChangedEventProperty<Number> property, final Pane fxNode) {
+			final ExtendedSlider slider = SuiLabeledSlider.getSlider(fxNode);
+			if (slider != null) {
+				slider.setListener(property.getListenerProxy());
+			} else {
+				log.warn("Slider not found. Can not set listener");
+			}
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
-									 final Pane fxNode) {
-			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<Number>) prop)
-					.map(OnValueChangedEventProperty::getChangeListenerProxy)
-					.ifPresent(proxy -> proxy.removeFrom(slider.valueProperty()));
-			property.getChangeListenerProxy().addTo(slider.valueProperty());
+		public MutationResult update(final OnValueChangedEventProperty<Number> property, final SuiNode node, final Pane fxNode) {
+			final ExtendedSlider slider = SuiLabeledSlider.getSlider(fxNode);
+			if (slider != null) {
+				slider.setListener(property.getListenerProxy());
+			} else {
+				log.warn("Slider not found. Can not set listener");
+			}
 			return MutationResult.MUTATED;
 		}
 
@@ -223,11 +188,13 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnValueChangedEventProperty<Number> property,
-									 final SuiNode node,
-									 final Pane fxNode) {
-			final Slider slider = SuiLabeledSlider.getSlider(fxNode);
-			property.getChangeListenerProxy().removeFrom(slider.valueProperty());
+		public MutationResult remove(final OnValueChangedEventProperty<Number> property, final SuiNode node, final Pane fxNode) {
+			final ExtendedSlider slider = SuiLabeledSlider.getSlider(fxNode);
+			if (slider != null) {
+				slider.setListener(null);
+			} else {
+				log.warn("Slider not found. Can not set listener");
+			}
 			return MutationResult.MUTATED;
 		}
 
@@ -238,28 +205,20 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 
-	public static class SpinnerUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, Spinner<T>> {
+	public static class SpinnerUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<OnValueChangedEventProperty<T>, ExtendedSpinner<T>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnValueChangedEventProperty<T> property,
-						  final Spinner<T> fxNode) {
-			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		public void build(final SuiNode node, final OnValueChangedEventProperty<T> property, final ExtendedSpinner<T> fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
-									 final Spinner<T> fxNode) {
-			node.getPropertyStore().getSafe(OnValueChangedEventProperty.class)
-					.map(prop -> (OnValueChangedEventProperty<T>) prop)
-					.map(OnValueChangedEventProperty::getChangeListenerProxy)
-					.ifPresent(proxy -> proxy.removeFrom(fxNode.valueProperty()));
-			property.getChangeListenerProxy().addTo(fxNode.valueProperty());
+		public MutationResult update(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedSpinner<T> fxNode) {
+			fxNode.setListener(property.getListenerProxy());
 			return MutationResult.MUTATED;
 		}
 
@@ -267,10 +226,8 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnValueChangedEventProperty<T> property,
-									 final SuiNode node,
-									 final Spinner<T> fxNode) {
-			property.getChangeListenerProxy().removeFrom(fxNode.valueProperty());
+		public MutationResult remove(final OnValueChangedEventProperty<T> property, final SuiNode node, final ExtendedSpinner<T> fxNode) {
+			fxNode.setListener(null);
 			return MutationResult.MUTATED;
 		}
 

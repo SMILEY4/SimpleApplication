@@ -25,8 +25,8 @@ public class MenuContentProperty extends SuiProperty {
 			return false;
 		}
 		for (int i = 0; i < a.getMenuItems().size(); i++) {
-			final SuiAbstractMenuItem itemA = a.getMenuItems().get(i);
-			final SuiAbstractMenuItem itemB = b.getMenuItems().get(i);
+			SuiAbstractMenuItem itemA = a.getMenuItems().get(i);
+			SuiAbstractMenuItem itemB = b.getMenuItems().get(i);
 			if (!itemA.equals(itemB)) {
 				return false;
 			}
@@ -59,9 +59,7 @@ public class MenuContentProperty extends SuiProperty {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final MenuContentProperty property,
-						  final MenuBar fxNode) {
+		public void build(final SuiNode node, final MenuContentProperty property, final MenuBar fxNode) {
 			fxNode.getMenus().setAll(buildMenus(property));
 		}
 
@@ -69,10 +67,17 @@ public class MenuContentProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final MenuContentProperty property,
-									 final SuiNode node,
-									 final MenuBar fxNode) {
+		public MutationResult update(final MenuContentProperty property, final SuiNode node, final MenuBar fxNode) {
 			fxNode.getMenus().setAll(buildMenus(property));
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final MenuContentProperty property, final SuiNode node, final MenuBar fxNode) {
+			fxNode.getMenus().clear();
 			return MutationResult.MUTATED;
 		}
 
@@ -93,16 +98,6 @@ public class MenuContentProperty extends SuiProperty {
 					.collect(Collectors.toList());
 		}
 
-
-
-
-		@Override
-		public MutationResult remove(final MenuContentProperty property,
-									 final SuiNode node,
-									 final MenuBar fxNode) {
-			fxNode.getMenus().clear();
-			return MutationResult.MUTATED;
-		}
 
 	}
 

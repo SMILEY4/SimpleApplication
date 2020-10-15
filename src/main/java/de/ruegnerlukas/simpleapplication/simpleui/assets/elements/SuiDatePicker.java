@@ -64,7 +64,7 @@ public final class SuiDatePicker {
 		registry.registerProperties(SuiDatePicker.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiDatePicker.class, List.of(
 				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ComboBoxBaseUpdatingBuilder<>()),
-				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxBaseUpdatingBuilder()),
+				PropertyEntry.of(EditableProperty.class, new EditableProperty.DatePickerUpdatingBuilder()),
 				PropertyEntry.of(OnSelectedDateEventProperty.class, new OnSelectedDateEventProperty.DatePickerUpdatingBuilder()),
 				PropertyEntry.of(ChronologyProperty.class, new ChronologyProperty.DatePickerUpdatingBuilder())
 		));

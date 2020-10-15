@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSpinner;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
@@ -11,10 +12,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-import javafx.scene.control.Spinner;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.util.StringConverter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,52 +76,16 @@ public final class SuiSpinner {
 
 
 
-	private static class FxNodeBuilder implements AbstractFxNodeBuilder<Spinner<?>> {
+	private static class FxNodeBuilder implements AbstractFxNodeBuilder<ExtendedSpinner<?>> {
 
 
 		@Override
-		public Spinner<?> build(final SuiNode node) {
-			Spinner<?> spinner = new Spinner<>();
-			addTextInputSanitizers(spinner);
-			return spinner;
+		public ExtendedSpinner<?> build(final SuiNode node) {
+			return new ExtendedSpinner<>();
 		}
 
 
 
-
-		/**
-		 * Prevent errors when the user enters invalid text.
-		 * This does not prevent exceptions when the editor looses focus with an invalid content, only when the enter-key was pressed.
-		 *
-		 * @param spinner the spinner
-		 */
-		private void addTextInputSanitizers(final Spinner spinner) {
-			spinner.getEditor().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-				if (event.getCode() == KeyCode.ENTER) {
-					sanitizeTextInput(spinner);
-				}
-			});
-		}
-
-
-
-
-		/**
-		 * Cleans the text input to prevent errors with invalid input.
-		 *
-		 * @param spinner the spinner
-		 */
-		private void sanitizeTextInput(final Spinner spinner) {
-			final StringConverter converter = spinner.getValueFactory().getConverter();
-			if (converter != null) {
-				try {
-					converter.fromString(spinner.getEditor().getText());
-				} catch (Exception e) {
-					spinner.getEditor().setText(
-							String.valueOf(converter.toString(spinner.getValue())));
-				}
-			}
-		}
 
 
 	}

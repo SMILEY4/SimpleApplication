@@ -25,7 +25,7 @@ public class SuiSpinnerTest extends SuiElementTest {
 		@SuppressWarnings ("unchecked") final Spinner<Integer> spinner = (Spinner<Integer>) new SuiSceneController(
 				SuiSpinner.spinner(
 						Properties.editable(),
-						Properties.integerSpinnerValues(-3, 7, 2, 1)  // todo: wrap around for all types (int, float, list) ??
+						Properties.integerSpinnerValues(-3, 7, 2, 1)
 				)
 		).getRootFxNode();
 
@@ -45,7 +45,7 @@ public class SuiSpinnerTest extends SuiElementTest {
 		@SuppressWarnings ("unchecked") final Spinner<Double> spinner = (Spinner<Double>) new SuiSceneController(
 				SuiSpinner.spinner(
 						Properties.editable(),
-						Properties.floatingPointSpinnerValues(-3.6, 7.2, 1.4, 1.3) // todo: wrap around for all types (int, float, list) ??
+						Properties.floatingPointSpinnerValues(-3.6, 7.2, 1.4, 1.3)
 				)
 		).getRootFxNode();
 
@@ -65,12 +65,13 @@ public class SuiSpinnerTest extends SuiElementTest {
 		@SuppressWarnings ("unchecked") final Spinner<String> spinner = (Spinner<String>) new SuiSceneController(
 				SuiSpinner.spinner(
 						Properties.editable(),
-						Properties.listSpinnerValues(List.of("A", "B", "C"), true) // todo: missing initial value ??
+						Properties.listSpinnerValues(List.of("A", "B", "C"), "B", true)
 				)
 		).getRootFxNode();
 
 		assertThat(((SpinnerValueFactory.ListSpinnerValueFactory<String>) spinner.getValueFactory()).getItems()).containsExactly("A", "B", "C");
 		assertThat(spinner.getValueFactory().isWrapAround()).isTrue();
+		assertThat(spinner.getValue()).isEqualTo("B");
 		assertThat(spinner.isEditable()).isTrue();
 	}
 
@@ -146,7 +147,6 @@ public class SuiSpinnerTest extends SuiElementTest {
 		show(spinner);
 
 		assertThat(spinner.getValue()).isEqualTo(1);
-		capturedEvents.clear(); // todo: value changed event "null -> 1" triggered at creation ?
 
 		// type in new value -> value changes + event
 		syncJfxThread(100, () -> clickOn(spinner));
@@ -170,9 +170,8 @@ public class SuiSpinnerTest extends SuiElementTest {
 		syncJfxThread(100, () -> eraseText(1));
 		syncJfxThread(100, () -> type(KeyCode.getKeyCode("9"), KeyCode.ENTER));
 		assertThat(spinner.getValue()).isEqualTo(7);
-		assertThat(capturedEvents).hasSize(2); // todo: triggers unwanted change event "4 -> 9" and then "9 -> 7"
-		assertThat(capturedEvents.get(1).getValue()).isEqualTo(7);
-//		assertThat(capturedEvents.get(1).getPrevValue()).isEqualTo(4);
+		assertThat(capturedEvents).hasSize(1);
+		assertThat(capturedEvents.get(0).getValue()).isEqualTo(7);
 		capturedEvents.clear();
 
 		// enter invalid text -> prev value + no event
@@ -198,16 +197,13 @@ public class SuiSpinnerTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				SuiSpinner.spinner(
 						Properties.editable(),
-						Properties.listSpinnerValues(List.of("first", "second", "third"), true),
+						Properties.listSpinnerValues(List.of("first", "second", "third"), "first", true),
 						EventProperties.eventValueChangedType(".", String.class, capturedEvents::add)
 				)
 		);
 
 		@SuppressWarnings ("unchecked") final Spinner<String> spinner = (Spinner<String>) controller.getRootFxNode();
 		show(spinner);
-
-		spinner.getValueFactory().setValue("first");
-		capturedEvents.clear();
 
 		// type in new value -> value changes + event
 		syncJfxThread(100, () -> clickOn(spinner));
@@ -240,7 +236,7 @@ public class SuiSpinnerTest extends SuiElementTest {
 				KeyCode.ENTER)
 		);
 		assertThat(spinner.getValue()).isEqualTo("third");
-		assertThat(capturedEvents).hasSize(2); // todo: dont trigger events here
+		assertThat(capturedEvents).hasSize(1);
 	}
 
 

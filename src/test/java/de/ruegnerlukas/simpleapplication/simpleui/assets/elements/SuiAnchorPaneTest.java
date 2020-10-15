@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import org.junit.Test;
@@ -49,36 +48,6 @@ public class SuiAnchorPaneTest extends SuiElementTest {
 
 	}
 
-
-
-
-	private void assertAnchors(final Node node, final Integer top, final Integer bottom, final Integer left, final Integer right) {
-
-		if (top == null) {
-			assertThat(AnchorPane.getTopAnchor(node)).isNull();
-		} else {
-			assertThat(AnchorPane.getTopAnchor(node).intValue()).isEqualTo(top.intValue());
-		}
-
-		if (bottom == null) {
-			assertThat(AnchorPane.getBottomAnchor(node)).isNull();
-		} else {
-			assertThat(AnchorPane.getBottomAnchor(node).intValue()).isEqualTo(bottom.intValue());
-		}
-
-		if (left == null) {
-			assertThat(AnchorPane.getLeftAnchor(node)).isNull();
-		} else {
-			assertThat(AnchorPane.getLeftAnchor(node).intValue()).isEqualTo(left.intValue());
-		}
-
-		if (right == null) {
-			assertThat(AnchorPane.getRightAnchor(node)).isNull();
-		} else {
-			assertThat(AnchorPane.getRightAnchor(node).intValue()).isEqualTo(right.intValue());
-		}
-
-	}
 
 
 }

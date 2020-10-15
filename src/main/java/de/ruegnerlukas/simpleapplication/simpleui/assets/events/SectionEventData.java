@@ -9,17 +9,17 @@ import lombok.ToString;
 @Builder
 @AllArgsConstructor
 @ToString
-public class AccordionExpandedEventData {
+public class SectionEventData {
 
 
 	/**
-	 * The title of the expanded section
+	 * The title of the expanded/collapsed section
 	 */
-	private final String expandedTitle;
+	private final String sectionTitle;
 
 	/**
-	 * The title of the previously expanded section
+	 * false, if the section was collapsed and NO OTHER section was expanded instead.
 	 */
-	private final String prevExpandedTitle;
+	private final boolean expanded;
 
 }

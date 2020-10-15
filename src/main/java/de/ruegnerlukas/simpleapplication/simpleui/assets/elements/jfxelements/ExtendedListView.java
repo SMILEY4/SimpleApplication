@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SuiListChangeListener;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiListChangeListener;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableConsumer;
 import javafx.scene.control.ListView;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class ExtendedListView<T> extends ListView<T> {
 	/**
 	 * The listener for selected items or null.
 	 */
-	private Consumer<List<T>> selectionListener;
+	private final MutableConsumer<List<T>> selectionListener = new MutableConsumer<>();
 
 
 
@@ -21,32 +22,47 @@ public class ExtendedListView<T> extends ListView<T> {
 	 * Default constructor
 	 */
 	public ExtendedListView() {
-		this.getSelectionModel().getSelectedItems().addListener(new SuiListChangeListener<>(this::onSelectionChanged));
+		this.getSelectionModel().getSelectedItems().addListener(new SuiListChangeListener<>(
+				() -> selectionListener.accept(getSelectionModel().getSelectedItems()))
+		);
 	}
 
 
 
 
 	/**
-	 * Sets the listener for selected items to this list view
+	 * Sets the listener for selected items to this list view.
 	 *
 	 * @param listener the listener for selected items or null
 	 */
 	public void setSelectionListener(final Consumer<List<T>> listener) {
-		this.selectionListener = listener;
+		this.selectionListener.setConsumer(listener);
 	}
 
 
 
 
 	/**
-	 * Called when the selected items change.
+	 * Sets the items of this list without notifying the listener.
+	 *
+	 * @param items the new items
 	 */
-	private void onSelectionChanged() {
-		if (selectionListener != null) {
-			selectionListener.accept(getSelectionModel().getSelectedItems());
-		}
+	public void setItems(final List<T> items) {
+		selectionListener.runMuted(() -> {
+			getItems().setAll(items);
+		});
 	}
 
+
+
+
+	/**
+	 * Removes all items fo this list without notifying the listener.
+	 */
+	public void clearItems() {
+		selectionListener.runMuted(() -> {
+			getItems().clear();
+		});
+	}
 
 }

@@ -1,11 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import javafx.scene.Node;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -54,34 +54,49 @@ public class SearchableProperty extends SuiProperty {
 
 
 
-	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<SearchableProperty, Node> {
+	public static class ComboBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<SearchableProperty, ExtendedComboBox<?>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final SearchableProperty property,
-						  final Node fxNode) {
-			// do nothing, decision is made when building javafx node. For an example, see SuiComboBox.FxNodeBuilder
+		public void build(final SuiNode node, final SearchableProperty property, final ExtendedComboBox<?> fxNode) {
+			fxNode.setType(property.isSearchable()
+					? ExtendedComboBox.ComboBoxType.SEARCHABLE
+					: (isEditable(node) ? ExtendedComboBox.ComboBoxType.EDITABLE : ExtendedComboBox.ComboBoxType.DEFAULT));
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final SearchableProperty property,
-									 final SuiNode node,
-									 final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+		public MutationResult update(final SearchableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
+			fxNode.setType(property.isSearchable()
+					? ExtendedComboBox.ComboBoxType.SEARCHABLE
+					: (isEditable(node) ? ExtendedComboBox.ComboBoxType.EDITABLE : ExtendedComboBox.ComboBoxType.DEFAULT));
+			return MutationResult.MUTATED;
 		}
 
 
 
 
 		@Override
-		public MutationResult remove(final SearchableProperty property,
-									 final SuiNode node,
-									 final Node fxNode) {
-			return MutationResult.REQUIRES_REBUILD;
+		public MutationResult remove(final SearchableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
+			fxNode.setType(isEditable(node) ? ExtendedComboBox.ComboBoxType.EDITABLE : ExtendedComboBox.ComboBoxType.DEFAULT);
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		/**
+		 * Checks if the given node has the editable-property and returns its the value
+		 *
+		 * @param node the node to check
+		 * @return the value of the editable-property
+		 */
+		private boolean isEditable(final SuiNode node) {
+			return node.getPropertyStore().getSafe(EditableProperty.class)
+					.map(EditableProperty::isEditable)
+					.orElse(false);
 		}
 
 	}

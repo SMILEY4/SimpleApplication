@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.AccordionExpandedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
@@ -15,6 +14,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseDragEventDa
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseMoveEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ScrollEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
@@ -52,7 +52,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSel
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTabClosedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextEnteredEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnUncheckedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
@@ -862,37 +861,10 @@ public final class EventProperties {
 
 
 	/**
-	 * When a box (for example a check box) was unchecked / deselected.
-	 *
-	 * @param listener the listener for events with {@link CheckedEventData}.
-	 * @return a {@link OnUncheckedEventProperty}
-	 */
-	public static SuiProperty eventUnchecked(final SuiEventListener<CheckedEventData> listener) {
-		return eventUnchecked(null, listener);
-	}
-
-
-
-
-	/**
-	 * When a box (for example a check box) was unchecked / deselected.
-	 *
-	 * @param listener the listener for events with {@link CheckedEventData}.
-	 * @return a {@link OnUncheckedEventProperty}
-	 */
-	public static SuiProperty eventUnchecked(final String propertyId, final SuiEventListener<CheckedEventData> listener) {
-		Validations.INPUT.notNull(listener).exception("The listener can not be null");
-		return new OnUncheckedEventProperty(propertyId, listener);
-	}
-
-
-
-
-	/**
 	 * When the text of an input (e.g. text field) was entered i.e. accepted.
 	 *
 	 * @param listener the listener for events with {@link CheckedEventData}.
-	 * @return a {@link OnUncheckedEventProperty}
+	 * @return a {@link OnTextEnteredEventProperty}
 	 */
 	public static SuiProperty eventTextEntered(final SuiEventListener<TextContentEventData> listener) {
 		return eventTextEntered(null, listener);
@@ -905,7 +877,7 @@ public final class EventProperties {
 	 * When the text of an input (e.g. text field) was entered i.e. accepted.
 	 *
 	 * @param listener the listener for events with {@link CheckedEventData}.
-	 * @return a {@link OnUncheckedEventProperty}
+	 * @return a {@link OnTextEnteredEventProperty}
 	 */
 	public static SuiProperty eventTextEntered(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
@@ -988,11 +960,11 @@ public final class EventProperties {
 	/**
 	 * When a new section of the accordion was expanded
 	 *
-	 * @param listener the listener for events with {@link AccordionExpandedEventData}.
+	 * @param listener the listener for events with {@link SectionEventData}.
 	 * @return a {@link OnAccordionExpandedEventProperty}
 	 */
 	public static SuiProperty eventAccordionExpanded(final String propertyId,
-													 final SuiEventListener<AccordionExpandedEventData> listener) {
+													 final SuiEventListener<SectionEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnAccordionExpandedEventProperty(propertyId, listener);
 	}

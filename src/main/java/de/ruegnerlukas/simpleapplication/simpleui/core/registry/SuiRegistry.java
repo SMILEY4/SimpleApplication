@@ -200,6 +200,21 @@ public class SuiRegistry {
 
 
 	/**
+	 * Registers the given list of properties
+	 *
+	 * @param nodeType   the type of the node
+	 * @param properties the list of property data
+	 */
+	public void registerProperties(final Class<?> nodeType, final List<PropertyEntry> properties) {
+		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
+		Validations.INPUT.notNull(properties).exception("The property-list can not be null");
+		properties.forEach(entry -> registerProperty(nodeType, entry.getType(), entry.getBuilder(), entry.getUpdater()));
+	}
+
+
+
+
+	/**
 	 * Register a property for the given node type with a {@link PropFxNodeBuilder} and {@link PropFxNodeUpdater}.
 	 *
 	 * @param nodeType the type of the node
@@ -221,22 +236,9 @@ public class SuiRegistry {
 			if (updater != null) {
 				entry.getPropFxNodeUpdaters().put(property, updater);
 			}
+		} else {
+			log.warn("Can not register property for element {}. Element not yet registered.", nodeType);
 		}
-	}
-
-
-
-
-	/**
-	 * Registers the given list of properties
-	 *
-	 * @param nodeType   the type of the node
-	 * @param properties the list of property data
-	 */
-	public void registerProperties(final Class<?> nodeType, final List<PropertyEntry> properties) {
-		Validations.INPUT.notNull(nodeType).exception("The node type can not be null");
-		Validations.INPUT.notNull(properties).exception("The property-list can not be null");
-		properties.forEach(entry -> registerProperty(nodeType, entry.getType(), entry.getBuilder(), entry.getUpdater()));
 	}
 
 

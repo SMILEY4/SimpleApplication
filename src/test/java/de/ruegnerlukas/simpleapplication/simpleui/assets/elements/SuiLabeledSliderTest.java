@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.ValidateInputException;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
@@ -41,7 +42,7 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 		).getRootFxNode();
 
 		assertThat(sliderRoot.getChildren()).hasSize(2);
-		assertThat(sliderRoot.getChildren().get(0).getClass()).isEqualTo(Slider.class);
+		assertThat(sliderRoot.getChildren().get(0).getClass()).isEqualTo(ExtendedSlider.class);
 		assertThat(sliderRoot.getChildren().get(1).getClass()).isEqualTo(TextField.class);
 
 		final Slider slider = (Slider) sliderRoot.getChildren().get(0);
@@ -113,17 +114,12 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 		capturedEvents.clear();
 		syncJfxThread(() -> slider.setValue(20));
 		assertThat(label.getText()).isEqualTo("20 units");
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(20);
 		capturedEvents.clear();
 
 		// set value less than min -> expect new value equals min and event
 		syncJfxThread(() -> slider.setValue(-10));
 		assertThat(label.getText()).isEqualTo("10 units");
-		assertThat((int) slider.getValue()).isEqualTo(10);
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(10);
-		assertThat(capturedEvents.get(0).getPrevValue().intValue()).isEqualTo(20);
+		assertSlider(slider, 10, 30, 10);
 		capturedEvents.clear();
 
 		// set new value via label
@@ -132,11 +128,8 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 			label.fireEvent(new ActionEvent());
 		});
 		assertThat(label.getText()).isEqualTo("15 units");
-		assertThat((int) slider.getValue()).isEqualTo(15);
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(15);
-		assertThat(capturedEvents.get(0).getPrevValue().intValue()).isEqualTo(10);
-		capturedEvents.clear();
+		assertSlider(slider, 10, 30, 15);
+		assertEvent(capturedEvents, 10.0, 15.0);
 
 		// set new value via label as math expression
 		syncJfxThread(() -> {
@@ -144,11 +137,8 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 			label.fireEvent(new ActionEvent());
 		});
 		assertThat(label.getText()).isEqualTo("27 units");
-		assertThat((int) slider.getValue()).isEqualTo(27);
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(27);
-		assertThat(capturedEvents.get(0).getPrevValue().intValue()).isEqualTo(15);
-		capturedEvents.clear();
+		assertSlider(slider, 10, 30, 27);
+		assertEvent(capturedEvents, 15.0, 27.0);
 
 	}
 
@@ -192,33 +182,22 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 			state.setMin(10);
 			state.setMax(90);
 		}));
-		assertThat((int) slider.getMin()).isEqualTo(10);
-		assertThat((int) slider.getMax()).isEqualTo(90);
-		assertThat((int) slider.getValue()).isEqualTo(50);
-		assertThat(capturedEvents).isEmpty();
+		assertSlider(slider, 10, 90, 50);
+		assertNoEvent(capturedEvents);
 
 		// mutate state -> set min to 30, expect new value = 30
 		syncJfxThread(() -> slider.setValue(25));
 		capturedEvents.clear();
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.setMin(30)));
-		assertThat((int) slider.getMin()).isEqualTo(30);
-		assertThat((int) slider.getMax()).isEqualTo(90);
-		assertThat((int) slider.getValue()).isEqualTo(30);
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(30);
-		assertThat(capturedEvents.get(0).getPrevValue().intValue()).isEqualTo(25);
+		assertSlider(slider, 30, 90, 30);
+		assertNoEvent(capturedEvents);
 
 		// mutate state -> set max to 70, expect new value = 70
 		syncJfxThread(() -> slider.setValue(75));
 		capturedEvents.clear();
 		syncJfxThread(() -> testState.updateUnsafe(TestState.class, state -> state.setMax(70)));
-		assertThat((int) slider.getMin()).isEqualTo(30);
-		assertThat((int) slider.getMax()).isEqualTo(70);
-		assertThat((int) slider.getValue()).isEqualTo(70);
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(70);
-		assertThat(capturedEvents.get(0).getPrevValue().intValue()).isEqualTo(75);
-		capturedEvents.clear();
+		assertSlider(slider, 30, 70, 70);
+		assertNoEvent(capturedEvents);
 
 		// mutate state -> set min/max to -10/2
 		syncJfxThread(() -> slider.setValue(50));
@@ -227,13 +206,8 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 			state.setMin(-10);
 			state.setMax(2);
 		}));
-		assertThat((int) slider.getMin()).isEqualTo(-10);
-		assertThat((int) slider.getMax()).isEqualTo(2);
-		assertThat((int) slider.getValue()).isEqualTo(2);
-		assertThat(capturedEvents).hasSize(1);
-		assertThat(capturedEvents.get(0).getValue().intValue()).isEqualTo(2);
-		assertThat(capturedEvents.get(0).getPrevValue().intValue()).isEqualTo(50);
-		capturedEvents.clear();
+		assertSlider(slider, -10, 2, 2);
+		assertNoEvent(capturedEvents);
 	}
 
 

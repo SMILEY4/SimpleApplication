@@ -151,4 +151,20 @@ public final class Resource {
 		return this.getClass().getClassLoader().getResourceAsStream(getPath());
 	}
 
+
+
+
+	/**
+	 * Check if this resource is equal to the given one
+	 *
+	 * @param resource the other resource to compare to this one
+	 * @return whether the two resources are equal
+	 */
+	public boolean isEqual(final Resource resource) {
+		return resource != null
+				&& this.isInternal() == resource.isInternal()
+				&& this.getPath().equals(resource.getPath());
+	}
+
+
 }

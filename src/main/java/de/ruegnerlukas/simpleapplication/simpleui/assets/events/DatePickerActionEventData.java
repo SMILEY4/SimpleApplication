@@ -18,7 +18,7 @@ public class DatePickerActionEventData {
 	/**
 	 * The now selected date.
 	 */
-	private final LocalDate item;
+	private final LocalDate date;
 
 	/**
 	 * The original javafx event.

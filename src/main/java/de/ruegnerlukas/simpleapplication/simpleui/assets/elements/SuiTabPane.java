@@ -23,7 +23,6 @@ import javafx.scene.control.TabPane;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
 
@@ -90,62 +89,15 @@ public final class SuiTabPane {
 	 * The child node listener for tab panes.
 	 */
 	private static final SuiNodeChildListener CHILD_NODE_LISTENER = node -> {
-		final TabPane pane = (TabPane) node.getFxNodeStore().get();
+		final ExtendedTabPane pane = (ExtendedTabPane) node.getFxNodeStore().get();
 		if (pane != null) {
-
-			muteListeners(node);
-
-			final Tab prevSelectedTab = pane.getSelectionModel().getSelectedItem();
 			if (node.getChildNodeStore().hasChildren()) {
-				pane.getTabs().setAll(createTabs(node.getChildNodeStore().getUnmodifiable()));
-				final Tab tabToSelect = pane.getTabs().stream()
-						.filter(tab -> Objects.equals(tab.getContent(), prevSelectedTab.getContent()))
-						.findFirst()
-						.orElse(pane.getTabs().get(0));
-				pane.getSelectionModel().select(tabToSelect);
+				pane.setTabs(createTabs(node.getChildNodeStore().getUnmodifiable()));
 			} else {
-				pane.getTabs().clear();
+				pane.clearTabs();
 			}
-
-			unmuteListeners(node);
-
-			final Tab nextSelectedTab = pane.getSelectionModel().getSelectedItem();
-			final Node prevSelectedTabContent = prevSelectedTab == null ? null : prevSelectedTab.getContent();
-			final Node nextSelectedTabContent = nextSelectedTab == null ? null : nextSelectedTab.getContent();
-			if (prevSelectedTabContent != nextSelectedTabContent) {
-				node.getPropertyStore().getSafe(OnSelectedTabEventProperty.class).ifPresent(prop -> {
-					prop.getChangeListenerProxy().fireManually(prevSelectedTab, pane.getSelectionModel().getSelectedItem());
-				});
-			}
-
 		}
 	};
-
-
-
-
-	/**
-	 * Mutes the change listener of an {@link OnSelectedTabEventProperty}.
-	 *
-	 * @param node the node
-	 */
-	private static void muteListeners(final SuiNode node) {
-		node.getPropertyStore().getSafe(OnSelectedTabEventProperty.class).ifPresent(prop ->
-				prop.getChangeListenerProxy().setMuted(true));
-	}
-
-
-
-
-	/**
-	 * Un-Mutes the change listener of an {@link OnSelectedTabEventProperty}.
-	 *
-	 * @param node the node
-	 */
-	private static void unmuteListeners(final SuiNode node) {
-		node.getPropertyStore().getSafe(OnSelectedTabEventProperty.class).ifPresent(prop ->
-				prop.getChangeListenerProxy().setMuted(false));
-	}
 
 
 
@@ -205,12 +157,12 @@ public final class SuiTabPane {
 
 
 
-	private static class FxNodeBuilder implements AbstractFxNodeBuilder<TabPane> {
+	private static class FxNodeBuilder implements AbstractFxNodeBuilder<ExtendedTabPane> {
 
 
 		@Override
-		public TabPane build(final SuiNode node) {
-			final TabPane tabPane = new ExtendedTabPane();
+		public ExtendedTabPane build(final SuiNode node) {
+			final ExtendedTabPane tabPane = new ExtendedTabPane();
 			tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 			return tabPane;
 		}

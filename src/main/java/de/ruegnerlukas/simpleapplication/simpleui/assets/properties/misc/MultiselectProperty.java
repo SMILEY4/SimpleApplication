@@ -44,9 +44,7 @@ public class MultiselectProperty extends SuiProperty {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final MultiselectProperty property,
-						  final ListView<?> fxNode) {
+		public void build(final SuiNode node, final MultiselectProperty property, final ListView<?> fxNode) {
 			fxNode.getSelectionModel().setSelectionMode(property.allowMultiselect ? SelectionMode.MULTIPLE : SelectionMode.SINGLE);
 		}
 
@@ -54,9 +52,7 @@ public class MultiselectProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final MultiselectProperty property,
-									 final SuiNode node,
-									 final ListView<?> fxNode) {
+		public MutationResult update(final MultiselectProperty property, final SuiNode node, final ListView<?> fxNode) {
 			fxNode.getSelectionModel().setSelectionMode(property.allowMultiselect ? SelectionMode.MULTIPLE : SelectionMode.SINGLE);
 			return MutationResult.MUTATED;
 		}
@@ -65,9 +61,7 @@ public class MultiselectProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final MultiselectProperty property,
-									 final SuiNode node,
-									 final ListView<?> fxNode) {
+		public MutationResult remove(final MultiselectProperty property, final SuiNode node, final ListView<?> fxNode) {
 			fxNode.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 			return MutationResult.MUTATED;
 		}

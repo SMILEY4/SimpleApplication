@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IconProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
@@ -64,11 +65,10 @@ public final class SuiButton {
 		registry.registerProperties(SuiButton.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiButton.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiButton.class, List.of(
-				// labeled
 				PropertyEntry.of(TextContentProperty.class, new TextContentProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(IconProperty.class, new IconProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledUpdatingBuilder()),
-				// button base
 				PropertyEntry.of(OnActionEventProperty.class, new OnActionEventProperty.ButtonBaseUpdatingBuilder())
 		));
 	}

@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SuiListChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.Test;

@@ -1,24 +1,30 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SuiListChangeListener;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiListChangeListener;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableBiConsumer;
+import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableConsumer;
+import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ExtendedTabPane extends TabPane {
 
 
 	/**
-	 * The listener handling closed tabs.
+	 * The listener listening to closed tabs.
 	 */
-	private Consumer<Tab> listener;
+	private final MutableConsumer<Tab> tabCloseListener = new MutableConsumer<>();
 
 
 	/**
-	 * Whether the listener should receive any event on closed tabs.
+	 * The listener listening to selected tabs.
 	 */
-	private boolean muteListener = false;
+	private final MutableBiConsumer<Tab, Tab> tabSelectedListener = new MutableBiConsumer<>();
 
 
 
@@ -33,9 +39,10 @@ public class ExtendedTabPane extends TabPane {
 					addedTab.setOnClosed(e -> onClosed(addedTab));
 				},
 				removedTab -> {
-					// to nothing
+					// to nothing, listeners are removed in "onClosed()"
 				}
 		));
+		getSelectionModel().selectedItemProperty().addListener((value, prev, next) -> tabSelectedListener.accept(prev, next));
 	}
 
 
@@ -44,22 +51,69 @@ public class ExtendedTabPane extends TabPane {
 	/**
 	 * Set the event listener that gets called when a tab gets called.
 	 *
-	 * @param listener the listener handling the closed tab
+	 * @param listener the listener handling the closed tab or null
 	 */
 	public void setOnTabClosed(final Consumer<Tab> listener) {
-		this.listener = listener;
+		tabCloseListener.setConsumer(listener);
 	}
 
 
 
 
 	/**
-	 * Mute/Unmute the listener for closed tabs.
+	 * Set the event listener that gets called when a tab gets selected.
 	 *
-	 * @param mute whether the listener should receive any event on closed tabs.
+	 * @param listener the listener handling the selected tab or null
 	 */
-	public void muteOnTabClosed(final boolean mute) {
-		this.muteListener = mute;
+	public void setOnTabSelected(final BiConsumer<Tab, Tab> listener) {
+		tabSelectedListener.setConsumer(listener);
+	}
+
+
+
+
+	/**
+	 * Sets the tabs to the given ones
+	 *
+	 * @param tabs the new tabs
+	 */
+	public void setTabs(final List<Tab> tabs) {
+		tabCloseListener.runMuted(() -> tabSelectedListener.runMuted(() -> {
+			final Tab prevSelectedTab = getSelectionModel().getSelectedItem();
+			if (!tabs.isEmpty()) {
+				getTabs().setAll(tabs);
+				final Tab tabToSelect = prevSelectedTab == null ? null : findSelectableTab(prevSelectedTab.getContent());
+				getSelectionModel().select(tabToSelect);
+			} else {
+				getTabs().clear();
+			}
+		}));
+	}
+
+
+
+
+	/**
+	 * Finds a selectable tab with the given content node. If no tab was found, the first one is returned
+	 *
+	 * @param content the content of the tab
+	 * @return the tab with or the node as content or the first tab in the list.
+	 */
+	private Tab findSelectableTab(final Node content) {
+		return getTabs().stream()
+				.filter(tab -> Objects.equals(tab.getContent(), content))
+				.findFirst()
+				.orElse(getTabs().isEmpty() ? null : getTabs().get(0));
+	}
+
+
+
+
+	/**
+	 * Removes all tabs from this tab pane.
+	 */
+	public void clearTabs() {
+		tabCloseListener.runMuted(() -> tabSelectedListener.runMuted(() -> getTabs().clear()));
 	}
 
 
@@ -83,12 +137,12 @@ public class ExtendedTabPane extends TabPane {
 	 * @param tab the closed tab
 	 */
 	private void onClosed(final Tab tab) {
-		if (listener != null && !muteListener) {
-			listener.accept(tab);
-		}
-		tab.setOnCloseRequest(null);
-		tab.setOnClosed(null);
-		getSelectionModel().select(0);
+		tabCloseListener.accept(tab);
+		tabSelectedListener.runMuted(() -> {
+			tab.setOnCloseRequest(null);
+			tab.setOnClosed(null);
+			getSelectionModel().select(0);
+		});
 	}
 
 }

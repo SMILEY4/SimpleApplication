@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.SearchableComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
@@ -15,7 +15,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-import javafx.scene.control.ComboBox;
 
 import java.util.Arrays;
 import java.util.List;
@@ -63,12 +62,19 @@ public final class SuiComboBox {
 	 * @param properties the properties to check
 	 */
 	private static void validateConflictSearchableEditable(final SuiProperty... properties) {
-		Validations.INPUT.notEqual(2,
-				(int) Arrays.stream(properties)
-						.map(SuiProperty::getKey)
-						.filter(key -> key == SearchableProperty.class || key == EditableProperty.class)
-						.count())
-				.exception("Searchable-Property and Editable-Property exclude each other. Can not add both.");
+		long count = Arrays.stream(properties)
+				.filter(property -> property.getKey() == SearchableProperty.class || property.getKey() == EditableProperty.class)
+				.filter(property -> {
+					if (property.getKey() == SearchableProperty.class) {
+						return ((SearchableProperty) property).isSearchable();
+					}
+					if (property.getKey() == EditableProperty.class) {
+						return ((EditableProperty) property).isEditable();
+					}
+					return false;
+				}).count();
+		Validations.INPUT.isLessThan(count, 2)
+				.exception("Searchable-Property and Editable-Property exclude each other. Can not both be true.");
 	}
 
 
@@ -87,26 +93,22 @@ public final class SuiComboBox {
 		registry.registerProperties(SuiComboBox.class, List.of(
 				PropertyEntry.of(ContentItemsProperty.class, new ContentItemsProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ComboBoxUpdatingBuilder<>()),
-				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ComboBoxUpdatingBuilder<>()),
-				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxBaseUpdatingBuilder()),
-				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.UpdatingBuilder()),
-				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ComboBoxBaseUpdatingBuilder<>())
+				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxUpdatingBuilder()),
+				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.ComboBoxUpdatingBuilder()),
+				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ComboBoxBaseUpdatingBuilder<>()),
+				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ComboBoxUpdatingBuilder<>())
 		));
 	}
 
 
 
 
-	private static class FxNodeBuilder<T> implements AbstractFxNodeBuilder<ComboBox<T>> {
+	private static class FxNodeBuilder<T> implements AbstractFxNodeBuilder<ExtendedComboBox<T>> {
 
 
 		@Override
-		public ComboBox<T> build(final SuiNode node) {
-			if (SearchableProperty.isSearchable(node)) {
-				return new SearchableComboBox<>();
-			} else {
-				return new ComboBox<>();
-			}
+		public ExtendedComboBox<T> build(final SuiNode node) {
+			return new ExtendedComboBox<>();
 		}
 
 	}

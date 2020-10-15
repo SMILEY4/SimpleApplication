@@ -47,9 +47,7 @@ public class OnItemSelectedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnItemSelectedEventProperty<T> property,
-						  final ListView<T> fxNode) {
+		public void build(final SuiNode node, final OnItemSelectedEventProperty<T> property, final ListView<T> fxNode) {
 			((ExtendedListView<T>) fxNode).setSelectionListener(property.getProxyListener());
 		}
 
@@ -57,9 +55,7 @@ public class OnItemSelectedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult update(final OnItemSelectedEventProperty<T> property,
-									 final SuiNode node,
-									 final ListView<T> fxNode) {
+		public MutationResult update(final OnItemSelectedEventProperty<T> property, final SuiNode node, final ListView<T> fxNode) {
 			((ExtendedListView<T>) fxNode).setSelectionListener(property.getProxyListener());
 			return MutationResult.MUTATED;
 		}
@@ -68,9 +64,7 @@ public class OnItemSelectedEventProperty<T> extends AbstractEventListenerPropert
 
 
 		@Override
-		public MutationResult remove(final OnItemSelectedEventProperty<T> property,
-									 final SuiNode node,
-									 final ListView<T> fxNode) {
+		public MutationResult remove(final OnItemSelectedEventProperty<T> property, final SuiNode node, final ListView<T> fxNode) {
 			((ExtendedListView<T>) fxNode).setSelectionListener(null);
 			return MutationResult.MUTATED;
 		}

@@ -2,18 +2,17 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SelectedItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-import javafx.scene.control.ChoiceBox;
 
 import java.util.List;
 
@@ -66,7 +65,6 @@ public final class SuiChoiceBox {
 		registry.registerProperties(SuiChoiceBox.class, List.of(
 				PropertyEntry.of(ContentItemsProperty.class, new ContentItemsProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ChoiceBoxUpdatingBuilder<>()),
-				PropertyEntry.of(SelectedItemProperty.class, new SelectedItemProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ChoiceBoxUpdatingBuilder<>())
 		));
 	}
@@ -74,12 +72,12 @@ public final class SuiChoiceBox {
 
 
 
-	private static class FxNodeBuilder<T> implements AbstractFxNodeBuilder<ChoiceBox<T>> {
+	private static class FxNodeBuilder<T> implements AbstractFxNodeBuilder<ExtendedChoiceBox<T>> {
 
 
 		@Override
-		public ChoiceBox<T> build(final SuiNode node) {
-			return new ChoiceBox<>();
+		public ExtendedChoiceBox<T> build(final SuiNode node) {
+			return new ExtendedChoiceBox<>();
 		}
 
 	}

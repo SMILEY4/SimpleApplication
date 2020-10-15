@@ -2,11 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import javafx.scene.control.ComboBoxBase;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.Pane;
@@ -82,13 +83,63 @@ public class EditableProperty extends SuiProperty {
 
 
 
-	public static class ComboBoxBaseUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, ComboBoxBase<?>> {
+	public static class ComboBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, ExtendedComboBox<?>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final EditableProperty property,
-						  final ComboBoxBase<?> fxNode) {
+		public void build(final SuiNode node, final EditableProperty property, final ExtendedComboBox<?> fxNode) {
+			fxNode.setType(property.isEditable()
+					? ExtendedComboBox.ComboBoxType.EDITABLE
+					: (isSearchable(node) ? ExtendedComboBox.ComboBoxType.SEARCHABLE : ExtendedComboBox.ComboBoxType.DEFAULT));
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final EditableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
+			fxNode.setType(property.isEditable()
+					? ExtendedComboBox.ComboBoxType.EDITABLE
+					: (isSearchable(node) ? ExtendedComboBox.ComboBoxType.SEARCHABLE : ExtendedComboBox.ComboBoxType.DEFAULT));
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final EditableProperty property, final SuiNode node, final ExtendedComboBox<?> fxNode) {
+			fxNode.setType(isSearchable(node) ? ExtendedComboBox.ComboBoxType.SEARCHABLE : ExtendedComboBox.ComboBoxType.DEFAULT);
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		/**
+		 * Checks if the given node has the searchable-property and returns its the value
+		 *
+		 * @param node the node to check
+		 * @return the value of the searchable-property
+		 */
+		private boolean isSearchable(final SuiNode node) {
+			return node.getPropertyStore().getSafe(SearchableProperty.class)
+					.map(SearchableProperty::isSearchable)
+					.orElse(false);
+		}
+
+	}
+
+
+
+
+
+
+	public static class DatePickerUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, DatePicker> {
+
+
+		@Override
+		public void build(final SuiNode node, final EditableProperty property, final DatePicker fxNode) {
 			fxNode.setEditable(property.isEditable());
 		}
 
@@ -96,9 +147,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final EditableProperty property,
-									 final SuiNode node,
-									 final ComboBoxBase<?> fxNode) {
+		public MutationResult update(final EditableProperty property, final SuiNode node, final DatePicker fxNode) {
 			fxNode.setEditable(property.isEditable());
 			return MutationResult.MUTATED;
 		}
@@ -107,12 +156,11 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final EditableProperty property,
-									 final SuiNode node,
-									 final ComboBoxBase<?> fxNode) {
+		public MutationResult remove(final EditableProperty property, final SuiNode node, final DatePicker fxNode) {
 			fxNode.setEditable(false);
 			return MutationResult.MUTATED;
 		}
+
 
 	}
 
@@ -125,9 +173,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final EditableProperty property,
-						  final Pane fxNode) {
+		public void build(final SuiNode node, final EditableProperty property, final Pane fxNode) {
 			SuiLabeledSlider.getLabel(fxNode).setEditable(property.isEditable());
 		}
 
@@ -135,9 +181,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final EditableProperty property,
-									 final SuiNode node,
-									 final Pane fxNode) {
+		public MutationResult update(final EditableProperty property, final SuiNode node, final Pane fxNode) {
 			SuiLabeledSlider.getLabel(fxNode).setEditable(property.isEditable());
 			return MutationResult.MUTATED;
 		}
@@ -146,9 +190,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final EditableProperty property,
-									 final SuiNode node,
-									 final Pane fxNode) {
+		public MutationResult remove(final EditableProperty property, final SuiNode node, final Pane fxNode) {
 			SuiLabeledSlider.getLabel(fxNode).setEditable(false);
 			return MutationResult.MUTATED;
 		}
@@ -160,13 +202,11 @@ public class EditableProperty extends SuiProperty {
 
 
 
-	public static class SpinnerUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, Spinner> {
+	public static class SpinnerUpdatingBuilder implements PropFxNodeUpdatingBuilder<EditableProperty, Spinner<?>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final EditableProperty property,
-						  final Spinner fxNode) {
+		public void build(final SuiNode node, final EditableProperty property, final Spinner<?> fxNode) {
 			fxNode.setEditable(property.isEditable());
 		}
 
@@ -174,9 +214,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final EditableProperty property,
-									 final SuiNode node,
-									 final Spinner fxNode) {
+		public MutationResult update(final EditableProperty property, final SuiNode node, final Spinner<?> fxNode) {
 			fxNode.setEditable(property.isEditable());
 			return MutationResult.MUTATED;
 		}
@@ -185,9 +223,7 @@ public class EditableProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final EditableProperty property,
-									 final SuiNode node,
-									 final Spinner fxNode) {
+		public MutationResult remove(final EditableProperty property, final SuiNode node, final Spinner<?> fxNode) {
 			fxNode.setEditable(false);
 			return MutationResult.MUTATED;
 		}

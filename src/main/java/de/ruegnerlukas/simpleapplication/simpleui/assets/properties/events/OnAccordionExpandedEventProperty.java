@@ -1,71 +1,64 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.AccordionExpandedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.TitledPane;
 import lombok.Getter;
 
-public class OnAccordionExpandedEventProperty extends AbstractEventListenerProperty<AccordionExpandedEventData> {
+import java.util.function.BiConsumer;
+
+public class OnAccordionExpandedEventProperty extends AbstractEventListenerProperty<SectionEventData> {
 
 
 	/**
-	 * The listener for events with {@link AccordionExpandedEventData}.
+	 * The listener for events with {@link SectionEventData}.
 	 */
 	@Getter
-	private final SuiEventListener<AccordionExpandedEventData> listener;
+	private final SuiEventListener<SectionEventData> listener;
 
 	/**
-	 * The proxy for the actual change listener.
+	 * The actual listener listening to the accordion.
 	 */
 	@Getter
-	private final ChangeListenerProxy<TitledPane> changeListenerProxy;
+	private final BiConsumer<String, Boolean> proxylistener;
 
 
 
 
 	/**
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
-	 * @param listener   the listener for events with {@link AccordionExpandedEventData}.
+	 * @param listener   the listener for events with {@link SectionEventData}.
 	 */
-	public OnAccordionExpandedEventProperty(final String propertyId, final SuiEventListener<AccordionExpandedEventData> listener) {
+	public OnAccordionExpandedEventProperty(final String propertyId, final SuiEventListener<SectionEventData> listener) {
 		super(OnAccordionExpandedEventProperty.class, propertyId);
 		this.listener = listener;
-		this.changeListenerProxy = new ChangeListenerProxy<>(
-				(prev, next) -> listener.onEvent(
-						AccordionExpandedEventData.builder()
-								.expandedTitle(next != null ? next.getText() : null)
-								.prevExpandedTitle(prev != null ? prev.getText() : null)
-								.build()
-				));
+		this.proxylistener = (title, expanded) -> listener.onEvent(
+				SectionEventData.builder()
+						.sectionTitle(title)
+						.expanded(expanded)
+						.build()
+		);
 	}
 
 
 
 
-	public static class AccordionUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnAccordionExpandedEventProperty, Accordion> {
+	public static class AccordionUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnAccordionExpandedEventProperty, ExtendedAccordion> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnAccordionExpandedEventProperty property,
-						  final Accordion fxNode) {
-			property.getChangeListenerProxy().addTo(fxNode.expandedPaneProperty());
+		public void build(final SuiNode node, final OnAccordionExpandedEventProperty property, final ExtendedAccordion fxNode) {
+			fxNode.setExpandedSectionChangedListener(property.getProxylistener());
 		}
 
 
 
 
 		@Override
-		public MutationResult update(final OnAccordionExpandedEventProperty property,
-									 final SuiNode node,
-									 final Accordion fxNode) {
-			node.getPropertyStore().getSafe(OnAccordionExpandedEventProperty.class)
-					.map(OnAccordionExpandedEventProperty::getChangeListenerProxy)
-					.ifPresent(proxy -> proxy.removeFrom(fxNode.expandedPaneProperty()));
-			property.getChangeListenerProxy().addTo(fxNode.expandedPaneProperty());
+		public MutationResult update(final OnAccordionExpandedEventProperty property, final SuiNode node, final ExtendedAccordion fxNode) {
+			fxNode.setExpandedSectionChangedListener(property.getProxylistener());
 			return MutationResult.MUTATED;
 		}
 
@@ -73,10 +66,8 @@ public class OnAccordionExpandedEventProperty extends AbstractEventListenerPrope
 
 
 		@Override
-		public MutationResult remove(final OnAccordionExpandedEventProperty property,
-									 final SuiNode node,
-									 final Accordion fxNode) {
-			property.getChangeListenerProxy().removeFrom(fxNode.expandedPaneProperty());
+		public MutationResult remove(final OnAccordionExpandedEventProperty property, final SuiNode node, final ExtendedAccordion fxNode) {
+			fxNode.setExpandedSectionChangedListener(null);
 			return MutationResult.MUTATED;
 		}
 

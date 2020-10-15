@@ -121,13 +121,14 @@ public class PromptTextProperty extends SuiProperty {
 
 
 
+
+
+
 	public static class ListViewUpdatingBuilder implements PropFxNodeUpdatingBuilder<PromptTextProperty, ListView<?>> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final PromptTextProperty property,
-						  final ListView<?> fxNode) {
+		public void build(final SuiNode node, final PromptTextProperty property, final ListView<?> fxNode) {
 			fxNode.setPlaceholder(buildPlaceholder(property.getText()));
 		}
 
@@ -135,9 +136,7 @@ public class PromptTextProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final PromptTextProperty property,
-									 final SuiNode node,
-									 final ListView<?> fxNode) {
+		public MutationResult update(final PromptTextProperty property, final SuiNode node, final ListView<?> fxNode) {
 			fxNode.setPlaceholder(buildPlaceholder(property.getText()));
 			return MutationResult.MUTATED;
 		}
@@ -146,9 +145,7 @@ public class PromptTextProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final PromptTextProperty property,
-									 final SuiNode node,
-									 final ListView<?> fxNode) {
+		public MutationResult remove(final PromptTextProperty property, final SuiNode node, final ListView<?> fxNode) {
 			fxNode.setPlaceholder(null);
 			return MutationResult.MUTATED;
 		}

@@ -16,9 +16,24 @@ An element containing any number of expandable sections. Only one of these secti
 
   Each item will be added as a new section. The title of the section is specified by the "TitleProperty" of the child item.
 
+- ExpandedSectionProperty
+
+  Expands the section with the given title once when building or updating the accordion. If no title is given or no section with the title exists, all sections will be collapse. The user can still expand and collapse sections afterwards. Expanding an collapsing sections via this property does not trigger events.
+
 - OnAccordionExpandedEventProperty
 
-  A listener that is called when the user expands one of the sections.
+  A listener that is called when the user expands or collapses one of the sections. The event carries the title of the interacted section and the state of the other sections.
+  
+  There are 3 possible scenarios
+  
+  - no section was expanded and the user expands section A
+    - event {title=A, expanded=true}
+  - A was expanded and user expands B (collapsing A)
+    - event {title=B, expanded=true}
+  - B was expanded and user collapses B
+    - event {title=B, expanded=false}
+  
+  Removing a collapsed section or expanding a new section with the "ExpandedSectionProperty" will not trigger events.
 
 
 
@@ -62,6 +77,10 @@ An element that can trigger an action when pressed
 
   Whether the text inside the button should wrap into the next line if it is too long.
 
+- IconProperty
+
+  Specifies an image that is displayed in the button next to the text.
+
 - OnActionEventProperty
 
   A listener that is called when the button is pressed
@@ -75,7 +94,9 @@ An element that can be in one of the two states "selected" or "not selected".
 **Properties:**
 
 - all common properties
+
 - all common region properties
+
 - all common event properties
 
 - TextContentProperty
@@ -86,17 +107,17 @@ An element that can be in one of the two states "selected" or "not selected".
 
   Whether the label should wrap into the next line if it is too long.
 
-- OnActionEventProperty
+- IconProperty
 
-  A listener that is called when the box is pressed (either selected or deselected)
+  Specifies an image that is displayed in the label next to the text.
+
+- CheckedProperty
+
+  Checks/Unchecks the box once when building or updating the checkbox. Setting the state of the box this way does not trigger events. The user can still check /uncheck the box manually.
 
 - OnCheckedEventProperty
 
-  A listener that is called when the box was selected.
-
-- OnUncheckedEventProperty
-
-  A listener that is called when the box was deselected.
+  A listener that is called when the box was selected or deselected
 
 
 

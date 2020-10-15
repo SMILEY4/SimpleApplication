@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
@@ -20,7 +21,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -144,10 +144,10 @@ public final class SuiLabeledSlider {
 	 * @param pane the pane
 	 * @return the child slider-node from the given pane
 	 */
-	public static Slider getSlider(final Pane pane) {
+	public static ExtendedSlider getSlider(final Pane pane) {
 		for (Node node : pane.getChildren()) {
-			if (node instanceof Slider) {
-				return (Slider) node;
+			if (node instanceof ExtendedSlider) {
+				return (ExtendedSlider) node;
 			}
 		}
 		return null;
@@ -177,7 +177,7 @@ public final class SuiLabeledSlider {
 
 		@Override
 		public Pane build(final SuiNode node) {
-			final Slider slider = buildSlider();
+			final ExtendedSlider slider = buildSlider();
 			final TextField label = buildLabel();
 			final Pane box = buildBox(slider, label, isHorizontalLayout(getAlignment(node)));
 			setupLogic(node, slider, label);
@@ -190,8 +190,8 @@ public final class SuiLabeledSlider {
 		/**
 		 * @return the slider
 		 */
-		private Slider buildSlider() {
-			final Slider slider = new Slider();
+		private ExtendedSlider buildSlider() {
+			final ExtendedSlider slider = new ExtendedSlider();
 			slider.setShowTickMarks(TickMarkProperty.DEFAULT_STYLE.isShowTickMarks());
 			slider.setShowTickLabels(TickMarkProperty.DEFAULT_STYLE.isShowLabels());
 			slider.setMajorTickUnit(TickMarkProperty.DEFAULT_MAJOR_TICK_UNIT);
@@ -271,14 +271,13 @@ public final class SuiLabeledSlider {
 		 * @param slider the slider
 		 * @param label  the label
 		 */
-		private void setupLogic(final SuiNode node, final Slider slider, final TextField label) {
+		private void setupLogic(final SuiNode node, final ExtendedSlider slider, final TextField label) {
 			slider.valueProperty().addListener((value, prev, next) -> label.setText(valueToString(node, next.doubleValue())));
 			label.setText(valueToString(node, slider.getValue()));
-
 			label.setOnAction(e -> {
 				final Double value = valueFromString(label.getText().trim(), slider.getValue(), slider.getMin(), slider.getMax());
 				if (value != null) {
-					slider.setValue(value);
+					slider.setValue(value, true);
 				}
 				label.setText(valueToString(node, slider.getValue()));
 			});

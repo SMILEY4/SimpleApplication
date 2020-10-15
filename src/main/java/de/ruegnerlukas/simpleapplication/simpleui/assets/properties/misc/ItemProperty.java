@@ -3,20 +3,21 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Stream;
 
 public class ItemProperty extends SuiProperty {
 
@@ -65,8 +66,7 @@ public class ItemProperty extends SuiProperty {
 						  final ItemProperty property,
 						  final Pane fxNode) {
 			if (node.getChildNodeStore().hasChildren()) {
-				SuiNode childNode = node.getChildNodeStore().get(0);
-				fxNode.getChildren().setAll(childNode.getFxNodeStore().get());
+				fxNode.getChildren().setAll(node.getChildNodeStore().getOne().getFxNodeStore().get());
 			} else {
 				fxNode.getChildren().clear();
 			}
@@ -88,8 +88,7 @@ public class ItemProperty extends SuiProperty {
 						  final ScrollPane fxNode) {
 			Node fxChildNode = null;
 			if (node.getChildNodeStore().hasChildren()) {
-				SuiNode childNode = node.getChildNodeStore().get(0);
-				fxChildNode = childNode.getFxNodeStore().get();
+				fxChildNode = node.getChildNodeStore().getOne().getFxNodeStore().get();
 			}
 			fxNode.setContent(fxChildNode);
 		}
@@ -101,14 +100,12 @@ public class ItemProperty extends SuiProperty {
 
 
 
-	public static class TabPaneBuilder implements PropFxNodeBuilder<ItemListProperty, TabPane> {
+	public static class TabPaneBuilder implements PropFxNodeBuilder<ItemListProperty, ExtendedTabPane> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final ItemListProperty property,
-						  final TabPane fxNode) {
-			fxNode.getTabs().setAll(SuiTabPane.createTabs(List.of(node.getChildNodeStore().get(0))));
+		public void build(final SuiNode node, final ItemListProperty property, final ExtendedTabPane fxNode) {
+			fxNode.setTabs(SuiTabPane.createTabs(List.of(node.getChildNodeStore().getOne())));
 		}
 
 	}
@@ -125,21 +122,27 @@ public class ItemProperty extends SuiProperty {
 		public void build(final SuiNode node,
 						  final ItemListProperty property,
 						  final SplitPane fxNode) {
-			fxNode.getItems().setAll(node.getChildNodeStore().get(0).getFxNodeStore().get());
+			fxNode.getItems().setAll(node.getChildNodeStore().getOne().getFxNodeStore().get());
 		}
 
 	}
 
 
 
-	public static class AccordionBuilder implements PropFxNodeBuilder<ItemListProperty, Accordion> {
+
+
+
+	public static class AccordionBuilder implements PropFxNodeBuilder<ItemListProperty, ExtendedAccordion> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final ItemListProperty property,
-						  final Accordion fxNode) {
-			fxNode.getPanes().add(SuiAccordion.createTitlePane(node));
+		public void build(final SuiNode node, final ItemListProperty property, final ExtendedAccordion fxNode) {
+			if (node.getChildNodeStore().hasChildren()) {
+				fxNode.setSections(Stream.of(node.getChildNodeStore().getOne()));
+			} else {
+				fxNode.clearSections();
+			}
+			callOtherPropBuilder(SuiAccordion.class, ExpandedSectionProperty.class, node, fxNode);
 		}
 
 	}

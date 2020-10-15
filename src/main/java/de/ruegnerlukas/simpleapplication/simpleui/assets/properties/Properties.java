@@ -3,17 +3,22 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiAbstractMenuItem;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnimateProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.CheckedProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChronologyProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ExpandedSectionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IconProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
@@ -33,7 +38,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Orienta
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PreserveRatioProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SelectedItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;
@@ -44,7 +48,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Spinner
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SplitDividerPositionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabDisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPaneMenuSideProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
@@ -61,6 +64,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.util.StringConverter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.chrono.Chronology;
 import java.util.Collection;
@@ -72,6 +76,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 public final class Properties {
 
 
@@ -677,8 +682,25 @@ public final class Properties {
 	 * @return an {@link ContentItemsProperty}
 	 */
 	public static <T> SuiProperty contentItems(final List<T> choices) {
+		return contentItems(choices, null);
+	}
+
+
+
+
+	/**
+	 * @param choices        the list of possible choices. The class of the choice should have an implementation of the equals-method.
+	 * @param selectedChoice the choice to select from the list of choices (or null)
+	 * @return an {@link ContentItemsProperty}
+	 */
+	public static <T> SuiProperty contentItems(final List<T> choices, final T selectedChoice) {
 		Validations.INPUT.notNull(choices).exception("The choices can not be null.");
-		return new ContentItemsProperty<>(List.copyOf(choices));
+		if (selectedChoice != null && !choices.contains(selectedChoice)) {
+			log.warn("Available choices must contain the selected choice: {}, {}. Selecting none", selectedChoice, choices);
+			return new ContentItemsProperty<>(List.copyOf(choices), null);
+		} else {
+			return new ContentItemsProperty<>(List.copyOf(choices), selectedChoice);
+		}
 	}
 
 
@@ -741,18 +763,6 @@ public final class Properties {
 		Validations.INPUT.notNull(fromString).exception("The converter from strings can not be null.");
 		Validations.INPUT.notNull(toString).exception("The converter to strings can not be null.");
 		return new ChoicesConverterProperty<>(propertyId, fromString, toString);
-	}
-
-
-
-
-	/**
-	 * @param selectedItem the selected item
-	 * @param <T>          the generic type of the item
-	 * @return an {@link SelectedItemProperty}
-	 */
-	public static <T> SuiProperty selectedItem(final T selectedItem) {
-		return new SelectedItemProperty<>(selectedItem);
 	}
 
 
@@ -828,7 +838,7 @@ public final class Properties {
 	 * @param layoutFunction the function used to calculate the layout of the child nodes
 	 * @return a {@link MutationBehaviourProperty}
 	 */
-	public static SuiProperty layout(final String propertyId, final LayoutProperty.LayoutFunction layoutFunction) {
+	public static SuiProperty layout(final String propertyId, final ExtendedPane.LayoutFunction layoutFunction) {
 		Validations.INPUT.notEmpty(propertyId).exception("The layout id can not be null or empty.");
 		Validations.INPUT.notNull(layoutFunction).exception("The layout function can not be null.");
 		return new LayoutProperty(propertyId, layoutFunction);
@@ -1037,10 +1047,10 @@ public final class Properties {
 
 
 	/**
-	 * @param min        the min value (inclusive)
-	 * @param max        the max value (inclusive)
-	 * @param stepSize   the amount to step by
-	 * @param value      the (initial) value
+	 * @param min      the min value (inclusive)
+	 * @param max      the max value (inclusive)
+	 * @param stepSize the amount to step by
+	 * @param value    the (initial) value
 	 * @return the {@link SpinnerFactoryProperty}
 	 */
 	public static SuiProperty integerSpinnerValues(final int min,
@@ -1059,10 +1069,10 @@ public final class Properties {
 
 
 	/**
-	 * @param min        the min value (inclusive)
-	 * @param max        the max value (inclusive)
-	 * @param stepSize   the amount to step by
-	 * @param value      the (initial) value
+	 * @param min      the min value (inclusive)
+	 * @param max      the max value (inclusive)
+	 * @param stepSize the amount to step by
+	 * @param value    the (initial) value
 	 * @return the {@link SpinnerFactoryProperty}
 	 */
 	public static SuiProperty floatingPointSpinnerValues(final double min,
@@ -1081,13 +1091,16 @@ public final class Properties {
 
 
 	/**
-	 * @param items      the items
-	 * @param wrapAround whether to wrap around or stop at the end/start
+	 * @param items        the items
+	 * @param initialValue the initial value
+	 * @param wrapAround   whether to wrap around or stop at the end/start
 	 * @return the {@link SpinnerFactoryProperty}
 	 */
-	public static SuiProperty listSpinnerValues(final List<String> items, final boolean wrapAround) {
+	public static SuiProperty listSpinnerValues(final List<String> items, final String initialValue, final boolean wrapAround) {
 		Validations.INPUT.notNull(items).exception("The items-list must not be null.");
-		return new SpinnerFactoryProperty(items, wrapAround);
+		Validations.INPUT.contains(items, initialValue)
+				.exception("The initial value {} must be in the list of items.", initialValue);
+		return new SpinnerFactoryProperty(items, initialValue, wrapAround);
 	}
 
 
@@ -1100,17 +1113,6 @@ public final class Properties {
 	public static SuiProperty title(final String title) {
 		Validations.INPUT.notNull(title).exception("The title may not be null.");
 		return new TitleProperty(title);
-	}
-
-
-
-
-	/**
-	 * @param disabled whether the tab is disabled
-	 * @return the {@link TabDisabledProperty}
-	 */
-	public static SuiProperty tabDisabled(final boolean disabled) {
-		return new TabDisabledProperty(disabled);
 	}
 
 
@@ -1246,6 +1248,52 @@ public final class Properties {
 	 */
 	public static SuiProperty multiselect(final boolean allowMultiselect) {
 		return new MultiselectProperty(allowMultiselect);
+	}
+
+
+
+
+	/**
+	 * @param title the title of the expanded section or null to collapse all.
+	 * @return the {@link ExpandedSectionProperty}
+	 */
+	public static SuiProperty expandedSection(final String title) {
+		return new ExpandedSectionProperty(title);
+	}
+
+
+
+
+	/**
+	 * @param animate the animation of an element should be played
+	 * @return the {@link AnimateProperty}
+	 */
+	public static SuiProperty animated(final boolean animate) {
+		return new AnimateProperty(animate);
+	}
+
+
+
+
+	/**
+	 * @param imgResource the resource pointing to the image
+	 * @param width       the width of the icon. The height is then calculated automatically to keep the original aspect ratio
+	 * @param gap         the gap between the icon and the text content
+	 * @return the {@link IconProperty}
+	 */
+	public static SuiProperty icon(final Resource imgResource, final Number width, final Number gap) {
+		return new IconProperty(imgResource, width, gap);
+	}
+
+
+
+
+	/**
+	 * @param checked whether the box is checked
+	 * @return the {@link CheckedProperty}
+	 */
+	public static SuiProperty checked(final boolean checked) {
+		return new CheckedProperty(checked);
 	}
 
 
