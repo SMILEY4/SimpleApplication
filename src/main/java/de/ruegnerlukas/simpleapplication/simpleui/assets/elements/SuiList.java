@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnIte
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MultiselectProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -69,7 +70,8 @@ public final class SuiList {
 				PropertyEntry.of(ContentItemsProperty.class, new ContentItemsProperty.ListViewUpdatingBuilder<>()),
 				PropertyEntry.of(OnItemSelectedEventProperty.class, new OnItemSelectedEventProperty.ListViewUpdatingBuilder<>()),
 				PropertyEntry.of(MultiselectProperty.class, new MultiselectProperty.ListViewUpdatingBuilder()),
-				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ListViewUpdatingBuilder())
+				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ListViewUpdatingBuilder()),
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
 		));
 	}
 

@@ -14,6 +14,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MinMaxP
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OrientationProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -89,7 +90,8 @@ public final class SuiLabeledSlider {
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(LabelFormatterProperty.class, new LabelFormatterProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(LabelSizeProperty.class, new LabelSizeProperty.LabeledSliderUpdatingBuilder()),
-				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.LabeledSliderUpdatingBuilder())
+				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.LabeledSliderUpdatingBuilder()),
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.LabeledSliderUpdatingBuilder())
 		));
 	}
 

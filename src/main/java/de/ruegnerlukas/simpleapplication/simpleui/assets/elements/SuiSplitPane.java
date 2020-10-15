@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemLis
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OrientationProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SplitDividerPositionProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.OperationType;
@@ -114,7 +115,8 @@ public final class SuiSplitPane {
 				PropertyEntry.of(ItemProperty.class, new ItemProperty.SplitPaneBuilder(), null),
 				PropertyEntry.of(OrientationProperty.class, new OrientationProperty.SplitPaneUpdatingBuilder()),
 				PropertyEntry.of(SplitDividerPositionProperty.class, new SplitDividerPositionProperty.SplitPaneUpdatingBuilder()),
-				PropertyEntry.of(OnDividerDraggedEventProperty.class, new OnDividerDraggedEventProperty.SplitPaneUpdatingBuilder())
+				PropertyEntry.of(OnDividerDraggedEventProperty.class, new OnDividerDraggedEventProperty.SplitPaneUpdatingBuilder()),
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
 		));
 	}
 

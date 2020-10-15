@@ -10,6 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Content
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -96,7 +97,8 @@ public final class SuiComboBox {
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxUpdatingBuilder()),
 				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.ComboBoxUpdatingBuilder()),
 				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ComboBoxBaseUpdatingBuilder<>()),
-				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ComboBoxUpdatingBuilder<>())
+				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ComboBoxUpdatingBuilder<>()),
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
 		));
 	}
 

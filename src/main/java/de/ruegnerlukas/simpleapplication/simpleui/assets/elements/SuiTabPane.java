@@ -11,6 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemPro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPaneMenuSideProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -78,7 +79,8 @@ public final class SuiTabPane {
 				PropertyEntry.of(TabPaneMenuSideProperty.class, new TabPaneMenuSideProperty.TabPaneUpdatingBuilder()),
 				PropertyEntry.of(TabClosingPolicyProperty.class, new TabClosingPolicyProperty.TabPaneUpdatingBuilder()),
 				PropertyEntry.of(OnSelectedTabEventProperty.class, new OnSelectedTabEventProperty.TabPaneUpdatingBuilder()),
-				PropertyEntry.of(OnTabClosedEventProperty.class, new OnTabClosedEventProperty.TabPaneUpdatingBuilder())
+				PropertyEntry.of(OnTabClosedEventProperty.class, new OnTabClosedEventProperty.TabPaneUpdatingBuilder()),
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
 		));
 	}
 

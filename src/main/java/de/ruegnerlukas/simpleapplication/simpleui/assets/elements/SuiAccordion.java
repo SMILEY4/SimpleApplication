@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Animate
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ExpandedSectionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -88,7 +89,8 @@ public final class SuiAccordion {
 				PropertyEntry.of(ItemProperty.class, new ItemProperty.AccordionBuilder(), null),
 				PropertyEntry.of(ExpandedSectionProperty.class, new ExpandedSectionProperty.AccordionUpdatingBuilder()),
 				PropertyEntry.of(AnimateProperty.class, new AnimateProperty.AccordionUpdatingBuilder()),
-				PropertyEntry.of(OnAccordionExpandedEventProperty.class, new OnAccordionExpandedEventProperty.AccordionUpdatingBuilder())
+				PropertyEntry.of(OnAccordionExpandedEventProperty.class, new OnAccordionExpandedEventProperty.AccordionUpdatingBuilder()),
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
 		));
 	}
 

@@ -52,6 +52,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPane
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
@@ -1296,5 +1297,31 @@ public final class Properties {
 		return new CheckedProperty(checked);
 	}
 
+
+
+
+	/**
+	 * @param text the text to display in the tooltip
+	 * @return the {@link TooltipProperty}
+	 */
+	public static SuiProperty tooltip(final String text) {
+		Validations.INPUT.notEmpty(text).exception("The tooltip text may not be null or empty.");
+		return new TooltipProperty(text);
+	}
+
+
+
+
+	/**
+	 * @param text      the text to display in the tooltip
+	 * @param wrapText  whether to wrap the text
+	 * @param prefWidth the preferred width of the tooltip
+	 * @return the {@link TooltipProperty}
+	 */
+	public static SuiProperty tooltip(final String text, final boolean wrapText, final Number prefWidth) {
+		Validations.INPUT.notEmpty(text).exception("The tooltip text may not be null or empty.");
+		Validations.INPUT.notNull(prefWidth).exception("The tooltip preferred width may not be null.");
+		return new TooltipProperty(text, wrapText, prefWidth);
+	}
 
 }
