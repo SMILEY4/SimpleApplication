@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiListChangeListener;
 import javafx.collections.ObservableList;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -34,6 +34,7 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 	 */
 	public OnTextChangedEventProperty(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
 		super(OnTextChangedEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> listener.onEvent(
 				TextContentEventData.builder()
@@ -46,16 +47,17 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
-		default T eventTextChanged(final SuiEventListener<TextContentEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventTextChanged(listener));
-			return (T) this;
-		}
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link TextContentEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T eventTextChanged(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventTextChanged(propertyId, listener));
+			getFactoryInternalProperties().add(new OnTextChangedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

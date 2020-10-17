@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseDragEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -25,9 +27,26 @@ public class OnMouseDragExitedEventProperty extends AbstractEventListenerPropert
 	 */
 	public OnMouseDragExitedEventProperty(final String propertyId, final SuiEventListener<MouseDragEventData> listener) {
 		super(OnMouseDragExitedEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 	}
 
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link MouseDragEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T eventMouseDragExited(final String propertyId, final SuiEventListener<MouseDragEventData> listener) {
+			getFactoryInternalProperties().add(new OnMouseDragExitedEventProperty(propertyId, listener));
+			return (T) this;
+		}
+
+	}
 
 
 

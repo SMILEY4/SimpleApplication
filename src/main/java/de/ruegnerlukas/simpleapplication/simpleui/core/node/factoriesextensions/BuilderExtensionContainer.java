@@ -9,7 +9,7 @@ public abstract class BuilderExtensionContainer implements FactoryExtension {
 
 
 	/**
-	 * The internal properties of this factory extension.
+	 * The properties of this builder.
 	 */
 	private final List<SuiProperty> properties = new ArrayList<>();
 
@@ -21,16 +21,5 @@ public abstract class BuilderExtensionContainer implements FactoryExtension {
 		return this.properties;
 	}
 
-
-
-
-	/**
-	 * @return the internal properties as an array
-	 */
-	public SuiProperty[] getFactoryInternalPropertiesAsArray() {
-		final SuiProperty[] array = new SuiProperty[properties.size()];
-		properties.toArray(array);
-		return array;
-	}
 
 }

@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -27,22 +27,24 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 	 */
 	public OnActionEventProperty(final String propertyId, final SuiEventListener<ActionEventData> listener) {
 		super(OnActionEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 	}
 
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
-		default T eventAction(final SuiEventListener<ActionEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventAction(listener));
-			return (T) this;
-		}
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link ActionEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T eventAction(final String propertyId, final SuiEventListener<ActionEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventAction(propertyId, listener));
+			getFactoryInternalProperties().add(new OnActionEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

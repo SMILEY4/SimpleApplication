@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DateSelectedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
@@ -46,7 +46,7 @@ public class SuiDatePickerTest extends SuiElementTest {
 			return;
 		}
 
-		final List<DatePickerActionEventData> capturedEvents = new ArrayList<>();
+		final List<DateSelectedEventData> capturedEvents = new ArrayList<>();
 		final SuiSceneController controller = new SuiSceneController(
 				SuiDatePicker.datePicker(
 						Properties.editable(),

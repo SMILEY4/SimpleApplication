@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnAccordionExpandedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSectionToggleEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnimateProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ExpandedSectionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
@@ -96,7 +96,7 @@ public final class SuiAccordion {
 				PropertyEntry.of(ItemProperty.class, new ItemProperty.AccordionBuilder(), null),
 				PropertyEntry.of(ExpandedSectionProperty.class, new ExpandedSectionProperty.AccordionUpdatingBuilder()),
 				PropertyEntry.of(AnimateProperty.class, new AnimateProperty.AccordionUpdatingBuilder()),
-				PropertyEntry.of(OnAccordionExpandedEventProperty.class, new OnAccordionExpandedEventProperty.AccordionUpdatingBuilder()),
+				PropertyEntry.of(OnSectionToggleEventProperty.class, new OnSectionToggleEventProperty.AccordionUpdatingBuilder()),
 				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
 		));
 	}

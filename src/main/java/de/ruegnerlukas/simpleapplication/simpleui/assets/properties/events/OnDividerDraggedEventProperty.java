@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSplitPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DividerDraggedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -36,6 +36,7 @@ public class OnDividerDraggedEventProperty extends AbstractEventListenerProperty
 	 */
 	public OnDividerDraggedEventProperty(final String propertyId, final SuiEventListener<DividerDraggedEventData> listener) {
 		super(OnDividerDraggedEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 		this.changeListener = (index, positions) -> listener.onEvent(
 				DividerDraggedEventData.builder()
@@ -49,12 +50,17 @@ public class OnDividerDraggedEventProperty extends AbstractEventListenerProperty
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
-		default T eventDividerPositionListener(final String propertyId, final SuiEventListener<DividerDraggedEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventDividerPositionListener(propertyId, listener));
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link DividerDraggedEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T eventDividerDragged(final String propertyId, final SuiEventListener<DividerDraggedEventData> listener) {
+			getFactoryInternalProperties().add(new OnDividerDraggedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

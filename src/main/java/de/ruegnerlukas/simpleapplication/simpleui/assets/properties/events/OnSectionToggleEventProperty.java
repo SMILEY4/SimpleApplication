@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -11,7 +11,7 @@ import lombok.Getter;
 
 import java.util.function.BiConsumer;
 
-public class OnAccordionExpandedEventProperty extends AbstractEventListenerProperty<SectionEventData> {
+public class OnSectionToggleEventProperty extends AbstractEventListenerProperty<SectionEventData> {
 
 
 	/**
@@ -21,7 +21,7 @@ public class OnAccordionExpandedEventProperty extends AbstractEventListenerPrope
 	private final SuiEventListener<SectionEventData> listener;
 
 	/**
-	 * The actual listener listening to the accordion.
+	 * The actual listener listening to the sections.
 	 */
 	@Getter
 	private final BiConsumer<String, Boolean> proxylistener;
@@ -33,8 +33,9 @@ public class OnAccordionExpandedEventProperty extends AbstractEventListenerPrope
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
 	 * @param listener   the listener for events with {@link SectionEventData}.
 	 */
-	public OnAccordionExpandedEventProperty(final String propertyId, final SuiEventListener<SectionEventData> listener) {
-		super(OnAccordionExpandedEventProperty.class, propertyId);
+	public OnSectionToggleEventProperty(final String propertyId, final SuiEventListener<SectionEventData> listener) {
+		super(OnSectionToggleEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 		this.proxylistener = (title, expanded) -> listener.onEvent(
 				SectionEventData.builder()
@@ -47,12 +48,17 @@ public class OnAccordionExpandedEventProperty extends AbstractEventListenerPrope
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
-		default T eventSection(final String propertyId, final SuiEventListener<SectionEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventAccordionExpanded(propertyId, listener));
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link SectionEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T eventToggleSection(final String propertyId, final SuiEventListener<SectionEventData> listener) {
+			getFactoryInternalProperties().add(new OnSectionToggleEventProperty(propertyId, listener));
 			return (T) this;
 		}
 
@@ -63,11 +69,11 @@ public class OnAccordionExpandedEventProperty extends AbstractEventListenerPrope
 
 
 
-	public static class AccordionUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnAccordionExpandedEventProperty, ExtendedAccordion> {
+	public static class AccordionUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSectionToggleEventProperty, ExtendedAccordion> {
 
 
 		@Override
-		public void build(final SuiNode node, final OnAccordionExpandedEventProperty property, final ExtendedAccordion fxNode) {
+		public void build(final SuiNode node, final OnSectionToggleEventProperty property, final ExtendedAccordion fxNode) {
 			fxNode.setExpandedSectionChangedListener(property.getProxylistener());
 		}
 
@@ -75,7 +81,7 @@ public class OnAccordionExpandedEventProperty extends AbstractEventListenerPrope
 
 
 		@Override
-		public MutationResult update(final OnAccordionExpandedEventProperty property, final SuiNode node, final ExtendedAccordion fxNode) {
+		public MutationResult update(final OnSectionToggleEventProperty property, final SuiNode node, final ExtendedAccordion fxNode) {
 			fxNode.setExpandedSectionChangedListener(property.getProxylistener());
 			return MutationResult.MUTATED;
 		}
@@ -84,7 +90,7 @@ public class OnAccordionExpandedEventProperty extends AbstractEventListenerPrope
 
 
 		@Override
-		public MutationResult remove(final OnAccordionExpandedEventProperty property, final SuiNode node, final ExtendedAccordion fxNode) {
+		public MutationResult remove(final OnSectionToggleEventProperty property, final SuiNode node, final ExtendedAccordion fxNode) {
 			fxNode.setExpandedSectionChangedListener(null);
 			return MutationResult.MUTATED;
 		}

@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ScrollEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -33,6 +33,7 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 	 */
 	public OnScrollVerticalEventProperty(final String propertyId, final SuiEventListener<ScrollEventData> listener) {
 		super(OnScrollVerticalEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> {
 			if (prev != null && next != null) {
@@ -53,17 +54,17 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
-		default T eventScrollVertical(final SuiEventListener<ScrollEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventScrollVertical(listener));
-			return (T) this;
-		}
-
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link ScrollEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T eventScrollVertical(final String propertyId, final SuiEventListener<ScrollEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventScrollVertical(propertyId, listener));
+			getFactoryInternalProperties().add(new OnScrollVerticalEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

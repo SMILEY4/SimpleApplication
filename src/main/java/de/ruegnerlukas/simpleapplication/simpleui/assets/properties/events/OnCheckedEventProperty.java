@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedCheckbox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -35,6 +35,7 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 	 */
 	public OnCheckedEventProperty(final String propertyId, final SuiEventListener<CheckedEventData> listener) {
 		super(OnCheckedEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 		this.listenerProxy = checked -> listener.onEvent(
 				CheckedEventData.builder()
@@ -50,14 +51,13 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
-		default T onChecked(final SuiEventListener<CheckedEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventChecked(listener));
-			return (T) this;
-		}
-
-
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link CheckedEventData}.
+		 * @return this builder for chaining
+		 */
 		default T onChecked(final String propertyId, final SuiEventListener<CheckedEventData> listener) {
-			getFactoryInternalProperties().add(EventProperties.eventChecked(propertyId, listener));
+			getFactoryInternalProperties().add(new OnCheckedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 
