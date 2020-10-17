@@ -2,18 +2,24 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedListView;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnItemSelectedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MultiselectProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.ListView;
 
 import java.util.List;
@@ -35,6 +41,33 @@ public final class SuiList {
 
 	public static SuiListBuilder create() {
 		return new SuiListBuilder();
+	}
+
+
+
+
+	public static class SuiListBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiListBuilder>,
+			RegionBuilderExtension<SuiListBuilder>,
+			CommonEventBuilderExtension<SuiListBuilder>,
+			ContentItemsProperty.PropertyBuilderExtensionWithSelected<SuiListBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiListBuilder>,
+			PromptTextProperty.PropertyBuilderExtension<SuiListBuilder>,
+			MultiselectProperty.PropertyBuilderExtension<SuiListBuilder>,
+			OnItemSelectedEventProperty.PropertyBuilderExtension<SuiListBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return SuiNode.create(
+					SuiList.class,
+					getFactoryInternalProperties(),
+					state,
+					tags
+			);
+		}
+
+
 	}
 
 

@@ -1,8 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextEnteredEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
@@ -11,10 +13,14 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextCon
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.TextArea;
 
 import java.util.List;
@@ -36,6 +42,35 @@ public final class SuiTextArea {
 
 	public static SuiTextAreaBuilder create() {
 		return new SuiTextAreaBuilder();
+	}
+
+
+
+
+	public static class SuiTextAreaBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiTextAreaBuilder>,
+			RegionBuilderExtension<SuiTextAreaBuilder>,
+			CommonEventBuilderExtension<SuiTextAreaBuilder>,
+			TextContentProperty.PropertyBuilderExtension<SuiTextAreaBuilder>,
+			PromptTextProperty.PropertyBuilderExtension<SuiTextAreaBuilder>,
+			WrapTextProperty.PropertyBuilderExtension<SuiTextAreaBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiTextAreaBuilder>,
+			EditableProperty.PropertyBuilderExtension<SuiTextAreaBuilder>,
+			OnTextChangedEventProperty.PropertyBuilderExtension<SuiTextAreaBuilder>,
+			OnTextEnteredEventProperty.PropertyBuilderExtension<SuiTextAreaBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return SuiNode.create(
+					SuiTextArea.class,
+					getFactoryInternalProperties(),
+					state,
+					tags
+			);
+		}
+
+
 	}
 
 

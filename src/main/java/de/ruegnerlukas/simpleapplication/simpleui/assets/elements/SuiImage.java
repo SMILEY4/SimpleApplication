@@ -1,16 +1,22 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PreserveRatioProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.image.ImageView;
 
 import java.util.List;
@@ -34,6 +40,28 @@ public final class SuiImage {
 		return new SuiImageBuilder();
 	}
 
+
+	public static class SuiImageBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiImageBuilder>,
+			RegionBuilderExtension<SuiImageBuilder>,
+			CommonEventBuilderExtension<SuiImageBuilder>,
+			PreserveRatioProperty.PropertyBuilderExtension<SuiImageBuilder>,
+			ImageSizeProperty.PropertyBuilderExtension<SuiImageBuilder>,
+			ImageProperty.PropertyBuilderExtension<SuiImageBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return SuiNode.create(
+					SuiImage.class,
+					getFactoryInternalProperties(),
+					state,
+					tags
+			);
+		}
+
+
+	}
 
 
 
