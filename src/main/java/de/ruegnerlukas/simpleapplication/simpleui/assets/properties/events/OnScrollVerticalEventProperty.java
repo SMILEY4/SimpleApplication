@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
@@ -64,7 +64,7 @@ public class OnScrollVerticalEventProperty extends AbstractEventListenerProperty
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventScrollVertical(final String propertyId, final SuiEventListener<ScrollEventData> listener) {
-			getFactoryInternalProperties().add(new OnScrollVerticalEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnScrollVerticalEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

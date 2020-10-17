@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
@@ -59,7 +59,7 @@ public class SizeMaxProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T sizeMax(final Number width, final Number height) {
-			getFactoryInternalProperties().add(new SizeMaxProperty(width, height));
+			getBuilderProperties().add(new SizeMaxProperty(width, height));
 			return (T) this;
 		}
 

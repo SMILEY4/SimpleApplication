@@ -9,7 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilde
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -92,7 +92,7 @@ public class ItemListProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T items(final NodeFactory... items) {
-			getFactoryInternalProperties().add(new ItemListProperty(items));
+			getBuilderProperties().add(new ItemListProperty(items));
 			return (T) this;
 		}
 
@@ -102,7 +102,7 @@ public class ItemListProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T items(final Collection<NodeFactory> items) {
-			getFactoryInternalProperties().add(new ItemListProperty(items));
+			getBuilderProperties().add(new ItemListProperty(items));
 			return (T) this;
 		}
 
@@ -112,7 +112,7 @@ public class ItemListProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T items(final Stream<NodeFactory> items) {
-			getFactoryInternalProperties().add(new ItemListProperty(items));
+			getBuilderProperties().add(new ItemListProperty(items));
 			return (T) this;
 		}
 
@@ -122,7 +122,7 @@ public class ItemListProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T items(final Supplier<List<NodeFactory>> supplier) {
-			getFactoryInternalProperties().add(new ItemListProperty(supplier));
+			getBuilderProperties().add(new ItemListProperty(supplier));
 			return (T) this;
 		}
 

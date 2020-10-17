@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -53,7 +53,7 @@ public class SpacingProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T spacing(final Number spacing) {
-			getFactoryInternalProperties().add(new SpacingProperty(spacing));
+			getBuilderProperties().add(new SpacingProperty(spacing));
 			return (T) this;
 		}
 

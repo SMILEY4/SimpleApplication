@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Control;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -99,7 +99,7 @@ public class TooltipProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T tooltip(final String tooltip) {
-			getFactoryInternalProperties().add(new TooltipProperty(tooltip));
+			getBuilderProperties().add(new TooltipProperty(tooltip));
 			return (T) this;
 		}
 
@@ -111,7 +111,7 @@ public class TooltipProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T tooltip(final String tooltip, final boolean wrapText, final Number prefWidth) {
-			getFactoryInternalProperties().add(new TooltipProperty(tooltip, wrapText, prefWidth));
+			getBuilderProperties().add(new TooltipProperty(tooltip, wrapText, prefWidth));
 			return (T) this;
 		}
 

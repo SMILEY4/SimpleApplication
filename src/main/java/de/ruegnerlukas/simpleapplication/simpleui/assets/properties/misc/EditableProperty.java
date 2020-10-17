@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextInputControl;
@@ -62,7 +62,7 @@ public class EditableProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T editable(final boolean editable) {
-			getFactoryInternalProperties().add(new EditableProperty(editable));
+			getBuilderProperties().add(new EditableProperty(editable));
 			return (T) this;
 		}
 

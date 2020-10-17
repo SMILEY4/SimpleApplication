@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.DatePicker;
 import lombok.Getter;
 
@@ -67,7 +67,7 @@ public class ChronologyProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T chronology(final Chronology chronology) {
-			getFactoryInternalProperties().add(new ChronologyProperty(chronology));
+			getBuilderProperties().add(new ChronologyProperty(chronology));
 			return (T) this;
 		}
 

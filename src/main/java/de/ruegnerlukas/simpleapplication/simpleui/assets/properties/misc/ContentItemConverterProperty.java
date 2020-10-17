@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.ChoiceBox;
 import javafx.util.StringConverter;
 import lombok.Getter;
@@ -83,7 +83,7 @@ public class ContentItemConverterProperty<T> extends SuiProperty {
 		 */
 		@SuppressWarnings ({"unchecked", "unused"})
 		default <E> T contentItemConverter(final String propertyId, final Class<E> type, final StringConverter<E> converter) {
-			getFactoryInternalProperties().add(new ContentItemConverterProperty<>(propertyId, converter));
+			getBuilderProperties().add(new ContentItemConverterProperty<>(propertyId, converter));
 			return (T) this;
 		}
 
@@ -99,7 +99,7 @@ public class ContentItemConverterProperty<T> extends SuiProperty {
 										   final Class<E> type,
 										   final ContentItemConverterProperty.FromStringConverter<E> fromString,
 										   final ContentItemConverterProperty.ToStringConverter<E> toString) {
-			getFactoryInternalProperties().add(new ContentItemConverterProperty<>(propertyId, fromString, toString));
+			getBuilderProperties().add(new ContentItemConverterProperty<>(propertyId, fromString, toString));
 			return (T) this;
 		}
 

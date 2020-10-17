@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import lombok.Getter;
@@ -73,7 +73,7 @@ public class MenuContentProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T menuBarContent(final List<SuiAbstractMenuItem> items) {
-			getFactoryInternalProperties().add(new MenuContentProperty(items));
+			getBuilderProperties().add(new MenuContentProperty(items));
 			return (T) this;
 		}
 

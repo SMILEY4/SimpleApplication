@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiConsumer;
@@ -58,7 +58,7 @@ public class OnSectionToggleEventProperty extends AbstractEventListenerProperty<
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventToggleSection(final String propertyId, final SuiEventListener<SectionEventData> listener) {
-			getFactoryInternalProperties().add(new OnSectionToggleEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnSectionToggleEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -185,7 +185,7 @@ public class TickMarkProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle) {
-			getFactoryInternalProperties().add(new TickMarkProperty(tickMarkStyle));
+			getBuilderProperties().add(new TickMarkProperty(tickMarkStyle));
 			return (T) this;
 		}
 
@@ -199,7 +199,7 @@ public class TickMarkProperty extends SuiProperty {
 		default T tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle,
 							final Number majorTickUnit,
 							final int minorTickCount) {
-			getFactoryInternalProperties().add(new TickMarkProperty(tickMarkStyle, majorTickUnit, minorTickCount));
+			getBuilderProperties().add(new TickMarkProperty(tickMarkStyle, majorTickUnit, minorTickCount));
 			return (T) this;
 		}
 
@@ -215,7 +215,7 @@ public class TickMarkProperty extends SuiProperty {
 							final Number majorTickUnit,
 							final int minorTickCount,
 							final boolean snapToTicks) {
-			getFactoryInternalProperties().add(new TickMarkProperty(tickMarkStyle, majorTickUnit, minorTickCount, snapToTicks));
+			getBuilderProperties().add(new TickMarkProperty(tickMarkStyle, majorTickUnit, minorTickCount, snapToTicks));
 			return (T) this;
 		}
 

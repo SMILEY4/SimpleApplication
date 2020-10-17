@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseButtonEvent
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -44,7 +44,7 @@ public class OnMousePressedEventProperty extends AbstractEventListenerProperty<M
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventMousePressed(final String propertyId, final SuiEventListener<MouseButtonEventData> listener) {
-			getFactoryInternalProperties().add(new OnMousePressedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnMousePressedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -49,7 +49,7 @@ public class CheckedProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T checked(final boolean checked) {
-			getFactoryInternalProperties().add(new CheckedProperty(checked));
+			getBuilderProperties().add(new CheckedProperty(checked));
 			return (T) this;
 		}
 

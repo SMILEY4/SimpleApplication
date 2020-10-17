@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DateSelectedEven
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.DatePicker;
 import lombok.Getter;
 
@@ -44,7 +44,7 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventSelectedDate(final String propertyId, final SuiEventListener<DateSelectedEventData> listener) {
-			getFactoryInternalProperties().add(new OnSelectedDateEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnSelectedDateEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

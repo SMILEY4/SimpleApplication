@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
@@ -50,7 +50,7 @@ public class TextContentProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T textContent(final String text) {
-			getFactoryInternalProperties().add(new TextContentProperty(text));
+			getBuilderProperties().add(new TextContentProperty(text));
 			return (T) this;
 		}
 

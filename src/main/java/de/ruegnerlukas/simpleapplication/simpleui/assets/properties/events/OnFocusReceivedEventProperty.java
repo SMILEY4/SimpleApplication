@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -59,7 +59,7 @@ public class OnFocusReceivedEventProperty extends AbstractEventListenerProperty<
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventFocusReceived(final String propertyId, final SuiEventListener<FocusEventData> listener) {
-			getFactoryInternalProperties().add(new OnFocusReceivedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnFocusReceivedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

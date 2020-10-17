@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -58,7 +58,7 @@ public class FitToWidthProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T fitToWidth(final boolean fitToWidth) {
-			getFactoryInternalProperties().add(new FitToWidthProperty(fitToWidth));
+			getBuilderProperties().add(new FitToWidthProperty(fitToWidth));
 			return (T) this;
 		}
 

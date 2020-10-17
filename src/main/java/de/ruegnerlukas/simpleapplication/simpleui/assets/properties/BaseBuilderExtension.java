@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Mutatio
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public interface BaseBuilderExtension<T extends FactoryExtension> extends Factor
 	@SuppressWarnings ("unchecked")
 	default T properties(final SuiProperty... properties) {
 		for (SuiProperty property : properties) {
-			getFactoryInternalProperties().add(property);
+			getBuilderProperties().add(property);
 		}
 		return (T) this;
 	}
@@ -38,7 +38,7 @@ public interface BaseBuilderExtension<T extends FactoryExtension> extends Factor
 	 */
 	@SuppressWarnings ("unchecked")
 	default T properties(final List<SuiProperty> properties) {
-		getFactoryInternalProperties().addAll(properties);
+		getBuilderProperties().addAll(properties);
 		return (T) this;
 	}
 

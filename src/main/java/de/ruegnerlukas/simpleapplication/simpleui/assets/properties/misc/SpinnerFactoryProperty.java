@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -189,7 +189,7 @@ public class SpinnerFactoryProperty extends SuiProperty {
 									   final int max,
 									   final int stepSize,
 									   final int value) {
-			getFactoryInternalProperties().add(new SpinnerFactoryProperty(min, max, stepSize, value));
+			getBuilderProperties().add(new SpinnerFactoryProperty(min, max, stepSize, value));
 			return (T) this;
 		}
 
@@ -205,7 +205,7 @@ public class SpinnerFactoryProperty extends SuiProperty {
 											 final double max,
 											 final double stepSize,
 											 final double value) {
-			getFactoryInternalProperties().add(new SpinnerFactoryProperty(min, max, stepSize, value));
+			getBuilderProperties().add(new SpinnerFactoryProperty(min, max, stepSize, value));
 			return (T) this;
 		}
 
@@ -217,7 +217,7 @@ public class SpinnerFactoryProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T listSpinnerValues(final List<String> items, final String initialValue, final boolean wrapAround) {
-			getFactoryInternalProperties().add(new SpinnerFactoryProperty(items, initialValue, wrapAround));
+			getBuilderProperties().add(new SpinnerFactoryProperty(items, initialValue, wrapAround));
 			return (T) this;
 		}
 

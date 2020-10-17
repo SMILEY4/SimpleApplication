@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +64,7 @@ public class MinMaxProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T minMax(final Number min, final Number max) {
-			getFactoryInternalProperties().add(new MinMaxProperty(min, max));
+			getBuilderProperties().add(new MinMaxProperty(min, max));
 			return (T) this;
 		}
 

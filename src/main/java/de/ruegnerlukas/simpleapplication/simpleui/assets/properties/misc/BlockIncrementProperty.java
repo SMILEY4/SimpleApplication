@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -52,7 +52,7 @@ public class BlockIncrementProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T blockIncrement(final Number increment) {
-			getFactoryInternalProperties().add(new BlockIncrementProperty(increment));
+			getBuilderProperties().add(new BlockIncrementProperty(increment));
 			return (T) this;
 		}
 

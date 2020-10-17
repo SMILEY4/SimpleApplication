@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -72,7 +72,7 @@ public class IconProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T icon(final Resource resource, final Number width, final Number gap) {
-			getFactoryInternalProperties().add(new IconProperty(resource, width, gap));
+			getBuilderProperties().add(new IconProperty(resource, width, gap));
 			return (T) this;
 		}
 

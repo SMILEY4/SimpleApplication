@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ItemSelectedEven
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.ListView;
 import lombok.Getter;
 
@@ -69,7 +69,7 @@ public class OnItemSelectedEventProperty<T> extends AbstractEventListenerPropert
 		 */
 		@SuppressWarnings ("unchecked")
 		default <E> T eventItemSelected(final String propertyId, final SuiEventListener<ItemSelectedEventData<E>> listener) {
-			getFactoryInternalProperties().add(new OnItemSelectedEventProperty<>(propertyId, listener));
+			getBuilderProperties().add(new OnItemSelectedEventProperty<>(propertyId, listener));
 			return (T) this;
 		}
 

@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.application.Platform;
 import javafx.scene.control.MenuBar;
 import lombok.Getter;
@@ -57,7 +57,7 @@ public class UseSystemMenuBarProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T useSystemMenuBar(final boolean useSystemMenuBar) {
-			getFactoryInternalProperties().add(new UseSystemMenuBarProperty(useSystemMenuBar));
+			getBuilderProperties().add(new UseSystemMenuBarProperty(useSystemMenuBar));
 			return (T) this;
 		}
 

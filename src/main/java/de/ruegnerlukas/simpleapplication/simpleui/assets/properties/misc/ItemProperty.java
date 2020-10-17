@@ -9,7 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilde
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
@@ -68,7 +68,7 @@ public class ItemProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T item(final NodeFactory item) {
-			getFactoryInternalProperties().add(new ItemProperty(item));
+			getBuilderProperties().add(new ItemProperty(item));
 			return (T) this;
 		}
 

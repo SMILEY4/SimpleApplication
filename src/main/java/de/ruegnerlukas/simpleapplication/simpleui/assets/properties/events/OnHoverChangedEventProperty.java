@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.HoverEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -55,7 +55,7 @@ public class OnHoverChangedEventProperty extends AbstractEventListenerProperty<H
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventHoverChanged(final String propertyId, final SuiEventListener<HoverEventData> listener) {
-			getFactoryInternalProperties().add(new OnHoverChangedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnHoverChangedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

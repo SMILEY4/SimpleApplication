@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.Label;
@@ -54,7 +54,7 @@ public class PromptTextProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T promptText(final String text) {
-			getFactoryInternalProperties().add(new PromptTextProperty(text));
+			getBuilderProperties().add(new PromptTextProperty(text));
 			return (T) this;
 		}
 

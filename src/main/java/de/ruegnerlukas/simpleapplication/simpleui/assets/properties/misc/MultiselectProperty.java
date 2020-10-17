@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import lombok.Getter;
@@ -58,7 +58,7 @@ public class MultiselectProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T multiselect(final boolean multiselect) {
-			getFactoryInternalProperties().add(new MultiselectProperty(multiselect));
+			getBuilderProperties().add(new MultiselectProperty(multiselect));
 			return (T) this;
 		}
 

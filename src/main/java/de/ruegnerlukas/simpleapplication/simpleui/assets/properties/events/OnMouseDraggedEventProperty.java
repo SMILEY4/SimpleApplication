@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseDragEventDa
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -42,7 +42,7 @@ public class OnMouseDraggedEventProperty extends AbstractEventListenerProperty<M
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventMouseDragged(final String propertyId, final SuiEventListener<MouseDragEventData> listener) {
-			getFactoryInternalProperties().add(new OnMouseDraggedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnMouseDraggedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

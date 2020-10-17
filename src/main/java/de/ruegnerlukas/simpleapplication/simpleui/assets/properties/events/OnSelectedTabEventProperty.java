@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventDa
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Tab;
 import lombok.Getter;
 
@@ -58,7 +58,7 @@ public class OnSelectedTabEventProperty extends AbstractEventListenerProperty<Ta
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventSelectedTab(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
-			getFactoryInternalProperties().add(new OnSelectedTabEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnSelectedTabEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

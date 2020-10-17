@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import lombok.Getter;
@@ -52,7 +52,7 @@ public class TitleProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T title(final String title) {
-			getFactoryInternalProperties().add(new TitleProperty(title));
+			getBuilderProperties().add(new TitleProperty(title));
 			return (T) this;
 		}
 

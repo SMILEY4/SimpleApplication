@@ -1,9 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnScrollHorizontalEventProperty;
@@ -15,13 +13,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScr
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.BuilderExtensionContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.RegionBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.ScrollPane;
@@ -43,6 +39,11 @@ public final class SuiScrollPane {
 
 
 
+	/**
+	 * Build a new element
+	 *
+	 * @return the builder for the element
+	 */
 	public static SuiScrollPaneBuilder create() {
 		return new SuiScrollPaneBuilder();
 	}
@@ -65,9 +66,8 @@ public final class SuiScrollPane {
 
 		@Override
 		public SuiNode create(final SuiState state, final Tags tags) {
-			return SuiNode.create(
+			return create(
 					SuiScrollPane.class,
-					getFactoryInternalProperties(),
 					state,
 					tags,
 					SuiNodeChildListener.DEFAULT,
@@ -76,29 +76,6 @@ public final class SuiScrollPane {
 		}
 
 
-	}
-
-
-
-
-	/**
-	 * Creates a new scroll-pane node
-	 *
-	 * @param properties the properties
-	 * @return the factory for an scroll-pane node
-	 */
-	public static NodeFactory scrollPane(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiScrollPane.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiScrollPane.class,
-				List.of(properties),
-				state,
-				tags,
-				SuiNodeChildListener.DEFAULT,
-				SuiNodeChildTransformListener.NO_OP
-		);
 	}
 
 

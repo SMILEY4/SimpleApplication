@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
@@ -79,7 +79,7 @@ public class ImageSizeProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T imageSize(final ImageSizeProperty.ImageDimension width, final ImageSizeProperty.ImageDimension height) {
-			getFactoryInternalProperties().add(new ImageSizeProperty(width, height));
+			getBuilderProperties().add(new ImageSizeProperty(width, height));
 			return (T) this;
 		}
 

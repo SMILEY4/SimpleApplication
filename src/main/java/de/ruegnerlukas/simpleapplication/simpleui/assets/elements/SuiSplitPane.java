@@ -1,9 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSplitPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnDividerDraggedEventProperty;
@@ -16,13 +14,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBu
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.RemoveOperation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.BuilderExtensionContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.RegionBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.Node;
@@ -46,6 +42,11 @@ public final class SuiSplitPane {
 
 
 
+	/**
+	 * Build a new element
+	 *
+	 * @return the builder for the element
+	 */
 	public static SuiSplitPaneBuilder create() {
 		return new SuiSplitPaneBuilder();
 	}
@@ -67,9 +68,8 @@ public final class SuiSplitPane {
 
 		@Override
 		public SuiNode create(final SuiState state, final Tags tags) {
-			return SuiNode.create(
+			return create(
 					SuiSplitPane.class,
-					getFactoryInternalProperties(),
 					state,
 					tags,
 					SuiSplitPane.CHILD_LISTENER,
@@ -81,27 +81,6 @@ public final class SuiSplitPane {
 	}
 
 
-
-
-	/**
-	 * Creates a new split pane
-	 *
-	 * @param properties the properties
-	 * @return the factory for a split pane
-	 */
-	public static NodeFactory splitPane(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiSplitPane.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiSplitPane.class,
-				List.of(properties),
-				state,
-				tags,
-				CHILD_LISTENER,
-				CHILD_TRANSFORM_LISTENER
-		);
-	}
 
 
 

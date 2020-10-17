@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -59,7 +59,7 @@ public class OnFocusLostEventProperty extends AbstractEventListenerProperty<Focu
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventFocusLost(final String propertyId, final SuiEventListener<FocusEventData> listener) {
-			getFactoryInternalProperties().add(new OnFocusLostEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnFocusLostEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
@@ -56,7 +56,7 @@ public class WrapTextProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T wrapText(final boolean wrapText) {
-			getFactoryInternalProperties().add(new WrapTextProperty(wrapText));
+			getBuilderProperties().add(new WrapTextProperty(wrapText));
 			return (T) this;
 		}
 

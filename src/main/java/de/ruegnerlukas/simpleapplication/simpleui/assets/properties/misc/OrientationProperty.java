@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
@@ -55,7 +55,7 @@ public class OrientationProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T orientation(final Orientation orientation) {
-			getFactoryInternalProperties().add(new OrientationProperty(orientation));
+			getBuilderProperties().add(new OrientationProperty(orientation));
 			return (T) this;
 		}
 

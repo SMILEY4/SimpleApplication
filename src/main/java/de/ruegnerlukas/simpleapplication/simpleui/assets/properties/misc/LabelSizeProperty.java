@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -70,7 +70,7 @@ public class LabelSizeProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T labelSize(final Number size) {
-			getFactoryInternalProperties().add(new LabelSizeProperty(size, size, size));
+			getBuilderProperties().add(new LabelSizeProperty(size, size, size));
 			return (T) this;
 		}
 
@@ -82,7 +82,7 @@ public class LabelSizeProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T labelSize(final Number minSize, final Number prefSize, final Number maxSize) {
-			getFactoryInternalProperties().add(new LabelSizeProperty(minSize, prefSize, maxSize));
+			getBuilderProperties().add(new LabelSizeProperty(minSize, prefSize, maxSize));
 			return (T) this;
 		}
 

@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
@@ -58,7 +58,7 @@ public class ShowScrollbarsProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T showScrollbars(final ScrollPane.ScrollBarPolicy horizontal, final ScrollPane.ScrollBarPolicy vertical) {
-			getFactoryInternalProperties().add(new ShowScrollbarsProperty(horizontal, vertical));
+			getBuilderProperties().add(new ShowScrollbarsProperty(horizontal, vertical));
 			return (T) this;
 		}
 

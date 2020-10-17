@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -50,7 +50,7 @@ public class ExpandedSectionProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T expandedSection(final String title) {
-			getFactoryInternalProperties().add(new ExpandedSectionProperty(title));
+			getBuilderProperties().add(new ExpandedSectionProperty(title));
 			return (T) this;
 		}
 

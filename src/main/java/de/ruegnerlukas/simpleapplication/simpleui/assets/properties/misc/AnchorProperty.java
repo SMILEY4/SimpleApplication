@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
@@ -79,7 +79,7 @@ public class AnchorProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T alignment(final Number top, final Number bottom, final Number left, final Number right) {
-			getFactoryInternalProperties().add(new AnchorProperty(top, bottom, left, right));
+			getBuilderProperties().add(new AnchorProperty(top, bottom, left, right));
 			return (T) this;
 		}
 

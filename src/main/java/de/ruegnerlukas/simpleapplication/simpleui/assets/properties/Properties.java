@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 public final class Properties {
@@ -36,7 +35,7 @@ public final class Properties {
 	 * @param nodeType   the type of the node
 	 * @param properties the given properties to check
 	 */
-	public static void validate(final Class<?> nodeType, final SuiProperty... properties) {
+	public static void validate(final Class<?> nodeType, final List<SuiProperty> properties) {
 		validate(nodeType, SuiRegistry.get().getEntry(nodeType).getProperties(), properties);
 	}
 
@@ -51,8 +50,9 @@ public final class Properties {
 	 * @param allowedProperties the list of allowed properties
 	 * @param properties        the given properties to check
 	 */
-	public static void validate(final Class<?> nodeType, final Set<Class<? extends SuiProperty>> allowedProperties,
-								final SuiProperty... properties) {
+	public static void validate(final Class<?> nodeType,
+								final Set<Class<? extends SuiProperty>> allowedProperties,
+								final List<SuiProperty> properties) {
 		final List<Class<? extends SuiProperty>> propKeyList = propertiesAsKeyList(properties);
 		final Set<Class<? extends SuiProperty>> propKeySet = new HashSet<>(propKeyList);
 		checkIllegal(nodeType, allowedProperties, propKeySet);
@@ -67,8 +67,8 @@ public final class Properties {
 	 * @param properties the properties
 	 * @return a list of keys of all the given properties.
 	 */
-	private static List<Class<? extends SuiProperty>> propertiesAsKeyList(final SuiProperty... properties) {
-		return Stream.of(properties)
+	private static List<Class<? extends SuiProperty>> propertiesAsKeyList(final List<SuiProperty> properties) {
+		return properties.stream()
 				.map(SuiProperty::getKey)
 				.collect(Collectors.toList());
 	}

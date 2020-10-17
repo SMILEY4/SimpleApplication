@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.KeyEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -44,7 +44,7 @@ public class OnKeyPressedEventProperty extends AbstractEventListenerProperty<Key
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventKeyPressed(final String propertyId, final SuiEventListener<KeyEventData> listener) {
-			getFactoryInternalProperties().add(new OnKeyPressedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnKeyPressedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

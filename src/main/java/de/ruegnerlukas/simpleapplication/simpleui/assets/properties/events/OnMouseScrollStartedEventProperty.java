@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseScrollEvent
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -44,7 +44,7 @@ public class OnMouseScrollStartedEventProperty extends AbstractEventListenerProp
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventMouseScrollStarted(final String propertyId, final SuiEventListener<MouseScrollEventData> listener) {
-			getFactoryInternalProperties().add(new OnMouseScrollStartedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnMouseScrollStartedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

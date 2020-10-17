@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions;
+package de.ruegnerlukas.simpleapplication.simpleui.core.node.builders;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;

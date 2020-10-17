@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.List;
@@ -82,7 +82,7 @@ public class ContentItemsProperty<T> extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T contentItems(final List<T> choices, final T selectedChoice) {
-			getFactoryInternalProperties().add(new ContentItemsProperty<>(choices, selectedChoice));
+			getBuilderProperties().add(new ContentItemsProperty<>(choices, selectedChoice));
 			return (T) this;
 		}
 
@@ -102,7 +102,7 @@ public class ContentItemsProperty<T> extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T contentItems(final List<T> choices) {
-			getFactoryInternalProperties().add(new ContentItemsProperty<>(choices));
+			getBuilderProperties().add(new ContentItemsProperty<>(choices));
 			return (T) this;
 		}
 

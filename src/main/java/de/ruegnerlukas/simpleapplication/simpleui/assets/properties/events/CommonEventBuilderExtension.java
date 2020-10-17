@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 
 public interface CommonEventBuilderExtension<T extends FactoryExtension> extends FactoryExtension,
 		OnKeyPressedEventProperty.PropertyBuilderExtension<T>,

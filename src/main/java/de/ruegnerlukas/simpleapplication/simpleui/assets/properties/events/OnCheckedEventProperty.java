@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.Consumer;
@@ -57,7 +57,7 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 		 */
 		@SuppressWarnings ("unchecked")
 		default T onChecked(final String propertyId, final SuiEventListener<CheckedEventData> listener) {
-			getFactoryInternalProperties().add(new OnCheckedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnCheckedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

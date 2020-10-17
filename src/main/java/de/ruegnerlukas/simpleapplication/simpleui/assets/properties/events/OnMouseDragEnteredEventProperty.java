@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseDragEventDa
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -44,7 +44,7 @@ public class OnMouseDragEnteredEventProperty extends AbstractEventListenerProper
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventMouseDragEntered(final String propertyId, final SuiEventListener<MouseDragEventData> listener) {
-			getFactoryInternalProperties().add(new OnMouseDragEnteredEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnMouseDragEnteredEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

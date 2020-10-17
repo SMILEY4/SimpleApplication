@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEvent
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -66,7 +66,7 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventTextEntered(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
-			getFactoryInternalProperties().add(new OnTextEnteredEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnTextEnteredEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseMoveEventDa
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -44,7 +44,7 @@ public class OnMouseMovedEventProperty extends AbstractEventListenerProperty<Mou
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventMouseMoved(final String propertyId, final SuiEventListener<MouseMoveEventData> listener) {
-			getFactoryInternalProperties().add(new OnMouseMovedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnMouseMovedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

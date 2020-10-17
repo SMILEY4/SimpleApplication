@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEven
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -82,7 +82,7 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 		 */
 		@SuppressWarnings ("unchecked")
 		default <E> T eventValueChanged(final String propertyId, final SuiEventListener<ValueChangedEventData<E>> listener) {
-			getFactoryInternalProperties().add(new OnValueChangedEventProperty<>(propertyId, listener));
+			getBuilderProperties().add(new OnValueChangedEventProperty<>(propertyId, listener));
 			return (T) this;
 		}
 

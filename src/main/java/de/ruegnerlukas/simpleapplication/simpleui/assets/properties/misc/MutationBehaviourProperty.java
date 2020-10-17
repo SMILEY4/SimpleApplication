@@ -4,7 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.List;
@@ -149,7 +149,7 @@ public class MutationBehaviourProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T mutationBehaviour(final MutationBehaviour behaviour) {
-			getFactoryInternalProperties().add(new MutationBehaviourProperty(behaviour));
+			getBuilderProperties().add(new MutationBehaviourProperty(behaviour));
 			return (T) this;
 		}
 
@@ -162,7 +162,7 @@ public class MutationBehaviourProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T mutationBehaviour(final MutationBehaviour behaviour, final TagConditionExpression condition) {
-			getFactoryInternalProperties().add(new MutationBehaviourProperty(behaviour, condition));
+			getBuilderProperties().add(new MutationBehaviourProperty(behaviour, condition));
 			return (T) this;
 		}
 

@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -57,7 +57,7 @@ public class DisabledProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T disabled(final boolean disabled) {
-			getFactoryInternalProperties().add(new DisabledProperty(disabled));
+			getBuilderProperties().add(new DisabledProperty(disabled));
 			return (T) this;
 		}
 

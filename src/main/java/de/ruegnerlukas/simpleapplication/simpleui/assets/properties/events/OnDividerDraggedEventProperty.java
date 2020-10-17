@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DividerDraggedEv
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiConsumer;
@@ -60,7 +60,7 @@ public class OnDividerDraggedEventProperty extends AbstractEventListenerProperty
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventDividerDragged(final String propertyId, final SuiEventListener<DividerDraggedEventData> listener) {
-			getFactoryInternalProperties().add(new OnDividerDraggedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnDividerDraggedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

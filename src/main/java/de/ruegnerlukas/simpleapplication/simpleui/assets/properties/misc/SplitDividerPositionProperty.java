@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.application.Platform;
 import javafx.scene.control.SplitPane;
 import lombok.Getter;
@@ -121,7 +121,7 @@ public class SplitDividerPositionProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T dividerPositions(final boolean fixed, final Number... positions) {
-			getFactoryInternalProperties().add(new SplitDividerPositionProperty(fixed, positions));
+			getBuilderProperties().add(new SplitDividerPositionProperty(fixed, positions));
 			return (T) this;
 		}
 
@@ -132,7 +132,7 @@ public class SplitDividerPositionProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T dividerPositions(final boolean fixed, final List<Number> positions) {
-			getFactoryInternalProperties().add(new SplitDividerPositionProperty(fixed, positions));
+			getBuilderProperties().add(new SplitDividerPositionProperty(fixed, positions));
 			return (T) this;
 		}
 

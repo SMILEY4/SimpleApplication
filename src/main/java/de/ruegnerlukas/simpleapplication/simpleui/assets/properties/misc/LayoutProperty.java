@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -52,7 +52,7 @@ public class LayoutProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T layout(final String propertyId, final ExtendedPane.LayoutFunction layoutFunction) {
-			getFactoryInternalProperties().add(new LayoutProperty(propertyId, layoutFunction));
+			getBuilderProperties().add(new LayoutProperty(propertyId, layoutFunction));
 			return (T) this;
 		}
 

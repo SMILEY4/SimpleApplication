@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventDa
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Tab;
 import lombok.Getter;
 
@@ -60,7 +60,7 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 		 */
 		@SuppressWarnings ("unchecked")
 		default T eventClosedTab(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
-			getFactoryInternalProperties().add(new OnTabClosedEventProperty(propertyId, listener));
+			getBuilderProperties().add(new OnTabClosedEventProperty(propertyId, listener));
 			return (T) this;
 		}
 

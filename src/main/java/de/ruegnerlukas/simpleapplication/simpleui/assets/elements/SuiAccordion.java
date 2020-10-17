@@ -1,9 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSectionToggleEventProperty;
@@ -14,12 +12,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemPro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.BuilderExtensionContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.RegionBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
@@ -40,6 +36,11 @@ public final class SuiAccordion {
 
 
 
+	/**
+	 * Build a new element
+	 *
+	 * @return the builder for the element
+	 */
 	public static SuiAccordionBuilder create() {
 		return new SuiAccordionBuilder();
 	}
@@ -61,9 +62,8 @@ public final class SuiAccordion {
 
 		@Override
 		public SuiNode create(final SuiState state, final Tags tags) {
-			return SuiNode.create(
+			return create(
 					SuiAccordion.class,
-					getFactoryInternalProperties(),
 					state,
 					tags,
 					SuiAccordion.CHILD_LISTENER,
@@ -75,27 +75,6 @@ public final class SuiAccordion {
 	}
 
 
-
-
-	/**
-	 * Creates a new accordion
-	 *
-	 * @param properties the properties
-	 * @return the factory for a accordion
-	 */
-	public static NodeFactory accordion(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiAccordion.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiAccordion.class,
-				List.of(properties),
-				state,
-				tags,
-				CHILD_LISTENER,
-				null
-		);
-	}
 
 
 
