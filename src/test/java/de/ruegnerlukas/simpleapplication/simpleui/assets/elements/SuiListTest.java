@@ -1,8 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ItemSelectedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Label;
@@ -24,16 +23,15 @@ public class SuiListTest extends SuiElementTest {
 	public void test_create_list() {
 
 		@SuppressWarnings ("unchecked") final ListView<TestItem> list = (ListView<TestItem>) new SuiSceneController(
-				SuiList.list(
-						PropertyValidation.contentItems(List.of(
+				SuiElements.list()
+						.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
 								new TestItem("C", 3),
 								new TestItem("D", 4)
-						)),
-						PropertyValidation.promptText("List is empty."),
-						PropertyValidation.multiselect()
-				)
+						))
+						.promptText("List is empty.")
+						.multiselect()
 		).getRootFxNode();
 
 		assertThat(((Label) list.getPlaceholder()).getText()).isEqualTo("List is empty.");
@@ -64,9 +62,7 @@ public class SuiListTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
 				TestState.class,
-				state -> SuiList.list(
-						PropertyValidation.contentItems(state.items)
-				)
+				state -> SuiElements.list().contentItems(state.items)
 		);
 
 		final ListView<TestItem> listView = (ListView<TestItem>) controller.getRootFxNode();
@@ -141,11 +137,9 @@ public class SuiListTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
 				TestState.class,
-				state -> SuiList.list(
-						PropertyValidation.contentItems(state.items),
-						EventProperties.eventItemsSelected(".", TestItem.class, capturedEvents::add)
-
-				)
+				state -> SuiElements.list()
+						.contentItems(state.items)
+						.eventItemSelected(".", TestItem.class, capturedEvents::add)
 		);
 
 		final ListView<TestItem> listView = (ListView<TestItem>) controller.getRootFxNode();

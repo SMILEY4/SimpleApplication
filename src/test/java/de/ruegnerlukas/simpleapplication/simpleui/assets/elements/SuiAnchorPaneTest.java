@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -15,24 +15,22 @@ public class SuiAnchorPaneTest extends SuiElementTest {
 	public void test_anchor_pane() {
 
 		final AnchorPane anchorPane = (AnchorPane) new SuiSceneController(
-				SuiAnchorPane.anchorPane(
-						PropertyValidation.items(
-								SuiButton.button(
-										PropertyValidation.id("btn-fit"),
-										PropertyValidation.textContent("Button Fit"),
-										PropertyValidation.anchorFitParent()
-								),
-								SuiButton.button(
-										PropertyValidation.id("btn-anchored"),
-										PropertyValidation.textContent("Button Anchored"),
-										PropertyValidation.anchor(10, 20, null, null)
-								),
-								SuiButton.button(
-										PropertyValidation.id("btn-missing"),
-										PropertyValidation.textContent("Button Missing")
-								)
+				SuiElements.anchorPane()
+						.items(
+								SuiElements.button()
+										.id("btn-fit")
+										.textContent("Button Fit")
+										.anchorsFitParent(),
+								SuiElements.button()
+										.id("btn-anchored")
+										.textContent("Button Anchored")
+										.anchors(10, 20, null, null),
+								SuiElements.button()
+										.id("btn-missing")
+										.textContent("Button Missing")
+
 						)
-				)).getRootFxNode();
+		).getRootFxNode();
 
 
 		assertThat(anchorPane.getChildren()).hasSize(3);
@@ -47,7 +45,6 @@ public class SuiAnchorPaneTest extends SuiElementTest {
 		assertAnchors(btnMissing, null, null, null, null);
 
 	}
-
 
 
 }

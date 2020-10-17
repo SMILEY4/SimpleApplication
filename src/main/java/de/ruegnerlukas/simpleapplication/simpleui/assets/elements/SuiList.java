@@ -51,7 +51,7 @@ public final class SuiList {
 			BaseBuilderExtension<SuiListBuilder>,
 			RegionBuilderExtension<SuiListBuilder>,
 			CommonEventBuilderExtension<SuiListBuilder>,
-			ContentItemsProperty.PropertyBuilderExtensionWithSelected<SuiListBuilder>,
+			ContentItemsProperty.PropertyBuilderExtensionNoSelected<SuiListBuilder>,
 			TooltipProperty.PropertyBuilderExtension<SuiListBuilder>,
 			PromptTextProperty.PropertyBuilderExtension<SuiListBuilder>,
 			MultiselectProperty.PropertyBuilderExtension<SuiListBuilder>,

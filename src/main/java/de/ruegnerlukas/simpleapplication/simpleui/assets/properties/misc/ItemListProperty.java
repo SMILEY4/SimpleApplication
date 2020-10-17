@@ -90,7 +90,8 @@ public class ItemListProperty extends SuiProperty {
 
 
 
-	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+	public interface PropertyBuilderExtension<T extends FactoryExtension>
+			extends FactoryExtension, InjectableItemListProperty.PropertyBuilderExtension<T> {
 
 
 		/**

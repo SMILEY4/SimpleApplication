@@ -1,9 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Button;
@@ -28,31 +27,25 @@ public class SuiTabPaneTest extends SuiElementTest {
 		}
 
 		final TabPane tabPane = (TabPane) new SuiSceneController(
-				SuiTabPane.tabPane(
-						PropertyValidation.items(
-								SuiButton.button(
-										PropertyValidation.id("item-0"),
-										PropertyValidation.textContent("Button 0"),
-										PropertyValidation.title("Tab 0")
-								),
-								SuiButton.button(
-										PropertyValidation.id("item-1"),
-										PropertyValidation.textContent("Button 1"),
-										PropertyValidation.title("Tab 1")
-								),
-								SuiButton.button(
-										PropertyValidation.id("item-2"),
-										PropertyValidation.textContent("Button 2"),
-										PropertyValidation.title("Tab 2")
-								),
-								SuiButton.button(
-										PropertyValidation.id("item-3"),
-										PropertyValidation.textContent("Button 3"),
-										PropertyValidation.title("Tab 3")
-								)
-						)
-				)
-		).getRootFxNode();
+				SuiElements.tabPane()
+						.items(
+								SuiElements.button()
+										.id("item-0")
+										.textContent("Button 0")
+										.title("Tab 0"),
+								SuiElements.button()
+										.id("item-1")
+										.textContent("Button 1")
+										.title("Tab 1"),
+								SuiElements.button()
+										.id("item-2")
+										.textContent("Button 2")
+										.title("Tab 2"),
+								SuiElements.button()
+										.id("item-3")
+										.textContent("Button 3")
+										.title("Tab 3")
+						)).getRootFxNode();
 
 		assertThat(tabPane.getTabs()).hasSize(4);
 
@@ -91,32 +84,27 @@ public class SuiTabPaneTest extends SuiElementTest {
 		final List<TabActionEventData> collectedSelectEvents = new ArrayList<>();
 
 		final SuiSceneController controller = new SuiSceneController(
-				SuiTabPane.tabPane(
-						EventProperties.eventClosedTab(".", collectedCloseEvents::add),
-						EventProperties.eventSelectedTab(".", collectedSelectEvents::add),
-						PropertyValidation.items(
-								SuiButton.button(
-										PropertyValidation.id("item-0"),
-										PropertyValidation.textContent("Button 0"),
-										PropertyValidation.title("Tab 0")
-								),
-								SuiButton.button(
-										PropertyValidation.id("item-1"),
-										PropertyValidation.textContent("Button 1"),
-										PropertyValidation.title("Tab 1")
-								),
-								SuiButton.button(
-										PropertyValidation.id("item-2"),
-										PropertyValidation.textContent("Button 2"),
-										PropertyValidation.title("Tab 2")
-								),
-								SuiButton.button(
-										PropertyValidation.id("item-3"),
-										PropertyValidation.textContent("Button 3"),
-										PropertyValidation.title("Tab 3")
-								)
+				SuiElements.tabPane()
+						.eventClosedTab(".", collectedCloseEvents::add)
+						.eventSelectedTab(".", collectedSelectEvents::add)
+						.items(
+								SuiElements.button()
+										.id("item-0")
+										.textContent("Button 0")
+										.title("Tab 0"),
+								SuiElements.button()
+										.id("item-1")
+										.textContent("Button 1")
+										.title("Tab 1"),
+								SuiElements.button()
+										.id("item-2")
+										.textContent("Button 2")
+										.title("Tab 2"),
+								SuiElements.button()
+										.id("item-3")
+										.textContent("Button 3")
+										.title("Tab 3")
 						)
-				)
 		);
 
 		final TabPane tabPane = (TabPane) controller.getRootFxNode();
@@ -170,19 +158,18 @@ public class SuiTabPaneTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
 				TestState.class,
-				state -> SuiTabPane.tabPane(
-						PropertyValidation.tabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS),
-						EventProperties.eventClosedTab(".", collectedCloseEvents::add),
-						EventProperties.eventSelectedTab(".", collectedSelectEvents::add),
-						PropertyValidation.items(
+				state -> SuiElements.tabPane()
+						.tabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS)
+						.eventClosedTab(".", collectedCloseEvents::add)
+						.eventSelectedTab(".", collectedSelectEvents::add)
+						.items(
 								() -> state.tabs.stream().map(
-										value -> SuiButton.button(
-												PropertyValidation.id("item-" + value),
-												PropertyValidation.textContent("Button " + value),
-												PropertyValidation.title("Tab " + value)
-										)).collect(Collectors.toList())
+										value -> SuiElements.button()
+												.id("item-" + value)
+												.textContent("Button " + value)
+												.title("Tab " + value)
+								).collect(Collectors.toList())
 						)
-				)
 		);
 
 		final TabPane tabPane = (TabPane) controller.getRootFxNode();

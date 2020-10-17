@@ -67,7 +67,7 @@ public class ContentItemsProperty<T> extends SuiProperty {
 	public ContentItemsProperty(final List<T> choices, final T selectedChoice) {
 		super(ContentItemsProperty.class, COMPARATOR);
 		Validations.INPUT.notNull(choices).exception("The choice-list may not be null");
-		this.choices = choices;
+		this.choices = List.copyOf(choices);
 		this.selectedChoice = selectedChoice;
 	}
 
@@ -83,7 +83,7 @@ public class ContentItemsProperty<T> extends SuiProperty {
 		 * @return the builder for chaining
 		 */
 		@SuppressWarnings ("unchecked")
-		default T contentItems(final List<T> choices, final T selectedChoice) {
+		default <E> T contentItems(final List<E> choices, final E selectedChoice) {
 			getBuilderProperties().add(new ContentItemsProperty<>(choices, selectedChoice));
 			return (T) this;
 		}
@@ -103,7 +103,7 @@ public class ContentItemsProperty<T> extends SuiProperty {
 		 * @return the builder for chaining
 		 */
 		@SuppressWarnings ("unchecked")
-		default T contentItems(final List<T> choices) {
+		default <E> T contentItems(final List<E> choices) {
 			getBuilderProperties().add(new ContentItemsProperty<>(choices));
 			return (T) this;
 		}

@@ -22,7 +22,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
-import org.junit.After;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.time.LocalDate;
@@ -46,19 +45,8 @@ public class SuiElementTest extends ApplicationTest {
 	public void start(Stage stage) {
 		SuiRegistry.initialize();
 		this.stage = stage;
+		this.stage.setAlwaysOnTop(true);
 		this.stage.show();
-	}
-
-
-
-
-	@After
-	public void cleanup() {
-		syncJfxThread(() -> {
-			getStage().setScene(null);
-			getStage().hide();
-		});
-		delay(100);
 	}
 
 
@@ -67,7 +55,6 @@ public class SuiElementTest extends ApplicationTest {
 	public void show(final Parent node) {
 		syncJfxThread(() -> {
 			getStage().setScene(new Scene(node));
-			getStage().setAlwaysOnTop(true);
 			getStage().show();
 			getStage().sizeToScene();
 		});

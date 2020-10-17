@@ -59,7 +59,8 @@ public class ItemProperty extends SuiProperty {
 
 
 
-	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+	public interface PropertyBuilderExtension<T extends FactoryExtension>
+			extends FactoryExtension, InjectableItemProperty.PropertyBuilderExtension<T> {
 
 
 		/**

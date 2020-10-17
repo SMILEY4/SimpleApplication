@@ -71,6 +71,13 @@ public class AnchorProperty extends SuiProperty {
 
 
 		/**
+		 * @return this builder for chaining
+		 */
+		default T anchorsFitParent() {
+			return anchors(0, 0, 0, 0);
+		}
+
+		/**
 		 * @param top    the value for the top anchor or null.
 		 * @param bottom the value for the bottom anchor or null.
 		 * @param left   the value for the left anchor or null.
@@ -78,7 +85,7 @@ public class AnchorProperty extends SuiProperty {
 		 * @return this builder for chaining
 		 */
 		@SuppressWarnings ("unchecked")
-		default T alignment(final Number top, final Number bottom, final Number left, final Number right) {
+		default T anchors(final Number top, final Number bottom, final Number left, final Number right) {
 			getBuilderProperties().add(new AnchorProperty(top, bottom, left, right));
 			return (T) this;
 		}

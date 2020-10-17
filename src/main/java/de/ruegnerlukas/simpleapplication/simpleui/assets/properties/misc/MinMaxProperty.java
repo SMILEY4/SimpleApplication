@@ -50,6 +50,8 @@ public class MinMaxProperty extends SuiProperty {
 		super(MinMaxProperty.class, COMPARATOR);
 		Validations.INPUT.notNull(min).exception("The min value may not be null.");
 		Validations.INPUT.notNull(max).exception("The max value may not be null.");
+		Validations.INPUT.isLessThan(min.doubleValue(), max.doubleValue())
+				.exception("The min value must be smaller than the max value.");
 		this.min = min;
 		this.max = max;
 	}
@@ -67,7 +69,9 @@ public class MinMaxProperty extends SuiProperty {
 		 */
 		@SuppressWarnings ("unchecked")
 		default T minMax(final Number min, final Number max) {
-			getBuilderProperties().add(new MinMaxProperty(min, max));
+			getBuilderProperties().add(new MinMaxProperty(
+					min == null ? Integer.MIN_VALUE : min,
+					max == null ? Integer.MAX_VALUE : max));
 			return (T) this;
 		}
 

@@ -1,9 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.ComboBox;
@@ -29,20 +28,21 @@ public class SuiComboBoxTest extends SuiElementTest {
 		}
 
 		@SuppressWarnings ("unchecked") final ComboBox<TestItem> combobox = (ComboBox<TestItem>) new SuiSceneController(
-				SuiComboBox.comboBox(
-						PropertyValidation.contentItems(List.of(
-								new TestItem("A", 1),
-								new TestItem("B", 2),
-								new TestItem("C", 3)),
+				SuiElements.comboBox()
+						.contentItems(
+								List.of(
+										new TestItem("A", 1),
+										new TestItem("B", 2),
+										new TestItem("C", 3)
+								),
 								new TestItem("B", 2)
-						),
-						PropertyValidation.contentItemConverter(".", TestItem.class,
+						)
+						.contentItemConverter(".", TestItem.class,
 								str -> new TestItem(str.split(":")[0].trim(), Integer.parseInt(str.split(":")[1].trim())),
 								item -> item != null ? (item.name + ": " + item.number) : "null"
-						),
-						PropertyValidation.promptText("Test Prompt-Text"),
-						PropertyValidation.editable()
-				)
+						)
+						.promptText("Test Prompt-Text")
+						.editable()
 		).getRootFxNode();
 
 		show(combobox);
@@ -67,49 +67,6 @@ public class SuiComboBoxTest extends SuiElementTest {
 		assertThat(combobox.converterProperty().get().toString(new TestItem("X", -1))).isEqualTo("X: -1");
 
 	}
-
-
-//	@Test
-//	public void testtest() {
-//		if(shouldSkipFxTest()) {
-//			return;
-//		}
-//
-//		// setup
-//		class TestState extends SuiState {
-//
-//
-//			private List<String> items = new ArrayList<>(List.of(
-//					"A",
-//					"B",
-//					"C"
-//			));
-//
-//		}
-//
-//		final TestState testState = new TestState();
-//		final List<ValueChangedEventData<TestItem>> collectedEvents = new ArrayList<>();
-//
-//		final SuiSceneController controller = new SuiSceneController(
-//				testState,
-//				TestState.class,
-//				state -> SuiComboBox.comboBox(
-//						Properties.maxSize(100, 40),
-//						Properties.contentItems(state.items, null),
-//						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
-//				)
-//		);
-//
-//		@SuppressWarnings ("unchecked") final ComboBox<TestItem> comboBox = (ComboBox<TestItem>) controller.getRootFxNode();
-//		show(comboBox);
-//
-//		// select a new item -> item selected + event
-//		syncJfxThread(200, () -> this.clickOn(comboBox, MouseButton.PRIMARY));
-//
-//		syncJfxThread(200, () -> this.clickOn("B"));
-//		assertThat(comboBox.getValue()).isEqualTo("B");
-//
-//	}
 
 
 
@@ -138,11 +95,10 @@ public class SuiComboBoxTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
 				TestState.class,
-				state -> SuiComboBox.comboBox(
-						PropertyValidation.maxSize(100, 40),
-						PropertyValidation.contentItems(state.items, null),
-						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
-				)
+				state -> SuiElements.comboBox()
+						.sizeMax(100, 40)
+						.contentItems(state.items, null)
+						.eventValueChanged(".", TestItem.class, collectedEvents::add)
 		);
 
 		@SuppressWarnings ("unchecked") final ComboBox<TestItem> comboBox = (ComboBox<TestItem>) controller.getRootFxNode();
@@ -192,16 +148,15 @@ public class SuiComboBoxTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
 				TestState.class,
-				state -> SuiComboBox.comboBox(
-						PropertyValidation.maxSize(100, 40),
-						PropertyValidation.contentItems(state.items, null),
-						PropertyValidation.searchable(),
-						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add),
-						PropertyValidation.contentItemConverter(".", TestItem.class,
+				state -> SuiElements.comboBox()
+						.sizeMax(100, 40)
+						.contentItems(state.items, null)
+						.searchable()
+						.eventValueChanged(".", TestItem.class, collectedEvents::add)
+						.contentItemConverter(".", TestItem.class,
 								str -> new TestItem(str.split(":")[0].trim(), Integer.parseInt(str.split(":")[1].trim())),
 								item -> item != null ? (item.name + ": " + item.number) : "null"
 						)
-				)
 		);
 
 		@SuppressWarnings ("unchecked") final ComboBox<TestItem> comboBox = (ComboBox<TestItem>) controller.getRootFxNode();
@@ -256,16 +211,15 @@ public class SuiComboBoxTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
 				TestState.class,
-				state -> SuiComboBox.comboBox(
-						PropertyValidation.maxSize(100, 40),
-						PropertyValidation.contentItems(state.items, null),
-						PropertyValidation.editable(),
-						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add),
-						PropertyValidation.contentItemConverter(".", TestItem.class,
+				state -> SuiElements.comboBox()
+						.sizeMax(100, 40)
+						.contentItems(state.items, null)
+						.editable()
+						.eventValueChanged(".", TestItem.class, collectedEvents::add)
+						.contentItemConverter(".", TestItem.class,
 								str -> new TestItem(String.valueOf(str.charAt(0)).toUpperCase(), Integer.parseInt(String.valueOf(str.charAt(1)))),
 								item -> item != null ? (item.name + item.number) : "null"
 						)
-				)
 		);
 
 		@SuppressWarnings ("unchecked") final ComboBox<TestItem> comboBox = (ComboBox<TestItem>) controller.getRootFxNode();

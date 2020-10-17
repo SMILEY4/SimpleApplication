@@ -1,9 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Accordion;
@@ -24,27 +23,14 @@ public class SuiAccordionTest extends SuiElementTest {
 		// build accordion with fixed sections and capture all events in a list
 		final List<SectionEventData> capturedEvents = new ArrayList<>();
 		final Accordion accordion = (Accordion) new SuiSceneController(
-				SuiAccordion.accordion(
-						PropertyValidation.items(
-								SuiAnchorPane.anchorPane(
-										PropertyValidation.id("section-0"),
-										PropertyValidation.title("Section 0")
-								),
-								SuiAnchorPane.anchorPane(
-										PropertyValidation.id("section-1"),
-										PropertyValidation.title("Section 1")
-								),
-								SuiAnchorPane.anchorPane(
-										PropertyValidation.id("section-2"),
-										PropertyValidation.title("Section 2")
-								),
-								SuiAnchorPane.anchorPane(
-										PropertyValidation.id("section-3"),
-										PropertyValidation.title("Section 3")
-								)
-						),
-						EventProperties.eventAccordionExpanded(".", capturedEvents::add)
-				)
+				SuiElements.accordion()
+						.items(
+								SuiElements.anchorPane().id("section-0").title("Section 0"),
+								SuiElements.anchorPane().id("section-1").title("Section 1"),
+								SuiElements.anchorPane().id("section-2").title("Section 2"),
+								SuiElements.anchorPane().id("section-3").title("Section 3")
+						)
+						.eventToggleSection(".", capturedEvents::add)
 		).getRootFxNode();
 
 		show(accordion);
@@ -86,15 +72,14 @@ public class SuiAccordionTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
 				TestState.class,
-				state -> SuiAccordion.accordion(
-						PropertyValidation.items(
-								state.sections.stream().map(section -> SuiAnchorPane.anchorPane(
-										PropertyValidation.id("section-" + section),
-										PropertyValidation.title("Section " + section)
-								))
-						),
-						EventProperties.eventAccordionExpanded(".", capturedEvents::add)
-				)
+				state -> SuiElements.accordion()
+						.items(
+								state.sections.stream().map(section -> SuiElements.anchorPane()
+										.id("section-" + section)
+										.title("Section " + section)
+								)
+						)
+						.eventToggleSection(".", capturedEvents::add)
 		);
 		final Accordion accordion = (Accordion) controller.getRootFxNode();
 		show(accordion);
@@ -135,15 +120,14 @@ public class SuiAccordionTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
 				TestState.class,
-				state -> SuiAccordion.accordion(
-						PropertyValidation.items(
-								state.sections.stream().map(section -> SuiAnchorPane.anchorPane(
-										PropertyValidation.id("section-" + section),
-										PropertyValidation.title("Section " + section)
-								))
-						),
-						EventProperties.eventAccordionExpanded(".", capturedEvents::add)
-				)
+				state -> SuiElements.accordion()
+						.items(
+								state.sections.stream().map(section -> SuiElements.anchorPane()
+										.id("section-" + section)
+										.title("Section " + section)
+								)
+						)
+						.eventToggleSection(".", capturedEvents::add)
 		);
 		final Accordion accordion = (Accordion) controller.getRootFxNode();
 		show(accordion);
@@ -183,16 +167,15 @@ public class SuiAccordionTest extends SuiElementTest {
 		final SuiSceneController controller = new SuiSceneController(
 				testState,
 				TestState.class,
-				state -> SuiAccordion.accordion(
-						PropertyValidation.expandedSection(state.section),
-						PropertyValidation.items(
-								state.sections.stream().map(section -> SuiAnchorPane.anchorPane(
-										PropertyValidation.id("section-" + section),
-										PropertyValidation.title("Section " + section)
-								))
-						),
-						EventProperties.eventAccordionExpanded(".", capturedEvents::add)
-				)
+				state -> SuiElements.accordion()
+						.expandedSection(state.section)
+						.items(
+								state.sections.stream().map(section -> SuiElements.anchorPane()
+										.id("section-" + section)
+										.title("Section " + section)
+								)
+						)
+						.eventToggleSection(".", capturedEvents::add)
 		);
 		final Accordion accordion = (Accordion) controller.getRootFxNode();
 		show(accordion);

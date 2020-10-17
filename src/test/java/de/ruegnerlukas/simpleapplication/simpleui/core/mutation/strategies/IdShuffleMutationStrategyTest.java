@@ -1,17 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.strategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdShuffleMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.Button;
@@ -299,41 +296,33 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 	@Test
 	public void test_same_ids_and_order_but_rebuild_child_expect_mutated_and_child_replaced() {
 
-		final NodeFactory factoryOriginal = SuiVBox.vbox(
-				PropertyValidation.id("box"),
-				PropertyValidation.items(
-						SuiButton.button(
-								PropertyValidation.id("child1"),
-								PropertyValidation.textContent("Button 1")
-						),
-						SuiButton.button(
-								PropertyValidation.id("child2"),
-								PropertyValidation.textContent("Button 2")
-						),
-						SuiButton.button(
-								PropertyValidation.id("child3"),
-								PropertyValidation.textContent("Button 2")
-						)
-				)
-		);
+		final NodeFactory factoryOriginal = SuiElements.vBox()
+				.id("box")
+				.items(
+						SuiElements.button()
+								.id("child1")
+								.textContent("Button 1"),
+						SuiElements.button()
+								.id("child2")
+								.textContent("Button 2"),
+						SuiElements.button()
+								.id("child3")
+								.textContent("Button 2")
+				);
 
-		final NodeFactory factoryTarget = SuiVBox.vbox(
-				PropertyValidation.id("box"),
-				PropertyValidation.items(
-						SuiButton.button(
-								PropertyValidation.id("child1"),
-								PropertyValidation.textContent("Mutated Button 1")
-						),
-						SuiLabel.label(
-								PropertyValidation.id("child2"),
-								PropertyValidation.textContent("Label")
-						),
-						SuiButton.button(
-								PropertyValidation.id("child3"),
-								PropertyValidation.textContent("Mutated Button 2")
-						)
-				)
-		);
+		final NodeFactory factoryTarget = SuiElements.vBox()
+				.id("box")
+				.items(
+						SuiElements.button()
+								.id("child1")
+								.textContent("Mutated Button 1"),
+						SuiElements.label()
+								.id("child2")
+								.textContent("Label"),
+						SuiElements.button()
+								.id("child3")
+								.textContent("Mutated Button 2")
+				);
 
 		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
 		final SuiSceneController context = testData.getLeft();
@@ -366,44 +355,37 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 
 
 
+
 	@Test
 	public void test_same_ids_but_different_order_and_rebuild_child_expect_mutated_and_child_replaced() {
 
-		final NodeFactory factoryOriginal = SuiVBox.vbox(
-				PropertyValidation.id("box"),
-				PropertyValidation.items(
-						SuiButton.button(
-								PropertyValidation.id("child1"),
-								PropertyValidation.textContent("Button 1")
-						),
-						SuiButton.button(
-								PropertyValidation.id("child2"),
-								PropertyValidation.textContent("Button 2")
-						),
-						SuiButton.button(
-								PropertyValidation.id("child3"),
-								PropertyValidation.textContent("Button 2")
-						)
-				)
-		);
+		final NodeFactory factoryOriginal = SuiElements.vBox()
+				.id("box")
+				.items(
+						SuiElements.button()
+								.id("child1")
+								.textContent("Button 1"),
+						SuiElements.button()
+								.id("child2")
+								.textContent("Button 2"),
+						SuiElements.button()
+								.id("child3")
+								.textContent("Button 2")
+				);
 
-		final NodeFactory factoryTarget = SuiVBox.vbox(
-				PropertyValidation.id("box"),
-				PropertyValidation.items(
-						SuiButton.button(
-								PropertyValidation.id("child2"),
-								PropertyValidation.textContent("Mutated Button 1")
-						),
-						SuiLabel.label(
-								PropertyValidation.id("child1"),
-								PropertyValidation.textContent("Label")
-						),
-						SuiButton.button(
-								PropertyValidation.id("child3"),
-								PropertyValidation.textContent("Mutated Button 2")
-						)
-				)
-		);
+		final NodeFactory factoryTarget = SuiElements.vBox()
+				.id("box")
+				.items(
+						SuiElements.button()
+								.id("child2")
+								.textContent("Mutated Button 1"),
+						SuiElements.label()
+								.id("child1")
+								.textContent("Label"),
+						SuiElements.button()
+								.id("child3")
+								.textContent("Mutated Button 2")
+				);
 
 		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
 		final SuiSceneController context = testData.getLeft();
@@ -458,10 +440,6 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
 		assertThat(decisionResult.isApplicable()).isFalse();
 	}
-
-
-
-
 
 
 }

@@ -19,10 +19,7 @@ import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseMoveEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.SuiStream;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -37,7 +34,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane.anchorPane;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.anchorPane;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.container;
+
 
 @Slf4j
 public class TestApplication {
@@ -160,56 +160,32 @@ public class TestApplication {
 					.title(applicationName + " - View A")
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
-							anchorPane(
-
-									EventProperties.eventMouseEntered(SuiStream.eventStream(MouseMoveEventData.class,
+							anchorPane()
+									.eventMouseEntered(".", SuiStream.eventStream(MouseMoveEventData.class,
 											stream -> stream
 													.mapIgnoreNulls(e -> Pair.of(e.getX(), e.getY()))
 													.forEach(e -> System.out.println("entered at " + e.getLeft() + "," + e.getRight()))
-									)),
-
-									PropertyValidation.items(
-											SuiContainer.container(
-													PropertyValidation.id("myContainer"),
-													PropertyValidation.layout("myLayout", ((parent, nodes) -> {
+									))
+									.items(
+											container()
+													.id("myContainer")
+													.layout(".", ((parent, nodes) -> {
 														final double width = parent.getWidth();
 														final double height = parent.getHeight();
 														final Node node0 = nodes.get(0);
 														final Node node1 = nodes.get(1);
 														node0.resizeRelocate(0, 0, width, height / 2);
 														node1.resizeRelocate(0, height / 2, width, height / 2);
-													})),
-													PropertyValidation.items(
-															SuiButton.button(
-																	PropertyValidation.id("btn1"),
-																	PropertyValidation.textContent("Child Button 1")
-															),
-															SuiButton.button(
-																	PropertyValidation.id("btn2"),
-																	PropertyValidation.textContent("Child Button 2")
-															)
+													}))
+													.items(
+															button().id("btn1").textContent("Child Button 1"),
+															button().id("btn2").textContent("Child Button 2")
 													)
-											)
-//													choiceBox(
-//															Properties.choices(state.strings),
-//															Properties.choiceBoxConverter(String.class,
-//																	s -> s.split(":")[1],
-//																	s -> "item:" + s
-//															),
-//															EventProperties.eventSelectedItem(String.class, e -> {
-//																System.out.println(e.getPrevItem() + " -> " + e.getItem());
-//																if (e.getItem() != null) {
-//																	state.update(TestUIState.class, s -> {
-//																		s.strings.add("" + s.strings.size() + " - " + new Random().nextInt(1000));
-//																		s.strings.remove(e.getItem());
-//																	});
-//																}
-//															})
-//													),
 									)
-							)
 
-					)))
+					)
+
+					))
 					.build();
 
 //			final View viewA = View.builder()

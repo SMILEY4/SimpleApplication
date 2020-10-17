@@ -56,7 +56,7 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 		 * @return this builder for chaining
 		 */
 		@SuppressWarnings ("unchecked")
-		default T onChecked(final String propertyId, final SuiEventListener<CheckedEventData> listener) {
+		default T eventChecked(final String propertyId, final SuiEventListener<CheckedEventData> listener) {
 			getBuilderProperties().add(new OnCheckedEventProperty(propertyId, listener));
 			return (T) this;
 		}
