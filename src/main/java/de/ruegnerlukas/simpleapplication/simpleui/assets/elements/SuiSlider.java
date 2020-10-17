@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.CommonEventBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelFormatterProperty;
@@ -15,7 +15,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBu
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.RegionBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
