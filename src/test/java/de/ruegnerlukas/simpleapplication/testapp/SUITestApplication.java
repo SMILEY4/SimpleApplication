@@ -18,7 +18,8 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -100,11 +101,9 @@ public class SUITestApplication {
 											SuiLabel.create()
 													.id("label")
 													.properties(
-															Properties.textContent(state.getText()),
-															Properties.tooltip(state.getText(), true, 200)
+															new TextContentProperty(state.getText()),
+															new TooltipProperty(state.getText(), true, 200)
 													)
-//													.textContent(state.getText())
-//													.tooltip(state.getText(), true, 200)
 													.sizeMin(300, 30),
 											SuiButton.create()
 													.id("button1")

@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MenuContentProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SystemMenuBarProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.UseSystemMenuBarProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
@@ -14,7 +14,7 @@ public class SuiMenuBarBuilder extends BuilderExtensionContainer implements
 		BaseBuilderExtension<SuiMenuBarBuilder>,
 		RegionBuilderExtension<SuiMenuBarBuilder>,
 		CommonEventBuilderExtension<SuiMenuBarBuilder>,
-		SystemMenuBarProperty.PropertyBuilderExtension<SuiMenuBarBuilder>,
+		UseSystemMenuBarProperty.PropertyBuilderExtension<SuiMenuBarBuilder>,
 		MenuContentProperty.PropertyBuilderExtension<SuiMenuBarBuilder> {
 
 

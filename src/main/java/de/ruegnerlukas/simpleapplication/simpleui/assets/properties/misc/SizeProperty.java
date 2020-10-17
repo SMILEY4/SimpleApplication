@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
@@ -80,6 +81,33 @@ public class SizeProperty extends SuiProperty {
 		this.maxWidth = maxWidth;
 		this.maxHeight = maxHeight;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param minWidth        the minimum width.
+		 * @param minHeight       the minimum height.
+		 * @param preferredWidth  the preferred width.
+		 * @param preferredHeight the preferred height.
+		 * @param maxWidth        the maximum width.
+		 * @param maxHeight       the maximum height.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T size(final Number minWidth, final Number minHeight,
+					   final Number preferredWidth, final Number preferredHeight,
+					   final Number maxWidth, final Number maxHeight) {
+			getFactoryInternalProperties().add(new SizeProperty(minWidth, minHeight, preferredWidth, preferredHeight, maxWidth, maxHeight));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

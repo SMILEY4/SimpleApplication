@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -14,14 +13,14 @@ import lombok.Getter;
 
 import java.util.function.BiFunction;
 
-public class ChoicesConverterProperty<T> extends SuiProperty {
+public class ContentItemConverterProperty<T> extends SuiProperty {
 
 
 	/**
 	 * The comparator function for this property type.
 	 */
 	@SuppressWarnings ("rawtypes")
-	private static final BiFunction<ChoicesConverterProperty, ChoicesConverterProperty, Boolean> COMPARATOR =
+	private static final BiFunction<ContentItemConverterProperty, ContentItemConverterProperty, Boolean> COMPARATOR =
 			(a, b) -> a.getConverter().equals(b.getConverter());
 
 
@@ -39,7 +38,9 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 	 * @param fromString converter from a string to an object
 	 * @param toString   converter from an object to a string
 	 */
-	public ChoicesConverterProperty(final String propertyId, final FromStringConverter<T> fromString, final ToStringConverter<T> toString) {
+	public ContentItemConverterProperty(final String propertyId,
+										final FromStringConverter<T> fromString,
+										final ToStringConverter<T> toString) {
 		this(propertyId, new StringConverter<>() {
 			@Override
 			public String toString(final T t) {
@@ -63,40 +64,42 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 	 * @param propertyId see {@link SuiProperty#getPropertyId()}
 	 * @param converter  the string converter
 	 */
-	public ChoicesConverterProperty(final String propertyId, final StringConverter<T> converter) {
-		super(ChoicesConverterProperty.class, COMPARATOR, propertyId);
+	public ContentItemConverterProperty(final String propertyId, final StringConverter<T> converter) {
+		super(ContentItemConverterProperty.class, COMPARATOR, propertyId);
 		this.converter = converter;
 	}
 
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
-		default T contentItemConverter(final Class<T> type, final StringConverter<T> converter) {
-			getFactoryInternalProperties().add(Properties.contentItemConverter(type, converter));
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param type       the expected type of the items to convert
+		 * @param converter  the converter from and to strings
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ({"unchecked", "unused"})
+		default <E> T contentItemConverter(final String propertyId, final Class<E> type, final StringConverter<E> converter) {
+			getFactoryInternalProperties().add(new ContentItemConverterProperty<>(propertyId, converter));
 			return (T) this;
 		}
 
-		default T contentItemConverter(final String propertyId, final Class<T> type, final StringConverter<T> converter) {
-			getFactoryInternalProperties().add(Properties.contentItemConverter(propertyId, type, converter));
-			return (T) this;
-		}
-
-		default T contentItemConverter(final Class<T> type,
-									   final ChoicesConverterProperty.FromStringConverter<T> fromString,
-									   final ChoicesConverterProperty.ToStringConverter<T> toString) {
-			getFactoryInternalProperties().add(Properties.contentItemConverter(type, fromString, toString));
-			return (T) this;
-		}
-
-		default T contentItemConverter(final String propertyId,
-									   final Class<T> type,
-									   final ChoicesConverterProperty.FromStringConverter<T> fromString,
-									   final ChoicesConverterProperty.ToStringConverter<T> toString) {
-			getFactoryInternalProperties().add(Properties.contentItemConverter(propertyId, type, fromString, toString));
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param type       the expected type of the items to convert
+		 * @param fromString the converter from strings
+		 * @param toString   the converter to strings
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ({"unchecked", "unused"})
+		default <E> T contentItemConverter(final String propertyId,
+										   final Class<E> type,
+										   final ContentItemConverterProperty.FromStringConverter<E> fromString,
+										   final ContentItemConverterProperty.ToStringConverter<E> toString) {
+			getFactoryInternalProperties().add(new ContentItemConverterProperty<>(propertyId, fromString, toString));
 			return (T) this;
 		}
 
@@ -108,12 +111,12 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 
-	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoicesConverterProperty<T>, ChoiceBox<T>> {
+	public static class ChoiceBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ContentItemConverterProperty<T>, ChoiceBox<T>> {
 
 
 		@Override
 		public void build(final SuiNode node,
-						  final ChoicesConverterProperty<T> property,
+						  final ContentItemConverterProperty<T> property,
 						  final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 		}
@@ -122,7 +125,7 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final ChoicesConverterProperty<T> property,
+		public MutationResult update(final ContentItemConverterProperty<T> property,
 									 final SuiNode node,
 									 final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
@@ -133,7 +136,7 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final ChoicesConverterProperty<T> property,
+		public MutationResult remove(final ContentItemConverterProperty<T> property,
 									 final SuiNode node,
 									 final ChoiceBox<T> fxNode) {
 			fxNode.setConverter(null);
@@ -147,11 +150,12 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 
-	public static class ComboBoxUpdatingBuilder<T> implements PropFxNodeUpdatingBuilder<ChoicesConverterProperty<T>, ExtendedComboBox<T>> {
+	public static class ComboBoxUpdatingBuilder<T> implements
+			PropFxNodeUpdatingBuilder<ContentItemConverterProperty<T>, ExtendedComboBox<T>> {
 
 
 		@Override
-		public void build(final SuiNode node, final ChoicesConverterProperty<T> property, final ExtendedComboBox<T> fxNode) {
+		public void build(final SuiNode node, final ContentItemConverterProperty<T> property, final ExtendedComboBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 		}
 
@@ -159,7 +163,7 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final ChoicesConverterProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
+		public MutationResult update(final ContentItemConverterProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
 			fxNode.setConverter(property.getConverter());
 			return MutationResult.MUTATED;
 		}
@@ -168,7 +172,7 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final ChoicesConverterProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
+		public MutationResult remove(final ContentItemConverterProperty<T> property, final SuiNode node, final ExtendedComboBox<T> fxNode) {
 			fxNode.setConverter(null);
 			return MutationResult.MUTATED;
 		}

@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -13,13 +12,13 @@ import lombok.Getter;
 
 import java.util.function.BiFunction;
 
-public class SystemMenuBarProperty extends SuiProperty {
+public class UseSystemMenuBarProperty extends SuiProperty {
 
 
 	/**
 	 * The comparator function for this property type.
 	 */
-	private static final BiFunction<SystemMenuBarProperty, SystemMenuBarProperty, Boolean> COMPARATOR =
+	private static final BiFunction<UseSystemMenuBarProperty, UseSystemMenuBarProperty, Boolean> COMPARATOR =
 			(a, b) -> a.isUseSystemMenuBar() == b.isUseSystemMenuBar();
 
 	/**
@@ -34,26 +33,31 @@ public class SystemMenuBarProperty extends SuiProperty {
 	/**
 	 * @param useSystemMenuBar whether to use the host OS system menu bar.
 	 */
-	public SystemMenuBarProperty(final boolean useSystemMenuBar) {
-		super(SystemMenuBarProperty.class, COMPARATOR);
+	public UseSystemMenuBarProperty(final boolean useSystemMenuBar) {
+		super(UseSystemMenuBarProperty.class, COMPARATOR);
 		this.useSystemMenuBar = useSystemMenuBar;
 	}
 
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @return this builder for chaining
+		 */
 		default T useSystemMenuBar() {
-			getFactoryInternalProperties().add(Properties.useSystemMenuBar());
-			return (T) this;
+			return useSystemMenuBar(true);
 		}
 
-
+		/**
+		 * @param useSystemMenuBar whether to use the system menu bar (if available)
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T useSystemMenuBar(final boolean useSystemMenuBar) {
-			getFactoryInternalProperties().add(Properties.useSystemMenuBar(useSystemMenuBar));
+			getFactoryInternalProperties().add(new UseSystemMenuBarProperty(useSystemMenuBar));
 			return (T) this;
 		}
 
@@ -64,12 +68,12 @@ public class SystemMenuBarProperty extends SuiProperty {
 
 
 
-	public static class MenuBarUpdatingBuilder implements PropFxNodeUpdatingBuilder<SystemMenuBarProperty, MenuBar> {
+	public static class MenuBarUpdatingBuilder implements PropFxNodeUpdatingBuilder<UseSystemMenuBarProperty, MenuBar> {
 
 
 		@Override
 		public void build(final SuiNode node,
-						  final SystemMenuBarProperty property,
+						  final UseSystemMenuBarProperty property,
 						  final MenuBar fxNode) {
 			Platform.runLater(() -> fxNode.setUseSystemMenuBar(property.isUseSystemMenuBar()));
 		}
@@ -78,7 +82,7 @@ public class SystemMenuBarProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final SystemMenuBarProperty property,
+		public MutationResult update(final UseSystemMenuBarProperty property,
 									 final SuiNode node,
 									 final MenuBar fxNode) {
 			Platform.runLater(() -> fxNode.setUseSystemMenuBar(property.isUseSystemMenuBar()));
@@ -89,7 +93,7 @@ public class SystemMenuBarProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult remove(final SystemMenuBarProperty property,
+		public MutationResult remove(final UseSystemMenuBarProperty property,
 									 final SuiNode node,
 									 final MenuBar fxNode) {
 			Platform.runLater(() -> fxNode.setUseSystemMenuBar(false));

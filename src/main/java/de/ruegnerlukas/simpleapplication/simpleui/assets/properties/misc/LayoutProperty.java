@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedPane;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -43,12 +42,17 @@ public class LayoutProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param propertyId     see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param layoutFunction the layout function
+		 * @return
+		 */
+		@SuppressWarnings ("unchecked")
 		default T layout(final String propertyId, final ExtendedPane.LayoutFunction layoutFunction) {
-			getFactoryInternalProperties().add(Properties.layout(propertyId, layoutFunction));
+			getFactoryInternalProperties().add(new LayoutProperty(propertyId, layoutFunction));
 			return (T) this;
 		}
 

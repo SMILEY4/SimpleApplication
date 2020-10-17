@@ -47,7 +47,6 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
@@ -56,6 +55,7 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 		 * @param listener   the listener for events with {@link CheckedEventData}.
 		 * @return this builder for chaining
 		 */
+		@SuppressWarnings ("unchecked")
 		default T onChecked(final String propertyId, final SuiEventListener<CheckedEventData> listener) {
 			getFactoryInternalProperties().add(new OnCheckedEventProperty(propertyId, listener));
 			return (T) this;

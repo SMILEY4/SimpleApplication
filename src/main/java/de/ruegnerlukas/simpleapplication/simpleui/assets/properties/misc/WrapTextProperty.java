@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -40,16 +39,24 @@ public class WrapTextProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T wrapText() {
 			return wrapText(true);
 		}
 
+		/**
+		 * @param wrapText whether to wrap the text if it is too long
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T wrapText(final boolean wrapText) {
-			getFactoryInternalProperties().add(Properties.wrapText(wrapText));
+			getFactoryInternalProperties().add(new WrapTextProperty(wrapText));
 			return (T) this;
 		}
 

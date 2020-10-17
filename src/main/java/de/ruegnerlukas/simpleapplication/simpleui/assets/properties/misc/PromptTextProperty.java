@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -45,12 +44,17 @@ public class PromptTextProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 *
+		 * @param text the prompt text
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T promptText(final String text) {
-			getFactoryInternalProperties().add(Properties.promptText(text));
+			getFactoryInternalProperties().add(new PromptTextProperty(text));
 			return (T) this;
 		}
 

@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -42,17 +41,23 @@ public class FitToHeightProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @return this builder for chaining
+		 */
 		default T fitToHeight() {
-			getFactoryInternalProperties().add(Properties.fitToHeight());
-			return (T) this;
+			return fitToHeight(true);
 		}
 
+		/**
+		 * @param fitToHeight whether to fit the element(s) to the height
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T fitToHeight(final boolean fitToHeight) {
-			getFactoryInternalProperties().add(Properties.fitToHeight(fitToHeight));
+			getFactoryInternalProperties().add(new FitToHeightProperty(fitToHeight));
 			return (T) this;
 		}
 

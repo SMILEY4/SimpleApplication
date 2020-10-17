@@ -3,7 +3,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -62,17 +61,28 @@ public class LabelSizeProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param size the exact size of the label
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T labelSize(final Number size) {
-			getFactoryInternalProperties().add(Properties.labelSize(size));
+			getFactoryInternalProperties().add(new LabelSizeProperty(size, size, size));
 			return (T) this;
 		}
 
+		/**
+		 * @param minSize  the min width or height of the label.
+		 * @param prefSize the preferred width or height of the label.
+		 * @param maxSize  the max width or height of the label.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T labelSize(final Number minSize, final Number prefSize, final Number maxSize) {
-			getFactoryInternalProperties().add(Properties.labelSize(minSize, prefSize, maxSize));
+			getFactoryInternalProperties().add(new LabelSizeProperty(minSize, prefSize, maxSize));
 			return (T) this;
 		}
 

@@ -4,7 +4,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedListView;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -51,6 +50,16 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 
 	/**
+	 * @param choices the list of choices
+	 */
+	public ContentItemsProperty(final List<T> choices) {
+		this(choices, null);
+	}
+
+
+
+
+	/**
 	 * @param choices        the list of choices
 	 * @param selectedChoice the choice to select from the list of choices (or null)
 	 */
@@ -63,12 +72,17 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtensionWithSelected<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param choices        the list of choices
+		 * @param selectedChoice the choice to select from the list of choices (or null)
+		 * @return the builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T contentItems(final List<T> choices, final T selectedChoice) {
-			getFactoryInternalProperties().add(Properties.contentItems(choices, selectedChoice));
+			getFactoryInternalProperties().add(new ContentItemsProperty<>(choices, selectedChoice));
 			return (T) this;
 		}
 
@@ -79,12 +93,16 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtensionNoSelected<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param choices the list of choices
+		 * @return the builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T contentItems(final List<T> choices) {
-			getFactoryInternalProperties().add(Properties.contentItems(choices));
+			getFactoryInternalProperties().add(new ContentItemsProperty<>(choices));
 			return (T) this;
 		}
 

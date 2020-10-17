@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -49,12 +48,17 @@ public class ShowScrollbarsProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param horizontal the policy of the horizontal scrollbar
+		 * @param vertical   the policy of the vertical scrollbar
+		 * @return
+		 */
+		@SuppressWarnings ("unchecked")
 		default T showScrollbars(final ScrollPane.ScrollBarPolicy horizontal, final ScrollPane.ScrollBarPolicy vertical) {
-			getFactoryInternalProperties().add(Properties.showScrollbars(horizontal, vertical));
+			getFactoryInternalProperties().add(new ShowScrollbarsProperty(horizontal, vertical));
 			return (T) this;
 		}
 

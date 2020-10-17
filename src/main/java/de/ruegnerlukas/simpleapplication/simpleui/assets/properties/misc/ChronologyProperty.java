@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -48,12 +48,26 @@ public class ChronologyProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param locale the locale to use
+		 * @return this builder for chaining
+		 */
+		default T chronology(final Locale locale) {
+			Validations.INPUT.notNull(locale).exception("The locale may not be null.");
+			return chronology(Chronology.ofLocale(locale));
+		}
+
+
+		/**
+		 * @param chronology the {@link Chronology}
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T chronology(final Chronology chronology) {
-			getFactoryInternalProperties().add(Properties.chronology(chronology));
+			getFactoryInternalProperties().add(new ChronologyProperty(chronology));
 			return (T) this;
 		}
 

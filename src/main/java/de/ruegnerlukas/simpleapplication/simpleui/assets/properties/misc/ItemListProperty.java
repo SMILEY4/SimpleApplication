@@ -5,7 +5,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -84,30 +83,46 @@ public class ItemListProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param items the factories for creating the items/nodes.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T items(final NodeFactory... items) {
-			getFactoryInternalProperties().add(Properties.items(items));
+			getFactoryInternalProperties().add(new ItemListProperty(items));
 			return (T) this;
 		}
 
-
+		/**
+		 * @param items the factories for creating the items/nodes.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T items(final Collection<NodeFactory> items) {
-			getFactoryInternalProperties().add(Properties.items(items));
+			getFactoryInternalProperties().add(new ItemListProperty(items));
 			return (T) this;
 		}
 
-
+		/**
+		 * @param items the factories for creating the items/nodes.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T items(final Stream<NodeFactory> items) {
-			getFactoryInternalProperties().add(Properties.items(items));
+			getFactoryInternalProperties().add(new ItemListProperty(items));
 			return (T) this;
 		}
 
-
+		/**
+		 * @param supplier the supplier for creating factories for creating the items/nodes.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T items(final Supplier<List<NodeFactory>> supplier) {
-			getFactoryInternalProperties().add(Properties.items(supplier));
+			getFactoryInternalProperties().add(new ItemListProperty(supplier));
 			return (T) this;
 		}
 

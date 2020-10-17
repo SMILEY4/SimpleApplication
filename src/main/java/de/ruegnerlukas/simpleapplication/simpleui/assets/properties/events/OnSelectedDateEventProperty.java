@@ -34,7 +34,6 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
@@ -43,6 +42,7 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 		 * @param listener   the listener for events with {@link DateSelectedEventData}.
 		 * @return this builder for chaining
 		 */
+		@SuppressWarnings ("unchecked")
 		default T eventSelectedDate(final String propertyId, final SuiEventListener<DateSelectedEventData> listener) {
 			getFactoryInternalProperties().add(new OnSelectedDateEventProperty(propertyId, listener));
 			return (T) this;

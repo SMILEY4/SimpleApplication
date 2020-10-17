@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.Ex
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
@@ -72,7 +72,7 @@ public final class SuiChoiceBox {
 		registry.registerProperties(SuiChoiceBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiChoiceBox.class, List.of(
 				PropertyEntry.of(ContentItemsProperty.class, new ContentItemsProperty.ChoiceBoxUpdatingBuilder<>()),
-				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ChoiceBoxUpdatingBuilder<>()),
+				PropertyEntry.of(ContentItemConverterProperty.class, new ContentItemConverterProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.ChoiceBoxUpdatingBuilder<>()),
 				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
 		));

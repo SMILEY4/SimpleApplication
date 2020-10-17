@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedCheckbox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -41,16 +40,24 @@ public class CheckedProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param checked whether the element is checked or unchecked.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T checked(final boolean checked) {
-			getFactoryInternalProperties().add(Properties.checked(checked));
+			getFactoryInternalProperties().add(new CheckedProperty(checked));
 			return (T) this;
 		}
 
 	}
+
+
+
+
 
 
 	public static class CheckBoxUpdatingBuilder implements PropFxNodeUpdatingBuilder<CheckedProperty, ExtendedCheckbox> {

@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
@@ -66,13 +67,34 @@ public class AnchorProperty extends SuiProperty {
 
 
 
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param top    the value for the top anchor or null.
+		 * @param bottom the value for the bottom anchor or null.
+		 * @param left   the value for the left anchor or null.
+		 * @param right  the value for the right anchor or null.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T alignment(final Number top, final Number bottom, final Number left, final Number right) {
+			getFactoryInternalProperties().add(new AnchorProperty(top, bottom, left, right));
+			return (T) this;
+		}
+
+	}
+
+
+
+
+
+
 	public static class UpdatingBuilder implements PropFxNodeUpdatingBuilder<AnchorProperty, Node> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final AnchorProperty property,
-						  final Node fxNode) {
+		public void build(final SuiNode node, final AnchorProperty property, final Node fxNode) {
 			setAnchors(property, fxNode);
 		}
 
@@ -80,10 +102,20 @@ public class AnchorProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final AnchorProperty property,
-									 final SuiNode node,
-									 final Node fxNode) {
+		public MutationResult update(final AnchorProperty property, final SuiNode node, final Node fxNode) {
 			setAnchors(property, fxNode);
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final AnchorProperty property, final SuiNode node, final Node fxNode) {
+			AnchorPane.setTopAnchor(fxNode, null);
+			AnchorPane.setBottomAnchor(fxNode, null);
+			AnchorPane.setLeftAnchor(fxNode, null);
+			AnchorPane.setRightAnchor(fxNode, null);
 			return MutationResult.MUTATED;
 		}
 
@@ -103,19 +135,6 @@ public class AnchorProperty extends SuiProperty {
 			AnchorPane.setRightAnchor(fxNode, Optional.ofNullable(property.getRight()).map(Number::doubleValue).orElse(null));
 		}
 
-
-
-
-		@Override
-		public MutationResult remove(final AnchorProperty property,
-									 final SuiNode node,
-									 final Node fxNode) {
-			AnchorPane.setTopAnchor(fxNode, null);
-			AnchorPane.setBottomAnchor(fxNode, null);
-			AnchorPane.setLeftAnchor(fxNode, null);
-			AnchorPane.setRightAnchor(fxNode, null);
-			return MutationResult.MUTATED;
-		}
 
 	}
 

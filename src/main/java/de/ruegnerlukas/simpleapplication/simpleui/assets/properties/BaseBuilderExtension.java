@@ -1,17 +1,30 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
-import de.ruegnerlukas.simpleapplication.common.resources.Resource;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 
 import java.util.List;
 
-@SuppressWarnings ("unchecked")
-public interface BaseBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+public interface BaseBuilderExtension<T extends FactoryExtension> extends FactoryExtension,
+		IdProperty.PropertyBuilderExtension<T>,
+		MutationBehaviourProperty.PropertyBuilderExtension<T>,
+		DisabledProperty.PropertyBuilderExtension<T>,
+		AnchorProperty.PropertyBuilderExtension<T>,
+		TitleProperty.PropertyBuilderExtension<T>,
+		StyleProperty.PropertyBuilderExtension<T> {
 
 
+	/**
+	 * @param properties properties to add the the element manually
+	 * @return this builder for chaining
+	 */
+	@SuppressWarnings ("unchecked")
 	default T properties(final SuiProperty... properties) {
 		for (SuiProperty property : properties) {
 			getFactoryInternalProperties().add(property);
@@ -19,56 +32,13 @@ public interface BaseBuilderExtension<T extends FactoryExtension> extends Factor
 		return (T) this;
 	}
 
+	/**
+	 * @param properties properties to add the the element manually
+	 * @return this builder for chaining
+	 */
+	@SuppressWarnings ("unchecked")
 	default T properties(final List<SuiProperty> properties) {
 		getFactoryInternalProperties().addAll(properties);
-		return (T) this;
-	}
-
-	default T id(final String id) {
-		getFactoryInternalProperties().add(Properties.id(id));
-		return (T) this;
-	}
-
-	default T mutationBehaviour(final MutationBehaviourProperty.MutationBehaviour behaviour) {
-		return mutationBehaviour(behaviour, null);
-	}
-
-	default T mutationBehaviour(final MutationBehaviourProperty.MutationBehaviour behaviour, final TagConditionExpression condition) {
-		getFactoryInternalProperties().add(Properties.mutationBehaviour(behaviour, condition));
-		return (T) this;
-	}
-
-	default T disabled() {
-		return disabled(true);
-	}
-
-	default T disabled(final boolean disabled) {
-		getFactoryInternalProperties().add(Properties.disabled(disabled));
-		return (T) this;
-	}
-
-	default T anchorsFitParent() {
-		getFactoryInternalProperties().add(Properties.anchorFitParent());
-		return (T) this;
-	}
-
-	default T anchors(final Number top, final Number bottom, final Number left, final Number right) {
-		getFactoryInternalProperties().add(Properties.anchor(top, bottom, left, right));
-		return (T) this;
-	}
-
-	default T title(final String title) {
-		getFactoryInternalProperties().add(Properties.title(title));
-		return (T) this;
-	}
-
-	default T style(final String style) {
-		getFactoryInternalProperties().add(Properties.style(style));
-		return (T) this;
-	}
-
-	default T style(final Resource style) {
-		getFactoryInternalProperties().add(Properties.style(style));
 		return (T) this;
 	}
 

@@ -11,14 +11,14 @@ public abstract class BuilderExtensionContainer implements FactoryExtension {
 	/**
 	 * The properties of this builder.
 	 */
-	private final List<SuiProperty> properties = new ArrayList<>();
+	private final List<SuiProperty> internalProperties = new ArrayList<>();
 
 
 
 
 	@Override
 	public List<SuiProperty> getFactoryInternalProperties() {
-		return this.properties;
+		return this.internalProperties;
 	}
 
 

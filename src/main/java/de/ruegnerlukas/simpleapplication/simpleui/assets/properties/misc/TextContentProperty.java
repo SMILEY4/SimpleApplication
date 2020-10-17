@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -42,12 +41,16 @@ public class TextContentProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param text the content
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T textContent(final String text) {
-			getFactoryInternalProperties().add(Properties.textContent(text));
+			getFactoryInternalProperties().add(new TextContentProperty(text));
 			return (T) this;
 		}
 

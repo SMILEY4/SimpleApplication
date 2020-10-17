@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -91,17 +90,28 @@ public class TooltipProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param tooltip the content of the tooltip
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T tooltip(final String tooltip) {
-			getFactoryInternalProperties().add(Properties.tooltip(tooltip));
+			getFactoryInternalProperties().add(new TooltipProperty(tooltip));
 			return (T) this;
 		}
 
+		/**
+		 * @param tooltip   the content of the tooltip
+		 * @param wrapText  whether to wrap the text
+		 * @param prefWidth the preferred width of the tooltip
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T tooltip(final String tooltip, final boolean wrapText, final Number prefWidth) {
-			getFactoryInternalProperties().add(Properties.tooltip(tooltip, wrapText, prefWidth));
+			getFactoryInternalProperties().add(new TooltipProperty(tooltip, wrapText, prefWidth));
 			return (T) this;
 		}
 

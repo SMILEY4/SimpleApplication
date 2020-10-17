@@ -3,7 +3,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -41,16 +40,27 @@ public class BlockIncrementProperty extends SuiProperty {
 		this.increment = increment;
 	}
 
-	@SuppressWarnings ("unchecked")
+
+
+
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param increment the increment
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T blockIncrement(final Number increment) {
-			getFactoryInternalProperties().add(Properties.blockIncrement(increment));
+			getFactoryInternalProperties().add(new BlockIncrementProperty(increment));
 			return (T) this;
 		}
 
 	}
+
+
+
+
 
 
 	public static class SliderUpdatingBuilder implements PropFxNodeUpdatingBuilder<BlockIncrementProperty, Slider> {

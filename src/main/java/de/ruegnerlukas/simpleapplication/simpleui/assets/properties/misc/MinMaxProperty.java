@@ -4,7 +4,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -55,12 +54,17 @@ public class MinMaxProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param min the min value (inclusive)
+		 * @param max the max value (inclusive)
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T minMax(final Number min, final Number max) {
-			getFactoryInternalProperties().add(Properties.minMax(min, max));
+			getFactoryInternalProperties().add(new MinMaxProperty(min, max));
 			return (T) this;
 		}
 

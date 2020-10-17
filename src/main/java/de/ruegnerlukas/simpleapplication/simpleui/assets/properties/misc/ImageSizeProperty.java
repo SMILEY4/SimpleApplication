@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -70,12 +69,17 @@ public class ImageSizeProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param width  the width-dimension.
+		 * @param height the height-dimension.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T imageSize(final ImageSizeProperty.ImageDimension width, final ImageSizeProperty.ImageDimension height) {
-			getFactoryInternalProperties().add(Properties.imageSize(width, height));
+			getFactoryInternalProperties().add(new ImageSizeProperty(width, height));
 			return (T) this;
 		}
 

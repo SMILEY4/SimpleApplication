@@ -3,7 +3,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -46,17 +45,24 @@ public class EditableProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @return this builder for chaining
+		 */
 		default T editable() {
-			getFactoryInternalProperties().add(Properties.editable());
-			return (T) this;
+			return editable(true);
 		}
 
+
+		/**
+		 * @param editable whether the element is editable
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T editable(final boolean editable) {
-			getFactoryInternalProperties().add(Properties.editable(editable));
+			getFactoryInternalProperties().add(new EditableProperty(editable));
 			return (T) this;
 		}
 

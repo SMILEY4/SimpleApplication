@@ -3,7 +3,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSplitPane;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -94,17 +93,46 @@ public class SplitDividerPositionProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param positions the positions as percentage (between 0 and 1).
+		 * @return this builder for chaining
+		 */
 		default T dividerPositions(final Number... positions) {
-			getFactoryInternalProperties().add(Properties.dividerPositions(positions));
+			return dividerPositions(false, positions);
+		}
+
+
+		/**
+		 * @param positions the positions as percentage (between 0 and 1).
+		 * @return this builder for chaining
+		 */
+		default T dividerPositions(final List<Number> positions) {
+			return dividerPositions(false, positions);
+		}
+
+
+		/**
+		 * @param fixed     whether the user can move the dividers
+		 * @param positions the positions as percentage (between 0 and 1).
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T dividerPositions(final boolean fixed, final Number... positions) {
+			getFactoryInternalProperties().add(new SplitDividerPositionProperty(fixed, positions));
 			return (T) this;
 		}
 
-		default T dividerPositions(final boolean fixed, final Number... positions) {
-			getFactoryInternalProperties().add(Properties.dividerPositions(fixed, positions));
+		/**
+		 * @param fixed     whether the user can move the dividers
+		 * @param positions the positions as percentage (between 0 and 1).
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T dividerPositions(final boolean fixed, final List<Number> positions) {
+			getFactoryInternalProperties().add(new SplitDividerPositionProperty(fixed, positions));
 			return (T) this;
 		}
 

@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MenuContentProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SystemMenuBarProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.UseSystemMenuBarProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -69,7 +69,7 @@ public final class SuiMenuBar {
 		registry.registerProperties(SuiMenuBar.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiMenuBar.class, List.of(
 				PropertyEntry.of(MenuContentProperty.class, new MenuContentProperty.MenuBarUpdatingBuilder()),
-				PropertyEntry.of(SystemMenuBarProperty.class, new SystemMenuBarProperty.MenuBarUpdatingBuilder())
+				PropertyEntry.of(UseSystemMenuBarProperty.class, new UseSystemMenuBarProperty.MenuBarUpdatingBuilder())
 		));
 	}
 

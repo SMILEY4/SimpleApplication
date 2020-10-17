@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -43,17 +42,23 @@ public class FitToWidthProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @return this builder for chaining
+		 */
 		default T fitToWidth() {
-			getFactoryInternalProperties().add(Properties.fitToWidth());
-			return (T) this;
+			return fitToWidth(true);
 		}
 
+		/**
+		 * @param fitToWidth whether to fit the element(s) to the height
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T fitToWidth(final boolean fitToWidth) {
-			getFactoryInternalProperties().add(Properties.fitToWidth(fitToWidth));
+			getFactoryInternalProperties().add(new FitToWidthProperty(fitToWidth));
 			return (T) this;
 		}
 

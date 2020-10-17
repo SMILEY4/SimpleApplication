@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -41,17 +40,23 @@ public class PreserveRatioProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @return this builder for chaining
+		 */
 		default T preserveRatio() {
-			getFactoryInternalProperties().add(Properties.preserveRatio(true));
-			return (T) this;
+			return preserveRatio(true);
 		}
 
+		/**
+		 * @param preserveRatio whether to preserve the original ratio
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T preserveRatio(final boolean preserveRatio) {
-			getFactoryInternalProperties().add(Properties.preserveRatio(preserveRatio));
+			getFactoryInternalProperties().add(new PreserveRatioProperty(preserveRatio));
 			return (T) this;
 		}
 

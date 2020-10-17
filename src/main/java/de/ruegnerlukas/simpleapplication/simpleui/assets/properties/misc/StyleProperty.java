@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import lombok.Getter;
@@ -95,6 +96,37 @@ public class StyleProperty extends SuiProperty {
 			return "";
 		}
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param style the style as a css-string.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T style(final String style) {
+			getFactoryInternalProperties().add(new StyleProperty(style));
+			return (T) this;
+		}
+
+		/**
+		 * @param style the resource pointing to a css-file
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T style(final Resource style) {
+			getFactoryInternalProperties().add(new StyleProperty(style));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

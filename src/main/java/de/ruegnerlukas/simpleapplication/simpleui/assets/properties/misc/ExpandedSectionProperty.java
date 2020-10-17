@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -42,12 +41,16 @@ public class ExpandedSectionProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param title the title of the expanded section or null
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T expandedSection(final String title) {
-			getFactoryInternalProperties().add(Properties.expandedSection(title));
+			getFactoryInternalProperties().add(new ExpandedSectionProperty(title));
 			return (T) this;
 		}
 

@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
@@ -17,7 +17,7 @@ public class SuiChoiceBoxBuilder extends BuilderExtensionContainer implements
 		RegionBuilderExtension<SuiChoiceBoxBuilder>,
 		CommonEventBuilderExtension<SuiChoiceBoxBuilder>,
 		ContentItemsProperty.PropertyBuilderExtensionWithSelected<SuiChoiceBoxBuilder>,
-		ChoicesConverterProperty.PropertyBuilderExtension<SuiChoiceBoxBuilder>,
+		ContentItemConverterProperty.PropertyBuilderExtension<SuiChoiceBoxBuilder>,
 		TooltipProperty.PropertyBuilderExtension<SuiChoiceBoxBuilder>,
 		OnValueChangedEventProperty.PropertyBuilderExtension<SuiChoiceBoxBuilder> {
 

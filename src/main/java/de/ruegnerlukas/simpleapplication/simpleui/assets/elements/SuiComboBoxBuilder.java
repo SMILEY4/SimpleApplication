@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
@@ -20,7 +20,7 @@ public class SuiComboBoxBuilder extends BuilderExtensionContainer implements
 		RegionBuilderExtension<SuiComboBoxBuilder>,
 		CommonEventBuilderExtension<SuiComboBoxBuilder>,
 		ContentItemsProperty.PropertyBuilderExtensionWithSelected<SuiComboBoxBuilder>,
-		ChoicesConverterProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,
+		ContentItemConverterProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,
 		TooltipProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,
 		OnValueChangedEventProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,
 		PromptTextProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,

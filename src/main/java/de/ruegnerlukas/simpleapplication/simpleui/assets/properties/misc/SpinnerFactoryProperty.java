@@ -4,7 +4,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSpinner;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -175,28 +174,50 @@ public class SpinnerFactoryProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param min      the min value.
+		 * @param max      the max value.
+		 * @param stepSize the amount to step by.
+		 * @param value    the initial value
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T integerSpinnerValues(final int min,
 									   final int max,
 									   final int stepSize,
 									   final int value) {
-			getFactoryInternalProperties().add(Properties.integerSpinnerValues(min, max, stepSize, value));
+			getFactoryInternalProperties().add(new SpinnerFactoryProperty(min, max, stepSize, value));
 			return (T) this;
 		}
 
+		/**
+		 * @param min      the min value.
+		 * @param max      the max value.
+		 * @param stepSize the amount to step by.
+		 * @param value    the initial value
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T floatingPointSpinnerValues(final double min,
 											 final double max,
 											 final double stepSize,
 											 final double value) {
-			getFactoryInternalProperties().add(Properties.floatingPointSpinnerValues(min, max, stepSize, value));
+			getFactoryInternalProperties().add(new SpinnerFactoryProperty(min, max, stepSize, value));
 			return (T) this;
 		}
 
+		/**
+		 * @param items        the items
+		 * @param initialValue the initial value
+		 * @param wrapAround   whether to wrap around or stop at the end/start
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T listSpinnerValues(final List<String> items, final String initialValue, final boolean wrapAround) {
-			getFactoryInternalProperties().add(Properties.listSpinnerValues(items, initialValue, wrapAround));
+			getFactoryInternalProperties().add(new SpinnerFactoryProperty(items, initialValue, wrapAround));
 			return (T) this;
 		}
 

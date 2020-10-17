@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -41,12 +40,16 @@ public class AnimateProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param animated whether to animate the element
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T animated(final boolean animated) {
-			getFactoryInternalProperties().add(Properties.animated(animated));
+			getFactoryInternalProperties().add(new AnimateProperty(animated));
 			return (T) this;
 		}
 

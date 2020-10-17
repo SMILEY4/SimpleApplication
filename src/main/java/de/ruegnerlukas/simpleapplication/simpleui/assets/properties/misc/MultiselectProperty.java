@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -42,17 +41,24 @@ public class MultiselectProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T multiselect() {
-			getFactoryInternalProperties().add(Properties.multiselect());
-			return (T) this;
+			return multiselect(true);
 		}
 
+		/**
+		 * @param multiselect whether multi-select is enabled
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T multiselect(final boolean multiselect) {
-			getFactoryInternalProperties().add(Properties.multiselect(multiselect));
+			getFactoryInternalProperties().add(new MultiselectProperty(multiselect));
 			return (T) this;
 		}
 

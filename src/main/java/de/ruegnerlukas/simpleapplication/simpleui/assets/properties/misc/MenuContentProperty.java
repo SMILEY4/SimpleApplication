@@ -2,7 +2,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiAbstractMenuItem;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -57,18 +56,24 @@ public class MenuContentProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param items the top level items of the menu
+		 * @return this builder for chaining
+		 */
 		default T menuBarContent(final SuiAbstractMenuItem... items) {
-			getFactoryInternalProperties().add(Properties.menuBarContent(items));
-			return (T) this;
+			return menuBarContent(List.of(items));
 		}
 
-
+		/**
+		 * @param items the top level items of the menu
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T menuBarContent(final List<SuiAbstractMenuItem> items) {
-			getFactoryInternalProperties().add(Properties.menuBarContent(items));
+			getFactoryInternalProperties().add(new MenuContentProperty(items));
 			return (T) this;
 		}
 

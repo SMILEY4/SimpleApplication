@@ -69,7 +69,9 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 		 * @return this builder for chaining
 		 */
 		@SuppressWarnings ("unused")
-		default <E> T eventValueChanged(final Class<E> expectedType, final String propertyId, final SuiEventListener<ValueChangedEventData<E>> listener) {
+		default <E> T eventValueChanged(final Class<E> expectedType,
+										final String propertyId,
+										final SuiEventListener<ValueChangedEventData<E>> listener) {
 			return this.eventValueChanged(propertyId, listener);
 		}
 

@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -42,12 +41,16 @@ public class TabClosingPolicyProperty extends SuiProperty {
 
 
 
-	@SuppressWarnings ("unchecked")
 	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
 
 
+		/**
+		 * @param tabClosingPolicy the policy for closing tabs
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
 		default T tabClosingPolicy(final TabPane.TabClosingPolicy tabClosingPolicy) {
-			getFactoryInternalProperties().add(Properties.tabClosingPolicy(tabClosingPolicy));
+			getFactoryInternalProperties().add(new TabClosingPolicyProperty(tabClosingPolicy));
 			return (T) this;
 		}
 

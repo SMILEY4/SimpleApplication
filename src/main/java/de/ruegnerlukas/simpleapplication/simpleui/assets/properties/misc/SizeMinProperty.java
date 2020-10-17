@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
@@ -44,6 +45,27 @@ public class SizeMinProperty extends SuiProperty {
 		this.width = width;
 		this.height = height;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param width  the minimum width.
+		 * @param height the minimum height.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T sizeMin(final Number width, final Number height) {
+			getFactoryInternalProperties().add(new SizeMinProperty(width, height));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 
