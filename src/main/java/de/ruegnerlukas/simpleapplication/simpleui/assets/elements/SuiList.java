@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Multise
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -23,13 +23,18 @@ import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegist
 public final class SuiList {
 
 
-
-
 	/**
 	 * Hidden constructor for utility classes
 	 */
 	private SuiList() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiListBuilder create() {
+		return new SuiListBuilder();
 	}
 
 

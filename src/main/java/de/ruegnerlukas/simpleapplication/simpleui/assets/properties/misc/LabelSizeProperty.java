@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -56,6 +58,27 @@ public class LabelSizeProperty extends SuiProperty {
 		this.prefSize = prefSize;
 		this.maxSize = maxSize;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T labelSize(final Number size) {
+			getFactoryInternalProperties().add(Properties.labelSize(size));
+			return (T) this;
+		}
+
+		default T labelSize(final Number minSize, final Number prefSize, final Number maxSize) {
+			getFactoryInternalProperties().add(Properties.labelSize(minSize, prefSize, maxSize));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -1,12 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -86,10 +87,10 @@ public class InjectableItemListProperty extends ItemListProperty {
 	 */
 	public InjectableItemListProperty(final String injectionPointId,
 									  final InjectionIndexMarker indexMarker,
-									  final ItemListProperty.ItemListFactory factory) {
+									  final Supplier<List<NodeFactory>> factory) {
 		this.injectionPointId = injectionPointId;
 		this.injectionIndexMarker = indexMarker;
-		this.defaultFactories = factory.build();
+		this.defaultFactories = factory.get();
 	}
 
 

@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.util.StringConverter;
@@ -40,6 +42,26 @@ public class LabelFormatterProperty extends SuiProperty {
 		super(LabelFormatterProperty.class, COMPARATOR, propertyId);
 		this.formatter = formatter;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T labelFormatter(final Function<Double, String> formatter) {
+			getFactoryInternalProperties().add(Properties.labelFormatter(formatter));
+			return (T) this;
+		}
+		default T labelFormatter(final String propertyId, final Function<Double, String> formatter) {
+			getFactoryInternalProperties().add(Properties.labelFormatter(propertyId, formatter));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

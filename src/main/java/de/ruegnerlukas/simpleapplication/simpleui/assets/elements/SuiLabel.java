@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextCon
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -26,6 +26,13 @@ public final class SuiLabel {
 	 */
 	private SuiLabel() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiLabelBuilder create() {
+		return new SuiLabelBuilder();
 	}
 
 

@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -56,6 +58,23 @@ public class IconProperty extends SuiProperty {
 		this.width = width;
 		this.gap = gap;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T icon(final Resource resource, final Number width, final Number gap) {
+			getFactoryInternalProperties().add(Properties.icon(resource, width, gap));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

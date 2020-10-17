@@ -6,9 +6,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.Ex
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSpinner;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +54,40 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 				new ValueChangedEventData<>(next, prev))
 		);
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default <E> T eventValueChanged(final SuiEventListener<ValueChangedEventData<E>> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventValueChanged(listener));
+			return (T) this;
+		}
+
+
+		default <E> T eventValueChanged(final String propertyId, final SuiEventListener<ValueChangedEventData<E>> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventValueChanged(propertyId, listener));
+			return (T) this;
+		}
+
+		default <E> T eventValueChanged(final Class<E> expectedType, final SuiEventListener<ValueChangedEventData<E>> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventValueChanged(listener));
+			return (T) this;
+		}
+
+
+		default <E> T eventValueChanged(final Class<E> expectedType, final String propertyId, final SuiEventListener<ValueChangedEventData<E>> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventValueChanged(propertyId, listener));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

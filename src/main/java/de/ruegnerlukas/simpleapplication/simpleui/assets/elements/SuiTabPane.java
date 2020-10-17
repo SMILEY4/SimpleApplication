@@ -13,7 +13,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPane
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
@@ -35,6 +35,13 @@ public final class SuiTabPane {
 	 */
 	private SuiTabPane() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiTabPaneBuilder create() {
+		return new SuiTabPaneBuilder();
 	}
 
 
@@ -90,7 +97,7 @@ public final class SuiTabPane {
 	/**
 	 * The child node listener for tab panes.
 	 */
-	private static final SuiNodeChildListener CHILD_NODE_LISTENER = node -> {
+	protected static final SuiNodeChildListener CHILD_NODE_LISTENER = node -> {
 		final ExtendedTabPane pane = (ExtendedTabPane) node.getFxNodeStore().get();
 		if (pane != null) {
 			if (node.getChildNodeStore().hasChildren()) {

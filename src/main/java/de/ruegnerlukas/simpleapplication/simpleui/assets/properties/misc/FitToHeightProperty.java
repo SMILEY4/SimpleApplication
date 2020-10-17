@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
@@ -36,6 +38,27 @@ public class FitToHeightProperty extends SuiProperty {
 		super(FitToHeightProperty.class, COMPARATOR);
 		this.fitToHeight = fitToHeight;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T fitToHeight() {
+			getFactoryInternalProperties().add(Properties.fitToHeight());
+			return (T) this;
+		}
+
+		default T fitToHeight(final boolean fitToHeight) {
+			getFactoryInternalProperties().add(Properties.fitToHeight(fitToHeight));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

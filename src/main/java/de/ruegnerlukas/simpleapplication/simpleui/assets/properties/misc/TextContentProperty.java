@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextInputControl;
 import lombok.Getter;
@@ -36,6 +38,22 @@ public class TextContentProperty extends SuiProperty {
 		super(TextContentProperty.class, COMPARATOR);
 		this.text = text;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T textContent(final String text) {
+			getFactoryInternalProperties().add(Properties.textContent(text));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

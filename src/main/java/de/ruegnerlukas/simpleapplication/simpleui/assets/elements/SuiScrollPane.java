@@ -12,7 +12,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemPro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
@@ -32,6 +32,13 @@ public final class SuiScrollPane {
 	 */
 	private SuiScrollPane() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiScrollPaneBuilder create() {
+		return new SuiScrollPaneBuilder();
 	}
 
 
@@ -88,10 +95,10 @@ public final class SuiScrollPane {
 		registry.registerProperties(SuiScrollPane.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiScrollPane.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiScrollPane.class, List.of(
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneBuilder(), null),
 				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.ScrollPaneUpdatingBuilder()),
 				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.ScrollPaneUpdatingBuilder()),
 				PropertyEntry.of(ShowScrollbarsProperty.class, new ShowScrollbarsProperty.ScrollPaneUpdatingBuilder()),
-				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneBuilder(), null),
 				PropertyEntry.of(OnScrollHorizontalEventProperty.class, new OnScrollHorizontalEventProperty.ScrollPaneUpdatingBuilder()),
 				PropertyEntry.of(OnScrollVerticalEventProperty.class, new OnScrollVerticalEventProperty.ScrollPaneUpdatingBuilder()),
 				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())

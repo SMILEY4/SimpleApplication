@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemLis
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
@@ -30,6 +30,13 @@ public final class SuiVBox {
 	 */
 	private SuiVBox() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiVBoxBuilder create() {
+		return new SuiVBoxBuilder();
 	}
 
 

@@ -47,6 +47,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMou
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollFinishedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollStartedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnScrollHorizontalEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnScrollVerticalEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSelectedDateEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSelectedTabEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTabClosedEventProperty;
@@ -807,7 +808,7 @@ public final class EventProperties {
 
 
 	/**
-	 * When a node (for example a scroll pane) was scroll horizontally.
+	 * When a node (for example a scroll pane) was scrolled horizontally.
 	 *
 	 * @param listener the listener for events with {@link ScrollEventData}.
 	 * @return a {@link OnScrollHorizontalEventProperty}
@@ -820,7 +821,7 @@ public final class EventProperties {
 
 
 	/**
-	 * When a node (for example a scroll pane) was scroll horizontally.
+	 * When a node (for example a scroll pane) was scrolled horizontally.
 	 *
 	 * @param listener the listener for events with {@link ScrollEventData}.
 	 * @return a {@link OnScrollHorizontalEventProperty}
@@ -828,6 +829,33 @@ public final class EventProperties {
 	public static SuiProperty eventScrollHorizontal(final String propertyId, final SuiEventListener<ScrollEventData> listener) {
 		Validations.INPUT.notNull(listener).exception("The listener can not be null");
 		return new OnScrollHorizontalEventProperty(propertyId, listener);
+	}
+
+
+
+
+	/**
+	 * When a node (for example a scroll pane) was scrolled vertically.
+	 *
+	 * @param listener the listener for events with {@link ScrollEventData}.
+	 * @return a {@link OnScrollVerticalEventProperty}
+	 */
+	public static SuiProperty eventScrollVertical(final SuiEventListener<ScrollEventData> listener) {
+		return eventScrollVertical(null, listener);
+	}
+
+
+
+
+	/**
+	 * When a node (for example a scroll pane) was scrolled vertically.
+	 *
+	 * @param listener the listener for events with {@link ScrollEventData}.
+	 * @return a {@link OnScrollVerticalEventProperty}
+	 */
+	public static SuiProperty eventScrollVertical(final String propertyId, final SuiEventListener<ScrollEventData> listener) {
+		Validations.INPUT.notNull(listener).exception("The listener can not be null");
+		return new OnScrollVerticalEventProperty(propertyId, listener);
 	}
 
 

@@ -5,10 +5,12 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
@@ -54,6 +56,23 @@ public class ItemProperty extends SuiProperty {
 		super(ItemProperty.class, COMPARATOR);
 		this.factory = item;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T item(final NodeFactory item) {
+			getFactoryInternalProperties().add(Properties.item(item));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

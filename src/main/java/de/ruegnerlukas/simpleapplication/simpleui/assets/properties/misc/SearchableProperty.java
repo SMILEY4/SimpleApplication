@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -50,6 +52,27 @@ public class SearchableProperty extends SuiProperty {
 				.map(SearchableProperty::isSearchable)
 				.orElse(false);
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T searchable() {
+			getFactoryInternalProperties().add(Properties.searchable());
+			return (T) this;
+		}
+
+		default T searchable(final boolean searchable) {
+			getFactoryInternalProperties().add(Properties.searchable(searchable));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

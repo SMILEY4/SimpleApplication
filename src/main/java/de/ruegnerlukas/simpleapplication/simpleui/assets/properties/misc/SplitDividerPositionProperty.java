@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSplitPane;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.application.Platform;
 import javafx.scene.control.SplitPane;
 import lombok.Getter;
@@ -88,6 +90,27 @@ public class SplitDividerPositionProperty extends SuiProperty {
 		}
 		return positions;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T dividerPositions(final Number... positions) {
+			getFactoryInternalProperties().add(Properties.dividerPositions(positions));
+			return (T) this;
+		}
+
+		default T dividerPositions(final boolean fixed, final Number... positions) {
+			getFactoryInternalProperties().add(Properties.dividerPositions(fixed, positions));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

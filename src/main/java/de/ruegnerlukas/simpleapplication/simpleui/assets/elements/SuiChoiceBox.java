@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Choices
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -27,6 +27,13 @@ public final class SuiChoiceBox {
 	 */
 	private SuiChoiceBox() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiChoiceBoxBuilder create() {
+		return new SuiChoiceBoxBuilder();
 	}
 
 

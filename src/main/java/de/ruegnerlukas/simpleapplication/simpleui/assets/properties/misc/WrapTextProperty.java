@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
@@ -34,6 +36,26 @@ public class WrapTextProperty extends SuiProperty {
 		super(WrapTextProperty.class, COMPARATOR);
 		this.wrap = wrap;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T wrapText() {
+			return wrapText(true);
+		}
+
+		default T wrapText(final boolean wrapText) {
+			getFactoryInternalProperties().add(Properties.wrapText(wrapText));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

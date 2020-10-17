@@ -3,9 +3,11 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSplitPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DividerDraggedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiConsumer;
@@ -43,6 +45,22 @@ public class OnDividerDraggedEventProperty extends AbstractEventListenerProperty
 						.build()
 		);
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T eventDividerPositionListener(final String propertyId, final SuiEventListener<DividerDraggedEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventDividerPositionListener(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.ChoiceBox;
 import javafx.util.StringConverter;
 import lombok.Getter;
@@ -65,6 +67,43 @@ public class ChoicesConverterProperty<T> extends SuiProperty {
 		super(ChoicesConverterProperty.class, COMPARATOR, propertyId);
 		this.converter = converter;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T contentItemConverter(final Class<T> type, final StringConverter<T> converter) {
+			getFactoryInternalProperties().add(Properties.contentItemConverter(type, converter));
+			return (T) this;
+		}
+
+		default T contentItemConverter(final String propertyId, final Class<T> type, final StringConverter<T> converter) {
+			getFactoryInternalProperties().add(Properties.contentItemConverter(propertyId, type, converter));
+			return (T) this;
+		}
+
+		default T contentItemConverter(final Class<T> type,
+									   final ChoicesConverterProperty.FromStringConverter<T> fromString,
+									   final ChoicesConverterProperty.ToStringConverter<T> toString) {
+			getFactoryInternalProperties().add(Properties.contentItemConverter(type, fromString, toString));
+			return (T) this;
+		}
+
+		default T contentItemConverter(final String propertyId,
+									   final Class<T> type,
+									   final ChoicesConverterProperty.FromStringConverter<T> fromString,
+									   final ChoicesConverterProperty.ToStringConverter<T> toString) {
+			getFactoryInternalProperties().add(Properties.contentItemConverter(propertyId, type, fromString, toString));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

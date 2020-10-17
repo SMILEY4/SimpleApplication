@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGrou
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MenuContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SystemMenuBarProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -19,13 +19,18 @@ import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegist
 public final class SuiMenuBar {
 
 
-
-
 	/**
 	 * Hidden constructor for utility classes
 	 */
 	private SuiMenuBar() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiMenuBarBuilder create() {
+		return new SuiMenuBarBuilder();
 	}
 
 

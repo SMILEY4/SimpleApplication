@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.Control;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -85,6 +87,27 @@ public class TooltipProperty extends SuiProperty {
 		}
 		return tooltip;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T tooltip(final String tooltip) {
+			getFactoryInternalProperties().add(Properties.tooltip(tooltip));
+			return (T) this;
+		}
+
+		default T tooltip(final String tooltip, final boolean wrapText, final Number prefWidth) {
+			getFactoryInternalProperties().add(Properties.tooltip(tooltip, wrapText, prefWidth));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextInputControl;
@@ -40,6 +42,27 @@ public class EditableProperty extends SuiProperty {
 		super(EditableProperty.class, COMPARATOR);
 		this.editable = editable;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T editable() {
+			getFactoryInternalProperties().add(Properties.editable());
+			return (T) this;
+		}
+
+		default T editable(final boolean editable) {
+			getFactoryInternalProperties().add(Properties.editable(editable));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

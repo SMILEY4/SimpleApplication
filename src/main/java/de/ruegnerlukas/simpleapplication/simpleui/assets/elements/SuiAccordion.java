@@ -11,7 +11,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemLis
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
@@ -29,6 +29,13 @@ public final class SuiAccordion {
 	 */
 	private SuiAccordion() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiAccordionBuilder create() {
+		return new SuiAccordionBuilder();
 	}
 
 
@@ -60,7 +67,7 @@ public final class SuiAccordion {
 	/**
 	 * A child listener applicable to {@link ExtendedAccordion}s.
 	 */
-	private static final SuiNodeChildListener CHILD_LISTENER = node -> {
+	protected static final SuiNodeChildListener CHILD_LISTENER = node -> {
 		final ExtendedAccordion accordion = (ExtendedAccordion) node.getFxNodeStore().get();
 		if (accordion != null) {
 			if (node.getChildNodeStore().hasChildren()) {

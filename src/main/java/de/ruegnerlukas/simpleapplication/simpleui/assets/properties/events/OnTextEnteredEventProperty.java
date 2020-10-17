@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -50,6 +52,20 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 		};
 	}
 
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T eventTextEntered(final SuiEventListener<TextContentEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventTextEntered(listener));
+			return (T) this;
+		}
+		default T eventTextEntered(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventTextEntered(propertyId, listener));
+			return (T) this;
+		}
+
+	}
 
 
 

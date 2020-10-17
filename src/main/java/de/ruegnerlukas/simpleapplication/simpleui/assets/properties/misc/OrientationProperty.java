@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
@@ -41,6 +43,22 @@ public class OrientationProperty extends SuiProperty {
 		super(OrientationProperty.class, COMPARATOR);
 		this.orientation = orientation;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T orientation(final Orientation orientation) {
+			getFactoryInternalProperties().add(Properties.orientation(orientation));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 
@@ -158,6 +176,10 @@ public class OrientationProperty extends SuiProperty {
 	}
 
 
+
+
+
+
 	public static class SplitPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<OrientationProperty, SplitPane> {
 
 
@@ -191,6 +213,7 @@ public class OrientationProperty extends SuiProperty {
 		}
 
 	}
+
 }
 
 

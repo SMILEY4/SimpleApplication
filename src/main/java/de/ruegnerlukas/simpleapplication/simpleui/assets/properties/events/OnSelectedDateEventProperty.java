@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.DatePicker;
 import lombok.Getter;
 
@@ -27,6 +29,28 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 		super(OnSelectedDateEventProperty.class, propertyId);
 		this.listener = listener;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T eventDatePickerAction(final SuiEventListener<DatePickerActionEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventDatePickerAction(listener));
+			return (T) this;
+		}
+
+
+		default T eventDatePickerAction(final String propertyId, final SuiEventListener<DatePickerActionEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventDatePickerAction(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

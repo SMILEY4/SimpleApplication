@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ScrollEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.ScrollPane;
 import lombok.Getter;
 
@@ -47,6 +49,27 @@ public class OnScrollHorizontalEventProperty extends AbstractEventListenerProper
 			}
 		});
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T eventScrollHorizontal(final SuiEventListener<ScrollEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventScrollHorizontal(listener));
+			return (T) this;
+		}
+
+		default T eventScrollHorizontal(final String propertyId, final SuiEventListener<ScrollEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventScrollHorizontal(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

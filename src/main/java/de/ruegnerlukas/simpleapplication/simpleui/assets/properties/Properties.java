@@ -47,6 +47,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Spacing
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpinnerFactoryProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SplitDividerPositionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SystemMenuBarProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabClosingPolicyProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPaneMenuSideProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
@@ -54,8 +55,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMar
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.geometry.Orientation;
@@ -74,6 +75,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -404,12 +406,12 @@ public final class Properties {
 
 
 	/**
-	 * @param factory the factory for the factories for child items.
+	 * @param supplier the supplier for the factories for child items.
 	 * @return an {@link ItemListProperty}.
 	 */
-	public static SuiProperty items(final ItemListProperty.ItemListFactory factory) {
-		Validations.INPUT.notNull(factory).exception("The factory can not be null.");
-		return new ItemListProperty(factory);
+	public static SuiProperty items(final Supplier<List<NodeFactory>> supplier) {
+		Validations.INPUT.notNull(supplier).exception("The supplier can not be null.");
+		return new ItemListProperty(supplier);
 	}
 
 
@@ -486,16 +488,16 @@ public final class Properties {
 	/**
 	 * @param injectionPointId the unique id of this injection point.
 	 * @param indexMarker      the marker defining at what position to inject items into
-	 * @param factory          the factory for the factories for default child items.
+	 * @param supplier         the supplier for the factories for default child items.
 	 * @return an {@link InjectableItemListProperty}.
 	 */
 	public static SuiProperty itemsInjectable(final String injectionPointId,
 											  final InjectionIndexMarker indexMarker,
-											  final ItemListProperty.ItemListFactory factory) {
+											  final Supplier<List<NodeFactory>> supplier) {
 		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null.");
 		Validations.INPUT.notNull(indexMarker).exception("The index marker can not be null.");
-		Validations.INPUT.notNull(factory).exception("The factory can not be null.");
-		return new InjectableItemListProperty(injectionPointId, indexMarker, factory);
+		Validations.INPUT.notNull(supplier).exception("The supplier can not be null.");
+		return new InjectableItemListProperty(injectionPointId, indexMarker, supplier);
 	}
 
 
@@ -623,7 +625,8 @@ public final class Properties {
 	 * @param spacing the spacing between the elements
 	 * @return a {@link SpacingProperty}
 	 */
-	public static SuiProperty spacing(final double spacing) {
+	public static SuiProperty spacing(final Number spacing) {
+		Validations.INPUT.notNull(spacing).exception("The spacing can not be null.");
 		return new SpacingProperty(spacing);
 	}
 
@@ -1322,6 +1325,27 @@ public final class Properties {
 		Validations.INPUT.notEmpty(text).exception("The tooltip text may not be null or empty.");
 		Validations.INPUT.notNull(prefWidth).exception("The tooltip preferred width may not be null.");
 		return new TooltipProperty(text, wrapText, prefWidth);
+	}
+
+
+
+
+	/**
+	 * @return the {@link SystemMenuBarProperty}
+	 */
+	public static SuiProperty useSystemMenuBar() {
+		return useSystemMenuBar(true);
+	}
+
+
+
+
+	/**
+	 * @param useSystemMenuBar whether to use the host OS system menu bar.
+	 * @return the {@link TooltipProperty}
+	 */
+	public static SuiProperty useSystemMenuBar(final boolean useSystemMenuBar) {
+		return new SystemMenuBarProperty(useSystemMenuBar);
 	}
 
 }

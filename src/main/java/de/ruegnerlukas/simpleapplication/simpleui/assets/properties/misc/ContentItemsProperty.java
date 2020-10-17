@@ -4,10 +4,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedListView;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import lombok.Getter;
 
 import java.util.List;
@@ -57,6 +59,38 @@ public class ContentItemsProperty<T> extends SuiProperty {
 		this.choices = choices;
 		this.selectedChoice = selectedChoice;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtensionWithSelected<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T contentItems(final List<T> choices, final T selectedChoice) {
+			getFactoryInternalProperties().add(Properties.contentItems(choices, selectedChoice));
+			return (T) this;
+		}
+
+	}
+
+
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtensionNoSelected<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T contentItems(final List<T> choices) {
+			getFactoryInternalProperties().add(Properties.contentItems(choices));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

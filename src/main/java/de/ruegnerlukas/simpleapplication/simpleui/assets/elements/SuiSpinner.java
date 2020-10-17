@@ -9,7 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Editabl
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpinnerFactoryProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -28,6 +28,13 @@ public final class SuiSpinner {
 	 */
 	private SuiSpinner() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiSpinnerBuilder create() {
+		return new SuiSpinnerBuilder();
 	}
 
 
@@ -85,9 +92,6 @@ public final class SuiSpinner {
 		public ExtendedSpinner<?> build(final SuiNode node) {
 			return new ExtendedSpinner<>();
 		}
-
-
-
 
 
 	}

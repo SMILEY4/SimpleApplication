@@ -2,9 +2,11 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiConsumer;
@@ -41,6 +43,22 @@ public class OnAccordionExpandedEventProperty extends AbstractEventListenerPrope
 						.build()
 		);
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T eventSection(final String propertyId, final SuiEventListener<SectionEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventAccordionExpanded(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

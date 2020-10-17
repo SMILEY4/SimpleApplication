@@ -12,7 +12,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Orienta
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -29,6 +29,13 @@ public final class SuiSlider {
 	 */
 	private SuiSlider() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiSliderBuilder create() {
+		return new SuiSliderBuilder();
 	}
 
 

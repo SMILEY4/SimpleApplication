@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.ButtonBase;
 import lombok.Getter;
 
@@ -27,6 +29,27 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 		super(OnActionEventProperty.class, propertyId);
 		this.listener = listener;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T eventAction(final SuiEventListener<ActionEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventAction(listener));
+			return (T) this;
+		}
+		default T eventAction(final String propertyId, final SuiEventListener<ActionEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventAction(propertyId, listener));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

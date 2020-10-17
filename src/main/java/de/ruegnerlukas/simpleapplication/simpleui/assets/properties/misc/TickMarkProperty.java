@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -147,6 +149,38 @@ public class TickMarkProperty extends SuiProperty {
 		this.minorTickCount = minorTickCount;
 		this.snapToTicks = snapToTicks;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle) {
+			getFactoryInternalProperties().add(Properties.tickMarks(tickMarkStyle));
+			return (T) this;
+		}
+
+		default T tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle,
+							final Number majorTickUnit,
+							final int minorTickCount) {
+			getFactoryInternalProperties().add(Properties.tickMarks(tickMarkStyle, majorTickUnit, minorTickCount));
+			return (T) this;
+		}
+
+		default T tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle,
+							final Number majorTickUnit,
+							final int minorTickCount,
+							final boolean snapToTicks) {
+			getFactoryInternalProperties().add(Properties.tickMarks(tickMarkStyle, majorTickUnit, minorTickCount, snapToTicks));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

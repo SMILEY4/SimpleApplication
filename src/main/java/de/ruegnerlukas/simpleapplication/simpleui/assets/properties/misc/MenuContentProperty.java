@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiAbstractMenuItem;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import lombok.Getter;
@@ -51,6 +53,28 @@ public class MenuContentProperty extends SuiProperty {
 		super(MenuContentProperty.class, COMPARATOR);
 		this.menuItems = menuItems;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T menuBarContent(final SuiAbstractMenuItem... items) {
+			getFactoryInternalProperties().add(Properties.menuBarContent(items));
+			return (T) this;
+		}
+
+
+		default T menuBarContent(final List<SuiAbstractMenuItem> items) {
+			getFactoryInternalProperties().add(Properties.menuBarContent(items));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

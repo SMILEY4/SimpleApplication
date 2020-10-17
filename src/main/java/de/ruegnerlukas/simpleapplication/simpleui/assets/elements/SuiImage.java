@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImagePr
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PreserveRatioProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -25,6 +25,13 @@ public final class SuiImage {
 	 */
 	private SuiImage() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiImageBuilder create() {
+		return new SuiImageBuilder();
 	}
 
 

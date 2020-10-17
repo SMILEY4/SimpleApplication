@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
@@ -64,6 +66,22 @@ public class ImageSizeProperty extends SuiProperty {
 		this.width = width;
 		this.height = height;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T imageSize(final ImageSizeProperty.ImageDimension width, final ImageSizeProperty.ImageDimension height) {
+			getFactoryInternalProperties().add(Properties.imageSize(width, height));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

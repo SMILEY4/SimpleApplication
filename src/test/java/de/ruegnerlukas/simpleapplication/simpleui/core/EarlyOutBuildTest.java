@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;

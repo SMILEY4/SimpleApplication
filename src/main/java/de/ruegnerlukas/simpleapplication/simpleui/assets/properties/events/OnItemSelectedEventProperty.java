@@ -2,9 +2,11 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedListView;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ItemSelectedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.ListView;
 import lombok.Getter;
 
@@ -39,6 +41,29 @@ public class OnItemSelectedEventProperty<T> extends AbstractEventListenerPropert
 		this.listener = listener;
 		this.proxyListener = selectedItems -> listener.onEvent(new ItemSelectedEventData<>(selectedItems));
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default <E> T eventItemSelected(final String propertyId, final SuiEventListener<ItemSelectedEventData<E>> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventItemsSelected(propertyId, listener));
+			return (T) this;
+		}
+
+		default <E> T eventItemSelected(final String propertyId,
+										final Class<E> expectedType,
+										final SuiEventListener<ItemSelectedEventData<E>> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventItemsSelected(propertyId, expectedType, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

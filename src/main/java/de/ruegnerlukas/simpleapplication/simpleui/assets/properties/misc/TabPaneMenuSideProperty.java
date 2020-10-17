@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.geometry.Side;
 import javafx.scene.control.TabPane;
 import lombok.Getter;
@@ -41,6 +43,22 @@ public class TabPaneMenuSideProperty extends SuiProperty {
 
 
 
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T tabMenuSide(final Side side) {
+			getFactoryInternalProperties().add(Properties.tabMenuSide(side));
+			return (T) this;
+		}
+
+	}
+
+
+
+
+
+
 	public static class TabPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<TabPaneMenuSideProperty, TabPane> {
 
 
@@ -68,8 +86,6 @@ public class TabPaneMenuSideProperty extends SuiProperty {
 		}
 
 	}
-
-
 
 
 }

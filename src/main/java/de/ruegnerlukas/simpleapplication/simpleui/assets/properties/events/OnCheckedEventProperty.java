@@ -2,9 +2,11 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedCheckbox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.Consumer;
@@ -40,6 +42,28 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 						.build()
 		);
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T onChecked(final SuiEventListener<CheckedEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventChecked(listener));
+			return (T) this;
+		}
+
+
+		default T onChecked(final String propertyId, final SuiEventListener<CheckedEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventChecked(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

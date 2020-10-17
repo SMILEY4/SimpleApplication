@@ -4,10 +4,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSpinner;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -154,9 +156,9 @@ public class SpinnerFactoryProperty extends SuiProperty {
 
 
 	/**
-	 * @param items      the items
+	 * @param items        the items
 	 * @param initialValue the initial value
-	 * @param wrapAround whether to wrap around or stop at the end/start
+	 * @param wrapAround   whether to wrap around or stop at the end/start
 	 */
 	public SpinnerFactoryProperty(final List<String> items, final String initialValue, final boolean wrapAround) {
 		super(SpinnerFactoryProperty.class, COMPARATOR);
@@ -169,6 +171,38 @@ public class SpinnerFactoryProperty extends SuiProperty {
 		this.wrapAround = wrapAround;
 		this.dataType = DataType.STRINGS;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T integerSpinnerValues(final int min,
+									   final int max,
+									   final int stepSize,
+									   final int value) {
+			getFactoryInternalProperties().add(Properties.integerSpinnerValues(min, max, stepSize, value));
+			return (T) this;
+		}
+
+		default T floatingPointSpinnerValues(final double min,
+											 final double max,
+											 final double stepSize,
+											 final double value) {
+			getFactoryInternalProperties().add(Properties.floatingPointSpinnerValues(min, max, stepSize, value));
+			return (T) this;
+		}
+
+		default T listSpinnerValues(final List<String> items, final String initialValue, final boolean wrapAround) {
+			getFactoryInternalProperties().add(Properties.listSpinnerValues(items, initialValue, wrapAround));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

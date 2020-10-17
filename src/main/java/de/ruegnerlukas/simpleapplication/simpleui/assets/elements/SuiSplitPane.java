@@ -11,9 +11,9 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Orienta
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SplitDividerPositionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.RemoveOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
@@ -35,6 +35,13 @@ public final class SuiSplitPane {
 	 */
 	private SuiSplitPane() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiSplitPaneBuilder create() {
+		return new SuiSplitPaneBuilder();
 	}
 
 
@@ -66,7 +73,7 @@ public final class SuiSplitPane {
 	/**
 	 * A child listener for to split panes.
 	 */
-	private static final SuiNodeChildListener CHILD_LISTENER = node -> {
+	protected static final SuiNodeChildListener CHILD_LISTENER = node -> {
 		final SplitPane pane = (SplitPane) node.getFxNodeStore().get();
 		if (pane != null) {
 			if (node.getChildNodeStore().hasChildren()) {
@@ -82,7 +89,7 @@ public final class SuiSplitPane {
 	/**
 	 * A child transform listener for to split panes.
 	 */
-	private static final SuiNodeChildTransformListener CHILD_TRANSFORM_LISTENER = (node, type, operations) -> {
+	protected static final SuiNodeChildTransformListener CHILD_TRANSFORM_LISTENER = (node, type, operations) -> {
 		final SplitPane pane = (SplitPane) node.getFxNodeStore().get();
 		if (pane != null) {
 			if (type == OperationType.REMOVE) {

@@ -1,13 +1,16 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiImage;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,6 +44,24 @@ public class ImageProperty extends SuiProperty {
 		this.image = image;
 	}
 
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T image(final Resource image) {
+			getFactoryInternalProperties().add(Properties.image(image));
+			return (T) this;
+		}
+
+		default T image(final Image image) {
+			getFactoryInternalProperties().add(Properties.image(image));
+			return (T) this;
+		}
+
+	}
 
 
 

@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -37,6 +39,27 @@ public class FitToWidthProperty extends SuiProperty {
 		super(FitToWidthProperty.class, COMPARATOR);
 		this.fitToWidth = fitToWidth;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T fitToWidth() {
+			getFactoryInternalProperties().add(Properties.fitToWidth());
+			return (T) this;
+		}
+
+		default T fitToWidth(final boolean fitToWidth) {
+			getFactoryInternalProperties().add(Properties.fitToWidth(fitToWidth));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

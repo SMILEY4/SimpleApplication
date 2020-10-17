@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 
 public interface SuiComponentRenderer<T extends SuiState> {
 

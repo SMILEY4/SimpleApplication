@@ -6,12 +6,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
@@ -31,6 +30,13 @@ public final class SuiHBox {
 	 */
 	private SuiHBox() {
 		// do nothing
+	}
+
+
+
+
+	public static SuiHBoxBuilder create() {
+		return new SuiHBoxBuilder();
 	}
 
 
@@ -70,7 +76,7 @@ public final class SuiHBox {
 		registry.registerProperties(SuiHBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiHBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiHBox.class, List.of(
-				PropertyEntry.of(FitToWidthProperty.class, new FitToHeightProperty.HBoxUpdatingBuilder()),
+				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.PaneBuilder(), null),

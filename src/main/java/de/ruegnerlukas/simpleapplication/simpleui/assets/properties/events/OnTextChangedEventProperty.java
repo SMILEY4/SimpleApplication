@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import lombok.Getter;
@@ -40,6 +42,26 @@ public class OnTextChangedEventProperty extends AbstractEventListenerProperty<Te
 						.build()
 		));
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T eventTextChanged(final SuiEventListener<TextContentEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventTextChanged(listener));
+			return (T) this;
+		}
+		default T eventTextChanged(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventTextChanged(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

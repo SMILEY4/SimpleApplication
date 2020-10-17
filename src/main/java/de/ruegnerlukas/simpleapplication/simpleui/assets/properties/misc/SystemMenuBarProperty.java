@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.application.Platform;
 import javafx.scene.control.MenuBar;
 import lombok.Getter;
@@ -36,6 +38,28 @@ public class SystemMenuBarProperty extends SuiProperty {
 		super(SystemMenuBarProperty.class, COMPARATOR);
 		this.useSystemMenuBar = useSystemMenuBar;
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T useSystemMenuBar() {
+			getFactoryInternalProperties().add(Properties.useSystemMenuBar());
+			return (T) this;
+		}
+
+
+		default T useSystemMenuBar(final boolean useSystemMenuBar) {
+			getFactoryInternalProperties().add(Properties.useSystemMenuBar(useSystemMenuBar));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

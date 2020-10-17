@@ -2,9 +2,11 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.factoriesextensions.FactoryExtension;
 import javafx.scene.control.Tab;
 import lombok.Getter;
 
@@ -43,6 +45,22 @@ public class OnTabClosedEventProperty extends AbstractEventListenerProperty<TabA
 						.build()
 		);
 	}
+
+
+
+
+	@SuppressWarnings ("unchecked")
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		default T eventTabClosed(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
+			getFactoryInternalProperties().add(EventProperties.eventClosedTab(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 
