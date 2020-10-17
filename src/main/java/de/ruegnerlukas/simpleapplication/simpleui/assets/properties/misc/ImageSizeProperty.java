@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -62,6 +63,8 @@ public class ImageSizeProperty extends SuiProperty {
 	 */
 	public ImageSizeProperty(final ImageDimension width, final ImageDimension height) {
 		super(ImageSizeProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(width).exception("The width may not be null.");
+		Validations.INPUT.notNull(height).exception("The height may not be null.");
 		this.width = width;
 		this.height = height;
 	}
@@ -136,6 +139,7 @@ public class ImageSizeProperty extends SuiProperty {
 		 * @return an image dimension with an absolute size
 		 */
 		public static ImageDimension absolute(final Number size) {
+			Validations.INPUT.notNull(size).exception("The size may not be null.");
 			return new ImageDimension(Type.ABSOLUTE, size);
 		}
 
@@ -146,6 +150,7 @@ public class ImageSizeProperty extends SuiProperty {
 		 * @return an image dimension with a size relative to the original image size
 		 */
 		public static ImageDimension relative(final Number percentage) {
+			Validations.INPUT.notNull(percentage).exception("The percentage may not be null.");
 			return new ImageDimension(Type.RELATIVE, percentage);
 		}
 
@@ -156,6 +161,7 @@ public class ImageSizeProperty extends SuiProperty {
 		 * @return an image dimension with a size relative to the parent node
 		 */
 		public static ImageDimension parentRelative(final Number percentage) {
+			Validations.INPUT.notNull(percentage).exception("The percentage may not be null.");
 			return new ImageDimension(Type.PARENT_RELATIVE, percentage);
 		}
 

@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -26,7 +26,7 @@ public class SuiContainerTest extends SuiElementTest {
 
 		final Node container = new SuiSceneController(
 				SuiContainer.container(
-						Properties.layout(".", (parent, nodes) -> {
+						PropertyValidation.layout(".", (parent, nodes) -> {
 							counter.incrementAndGet();
 							phaser.arrive();
 						})

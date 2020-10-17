@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.image.ImageView;
@@ -109,15 +109,15 @@ public class SuiImageTest extends SuiElementTest {
 	private SuiSceneController buildScene(ImageSizeProperty.ImageDimension width, ImageSizeProperty.ImageDimension height) {
 		return new SuiSceneController(
 				SuiAnchorPane.anchorPane(
-						Properties.minSize(400, 400),
-						Properties.maxSize(400, 400),
-						Properties.item(
+						PropertyValidation.minSize(400, 400),
+						PropertyValidation.maxSize(400, 400),
+						PropertyValidation.item(
 								SuiVBox.vbox(
-										Properties.anchor(0, 0, 0, 0),
-										Properties.item(
+										PropertyValidation.anchor(0, 0, 0, 0),
+										PropertyValidation.item(
 												SuiImage.image(
-														Properties.image(Resource.internal("testResources/test-image.png")),
-														Properties.imageSize(width, height)
+														PropertyValidation.image(Resource.internal("testResources/test-image.png")),
+														PropertyValidation.imageSize(width, height)
 												)
 										)
 								)

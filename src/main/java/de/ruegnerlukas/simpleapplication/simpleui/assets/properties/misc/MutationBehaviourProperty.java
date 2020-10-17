@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
@@ -98,6 +99,7 @@ public class MutationBehaviourProperty extends SuiProperty {
 	 */
 	public MutationBehaviourProperty(final MutationBehaviour behaviour, final TagConditionExpression condition) {
 		super(MutationBehaviourProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(behaviour).exception("The behaviour may not be null.");
 		this.behaviour = behaviour;
 		this.condition = condition;
 	}

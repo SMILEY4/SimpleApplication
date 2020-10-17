@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateExceptio
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -20,8 +20,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton.button;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties.eventAction;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.wrapText;
+import static de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation.textContent;
+import static de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation.wrapText;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SUIIntegrationTest extends ApplicationTest {
@@ -133,19 +133,19 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory nodeFactory = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("sameId"),
-								Properties.textContent("Child Button 1")
+								PropertyValidation.id("sameId"),
+								PropertyValidation.textContent("Child Button 1")
 						),
 						SuiButton.button(
-								Properties.id("diffId"),
-								Properties.textContent("Child Button 2")
+								PropertyValidation.id("diffId"),
+								PropertyValidation.textContent("Child Button 2")
 						),
 						SuiButton.button(
-								Properties.id("sameId"),
-								Properties.textContent("Child Button 3")
+								PropertyValidation.id("sameId"),
+								PropertyValidation.textContent("Child Button 3")
 						)
 				)
 		);

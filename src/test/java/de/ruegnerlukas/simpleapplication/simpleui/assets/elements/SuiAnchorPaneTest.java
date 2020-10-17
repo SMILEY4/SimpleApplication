@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -16,20 +16,20 @@ public class SuiAnchorPaneTest extends SuiElementTest {
 
 		final AnchorPane anchorPane = (AnchorPane) new SuiSceneController(
 				SuiAnchorPane.anchorPane(
-						Properties.items(
+						PropertyValidation.items(
 								SuiButton.button(
-										Properties.id("btn-fit"),
-										Properties.textContent("Button Fit"),
-										Properties.anchorFitParent()
+										PropertyValidation.id("btn-fit"),
+										PropertyValidation.textContent("Button Fit"),
+										PropertyValidation.anchorFitParent()
 								),
 								SuiButton.button(
-										Properties.id("btn-anchored"),
-										Properties.textContent("Button Anchored"),
-										Properties.anchor(10, 20, null, null)
+										PropertyValidation.id("btn-anchored"),
+										PropertyValidation.textContent("Button Anchored"),
+										PropertyValidation.anchor(10, 20, null, null)
 								),
 								SuiButton.button(
-										Properties.id("btn-missing"),
-										Properties.textContent("Button Missing")
+										PropertyValidation.id("btn-missing"),
+										PropertyValidation.textContent("Button Missing")
 								)
 						)
 				)).getRootFxNode();

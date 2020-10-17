@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
@@ -131,36 +131,36 @@ public class EarlyOutBuildTest extends ApplicationTest {
 
 	private NodeFactory buildFactory(final MutationBehaviourProperty.MutationBehaviour behaviour, final TagConditionExpression condition) {
 		return SuiVBox.vbox(
-				Properties.id("root"),
-				Properties.items(
+				PropertyValidation.id("root"),
+				PropertyValidation.items(
 						SuiVBox.vbox(
-								Properties.id("box-left"),
-								Properties.items(
+								PropertyValidation.id("box-left"),
+								PropertyValidation.items(
 										SuiButton.button(
-												Properties.id("btn-left-1"),
-												Properties.textContent("Button Left 1")
+												PropertyValidation.id("btn-left-1"),
+												PropertyValidation.textContent("Button Left 1")
 										),
 										SuiButton.button(
-												Properties.id("btn-left-2"),
-												Properties.textContent("Button Left 2")
+												PropertyValidation.id("btn-left-2"),
+												PropertyValidation.textContent("Button Left 2")
 										)
 								)
 						),
 						SuiVBox.vbox(
-								Properties.id("box-right"),
-								Properties.mutationBehaviour(behaviour, condition), // <- this node has the mutation behaviour
-								Properties.items(
+								PropertyValidation.id("box-right"),
+								PropertyValidation.mutationBehaviour(behaviour, condition), // <- this node has the mutation behaviour
+								PropertyValidation.items(
 										SuiButton.button(
-												Properties.id("btn-right-1"),
-												Properties.textContent("Button Right 1")
+												PropertyValidation.id("btn-right-1"),
+												PropertyValidation.textContent("Button Right 1")
 										),
 										SuiButton.button(
-												Properties.id("btn-right-2"),
-												Properties.textContent("Button Right 2")
+												PropertyValidation.id("btn-right-2"),
+												PropertyValidation.textContent("Button Right 2")
 										),
 										SuiButton.button(
-												Properties.id("btn-right-3"),
-												Properties.textContent("Button Right 3")
+												PropertyValidation.id("btn-right-3"),
+												PropertyValidation.textContent("Button Right 3")
 										)
 								)
 						)

@@ -6,7 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
@@ -25,8 +25,8 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.id;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
+import static de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation.id;
+import static de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation.textContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class InjectionTest extends ApplicationTest {
@@ -92,7 +92,7 @@ public class InjectionTest extends ApplicationTest {
 		final String INJECTION_POINT_ID = "injection_point";
 
 		final NodeFactory nodeFactory = SuiVBox.vbox(
-				Properties.itemsInjectable(
+				PropertyValidation.itemsInjectable(
 						INJECTION_POINT_ID,
 						InjectionIndexMarker.injectAt(1),
 						SuiButton.button(
@@ -129,11 +129,11 @@ public class InjectionTest extends ApplicationTest {
 	@Test (expected = ValidateStateException.class)
 	public void test_conflict_exception_with_items_property_and_itemsinjectable_property() {
 		SuiVBox.vbox(
-				Properties.items(SuiButton.button(
+				PropertyValidation.items(SuiButton.button(
 						id("btn"),
 						textContent("Button")
 				)),
-				Properties.itemsInjectable("injection_point")
+				PropertyValidation.itemsInjectable("injection_point")
 		);
 	}
 
@@ -146,7 +146,7 @@ public class InjectionTest extends ApplicationTest {
 		final String INJECTION_POINT_ID = "injection_point";
 
 		final NodeFactory nodeFactory = SuiScrollPane.scrollPane(
-				Properties.itemInjectable(INJECTION_POINT_ID)
+				PropertyValidation.itemInjectable(INJECTION_POINT_ID)
 		);
 
 		injectButtonsInto(INJECTION_POINT_ID, List.of(
@@ -169,7 +169,7 @@ public class InjectionTest extends ApplicationTest {
 		final String INJECTION_POINT_ID = "injection_point";
 
 		final NodeFactory nodeFactory = SuiScrollPane.scrollPane(
-				Properties.itemInjectable(INJECTION_POINT_ID,
+				PropertyValidation.itemInjectable(INJECTION_POINT_ID,
 						SuiButton.button(
 								id("btn"),
 								textContent("Button")
@@ -192,7 +192,7 @@ public class InjectionTest extends ApplicationTest {
 		final String INJECTION_POINT_ID = "injection_point";
 
 		final NodeFactory nodeFactory = SuiVBox.vbox(
-				Properties.itemsInjectable(
+				PropertyValidation.itemsInjectable(
 						INJECTION_POINT_ID,
 						InjectionIndexMarker.injectAt(1),
 						SuiButton.button(
@@ -245,7 +245,7 @@ public class InjectionTest extends ApplicationTest {
 
 	private NodeFactory vboxWithInjectableItems(final String injectionPointId) {
 		return SuiVBox.vbox(
-				Properties.itemsInjectable(injectionPointId)
+				PropertyValidation.itemsInjectable(injectionPointId)
 		);
 	}
 

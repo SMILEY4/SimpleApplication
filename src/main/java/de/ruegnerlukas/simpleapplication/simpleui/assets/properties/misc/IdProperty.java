@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
@@ -30,6 +31,7 @@ public class IdProperty extends SuiProperty {
 	 */
 	public IdProperty(final String id) {
 		super(IdProperty.class, COMPARATOR);
+		Validations.INPUT.notEmpty(id).exception("The id may not be null or empty.");
 		this.id = id;
 	}
 

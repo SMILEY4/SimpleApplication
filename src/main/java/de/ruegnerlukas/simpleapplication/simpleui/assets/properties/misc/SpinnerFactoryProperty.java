@@ -120,6 +120,10 @@ public class SpinnerFactoryProperty extends SuiProperty {
 	 */
 	public SpinnerFactoryProperty(final int min, final int max, final int stepSize, final int initialValue) {
 		super(SpinnerFactoryProperty.class, COMPARATOR);
+		Validations.INPUT.isLessThan(min, max).exception("The min value must be less than the max value: {} < {}.", min, max);
+		Validations.INPUT.isNotNegative(stepSize).exception("The step size may not be negative: {}", stepSize);
+		Validations.INPUT.inRange(initialValue, min, max)
+				.exception("The initial value must be between min and max. {} <= {} <= {}", min, max, initialValue);
 		this.max = max;
 		this.min = min;
 		this.stepSize = stepSize;
@@ -141,6 +145,10 @@ public class SpinnerFactoryProperty extends SuiProperty {
 	 */
 	public SpinnerFactoryProperty(final double min, final double max, final double stepSize, final double initialValue) {
 		super(SpinnerFactoryProperty.class, COMPARATOR);
+		Validations.INPUT.isLessThan(min, max).exception("The min value must be less than the max value: {} < {}.", min, max);
+		Validations.INPUT.isNotNegative(stepSize).exception("The step size may not be negative: {}", stepSize);
+		Validations.INPUT.inRange(initialValue, min, max)
+				.exception("The initial value must be between min and max. {} <= {} <= {}", min, max, initialValue);
 		this.max = max;
 		this.min = min;
 		this.stepSize = stepSize;
@@ -161,6 +169,9 @@ public class SpinnerFactoryProperty extends SuiProperty {
 	 */
 	public SpinnerFactoryProperty(final List<String> items, final String initialValue, final boolean wrapAround) {
 		super(SpinnerFactoryProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(items).exception("The item-list may not be null.");
+		Validations.INPUT.isTrue(initialValue == null || items.contains(initialValue))
+				.exception("The initial item be in the list of items or be null.");
 		this.max = null;
 		this.min = null;
 		this.stepSize = null;

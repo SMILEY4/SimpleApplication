@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -53,6 +54,7 @@ public class StyleProperty extends SuiProperty {
 	 */
 	public StyleProperty(final String style) {
 		super(StyleProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(style).exception("The style may not be null.");
 		this.strStyle = style;
 		this.resStyle = null;
 	}
@@ -65,6 +67,7 @@ public class StyleProperty extends SuiProperty {
 	 */
 	public StyleProperty(final Resource style) {
 		super(StyleProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(style).exception("The style may not be null.");
 		this.strStyle = null;
 		this.resStyle = style;
 	}

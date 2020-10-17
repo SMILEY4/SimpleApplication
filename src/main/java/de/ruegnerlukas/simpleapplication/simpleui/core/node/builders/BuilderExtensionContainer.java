@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node.builders;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
@@ -40,7 +39,7 @@ public abstract class BuilderExtensionContainer implements FactoryExtension {
 	protected SuiNode create(final Class<?> nodeType,
 							 final SuiState state,
 							 final Tags tags) {
-		Properties.validate(nodeType, getBuilderProperties());
+		PropertyValidation.validate(nodeType, getBuilderProperties());
 		return SuiNode.create(nodeType, getBuilderProperties(), state, tags);
 	}
 
@@ -61,7 +60,7 @@ public abstract class BuilderExtensionContainer implements FactoryExtension {
 							 final Tags tags,
 							 final SuiNodeChildListener childListener,
 							 final SuiNodeChildTransformListener childTransformListener) {
-		Properties.validate(nodeType, getBuilderProperties());
+		PropertyValidation.validate(nodeType, getBuilderProperties());
 		return SuiNode.create(nodeType, getBuilderProperties(), state, tags, childListener, childTransformListener);
 	}
 

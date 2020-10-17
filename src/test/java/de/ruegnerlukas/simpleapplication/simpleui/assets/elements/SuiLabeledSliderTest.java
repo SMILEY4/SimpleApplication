@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.ValidateInputExceptio
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
@@ -32,12 +32,12 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 
 		final Pane sliderRoot = (Pane) new SuiSceneController(
 				SuiLabeledSlider.labeledSlider(
-						Properties.minMax(16, 42),
-						Properties.blockIncrement(3),
-						Properties.tickMarks(TickMarkProperty.TickMarkStyle.ONLY_LABELS, 4, 2, true),
-						Properties.orientation(Orientation.VERTICAL),
-						Properties.alignment(Pos.CENTER_RIGHT),
-						Properties.editable()
+						PropertyValidation.minMax(16, 42),
+						PropertyValidation.blockIncrement(3),
+						PropertyValidation.tickMarks(TickMarkProperty.TickMarkStyle.ONLY_LABELS, 4, 2, true),
+						PropertyValidation.orientation(Orientation.VERTICAL),
+						PropertyValidation.alignment(Pos.CENTER_RIGHT),
+						PropertyValidation.editable()
 				)
 		).getRootFxNode();
 
@@ -67,7 +67,7 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 	public void test_create_slider_swapped_min_max() {
 		new SuiSceneController(
 				SuiLabeledSlider.labeledSlider(
-						Properties.minMax(42, 16)
+						PropertyValidation.minMax(42, 16)
 				)
 		).getRootFxNode();
 	}
@@ -80,7 +80,7 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 
 		final Pane sliderRoot = (Pane) new SuiSceneController(
 				SuiLabeledSlider.labeledSlider(
-						Properties.minMax(16, null)
+						PropertyValidation.minMax(16, null)
 				)
 		).getRootFxNode();
 
@@ -99,11 +99,11 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 
 		final Pane sliderRoot = (Pane) new SuiSceneController(
 				SuiLabeledSlider.labeledSlider(
-						Properties.minMax(10, 30),
-						Properties.editable(),
+						PropertyValidation.minMax(10, 30),
+						PropertyValidation.editable(),
 						EventProperties.eventValueChangedType(".", Number.class, capturedEvents::add),
-						Properties.labelFormatter(".", value -> value.intValue() + " units"),
-						Properties.alignment(Pos.CENTER_RIGHT)
+						PropertyValidation.labelFormatter(".", value -> value.intValue() + " units"),
+						PropertyValidation.alignment(Pos.CENTER_RIGHT)
 				)
 		).getRootFxNode();
 
@@ -166,8 +166,8 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiLabeledSlider.labeledSlider(
-						Properties.anchorFitParent(),
-						Properties.minMax(state.getMin(), state.getMax()),
+						PropertyValidation.anchorFitParent(),
+						PropertyValidation.minMax(state.getMin(), state.getMax()),
 						EventProperties.eventValueChangedType(".", Number.class, capturedEvents::add)
 				)
 		);

@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.testutils;
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
@@ -110,7 +110,7 @@ public class StrategyTestUtils {
 
 	public static NodeFactory buildVBox(int nChildren, String buttonPrefix, boolean withIds) {
 		return SuiVBox.vbox(
-				Properties.items(buildButtons(nChildren, buttonPrefix, withIds))
+				PropertyValidation.items(buildButtons(nChildren, buttonPrefix, withIds))
 		);
 	}
 
@@ -129,14 +129,14 @@ public class StrategyTestUtils {
 		if (withId) {
 			for (int i = 0; i < n; i++) {
 				items.add(SuiButton.button(
-						Properties.id("btn" + i),
-						Properties.textContent(namePrefix + " " + i)
+						PropertyValidation.id("btn" + i),
+						PropertyValidation.textContent(namePrefix + " " + i)
 				));
 			}
 		} else {
 			for (int i = 0; i < n; i++) {
 				items.add(SuiButton.button(
-						Properties.textContent(namePrefix + " " + i)
+						PropertyValidation.textContent(namePrefix + " " + i)
 				));
 			}
 		}

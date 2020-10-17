@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Button;
@@ -29,26 +29,26 @@ public class SuiTabPaneTest extends SuiElementTest {
 
 		final TabPane tabPane = (TabPane) new SuiSceneController(
 				SuiTabPane.tabPane(
-						Properties.items(
+						PropertyValidation.items(
 								SuiButton.button(
-										Properties.id("item-0"),
-										Properties.textContent("Button 0"),
-										Properties.title("Tab 0")
+										PropertyValidation.id("item-0"),
+										PropertyValidation.textContent("Button 0"),
+										PropertyValidation.title("Tab 0")
 								),
 								SuiButton.button(
-										Properties.id("item-1"),
-										Properties.textContent("Button 1"),
-										Properties.title("Tab 1")
+										PropertyValidation.id("item-1"),
+										PropertyValidation.textContent("Button 1"),
+										PropertyValidation.title("Tab 1")
 								),
 								SuiButton.button(
-										Properties.id("item-2"),
-										Properties.textContent("Button 2"),
-										Properties.title("Tab 2")
+										PropertyValidation.id("item-2"),
+										PropertyValidation.textContent("Button 2"),
+										PropertyValidation.title("Tab 2")
 								),
 								SuiButton.button(
-										Properties.id("item-3"),
-										Properties.textContent("Button 3"),
-										Properties.title("Tab 3")
+										PropertyValidation.id("item-3"),
+										PropertyValidation.textContent("Button 3"),
+										PropertyValidation.title("Tab 3")
 								)
 						)
 				)
@@ -94,26 +94,26 @@ public class SuiTabPaneTest extends SuiElementTest {
 				SuiTabPane.tabPane(
 						EventProperties.eventClosedTab(".", collectedCloseEvents::add),
 						EventProperties.eventSelectedTab(".", collectedSelectEvents::add),
-						Properties.items(
+						PropertyValidation.items(
 								SuiButton.button(
-										Properties.id("item-0"),
-										Properties.textContent("Button 0"),
-										Properties.title("Tab 0")
+										PropertyValidation.id("item-0"),
+										PropertyValidation.textContent("Button 0"),
+										PropertyValidation.title("Tab 0")
 								),
 								SuiButton.button(
-										Properties.id("item-1"),
-										Properties.textContent("Button 1"),
-										Properties.title("Tab 1")
+										PropertyValidation.id("item-1"),
+										PropertyValidation.textContent("Button 1"),
+										PropertyValidation.title("Tab 1")
 								),
 								SuiButton.button(
-										Properties.id("item-2"),
-										Properties.textContent("Button 2"),
-										Properties.title("Tab 2")
+										PropertyValidation.id("item-2"),
+										PropertyValidation.textContent("Button 2"),
+										PropertyValidation.title("Tab 2")
 								),
 								SuiButton.button(
-										Properties.id("item-3"),
-										Properties.textContent("Button 3"),
-										Properties.title("Tab 3")
+										PropertyValidation.id("item-3"),
+										PropertyValidation.textContent("Button 3"),
+										PropertyValidation.title("Tab 3")
 								)
 						)
 				)
@@ -171,15 +171,15 @@ public class SuiTabPaneTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiTabPane.tabPane(
-						Properties.tabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS),
+						PropertyValidation.tabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS),
 						EventProperties.eventClosedTab(".", collectedCloseEvents::add),
 						EventProperties.eventSelectedTab(".", collectedSelectEvents::add),
-						Properties.items(
+						PropertyValidation.items(
 								() -> state.tabs.stream().map(
 										value -> SuiButton.button(
-												Properties.id("item-" + value),
-												Properties.textContent("Button " + value),
-												Properties.title("Tab " + value)
+												PropertyValidation.id("item-" + value),
+												PropertyValidation.textContent("Button " + value),
+												PropertyValidation.title("Tab " + value)
 										)).collect(Collectors.toList())
 						)
 				)

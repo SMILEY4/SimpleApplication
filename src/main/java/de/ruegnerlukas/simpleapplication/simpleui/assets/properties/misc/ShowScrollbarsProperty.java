@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -41,6 +42,8 @@ public class ShowScrollbarsProperty extends SuiProperty {
 	 */
 	public ShowScrollbarsProperty(final ScrollPane.ScrollBarPolicy horizontal, final ScrollPane.ScrollBarPolicy vertical) {
 		super(ShowScrollbarsProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(horizontal).exception("The horizontal scrollbar-policy may not be null.");
+		Validations.INPUT.notNull(vertical).exception("The vertical scrollbar-policy may not be null.");
 		this.horizontal = Optional.ofNullable(horizontal).orElse(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 		this.vertical = Optional.ofNullable(vertical).orElse(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 	}

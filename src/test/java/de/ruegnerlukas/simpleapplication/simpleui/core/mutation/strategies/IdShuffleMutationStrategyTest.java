@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
@@ -300,37 +300,37 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 	public void test_same_ids_and_order_but_rebuild_child_expect_mutated_and_child_replaced() {
 
 		final NodeFactory factoryOriginal = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
+				PropertyValidation.id("box"),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("child1"),
-								Properties.textContent("Button 1")
+								PropertyValidation.id("child1"),
+								PropertyValidation.textContent("Button 1")
 						),
 						SuiButton.button(
-								Properties.id("child2"),
-								Properties.textContent("Button 2")
+								PropertyValidation.id("child2"),
+								PropertyValidation.textContent("Button 2")
 						),
 						SuiButton.button(
-								Properties.id("child3"),
-								Properties.textContent("Button 2")
+								PropertyValidation.id("child3"),
+								PropertyValidation.textContent("Button 2")
 						)
 				)
 		);
 
 		final NodeFactory factoryTarget = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
+				PropertyValidation.id("box"),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("child1"),
-								Properties.textContent("Mutated Button 1")
+								PropertyValidation.id("child1"),
+								PropertyValidation.textContent("Mutated Button 1")
 						),
 						SuiLabel.label(
-								Properties.id("child2"),
-								Properties.textContent("Label")
+								PropertyValidation.id("child2"),
+								PropertyValidation.textContent("Label")
 						),
 						SuiButton.button(
-								Properties.id("child3"),
-								Properties.textContent("Mutated Button 2")
+								PropertyValidation.id("child3"),
+								PropertyValidation.textContent("Mutated Button 2")
 						)
 				)
 		);
@@ -370,37 +370,37 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 	public void test_same_ids_but_different_order_and_rebuild_child_expect_mutated_and_child_replaced() {
 
 		final NodeFactory factoryOriginal = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
+				PropertyValidation.id("box"),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("child1"),
-								Properties.textContent("Button 1")
+								PropertyValidation.id("child1"),
+								PropertyValidation.textContent("Button 1")
 						),
 						SuiButton.button(
-								Properties.id("child2"),
-								Properties.textContent("Button 2")
+								PropertyValidation.id("child2"),
+								PropertyValidation.textContent("Button 2")
 						),
 						SuiButton.button(
-								Properties.id("child3"),
-								Properties.textContent("Button 2")
+								PropertyValidation.id("child3"),
+								PropertyValidation.textContent("Button 2")
 						)
 				)
 		);
 
 		final NodeFactory factoryTarget = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
+				PropertyValidation.id("box"),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("child2"),
-								Properties.textContent("Mutated Button 1")
+								PropertyValidation.id("child2"),
+								PropertyValidation.textContent("Mutated Button 1")
 						),
 						SuiLabel.label(
-								Properties.id("child1"),
-								Properties.textContent("Label")
+								PropertyValidation.id("child1"),
+								PropertyValidation.textContent("Label")
 						),
 						SuiButton.button(
-								Properties.id("child3"),
-								Properties.textContent("Mutated Button 2")
+								PropertyValidation.id("child3"),
+								PropertyValidation.textContent("Mutated Button 2")
 						)
 				)
 		);

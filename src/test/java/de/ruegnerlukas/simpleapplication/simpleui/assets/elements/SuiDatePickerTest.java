@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DateSelectedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.DatePicker;
 import javafx.scene.input.KeyCode;
@@ -26,9 +26,9 @@ public class SuiDatePickerTest extends SuiElementTest {
 
 		final DatePicker datePicker = (DatePicker) new SuiSceneController(
 				SuiDatePicker.datePicker(
-						Properties.promptText("My Date"),
-						Properties.editable(),
-						Properties.chronology(Locale.KOREA)
+						PropertyValidation.promptText("My Date"),
+						PropertyValidation.editable(),
+						PropertyValidation.chronology(Locale.KOREA)
 				)
 		).getRootFxNode();
 
@@ -49,8 +49,8 @@ public class SuiDatePickerTest extends SuiElementTest {
 		final List<DateSelectedEventData> capturedEvents = new ArrayList<>();
 		final SuiSceneController controller = new SuiSceneController(
 				SuiDatePicker.datePicker(
-						Properties.editable(),
-						Properties.chronology(Locale.GERMANY),
+						PropertyValidation.editable(),
+						PropertyValidation.chronology(Locale.GERMANY),
 						EventProperties.eventDatePickerAction(".", capturedEvents::add)
 				)
 		);

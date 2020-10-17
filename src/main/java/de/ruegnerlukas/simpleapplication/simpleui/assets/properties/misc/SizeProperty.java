@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -74,6 +75,12 @@ public class SizeProperty extends SuiProperty {
 						final Number maxWidth, final Number maxHeight) {
 
 		super(SizeProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(minWidth).exception("The min width may not be null.");
+		Validations.INPUT.notNull(minHeight).exception("The min height may not be null.");
+		Validations.INPUT.notNull(preferredWidth).exception("The preferred width may not be null.");
+		Validations.INPUT.notNull(preferredHeight).exception("The preferred height may not be null.");
+		Validations.INPUT.notNull(maxWidth).exception("The max width may not be null.");
+		Validations.INPUT.notNull(maxHeight).exception("The max height may not be null.");
 		this.minWidth = minWidth;
 		this.minHeight = minHeight;
 		this.preferredWidth = preferredWidth;

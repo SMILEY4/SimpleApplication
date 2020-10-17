@@ -42,6 +42,7 @@ public class ChronologyProperty extends SuiProperty {
 	 */
 	public ChronologyProperty(final Chronology chronology) {
 		super(ChronologyProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(chronology).exception("The chronology may not be null.");
 		this.chronology = chronology;
 	}
 

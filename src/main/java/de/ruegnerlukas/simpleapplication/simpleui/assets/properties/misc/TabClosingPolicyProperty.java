@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -35,6 +36,7 @@ public class TabClosingPolicyProperty extends SuiProperty {
 	 */
 	public TabClosingPolicyProperty(final TabPane.TabClosingPolicy tabClosingPolicy) {
 		super(TabClosingPolicyProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(tabClosingPolicy).exception("The tab closing policy may not be null.");
 		this.tabClosingPolicy = tabClosingPolicy;
 	}
 

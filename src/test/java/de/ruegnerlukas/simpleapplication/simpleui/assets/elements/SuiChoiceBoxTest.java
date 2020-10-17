@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.ChoiceBox;
@@ -25,13 +25,13 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 
 		@SuppressWarnings ("unchecked") final ChoiceBox<TestItem> choiceBox = (ChoiceBox<TestItem>) new SuiSceneController(
 				SuiChoiceBox.choiceBox(
-						Properties.contentItems(List.of(
+						PropertyValidation.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
 								new TestItem("C", 3)),
 								new TestItem("B", 2)
 						),
-						Properties.contentItemConverter(".", TestItem.class,
+						PropertyValidation.contentItemConverter(".", TestItem.class,
 								str -> new TestItem(str.split(":")[0].trim(), Integer.parseInt(str.split(":")[1].trim())),
 								item -> item.name + ": " + item.number
 						)
@@ -73,7 +73,7 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiChoiceBox.choiceBox(
-						Properties.contentItems(List.of(
+						PropertyValidation.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
 								new TestItem("C", 3)),
@@ -130,7 +130,7 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiChoiceBox.choiceBox(
-						Properties.contentItems(state.items, state.selected),
+						PropertyValidation.contentItems(state.items, state.selected),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
 				)
 		);
@@ -227,7 +227,7 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 				TestState.class,
 				state -> SuiChoiceBox.choiceBox(
 //						Properties.selectedItem(state.selected),
-						Properties.contentItems(state.items, state.selected),
+						PropertyValidation.contentItems(state.items, state.selected),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
 				)
 		);

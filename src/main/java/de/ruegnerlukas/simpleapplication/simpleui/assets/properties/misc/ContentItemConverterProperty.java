@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
@@ -41,7 +42,10 @@ public class ContentItemConverterProperty<T> extends SuiProperty {
 	public ContentItemConverterProperty(final String propertyId,
 										final FromStringConverter<T> fromString,
 										final ToStringConverter<T> toString) {
-		this(propertyId, new StringConverter<>() {
+		super(ContentItemConverterProperty.class, COMPARATOR, propertyId);
+		Validations.INPUT.notNull(fromString).exception("The converter from strings may not be null");
+		Validations.INPUT.notNull(toString).exception("The converter to strings may not be null");
+		this.converter = new StringConverter<>() {
 			@Override
 			public String toString(final T t) {
 				return toString.toString(t);
@@ -54,7 +58,7 @@ public class ContentItemConverterProperty<T> extends SuiProperty {
 			public T fromString(final String s) {
 				return fromString.fromString(s);
 			}
-		});
+		};
 	}
 
 
@@ -66,6 +70,7 @@ public class ContentItemConverterProperty<T> extends SuiProperty {
 	 */
 	public ContentItemConverterProperty(final String propertyId, final StringConverter<T> converter) {
 		super(ContentItemConverterProperty.class, COMPARATOR, propertyId);
+		Validations.INPUT.notNull(converter).exception("The converter may not be null");
 		this.converter = converter;
 	}
 

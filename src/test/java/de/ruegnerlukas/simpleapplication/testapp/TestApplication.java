@@ -22,7 +22,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseMoveEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.SuiStream;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -168,10 +168,10 @@ public class TestApplication {
 													.forEach(e -> System.out.println("entered at " + e.getLeft() + "," + e.getRight()))
 									)),
 
-									Properties.items(
+									PropertyValidation.items(
 											SuiContainer.container(
-													Properties.id("myContainer"),
-													Properties.layout("myLayout", ((parent, nodes) -> {
+													PropertyValidation.id("myContainer"),
+													PropertyValidation.layout("myLayout", ((parent, nodes) -> {
 														final double width = parent.getWidth();
 														final double height = parent.getHeight();
 														final Node node0 = nodes.get(0);
@@ -179,14 +179,14 @@ public class TestApplication {
 														node0.resizeRelocate(0, 0, width, height / 2);
 														node1.resizeRelocate(0, height / 2, width, height / 2);
 													})),
-													Properties.items(
+													PropertyValidation.items(
 															SuiButton.button(
-																	Properties.id("btn1"),
-																	Properties.textContent("Child Button 1")
+																	PropertyValidation.id("btn1"),
+																	PropertyValidation.textContent("Child Button 1")
 															),
 															SuiButton.button(
-																	Properties.id("btn2"),
-																	Properties.textContent("Child Button 2")
+																	PropertyValidation.id("btn2"),
+																	PropertyValidation.textContent("Child Button 2")
 															)
 													)
 											)

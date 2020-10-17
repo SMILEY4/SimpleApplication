@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Button;
@@ -30,13 +30,13 @@ public class SuiCommonPropertiesTest extends SuiElementTest {
 						return SuiButton.button();
 					}
 					if (state.step == 1) {
-						return SuiButton.button(Properties.disabled(true));
+						return SuiButton.button(PropertyValidation.disabled(true));
 					}
 					if (state.step == 2) {
-						return SuiButton.button(Properties.disabled(false));
+						return SuiButton.button(PropertyValidation.disabled(false));
 					}
 					if (state.step == 3) {
-						return SuiButton.button(Properties.disabled(true));
+						return SuiButton.button(PropertyValidation.disabled(true));
 					}
 					if (state.step == 4) {
 						return SuiButton.button();

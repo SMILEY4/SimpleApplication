@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -24,8 +24,8 @@ public class SuiSpinnerTest extends SuiElementTest {
 
 		@SuppressWarnings ("unchecked") final Spinner<Integer> spinner = (Spinner<Integer>) new SuiSceneController(
 				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.integerSpinnerValues(-3, 7, 2, 1)
+						PropertyValidation.editable(),
+						PropertyValidation.integerSpinnerValues(-3, 7, 2, 1)
 				)
 		).getRootFxNode();
 
@@ -44,8 +44,8 @@ public class SuiSpinnerTest extends SuiElementTest {
 
 		@SuppressWarnings ("unchecked") final Spinner<Double> spinner = (Spinner<Double>) new SuiSceneController(
 				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.floatingPointSpinnerValues(-3.6, 7.2, 1.4, 1.3)
+						PropertyValidation.editable(),
+						PropertyValidation.floatingPointSpinnerValues(-3.6, 7.2, 1.4, 1.3)
 				)
 		).getRootFxNode();
 
@@ -64,8 +64,8 @@ public class SuiSpinnerTest extends SuiElementTest {
 
 		@SuppressWarnings ("unchecked") final Spinner<String> spinner = (Spinner<String>) new SuiSceneController(
 				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.listSpinnerValues(List.of("A", "B", "C"), "B", true)
+						PropertyValidation.editable(),
+						PropertyValidation.listSpinnerValues(List.of("A", "B", "C"), "B", true)
 				)
 		).getRootFxNode();
 
@@ -85,7 +85,7 @@ public class SuiSpinnerTest extends SuiElementTest {
 
 		final SuiSceneController controller = new SuiSceneController(
 				SuiSpinner.spinner(
-						Properties.integerSpinnerValues(-3, 7, 2, 1),
+						PropertyValidation.integerSpinnerValues(-3, 7, 2, 1),
 						EventProperties.eventValueChangedType(".", Integer.class, capturedEvents::add)
 				)
 		);
@@ -137,8 +137,8 @@ public class SuiSpinnerTest extends SuiElementTest {
 		final List<ValueChangedEventData<Integer>> capturedEvents = new ArrayList<>();
 		final SuiSceneController controller = new SuiSceneController(
 				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.integerSpinnerValues(-3, 7, 2, 1),
+						PropertyValidation.editable(),
+						PropertyValidation.integerSpinnerValues(-3, 7, 2, 1),
 						EventProperties.eventValueChangedType(".", Integer.class, capturedEvents::add)
 				)
 		);
@@ -196,8 +196,8 @@ public class SuiSpinnerTest extends SuiElementTest {
 		final List<ValueChangedEventData<String>> capturedEvents = new ArrayList<>();
 		final SuiSceneController controller = new SuiSceneController(
 				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.listSpinnerValues(List.of("first", "second", "third"), "first", true),
+						PropertyValidation.editable(),
+						PropertyValidation.listSpinnerValues(List.of("first", "second", "third"), "first", true),
 						EventProperties.eventValueChangedType(".", String.class, capturedEvents::add)
 				)
 		);

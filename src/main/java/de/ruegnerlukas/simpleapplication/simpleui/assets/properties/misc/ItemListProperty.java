@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
@@ -44,6 +45,8 @@ public class ItemListProperty extends SuiProperty {
 	 */
 	public ItemListProperty(final NodeFactory... items) {
 		super(ItemListProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(items).exception("The items may not be null.");
+		Validations.INPUT.containsNoNull(items).exception("The items may not contain null-elements.");
 		this.factories = List.of(items);
 	}
 
@@ -55,6 +58,8 @@ public class ItemListProperty extends SuiProperty {
 	 */
 	public ItemListProperty(final Collection<NodeFactory> items) {
 		super(ItemListProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(items).exception("The items may not be null.");
+		Validations.INPUT.containsNoNull(items).exception("The items may not contain null-elements.");
 		this.factories = List.copyOf(items);
 	}
 
@@ -66,6 +71,7 @@ public class ItemListProperty extends SuiProperty {
 	 */
 	public ItemListProperty(final Stream<NodeFactory> items) {
 		super(ItemListProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(items).exception("The items may not be null.");
 		this.factories = List.copyOf(items.collect(Collectors.toList()));
 	}
 
@@ -77,6 +83,7 @@ public class ItemListProperty extends SuiProperty {
 	 */
 	public ItemListProperty(final Supplier<List<NodeFactory>> supplier) {
 		super(ItemListProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(supplier).exception("The item-supplier may not be null.");
 		this.factories = supplier.get();
 	}
 

@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
@@ -40,6 +41,7 @@ public class OrientationProperty extends SuiProperty {
 	 */
 	public OrientationProperty(final Orientation orientation) {
 		super(OrientationProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(orientation).exception("The orientation may not be null.");
 		this.orientation = orientation;
 	}
 

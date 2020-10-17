@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiAbstractMenuItem;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
@@ -50,6 +51,8 @@ public class MenuContentProperty extends SuiProperty {
 	 */
 	public MenuContentProperty(final List<SuiAbstractMenuItem> menuItems) {
 		super(MenuContentProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(menuItems).exception("The menu items list may not be null.");
+		Validations.INPUT.containsNoNull(menuItems).exception("The menu items list may not contain any null-elements.");
 		this.menuItems = menuItems;
 	}
 

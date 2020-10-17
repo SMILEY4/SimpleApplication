@@ -4,7 +4,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 import de.ruegnerlukas.simpleapplication.common.validation.ValidateInputException;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
@@ -27,10 +27,10 @@ public class SuiSliderTest extends SuiElementTest {
 
 		final Slider slider = (Slider) new SuiSceneController(
 				SuiSlider.slider(
-						Properties.minMax(16, 42),
-						Properties.blockIncrement(3),
-						Properties.tickMarks(TickMarkProperty.TickMarkStyle.ONLY_LABELS, 4, 2, true),
-						Properties.orientation(Orientation.VERTICAL)
+						PropertyValidation.minMax(16, 42),
+						PropertyValidation.blockIncrement(3),
+						PropertyValidation.tickMarks(TickMarkProperty.TickMarkStyle.ONLY_LABELS, 4, 2, true),
+						PropertyValidation.orientation(Orientation.VERTICAL)
 				)
 		).getRootFxNode();
 
@@ -52,7 +52,7 @@ public class SuiSliderTest extends SuiElementTest {
 	public void test_create_slider_swapped_min_max() {
 		new SuiSceneController(
 				SuiSlider.slider(
-						Properties.minMax(42, 16)
+						PropertyValidation.minMax(42, 16)
 				)
 		).getRootFxNode();
 	}
@@ -65,7 +65,7 @@ public class SuiSliderTest extends SuiElementTest {
 
 		final Slider slider = (Slider) new SuiSceneController(
 				SuiSlider.slider(
-						Properties.minMax(16, null)
+						PropertyValidation.minMax(16, null)
 				)
 		).getRootFxNode();
 
@@ -97,8 +97,8 @@ public class SuiSliderTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiSlider.slider(
-						Properties.anchorFitParent(),
-						Properties.minMax(state.getMin(), state.getMax()),
+						PropertyValidation.anchorFitParent(),
+						PropertyValidation.minMax(state.getMin(), state.getMax()),
 						EventProperties.eventValueChangedType(".", Number.class, capturedEvents::add)
 				)
 		);

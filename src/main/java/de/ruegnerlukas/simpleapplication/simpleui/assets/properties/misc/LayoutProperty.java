@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedPane;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
@@ -36,6 +37,7 @@ public class LayoutProperty extends SuiProperty {
 	 */
 	public LayoutProperty(final String propertyId, final ExtendedPane.LayoutFunction layoutFunction) {
 		super(LayoutProperty.class, COMPARATOR, propertyId);
+		Validations.INPUT.notNull(layoutFunction).exception("The layout function may not be null.");
 		this.layoutFunction = layoutFunction;
 	}
 

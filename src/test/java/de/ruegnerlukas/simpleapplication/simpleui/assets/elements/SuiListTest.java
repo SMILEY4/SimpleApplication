@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ItemSelectedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Label;
@@ -25,14 +25,14 @@ public class SuiListTest extends SuiElementTest {
 
 		@SuppressWarnings ("unchecked") final ListView<TestItem> list = (ListView<TestItem>) new SuiSceneController(
 				SuiList.list(
-						Properties.contentItems(List.of(
+						PropertyValidation.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
 								new TestItem("C", 3),
 								new TestItem("D", 4)
 						)),
-						Properties.promptText("List is empty."),
-						Properties.multiselect()
+						PropertyValidation.promptText("List is empty."),
+						PropertyValidation.multiselect()
 				)
 		).getRootFxNode();
 
@@ -65,7 +65,7 @@ public class SuiListTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiList.list(
-						Properties.contentItems(state.items)
+						PropertyValidation.contentItems(state.items)
 				)
 		);
 
@@ -142,7 +142,7 @@ public class SuiListTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiList.list(
-						Properties.contentItems(state.items),
+						PropertyValidation.contentItems(state.items),
 						EventProperties.eventItemsSelected(".", TestItem.class, capturedEvents::add)
 
 				)

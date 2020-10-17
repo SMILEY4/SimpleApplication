@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedListView;
@@ -65,6 +66,7 @@ public class ContentItemsProperty<T> extends SuiProperty {
 	 */
 	public ContentItemsProperty(final List<T> choices, final T selectedChoice) {
 		super(ContentItemsProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(choices).exception("The choice-list may not be null");
 		this.choices = choices;
 		this.selectedChoice = selectedChoice;
 	}

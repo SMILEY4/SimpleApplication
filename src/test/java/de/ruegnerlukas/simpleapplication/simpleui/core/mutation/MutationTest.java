@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
@@ -52,27 +52,27 @@ public class MutationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.CENTER),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
+								PropertyValidation.id("btn1"),
+								PropertyValidation.textContent("Child Button 1")
 						),
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Child Button 2")
 						)
 				)
 		);
 
 		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.TOP_RIGHT),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Renamed Child Button 2")
 						)
 				)
 		);
@@ -103,15 +103,15 @@ public class MutationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory factoryOriginal = SuiVBox.vbox(
-				Properties.items(
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.textContent("Child Button")
+								PropertyValidation.textContent("Child Button")
 						)
 				)
 		);
 
 		NodeFactory factoryTarget = SuiButton.button(
-				Properties.textContent("My Button")
+				PropertyValidation.textContent("My Button")
 		);
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
@@ -136,18 +136,18 @@ public class MutationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory factoryOriginal = SuiVBox.vbox(
-				Properties.size(0, 0, 5, 5, 10, 10),
-				Properties.items(
+				PropertyValidation.size(0, 0, 5, 5, 10, 10),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.textContent("Child Button")
+								PropertyValidation.textContent("Child Button")
 						)
 				)
 		);
 
 		NodeFactory factoryTarget = SuiVBox.vbox(
-				Properties.items(
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.textContent("Child Button")
+								PropertyValidation.textContent("Child Button")
 						)
 				)
 		);
@@ -173,12 +173,12 @@ public class MutationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory factoryOriginal = SuiButton.button(
-				Properties.id("myButton"),
-				Properties.textContent("Button")
+				PropertyValidation.id("myButton"),
+				PropertyValidation.textContent("Button")
 		);
 
 		NodeFactory factoryTarget = SuiButton.button(
-				Properties.id("myButton")
+				PropertyValidation.id("myButton")
 		);
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
@@ -203,12 +203,12 @@ public class MutationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory factoryOriginal = SuiButton.button(
-				Properties.id("myButton")
+				PropertyValidation.id("myButton")
 		);
 
 		NodeFactory factoryTarget = SuiButton.button(
-				Properties.id("myButton"),
-				Properties.textContent("Button")
+				PropertyValidation.id("myButton"),
+				PropertyValidation.textContent("Button")
 		);
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
@@ -233,29 +233,29 @@ public class MutationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.behaviourDefault(),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.CENTER),
+				PropertyValidation.behaviourDefault(),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
+								PropertyValidation.id("btn1"),
+								PropertyValidation.textContent("Child Button 1")
 						),
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Child Button 2")
 						)
 				)
 		);
 
 		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.behaviourDefault(),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.TOP_RIGHT),
+				PropertyValidation.behaviourDefault(),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Renamed Child Button 2")
 						)
 				)
 		);
@@ -287,29 +287,29 @@ public class MutationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.behaviourStaticNode(),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.CENTER),
+				PropertyValidation.behaviourStaticNode(),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
+								PropertyValidation.id("btn1"),
+								PropertyValidation.textContent("Child Button 1")
 						),
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Child Button 2")
 						)
 				)
 		);
 
 		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.behaviourStaticNode(),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.TOP_RIGHT),
+				PropertyValidation.behaviourStaticNode(),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Renamed Child Button 2")
 						)
 				)
 		);
@@ -341,29 +341,29 @@ public class MutationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.behaviourStaticSubtree(),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.CENTER),
+				PropertyValidation.behaviourStaticSubtree(),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
+								PropertyValidation.id("btn1"),
+								PropertyValidation.textContent("Child Button 1")
 						),
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Child Button 2")
 						)
 				)
 		);
 
 		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.behaviourStaticSubtree(),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.TOP_RIGHT),
+				PropertyValidation.behaviourStaticSubtree(),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Renamed Child Button 2")
 						)
 				)
 		);
@@ -399,29 +399,29 @@ public class MutationTest extends ApplicationTest {
 		final TestState state = new TestState();
 
 		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.behaviourStatic(),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.CENTER),
+				PropertyValidation.behaviourStatic(),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
+								PropertyValidation.id("btn1"),
+								PropertyValidation.textContent("Child Button 1")
 						),
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Child Button 2")
 						)
 				)
 		);
 
 		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.behaviourStatic(),
-				Properties.items(
+				PropertyValidation.id("myVBox"),
+				PropertyValidation.alignment(Pos.TOP_RIGHT),
+				PropertyValidation.behaviourStatic(),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.textContent("Renamed Child Button 2")
 						)
 				)
 		);
@@ -461,14 +461,14 @@ public class MutationTest extends ApplicationTest {
 		SuiRegistry.get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
 
 		NodeFactory factoryOriginal = SuiButton.button(
-				Properties.id("btn"),
-				Properties.textContent("Button Original"),
+				PropertyValidation.id("btn"),
+				PropertyValidation.textContent("Button Original"),
 				EventProperties.eventAction(e -> capturedEvents.add("from original"))
 		);
 
 		NodeFactory factoryTarget = SuiButton.button(
-				Properties.id("btn"),
-				Properties.textContent("Button Target"),
+				PropertyValidation.id("btn"),
+				PropertyValidation.textContent("Button Target"),
 				EventProperties.eventAction(e -> capturedEvents.add("from target"))
 		);
 
@@ -507,14 +507,14 @@ public class MutationTest extends ApplicationTest {
 		SuiRegistry.get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
 
 		NodeFactory factoryOriginal = SuiButton.button(
-				Properties.id("btn"),
-				Properties.textContent("Button Original"),
+				PropertyValidation.id("btn"),
+				PropertyValidation.textContent("Button Original"),
 				EventProperties.eventAction("myPropertyId", e -> capturedEvents.add("from original"))
 		);
 
 		NodeFactory factoryTarget = SuiButton.button(
-				Properties.id("btn"),
-				Properties.textContent("Button Target"),
+				PropertyValidation.id("btn"),
+				PropertyValidation.textContent("Button Target"),
 				EventProperties.eventAction("myPropertyId", e -> capturedEvents.add("from target"))
 		);
 
@@ -611,32 +611,32 @@ public class MutationTest extends ApplicationTest {
 
 	private Pair<NodeFactory, NodeFactory> buildNodeFactoriesTagMutationTest() {
 		NodeFactory factoryOriginal = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
+				PropertyValidation.id("box"),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.mutationBehaviour(STATIC, Tags.contains("tag1")),
-								Properties.textContent("Button 1")
+								PropertyValidation.id("btn1"),
+								PropertyValidation.mutationBehaviour(STATIC, Tags.contains("tag1")),
+								PropertyValidation.textContent("Button 1")
 						),
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.mutationBehaviour(STATIC, Tags.contains("tag2")),
-								Properties.textContent("Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.mutationBehaviour(STATIC, Tags.contains("tag2")),
+								PropertyValidation.textContent("Button 2")
 						)
 				)
 		);
 		NodeFactory factoryTarget = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
+				PropertyValidation.id("box"),
+				PropertyValidation.items(
 						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.mutationBehaviour(STATIC, Tags.contains("tag1")),
-								Properties.textContent("Mutated Button 1")
+								PropertyValidation.id("btn1"),
+								PropertyValidation.mutationBehaviour(STATIC, Tags.contains("tag1")),
+								PropertyValidation.textContent("Mutated Button 1")
 						),
 						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.mutationBehaviour(STATIC, Tags.contains("tag2")),
-								Properties.textContent("Mutated Button 2")
+								PropertyValidation.id("btn2"),
+								PropertyValidation.mutationBehaviour(STATIC, Tags.contains("tag2")),
+								PropertyValidation.textContent("Mutated Button 2")
 						)
 				)
 		);

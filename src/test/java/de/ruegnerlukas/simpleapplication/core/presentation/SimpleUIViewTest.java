@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
+import static de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation.textContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SimpleUIViewTest extends ApplicationTest {

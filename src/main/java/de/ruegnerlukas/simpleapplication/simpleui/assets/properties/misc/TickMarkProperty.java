@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
@@ -167,6 +168,7 @@ public class TickMarkProperty extends SuiProperty {
 							final int minorTickCount,
 							final boolean snapToTicks) {
 		super(TickMarkProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(tickMarkStyle).exception("The tick mark style may not be null.");
 		this.tickMarkStyle = tickMarkStyle;
 		this.majorTickUnit = majorTickUnit;
 		this.minorTickCount = minorTickCount;

@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Accordion;
@@ -25,22 +25,22 @@ public class SuiAccordionTest extends SuiElementTest {
 		final List<SectionEventData> capturedEvents = new ArrayList<>();
 		final Accordion accordion = (Accordion) new SuiSceneController(
 				SuiAccordion.accordion(
-						Properties.items(
+						PropertyValidation.items(
 								SuiAnchorPane.anchorPane(
-										Properties.id("section-0"),
-										Properties.title("Section 0")
+										PropertyValidation.id("section-0"),
+										PropertyValidation.title("Section 0")
 								),
 								SuiAnchorPane.anchorPane(
-										Properties.id("section-1"),
-										Properties.title("Section 1")
+										PropertyValidation.id("section-1"),
+										PropertyValidation.title("Section 1")
 								),
 								SuiAnchorPane.anchorPane(
-										Properties.id("section-2"),
-										Properties.title("Section 2")
+										PropertyValidation.id("section-2"),
+										PropertyValidation.title("Section 2")
 								),
 								SuiAnchorPane.anchorPane(
-										Properties.id("section-3"),
-										Properties.title("Section 3")
+										PropertyValidation.id("section-3"),
+										PropertyValidation.title("Section 3")
 								)
 						),
 						EventProperties.eventAccordionExpanded(".", capturedEvents::add)
@@ -87,10 +87,10 @@ public class SuiAccordionTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiAccordion.accordion(
-						Properties.items(
+						PropertyValidation.items(
 								state.sections.stream().map(section -> SuiAnchorPane.anchorPane(
-										Properties.id("section-" + section),
-										Properties.title("Section " + section)
+										PropertyValidation.id("section-" + section),
+										PropertyValidation.title("Section " + section)
 								))
 						),
 						EventProperties.eventAccordionExpanded(".", capturedEvents::add)
@@ -136,10 +136,10 @@ public class SuiAccordionTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiAccordion.accordion(
-						Properties.items(
+						PropertyValidation.items(
 								state.sections.stream().map(section -> SuiAnchorPane.anchorPane(
-										Properties.id("section-" + section),
-										Properties.title("Section " + section)
+										PropertyValidation.id("section-" + section),
+										PropertyValidation.title("Section " + section)
 								))
 						),
 						EventProperties.eventAccordionExpanded(".", capturedEvents::add)
@@ -184,11 +184,11 @@ public class SuiAccordionTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiAccordion.accordion(
-						Properties.expandedSection(state.section),
-						Properties.items(
+						PropertyValidation.expandedSection(state.section),
+						PropertyValidation.items(
 								state.sections.stream().map(section -> SuiAnchorPane.anchorPane(
-										Properties.id("section-" + section),
-										Properties.title("Section " + section)
+										PropertyValidation.id("section-" + section),
+										PropertyValidation.title("Section " + section)
 								))
 						),
 						EventProperties.eventAccordionExpanded(".", capturedEvents::add)

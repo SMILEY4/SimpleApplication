@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
@@ -53,6 +54,10 @@ public class IconProperty extends SuiProperty {
 	 */
 	public IconProperty(final Resource imgResource, final Number width, final Number gap) {
 		super(IconProperty.class, COMPARATOR);
+		if (imgResource != null) {
+			Validations.INPUT.notNull(width).exception("The width may not be null");
+			Validations.INPUT.notNull(gap).exception("The gap may not be null");
+		}
 		this.imgResource = imgResource;
 		this.width = width;
 		this.gap = gap;

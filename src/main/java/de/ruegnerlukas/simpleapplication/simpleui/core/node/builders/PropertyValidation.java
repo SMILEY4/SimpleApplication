@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
+package de.ruegnerlukas.simpleapplication.simpleui.core.node.builders;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
@@ -14,13 +14,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-public final class Properties {
+public final class PropertyValidation {
 
 
 	/**
 	 * Hidden constructor of utility class.
 	 */
-	private Properties() {
+	private PropertyValidation() {
 		// do nothing
 	}
 

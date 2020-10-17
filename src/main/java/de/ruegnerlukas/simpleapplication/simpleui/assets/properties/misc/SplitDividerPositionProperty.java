@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSplitPane;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
@@ -72,6 +73,8 @@ public class SplitDividerPositionProperty extends SuiProperty {
 	 */
 	public SplitDividerPositionProperty(final boolean fixed, final List<Number> positions) {
 		super(SplitDividerPositionProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(positions).exception("The position-list may not be null.");
+		Validations.INPUT.containsNoNull(positions).exception("The position-list may not contain null-elements.");
 		this.positions = new ArrayList<>(positions);
 		this.fixed = fixed;
 	}

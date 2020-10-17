@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.PropertyValidation;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.ComboBox;
@@ -30,18 +30,18 @@ public class SuiComboBoxTest extends SuiElementTest {
 
 		@SuppressWarnings ("unchecked") final ComboBox<TestItem> combobox = (ComboBox<TestItem>) new SuiSceneController(
 				SuiComboBox.comboBox(
-						Properties.contentItems(List.of(
+						PropertyValidation.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
 								new TestItem("C", 3)),
 								new TestItem("B", 2)
 						),
-						Properties.contentItemConverter(".", TestItem.class,
+						PropertyValidation.contentItemConverter(".", TestItem.class,
 								str -> new TestItem(str.split(":")[0].trim(), Integer.parseInt(str.split(":")[1].trim())),
 								item -> item != null ? (item.name + ": " + item.number) : "null"
 						),
-						Properties.promptText("Test Prompt-Text"),
-						Properties.editable()
+						PropertyValidation.promptText("Test Prompt-Text"),
+						PropertyValidation.editable()
 				)
 		).getRootFxNode();
 
@@ -139,8 +139,8 @@ public class SuiComboBoxTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiComboBox.comboBox(
-						Properties.maxSize(100, 40),
-						Properties.contentItems(state.items, null),
+						PropertyValidation.maxSize(100, 40),
+						PropertyValidation.contentItems(state.items, null),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add)
 				)
 		);
@@ -193,11 +193,11 @@ public class SuiComboBoxTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiComboBox.comboBox(
-						Properties.maxSize(100, 40),
-						Properties.contentItems(state.items, null),
-						Properties.searchable(),
+						PropertyValidation.maxSize(100, 40),
+						PropertyValidation.contentItems(state.items, null),
+						PropertyValidation.searchable(),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add),
-						Properties.contentItemConverter(".", TestItem.class,
+						PropertyValidation.contentItemConverter(".", TestItem.class,
 								str -> new TestItem(str.split(":")[0].trim(), Integer.parseInt(str.split(":")[1].trim())),
 								item -> item != null ? (item.name + ": " + item.number) : "null"
 						)
@@ -257,11 +257,11 @@ public class SuiComboBoxTest extends SuiElementTest {
 				testState,
 				TestState.class,
 				state -> SuiComboBox.comboBox(
-						Properties.maxSize(100, 40),
-						Properties.contentItems(state.items, null),
-						Properties.editable(),
+						PropertyValidation.maxSize(100, 40),
+						PropertyValidation.contentItems(state.items, null),
+						PropertyValidation.editable(),
 						EventProperties.eventValueChangedType(".", TestItem.class, collectedEvents::add),
-						Properties.contentItemConverter(".", TestItem.class,
+						PropertyValidation.contentItemConverter(".", TestItem.class,
 								str -> new TestItem(String.valueOf(str.charAt(0)).toUpperCase(), Integer.parseInt(String.valueOf(str.charAt(1)))),
 								item -> item != null ? (item.name + item.number) : "null"
 						)
