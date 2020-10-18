@@ -16,10 +16,8 @@ import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHan
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -28,6 +26,10 @@ import javafx.geometry.Dimension2D;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.label;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.vBox;
 
 @Slf4j
 public class SUITestApplication {
@@ -78,7 +80,6 @@ public class SUITestApplication {
 			private String text = "-";
 
 
-
 		}
 
 
@@ -87,7 +88,7 @@ public class SUITestApplication {
 		private void createViews() {
 			log.info("{} creating views.", this.getId());
 
-
+ 
 			final TestUIState testUIState = new TestUIState();
 
 			final View view = View.builder()
@@ -96,35 +97,31 @@ public class SUITestApplication {
 					.title(new StringProvider("application_name").get())
 					.icon(Resource.internal("testResources/icon.png"))
 					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, state ->
-							SuiVBox.vbox(
-									Properties.id("vbox"),
-									Properties.items(
-											SuiLabel.label(
-													Properties.id("label"),
-													Properties.textContent(state.getText()),
-													Properties.tooltip(state.getText(), true, 200),
-													Properties.minSize(300, 30)
-											),
-											SuiButton.button(
-													Properties.id("button1"),
-													Properties.textContent("Hello World"),
-													EventProperties.eventAction(e -> state.update(TestUIState.class, s -> s.setText("Hello World")))
-											),
-											SuiButton.button(
-													Properties.id("button2"),
-													Properties.textContent("Some Tooltip"),
-													EventProperties.eventAction(e -> state.update(TestUIState.class, s -> s.setText("Some Tooltip")))
-											),
-											SuiButton.button(
-													Properties.id("button3"),
-													Properties.textContent("Very Long Tooltip"),
-													EventProperties.eventAction(e -> state.update(TestUIState.class,
-															s -> s.setText("The tooltip has two different states: activated and showing. When the tooltip is activated, the mouse moves over a control. When the tooltip is in the showing state, it actually appears. A shown tooltip is also activated. There is usually some delay between when the Tooltip becomes activated and when it is actually shown.")
-													))
-											)
+							vBox()
+									.id("vbox")
+									.items(
+											label()
+													.id("label")
+													.properties(
+															new TextContentProperty(state.getText()),
+															new TooltipProperty(state.getText(), true, 200)
+													)
+													.sizeMin(300, 30),
+											button()
+													.id("button1")
+													.textContent("Hello World")
+													.eventAction(".", e -> state.update(TestUIState.class, s -> s.setText("Hello World"))),
+											button()
+													.id("button2")
+													.textContent("Some Tooltip")
+													.eventAction(".", e -> state.update(TestUIState.class, s -> s.setText("Some Tooltip"))),
+											button()
+													.id("button3")
+													.textContent("Very Long Tooltip")
+													.eventAction(".", e -> state.update(TestUIState.class, s -> s.setText("The tooltip has two different states: activated and showing. When the tooltip is activated, the mouse moves over a control. When the tooltip is in the showing state, it actually appears. A shown tooltip is also activated. There is usually some delay between when the Tooltip becomes activated and when it is actually shown.")))
 									)
-							)
-					)))
+					)
+					))
 					.build();
 
 			final ViewService viewService = new Provider<>(ViewService.class).get();

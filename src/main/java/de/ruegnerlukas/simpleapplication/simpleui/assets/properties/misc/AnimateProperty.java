@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -35,6 +36,26 @@ public class AnimateProperty extends SuiProperty {
 		super(AnimateProperty.class, COMPARATOR);
 		this.animate = animate;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param animated whether to animate the element
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T animated(final boolean animated) {
+			getBuilderProperties().add(new AnimateProperty(animated));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

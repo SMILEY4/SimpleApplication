@@ -14,9 +14,10 @@ import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.application.Platform;
 import javafx.geometry.Dimension2D;
 import javafx.scene.control.Button;
@@ -24,8 +25,6 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SimpleUIViewTest extends ApplicationTest {
@@ -270,9 +269,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 	private View view(final String id) {
 		return view(id, new SUIWindowHandleDataFactory(() -> new SuiSceneController(
-				button(
-						textContent("A Button")
-				)
+				SuiElements.button().textContent("A Button")
 		)));
 	}
 
@@ -281,9 +278,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 
 	private View view(final String id, final SuiState state, final String btnText) {
 		return view(id, new SUIWindowHandleDataFactory(() -> new SuiSceneController(state,
-				button(
-						textContent(btnText)
-				)
+				SuiElements.button().textContent(btnText)
 		)));
 	}
 

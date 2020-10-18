@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -50,6 +51,33 @@ public class SearchableProperty extends SuiProperty {
 				.map(SearchableProperty::isSearchable)
 				.orElse(false);
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @return this builder for chaining
+		 */
+		default T searchable() {
+			return searchable(true);
+		}
+
+		/**
+		 * @param searchable whether the element is searchable
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T searchable(final boolean searchable) {
+			getBuilderProperties().add(new SearchableProperty(searchable));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -2,22 +2,25 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ChoicesConverterProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemConverterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SearchableProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
@@ -36,23 +39,44 @@ public final class SuiComboBox {
 
 
 	/**
-	 * Creates a new combobox
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a combobox
+	 * @return the builder for the element
 	 */
-	public static NodeFactory comboBox(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		validateConflictSearchableEditable(properties);
-		Properties.validate(SuiComboBox.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiComboBox.class,
-				List.of(properties),
-				state,
-				tags
-		);
+	public static SuiComboBoxBuilder create() {
+		return new SuiComboBoxBuilder();
 	}
+
+
+
+
+	public static class SuiComboBoxBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiComboBoxBuilder>,
+			RegionBuilderExtension<SuiComboBoxBuilder>,
+			CommonEventBuilderExtension<SuiComboBoxBuilder>,
+			ContentItemsProperty.PropertyBuilderExtensionWithSelected<SuiComboBoxBuilder>,
+			ContentItemConverterProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,
+			OnValueChangedEventProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,
+			PromptTextProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,
+			EditableProperty.PropertyBuilderExtension<SuiComboBoxBuilder>,
+			SearchableProperty.PropertyBuilderExtension<SuiComboBoxBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			validateConflictSearchableEditable(getBuilderProperties());
+			return create(
+					SuiComboBox.class,
+					state,
+					tags
+			);
+		}
+
+
+	}
+
+
 
 
 
@@ -62,8 +86,8 @@ public final class SuiComboBox {
 	 *
 	 * @param properties the properties to check
 	 */
-	private static void validateConflictSearchableEditable(final SuiProperty... properties) {
-		long count = Arrays.stream(properties)
+	private static void validateConflictSearchableEditable(final List<SuiProperty> properties) {
+		long count = properties.stream()
 				.filter(property -> property.getKey() == SearchableProperty.class || property.getKey() == EditableProperty.class)
 				.filter(property -> {
 					if (property.getKey() == SearchableProperty.class) {
@@ -93,7 +117,7 @@ public final class SuiComboBox {
 		registry.registerProperties(SuiComboBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiComboBox.class, List.of(
 				PropertyEntry.of(ContentItemsProperty.class, new ContentItemsProperty.ComboBoxUpdatingBuilder<>()),
-				PropertyEntry.of(ChoicesConverterProperty.class, new ChoicesConverterProperty.ComboBoxUpdatingBuilder<>()),
+				PropertyEntry.of(ContentItemConverterProperty.class, new ContentItemConverterProperty.ComboBoxUpdatingBuilder<>()),
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.ComboBoxUpdatingBuilder()),
 				PropertyEntry.of(SearchableProperty.class, new SearchableProperty.ComboBoxUpdatingBuilder()),
 				PropertyEntry.of(PromptTextProperty.class, new PromptTextProperty.ComboBoxBaseUpdatingBuilder<>()),

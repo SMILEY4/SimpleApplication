@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -25,12 +25,11 @@ public class SuiContainerTest extends SuiElementTest {
 		final AtomicInteger counter = new AtomicInteger(0);
 
 		final Node container = new SuiSceneController(
-				SuiContainer.container(
-						Properties.layout(".", (parent, nodes) -> {
+				SuiElements.container()
+						.layout(".", (parent, nodes) -> {
 							counter.incrementAndGet();
 							phaser.arrive();
 						})
-				)
 		).getRootFxNode();
 
 		show((Parent) container);

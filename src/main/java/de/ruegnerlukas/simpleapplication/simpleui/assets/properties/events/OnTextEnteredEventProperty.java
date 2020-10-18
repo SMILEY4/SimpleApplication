@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TextContentEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.event.EventHandler;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -36,6 +38,7 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 	 */
 	public OnTextEnteredEventProperty(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
 		super(OnTextEnteredEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 		this.textAreaEventHandler = e -> {
 			if (e.getCode() == KeyCode.ENTER && e.isShortcutDown()) {
@@ -49,6 +52,27 @@ public class OnTextEnteredEventProperty extends AbstractEventListenerProperty<Te
 			}
 		};
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link TextContentEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T eventTextEntered(final String propertyId, final SuiEventListener<TextContentEventData> listener) {
+			getBuilderProperties().add(new OnTextEnteredEventProperty(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

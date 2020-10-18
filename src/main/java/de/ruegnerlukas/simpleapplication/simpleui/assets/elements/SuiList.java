@@ -1,19 +1,21 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedListView;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnItemSelectedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MultiselectProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.ListView;
 
 import java.util.List;
@@ -21,8 +23,6 @@ import java.util.List;
 import static de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
 
 public final class SuiList {
-
-
 
 
 	/**
@@ -36,21 +36,38 @@ public final class SuiList {
 
 
 	/**
-	 * Creates a new list
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a list
+	 * @return the builder for the element
 	 */
-	public static NodeFactory list(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiList.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiList.class,
-				List.of(properties),
-				state,
-				tags
-		);
+	public static SuiListBuilder create() {
+		return new SuiListBuilder();
+	}
+
+
+
+
+	public static class SuiListBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiListBuilder>,
+			RegionBuilderExtension<SuiListBuilder>,
+			CommonEventBuilderExtension<SuiListBuilder>,
+			ContentItemsProperty.PropertyBuilderExtensionNoSelected<SuiListBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiListBuilder>,
+			PromptTextProperty.PropertyBuilderExtension<SuiListBuilder>,
+			MultiselectProperty.PropertyBuilderExtension<SuiListBuilder>,
+			OnItemSelectedEventProperty.PropertyBuilderExtension<SuiListBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiList.class,
+					state,
+					tags
+			);
+		}
+
+
 	}
 
 

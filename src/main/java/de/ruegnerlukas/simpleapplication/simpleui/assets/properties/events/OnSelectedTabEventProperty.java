@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Tab;
 import lombok.Getter;
 
@@ -34,6 +36,7 @@ public class OnSelectedTabEventProperty extends AbstractEventListenerProperty<Ta
 	 */
 	public OnSelectedTabEventProperty(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
 		super(OnSelectedTabEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 		this.listenerProxy = (prev, next) -> listener.onEvent(
 				TabActionEventData.builder()
@@ -41,6 +44,27 @@ public class OnSelectedTabEventProperty extends AbstractEventListenerProperty<Ta
 						.build()
 		);
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link TabActionEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T eventSelectedTab(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
+			getBuilderProperties().add(new OnSelectedTabEventProperty(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -1,11 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateException;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
@@ -18,10 +16,6 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties.eventAction;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.textContent;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties.wrapText;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SUIIntegrationTest extends ApplicationTest {
@@ -42,11 +36,10 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final AtomicInteger buttonPressCounter = new AtomicInteger(0);
 
 		final SuiSceneController context = new SuiSceneController(
-				button(
-						textContent("Some Button"),
-						wrapText(),
-						eventAction(e -> buttonPressCounter.incrementAndGet())
-				)
+				SuiElements.button()
+						.textContent("Some Button")
+						.wrapText()
+						.eventAction(".", e -> buttonPressCounter.incrementAndGet())
 		);
 
 		final Node fxNode = context.getRootFxNode();
@@ -71,10 +64,10 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
 		final SuiSceneController context = new SuiSceneController(testState,
-				new SuiComponent<TestState>(state -> button(
-						textContent("counter = " + testState.counter),
-						eventAction(e -> state.update(TestState.class, TestState::increment))
-				))
+				new SuiComponent<TestState>(state -> SuiElements.button()
+						.textContent("counter = " + testState.counter)
+						.eventAction(".", e -> state.update(TestState.class, TestState::increment))
+				)
 		);
 		testState.addStateListener((state, update, tags) -> phaser.arrive());
 
@@ -100,13 +93,13 @@ public class SUIIntegrationTest extends ApplicationTest {
 		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
 		final SuiSceneController context = new SuiSceneController(testState,
-				new SuiComponent<TestState>(state -> button(
-						textContent("counter = " + testState.counter),
-						eventAction(e -> state.update(TestState.class, true, s -> {
+				new SuiComponent<TestState>(state -> SuiElements.button()
+						.textContent("counter = " + testState.counter)
+						.eventAction(".", e -> state.update(TestState.class, true, s -> {
 							s.increment();
 							phaser.arrive();
 						}))
-				))
+				)
 		);
 		testState.addStateListener((state, update, tags) -> phaser.arrive());
 
@@ -132,23 +125,13 @@ public class SUIIntegrationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory nodeFactory = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("sameId"),
-								Properties.textContent("Child Button 1")
-						),
-						SuiButton.button(
-								Properties.id("diffId"),
-								Properties.textContent("Child Button 2")
-						),
-						SuiButton.button(
-								Properties.id("sameId"),
-								Properties.textContent("Child Button 3")
-						)
-				)
-		);
+		NodeFactory nodeFactory = SuiElements.vBox()
+				.id("myVBox")
+				.items(
+						SuiElements.button().id("sameId").textContent("Child Button 1"),
+						SuiElements.button().id("diffId").textContent("Child Button 2"),
+						SuiElements.button().id("sameId").textContent("Child Button 3")
+				);
 
 		final SuiSceneController context = new SuiSceneController(state, nodeFactory);
 		final SuiNode node = context.getRootNode();

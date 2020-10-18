@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -35,6 +36,26 @@ public class CheckedProperty extends SuiProperty {
 		super(CheckedProperty.class, COMPARATOR);
 		this.checked = checked;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param checked whether the element is checked or unchecked.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T checked(final boolean checked) {
+			getBuilderProperties().add(new CheckedProperty(checked));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

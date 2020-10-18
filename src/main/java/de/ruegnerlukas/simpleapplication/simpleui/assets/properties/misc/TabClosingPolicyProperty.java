@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.TabPane;
 import lombok.Getter;
 
@@ -34,8 +36,29 @@ public class TabClosingPolicyProperty extends SuiProperty {
 	 */
 	public TabClosingPolicyProperty(final TabPane.TabClosingPolicy tabClosingPolicy) {
 		super(TabClosingPolicyProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(tabClosingPolicy).exception("The tab closing policy may not be null.");
 		this.tabClosingPolicy = tabClosingPolicy;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param tabClosingPolicy the policy for closing tabs
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T tabClosingPolicy(final TabPane.TabClosingPolicy tabClosingPolicy) {
+			getBuilderProperties().add(new TabClosingPolicyProperty(tabClosingPolicy));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

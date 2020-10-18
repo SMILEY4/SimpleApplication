@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Control;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -85,6 +86,38 @@ public class TooltipProperty extends SuiProperty {
 		}
 		return tooltip;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param tooltip the content of the tooltip
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T tooltip(final String tooltip) {
+			getBuilderProperties().add(new TooltipProperty(tooltip));
+			return (T) this;
+		}
+
+		/**
+		 * @param tooltip   the content of the tooltip
+		 * @param wrapText  whether to wrap the text
+		 * @param prefWidth the preferred width of the tooltip
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T tooltip(final String tooltip, final boolean wrapText, final Number prefWidth) {
+			getBuilderProperties().add(new TooltipProperty(tooltip, wrapText, prefWidth));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

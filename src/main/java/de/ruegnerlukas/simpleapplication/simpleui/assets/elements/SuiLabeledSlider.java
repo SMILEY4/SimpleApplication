@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
@@ -16,10 +16,12 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Spacing
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -50,21 +52,43 @@ public final class SuiLabeledSlider {
 
 
 	/**
-	 * Creates a new slider with a label next to it.
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a labeled slider
+	 * @return the builder for the element
 	 */
-	public static NodeFactory labeledSlider(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiLabeledSlider.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiLabeledSlider.class,
-				List.of(properties),
-				state,
-				tags
-		);
+	public static SuiLabeledSliderBuilder create() {
+		return new SuiLabeledSliderBuilder();
+	}
+
+
+
+
+	public static class SuiLabeledSliderBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiLabeledSliderBuilder>,
+			RegionBuilderExtension<SuiLabeledSliderBuilder>,
+			CommonEventBuilderExtension<SuiLabeledSliderBuilder>,
+			AlignmentProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			MinMaxProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			BlockIncrementProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			TickMarkProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			OrientationProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			SpacingProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			EditableProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			LabelFormatterProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			LabelSizeProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			OnValueChangedEventProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiLabeledSlider.class,
+					state,
+					tags
+			);
+		}
+
 	}
 
 

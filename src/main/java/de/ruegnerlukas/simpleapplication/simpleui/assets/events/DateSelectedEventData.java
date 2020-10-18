@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @ToString
-public class DatePickerActionEventData {
+public class DateSelectedEventData {
 
 
 	/**

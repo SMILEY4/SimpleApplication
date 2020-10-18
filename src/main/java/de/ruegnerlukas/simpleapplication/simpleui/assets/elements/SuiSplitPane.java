@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSplitPane;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnDividerDraggedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
@@ -11,14 +11,16 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Orienta
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SplitDividerPositionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations.RemoveOperation;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
 
@@ -41,24 +43,44 @@ public final class SuiSplitPane {
 
 
 	/**
-	 * Creates a new split pane
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a split pane
+	 * @return the builder for the element
 	 */
-	public static NodeFactory splitPane(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiSplitPane.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiSplitPane.class,
-				List.of(properties),
-				state,
-				tags,
-				CHILD_LISTENER,
-				CHILD_TRANSFORM_LISTENER
-		);
+	public static SuiSplitPaneBuilder create() {
+		return new SuiSplitPaneBuilder();
 	}
+
+
+
+
+	public static class SuiSplitPaneBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiSplitPaneBuilder>,
+			RegionBuilderExtension<SuiSplitPaneBuilder>,
+			CommonEventBuilderExtension<SuiSplitPaneBuilder>,
+			ItemProperty.PropertyBuilderExtension<SuiSplitPaneBuilder>,
+			ItemListProperty.PropertyBuilderExtension<SuiSplitPaneBuilder>,
+			OrientationProperty.PropertyBuilderExtension<SuiSplitPaneBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiSplitPaneBuilder>,
+			SplitDividerPositionProperty.PropertyBuilderExtension<SuiSplitPaneBuilder>,
+			OnDividerDraggedEventProperty.PropertyBuilderExtension<SuiSplitPaneBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiSplitPane.class,
+					state,
+					tags,
+					SuiSplitPane.CHILD_LISTENER,
+					SuiSplitPane.CHILD_TRANSFORM_LISTENER
+			);
+		}
+
+
+	}
+
+
 
 
 
@@ -66,7 +88,7 @@ public final class SuiSplitPane {
 	/**
 	 * A child listener for to split panes.
 	 */
-	private static final SuiNodeChildListener CHILD_LISTENER = node -> {
+	protected static final SuiNodeChildListener CHILD_LISTENER = node -> {
 		final SplitPane pane = (SplitPane) node.getFxNodeStore().get();
 		if (pane != null) {
 			if (node.getChildNodeStore().hasChildren()) {
@@ -82,7 +104,7 @@ public final class SuiSplitPane {
 	/**
 	 * A child transform listener for to split panes.
 	 */
-	private static final SuiNodeChildTransformListener CHILD_TRANSFORM_LISTENER = (node, type, operations) -> {
+	protected static final SuiNodeChildTransformListener CHILD_TRANSFORM_LISTENER = (node, type, operations) -> {
 		final SplitPane pane = (SplitPane) node.getFxNodeStore().get();
 		if (pane != null) {
 			if (type == OperationType.REMOVE) {

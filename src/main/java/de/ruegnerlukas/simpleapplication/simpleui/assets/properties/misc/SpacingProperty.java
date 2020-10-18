@@ -2,11 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -37,8 +39,29 @@ public class SpacingProperty extends SuiProperty {
 	 */
 	public SpacingProperty(final Number spacing) {
 		super(SpacingProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(spacing).exception("The spacing may not be null.");
 		this.spacing = spacing;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param spacing the spacing between elements
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T spacing(final Number spacing) {
+			getBuilderProperties().add(new SpacingProperty(spacing));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

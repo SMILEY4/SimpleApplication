@@ -1,21 +1,23 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -36,23 +38,40 @@ public final class SuiVBox {
 
 
 	/**
-	 * Creates a new vbox node.
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a vbox node
+	 * @return the builder for the element
 	 */
-	public static NodeFactory vbox(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiVBox.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiVBox.class,
-				List.of(properties),
-				state,
-				tags,
-				SuiNodeChildListener.DEFAULT,
-				SuiNodeChildTransformListener.DEFAULT
-		);
+	public static SuiVBoxBuilder create() {
+		return new SuiVBoxBuilder();
+	}
+
+
+
+
+	public static class SuiVBoxBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiVBoxBuilder>,
+			RegionBuilderExtension<SuiVBoxBuilder>,
+			CommonEventBuilderExtension<SuiVBoxBuilder>,
+			ItemListProperty.PropertyBuilderExtension<SuiVBoxBuilder>,
+			ItemProperty.PropertyBuilderExtension<SuiVBoxBuilder>,
+			AlignmentProperty.PropertyBuilderExtension<SuiVBoxBuilder>,
+			SpacingProperty.PropertyBuilderExtension<SuiVBoxBuilder>,
+			FitToWidthProperty.PropertyBuilderExtension<SuiVBoxBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiVBox.class,
+					state,
+					tags,
+					SuiNodeChildListener.DEFAULT,
+					SuiNodeChildTransformListener.DEFAULT
+			);
+		}
+
+
 	}
 
 

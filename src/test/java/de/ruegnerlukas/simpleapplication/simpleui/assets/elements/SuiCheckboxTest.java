@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.CheckBox;
 import org.junit.Test;
@@ -21,9 +21,7 @@ public class SuiCheckboxTest extends SuiElementTest {
 
 		final List<CheckedEventData> capturedEvents = new ArrayList<>();
 		final CheckBox checkbox = (CheckBox) new SuiSceneController(
-				SuiCheckbox.checkbox(
-						EventProperties.eventChecked(".", capturedEvents::add)
-				)
+				SuiElements.checkBox().eventChecked(".", capturedEvents::add)
 		).getRootFxNode();
 
 		show(checkbox);

@@ -2,11 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -36,8 +38,30 @@ public class BlockIncrementProperty extends SuiProperty {
 	 */
 	public BlockIncrementProperty(final Number increment) {
 		super(BlockIncrementProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(increment).exception("The increment value may not be null.");
+		Validations.INPUT.isNotNegative(increment.doubleValue()).exception("The increment may not be negative");
 		this.increment = increment;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param increment the increment
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T blockIncrement(final Number increment) {
+			getBuilderProperties().add(new BlockIncrementProperty(increment));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

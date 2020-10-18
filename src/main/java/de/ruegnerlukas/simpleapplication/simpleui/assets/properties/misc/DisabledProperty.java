@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -35,6 +36,34 @@ public class DisabledProperty extends SuiProperty {
 		super(DisabledProperty.class, COMPARATOR);
 		this.disabled = disabled;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @return this builder for chaining
+		 */
+		default T disabled() {
+			return disabled(true);
+		}
+
+
+		/**
+		 * @param disabled whether the element is disabled
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T disabled(final boolean disabled) {
+			getBuilderProperties().add(new DisabledProperty(disabled));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

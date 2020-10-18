@@ -1,17 +1,14 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.strategies;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabel;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.control.Button;
@@ -340,44 +337,37 @@ public class IdMutationStrategyTest extends ApplicationTest {
 
 
 
+
 	@Test
 	public void test_with_rebuild_child_expect_mutated_and_child_replaced() {
 
-		final NodeFactory factoryOriginal = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("child1"),
-								Properties.textContent("Button 1")
-						),
-						SuiButton.button(
-								Properties.id("child2"),
-								Properties.textContent("Button 2")
-						),
-						SuiButton.button(
-								Properties.id("child3"),
-								Properties.textContent("Button 2")
-						)
-				)
-		);
+		final NodeFactory factoryOriginal = SuiElements.vBox()
+				.id("box")
+				.items(
+						SuiElements.button()
+								.id("child1")
+								.textContent("Button 1"),
+						SuiElements.button()
+								.id("child2")
+								.textContent("Button 2"),
+						SuiElements.button()
+								.id("child3")
+								.textContent("Button 2")
+				);
 
-		final NodeFactory factoryTarget = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("child1"),
-								Properties.textContent("Mutated Button 1")
-						),
-						SuiLabel.label(
-								Properties.id("child2"),
-								Properties.textContent("Label")
-						),
-						SuiButton.button(
-								Properties.id("child3"),
-								Properties.textContent("Mutated Button 2")
-						)
-				)
-		);
+		final NodeFactory factoryTarget = SuiElements.vBox()
+				.id("box")
+				.items(
+						SuiElements.button()
+								.id("child1")
+								.textContent("Mutated Button 1"),
+						SuiElements.label()
+								.id("child2")
+								.textContent("Label"),
+						SuiElements.button()
+								.id("child3")
+								.textContent("Mutated Button 2")
+				);
 
 		final Triplet<SuiSceneController, SuiNode, SuiNode> testData = buildTest(factoryOriginal, factoryTarget);
 		final SuiSceneController context = testData.getLeft();
@@ -409,6 +399,8 @@ public class IdMutationStrategyTest extends ApplicationTest {
 	}
 
 
+
+
 	@Test
 	public void test_with_children_missing_ids_expect_not_applicable() {
 
@@ -424,7 +416,6 @@ public class IdMutationStrategyTest extends ApplicationTest {
 		final StrategyDecisionResult decisionResult = strategy.canBeAppliedTo(nodeOriginal, nodeTarget, false);
 		assertThat(decisionResult.isApplicable()).isFalse();
 	}
-
 
 
 }

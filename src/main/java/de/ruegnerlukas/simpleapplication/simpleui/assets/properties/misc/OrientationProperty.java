@@ -1,11 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
@@ -39,8 +41,29 @@ public class OrientationProperty extends SuiProperty {
 	 */
 	public OrientationProperty(final Orientation orientation) {
 		super(OrientationProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(orientation).exception("The orientation may not be null.");
 		this.orientation = orientation;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param orientation the orientation
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T orientation(final Orientation orientation) {
+			getBuilderProperties().add(new OrientationProperty(orientation));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 
@@ -158,6 +181,10 @@ public class OrientationProperty extends SuiProperty {
 	}
 
 
+
+
+
+
 	public static class SplitPaneUpdatingBuilder implements PropFxNodeUpdatingBuilder<OrientationProperty, SplitPane> {
 
 
@@ -191,6 +218,7 @@ public class OrientationProperty extends SuiProperty {
 		}
 
 	}
+
 }
 
 

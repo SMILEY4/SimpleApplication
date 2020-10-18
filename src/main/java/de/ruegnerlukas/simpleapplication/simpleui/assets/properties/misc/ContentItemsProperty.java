@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedListView;
@@ -8,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.List;
@@ -49,14 +51,66 @@ public class ContentItemsProperty<T> extends SuiProperty {
 
 
 	/**
+	 * @param choices the list of choices
+	 */
+	public ContentItemsProperty(final List<T> choices) {
+		this(choices, null);
+	}
+
+
+
+
+	/**
 	 * @param choices        the list of choices
 	 * @param selectedChoice the choice to select from the list of choices (or null)
 	 */
 	public ContentItemsProperty(final List<T> choices, final T selectedChoice) {
 		super(ContentItemsProperty.class, COMPARATOR);
-		this.choices = choices;
+		Validations.INPUT.notNull(choices).exception("The choice-list may not be null");
+		this.choices = List.copyOf(choices);
 		this.selectedChoice = selectedChoice;
 	}
+
+
+
+
+	public interface PropertyBuilderExtensionWithSelected<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param choices        the list of choices
+		 * @param selectedChoice the choice to select from the list of choices (or null)
+		 * @return the builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default <E> T contentItems(final List<E> choices, final E selectedChoice) {
+			getBuilderProperties().add(new ContentItemsProperty<>(choices, selectedChoice));
+			return (T) this;
+		}
+
+	}
+
+
+
+
+
+
+	public interface PropertyBuilderExtensionNoSelected<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param choices the list of choices
+		 * @return the builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default <E> T contentItems(final List<E> choices) {
+			getBuilderProperties().add(new ContentItemsProperty<>(choices));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

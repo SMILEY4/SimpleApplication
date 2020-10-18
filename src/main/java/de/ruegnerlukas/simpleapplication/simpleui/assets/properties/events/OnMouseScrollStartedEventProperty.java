@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseScrollEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -25,8 +27,30 @@ public class OnMouseScrollStartedEventProperty extends AbstractEventListenerProp
 	 */
 	public OnMouseScrollStartedEventProperty(final String propertyId, final SuiEventListener<MouseScrollEventData> listener) {
 		super(OnMouseScrollStartedEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link MouseScrollEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T eventMouseScrollStarted(final String propertyId, final SuiEventListener<MouseScrollEventData> listener) {
+			getBuilderProperties().add(new OnMouseScrollStartedEventProperty(propertyId, listener));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -1,18 +1,17 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.PropertyTestUtils;
@@ -29,7 +28,9 @@ import org.testfx.framework.junit.ApplicationTest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty.MutationBehaviour.DEFAULT;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty.MutationBehaviour.STATIC;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty.MutationBehaviour.STATIC_NODE;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty.MutationBehaviour.STATIC_SUBTREE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.never;
@@ -51,31 +52,26 @@ public class MutationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
-						),
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
-						)
-				)
-		);
+		NodeFactory vbox = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.CENTER)
+				.items(
+						SuiElements.button()
+								.id("btn1")
+								.textContent("Child Button 1"),
+						SuiElements.button()
+								.id("btn2")
+								.textContent("Child Button 2")
+				);
 
-		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
-						)
-				)
-		);
+		NodeFactory vboxTarget = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.TOP_RIGHT)
+				.items(
+						SuiElements.button()
+								.id("btn2")
+								.textContent("Renamed Child Button 2")
+				);
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
@@ -102,17 +98,10 @@ public class MutationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory factoryOriginal = SuiVBox.vbox(
-				Properties.items(
-						SuiButton.button(
-								Properties.textContent("Child Button")
-						)
-				)
-		);
+		NodeFactory factoryOriginal = SuiElements.vBox()
+				.items(SuiElements.button().textContent("Child Button"));
 
-		NodeFactory factoryTarget = SuiButton.button(
-				Properties.textContent("My Button")
-		);
+		NodeFactory factoryTarget = SuiElements.button().textContent("My Button");
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
@@ -135,22 +124,12 @@ public class MutationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory factoryOriginal = SuiVBox.vbox(
-				Properties.size(0, 0, 5, 5, 10, 10),
-				Properties.items(
-						SuiButton.button(
-								Properties.textContent("Child Button")
-						)
-				)
-		);
+		NodeFactory factoryOriginal = SuiElements.vBox()
+				.size(0, 0, 5, 5, 10, 10)
+				.items(SuiElements.button().textContent("Child Button"));
 
-		NodeFactory factoryTarget = SuiVBox.vbox(
-				Properties.items(
-						SuiButton.button(
-								Properties.textContent("Child Button")
-						)
-				)
-		);
+		NodeFactory factoryTarget = SuiElements.vBox()
+				.items(SuiElements.button().textContent("Child Button"));
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
@@ -172,14 +151,12 @@ public class MutationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory factoryOriginal = SuiButton.button(
-				Properties.id("myButton"),
-				Properties.textContent("Button")
-		);
+		NodeFactory factoryOriginal = SuiElements.button()
+				.id("myButton")
+				.textContent("Button");
 
-		NodeFactory factoryTarget = SuiButton.button(
-				Properties.id("myButton")
-		);
+		NodeFactory factoryTarget = SuiElements.button()
+				.id("myButton");
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
@@ -202,14 +179,12 @@ public class MutationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory factoryOriginal = SuiButton.button(
-				Properties.id("myButton")
-		);
+		NodeFactory factoryOriginal = SuiElements.button()
+				.id("myButton");
 
-		NodeFactory factoryTarget = SuiButton.button(
-				Properties.id("myButton"),
-				Properties.textContent("Button")
-		);
+		NodeFactory factoryTarget = SuiElements.button()
+				.id("myButton")
+				.textContent("Button");
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
@@ -232,33 +207,28 @@ public class MutationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.behaviourDefault(),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
-						),
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
-						)
-				)
-		);
+		NodeFactory vbox = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.CENTER)
+				.mutationBehaviour(DEFAULT)
+				.items(
+						SuiElements.button()
+								.id("btn1")
+								.textContent("Child Button 1"),
+						SuiElements.button()
+								.id("btn2")
+								.textContent("Child Button 2")
+				);
 
-		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.behaviourDefault(),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
-						)
-				)
-		);
+		NodeFactory vboxTarget = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.TOP_RIGHT)
+				.mutationBehaviour(DEFAULT)
+				.items(
+						SuiElements.button()
+								.id("btn2")
+								.textContent("Renamed Child Button 2")
+				);
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
@@ -286,33 +256,22 @@ public class MutationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.behaviourStaticNode(),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
-						),
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
-						)
-				)
-		);
+		NodeFactory vbox = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.CENTER)
+				.mutationBehaviour(STATIC_NODE)
+				.items(
+						SuiElements.button().id("btn1").textContent("Child Button 1"),
+						SuiElements.button().id("btn2").textContent("Child Button 2")
+				);
 
-		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.behaviourStaticNode(),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
-						)
-				)
-		);
+		NodeFactory vboxTarget = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.TOP_RIGHT)
+				.mutationBehaviour(STATIC_NODE)
+				.items(
+						SuiElements.button().id("btn2").textContent("Renamed Child Button 2")
+				);
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
@@ -340,33 +299,22 @@ public class MutationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.behaviourStaticSubtree(),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
-						),
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
-						)
-				)
-		);
+		NodeFactory vbox = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.CENTER)
+				.mutationBehaviour(STATIC_SUBTREE)
+				.items(
+						SuiElements.button().id("btn1").textContent("Child Button 1"),
+						SuiElements.button().id("btn2").textContent("Child Button 2")
+				);
 
-		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.behaviourStaticSubtree(),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
-						)
-				)
-		);
+		NodeFactory vboxTarget = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.TOP_RIGHT)
+				.mutationBehaviour(STATIC_SUBTREE)
+				.items(
+						SuiElements.button().id("btn2").textContent("Renamed Child Button 2")
+				);
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
@@ -398,33 +346,22 @@ public class MutationTest extends ApplicationTest {
 
 		final TestState state = new TestState();
 
-		NodeFactory vbox = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.CENTER),
-				Properties.behaviourStatic(),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.textContent("Child Button 1")
-						),
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Child Button 2")
-						)
-				)
-		);
+		NodeFactory vbox = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.CENTER)
+				.mutationBehaviour(STATIC)
+				.items(
+						SuiElements.button().id("btn1").textContent("Child Button 1"),
+						SuiElements.button().id("btn2").textContent("Child Button 2")
+				);
 
-		NodeFactory vboxTarget = SuiVBox.vbox(
-				Properties.id("myVBox"),
-				Properties.alignment(Pos.TOP_RIGHT),
-				Properties.behaviourStatic(),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.textContent("Renamed Child Button 2")
-						)
-				)
-		);
+		NodeFactory vboxTarget = SuiElements.vBox()
+				.id("myVBox")
+				.alignment(Pos.TOP_RIGHT)
+				.mutationBehaviour(STATIC)
+				.items(
+						SuiElements.button().id("btn2").textContent("Renamed Child Button 2")
+				);
 
 		final SuiSceneController context = new SuiSceneController(state, vbox);
 		final SuiNode original = context.getRootNode();
@@ -460,17 +397,15 @@ public class MutationTest extends ApplicationTest {
 		final OnActionEventProperty.ButtonBaseUpdatingBuilder spyOnActionUpdatingBuilder = Mockito.spy(new OnActionEventProperty.ButtonBaseUpdatingBuilder());
 		SuiRegistry.get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
 
-		NodeFactory factoryOriginal = SuiButton.button(
-				Properties.id("btn"),
-				Properties.textContent("Button Original"),
-				EventProperties.eventAction(e -> capturedEvents.add("from original"))
-		);
+		NodeFactory factoryOriginal = SuiElements.button()
+				.id("btn")
+				.textContent("Button Original")
+				.eventAction("a", e -> capturedEvents.add("from original"));
 
-		NodeFactory factoryTarget = SuiButton.button(
-				Properties.id("btn"),
-				Properties.textContent("Button Target"),
-				EventProperties.eventAction(e -> capturedEvents.add("from target"))
-		);
+		NodeFactory factoryTarget = SuiElements.button()
+				.id("btn")
+				.textContent("Button Target")
+				.eventAction("b", e -> capturedEvents.add("from target"));
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
@@ -506,17 +441,15 @@ public class MutationTest extends ApplicationTest {
 		final OnActionEventProperty.ButtonBaseUpdatingBuilder spyOnActionUpdatingBuilder = Mockito.spy(new OnActionEventProperty.ButtonBaseUpdatingBuilder());
 		SuiRegistry.get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
 
-		NodeFactory factoryOriginal = SuiButton.button(
-				Properties.id("btn"),
-				Properties.textContent("Button Original"),
-				EventProperties.eventAction("myPropertyId", e -> capturedEvents.add("from original"))
-		);
+		NodeFactory factoryOriginal = SuiElements.button()
+				.id("btn")
+				.textContent("Button Original")
+				.eventAction("myPropertyId", e -> capturedEvents.add("from original"));
 
-		NodeFactory factoryTarget = SuiButton.button(
-				Properties.id("btn"),
-				Properties.textContent("Button Target"),
-				EventProperties.eventAction("myPropertyId", e -> capturedEvents.add("from target"))
-		);
+		NodeFactory factoryTarget = SuiElements.button()
+				.id("btn")
+				.textContent("Button Target")
+				.eventAction("myPropertyId", e -> capturedEvents.add("from target"));
 
 		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
 		final SuiNode original = context.getRootNode();
@@ -610,36 +543,30 @@ public class MutationTest extends ApplicationTest {
 
 
 	private Pair<NodeFactory, NodeFactory> buildNodeFactoriesTagMutationTest() {
-		NodeFactory factoryOriginal = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.mutationBehaviour(STATIC, Tags.contains("tag1")),
-								Properties.textContent("Button 1")
-						),
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.mutationBehaviour(STATIC, Tags.contains("tag2")),
-								Properties.textContent("Button 2")
-						)
-				)
-		);
-		NodeFactory factoryTarget = SuiVBox.vbox(
-				Properties.id("box"),
-				Properties.items(
-						SuiButton.button(
-								Properties.id("btn1"),
-								Properties.mutationBehaviour(STATIC, Tags.contains("tag1")),
-								Properties.textContent("Mutated Button 1")
-						),
-						SuiButton.button(
-								Properties.id("btn2"),
-								Properties.mutationBehaviour(STATIC, Tags.contains("tag2")),
-								Properties.textContent("Mutated Button 2")
-						)
-				)
-		);
+		NodeFactory factoryOriginal = SuiElements.vBox()
+				.id("box")
+				.items(
+						SuiElements.button()
+								.id("btn1")
+								.mutationBehaviour(STATIC, Tags.contains("tag1"))
+								.textContent("Button 1"),
+						SuiElements.button()
+								.id("btn2")
+								.mutationBehaviour(STATIC, Tags.contains("tag2"))
+								.textContent("Button 2")
+				);
+		NodeFactory factoryTarget = SuiElements.vBox()
+				.id("box")
+				.items(
+						SuiElements.button()
+								.id("btn1")
+								.mutationBehaviour(STATIC, Tags.contains("tag1"))
+								.textContent("Mutated Button 1"),
+						SuiElements.button()
+								.id("btn2")
+								.mutationBehaviour(STATIC, Tags.contains("tag2"))
+								.textContent("Mutated Button 2")
+				);
 		return Pair.of(factoryOriginal, factoryTarget);
 	}
 

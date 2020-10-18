@@ -1,7 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 
 import java.util.List;
@@ -26,8 +28,8 @@ public class InjectableItemProperty extends ItemProperty {
 	 * @param injectionPointId the id of this injection point.
 	 * @param item             the factory for creating the default item.
 	 */
-	public InjectableItemProperty(final String injectionPointId,
-								  final NodeFactory item) {
+	public InjectableItemProperty(final String injectionPointId, final NodeFactory item) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null or empty.");
 		this.injectionPointId = injectionPointId;
 		this.defaultFactory = item;
 	}
@@ -39,6 +41,7 @@ public class InjectableItemProperty extends ItemProperty {
 	 * @param injectionPointId the id of this injection point.
 	 */
 	public InjectableItemProperty(final String injectionPointId) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null or empty.");
 		this.injectionPointId = injectionPointId;
 		this.defaultFactory = null;
 	}
@@ -54,6 +57,36 @@ public class InjectableItemProperty extends ItemProperty {
 		} else {
 			return defaultFactory;
 		}
+	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param injectionPointId the id of this injection point.
+		 * @param item             the factory for creating the default item/node.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T itemInjectable(final String injectionPointId, final NodeFactory item) {
+			getBuilderProperties().add(new InjectableItemProperty(injectionPointId, item));
+			return (T) this;
+		}
+
+		/**
+		 * @param injectionPointId the id of this injection point.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T itemInjectable(final String injectionPointId) {
+			getBuilderProperties().add(new InjectableItemProperty(injectionPointId));
+			return (T) this;
+		}
+
+
 	}
 
 }

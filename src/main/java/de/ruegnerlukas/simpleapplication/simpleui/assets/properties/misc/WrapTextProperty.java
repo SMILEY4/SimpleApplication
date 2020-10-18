@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
@@ -34,6 +35,34 @@ public class WrapTextProperty extends SuiProperty {
 		super(WrapTextProperty.class, COMPARATOR);
 		this.wrap = wrap;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T wrapText() {
+			return wrapText(true);
+		}
+
+		/**
+		 * @param wrapText whether to wrap the text if it is too long
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T wrapText(final boolean wrapText) {
+			getBuilderProperties().add(new WrapTextProperty(wrapText));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnScrollHorizontalEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnScrollVerticalEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
@@ -12,12 +12,14 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemPro
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ShowScrollbarsProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.ScrollPane;
 
 import java.util.List;
@@ -38,23 +40,42 @@ public final class SuiScrollPane {
 
 
 	/**
-	 * Creates a new scroll-pane node
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for an scroll-pane node
+	 * @return the builder for the element
 	 */
-	public static NodeFactory scrollPane(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiScrollPane.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiScrollPane.class,
-				List.of(properties),
-				state,
-				tags,
-				SuiNodeChildListener.DEFAULT,
-				SuiNodeChildTransformListener.NO_OP
-		);
+	public static SuiScrollPaneBuilder create() {
+		return new SuiScrollPaneBuilder();
+	}
+
+
+
+
+	public static class SuiScrollPaneBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiScrollPaneBuilder>,
+			RegionBuilderExtension<SuiScrollPaneBuilder>,
+			CommonEventBuilderExtension<SuiScrollPaneBuilder>,
+			ItemProperty.PropertyBuilderExtension<SuiScrollPaneBuilder>,
+			FitToHeightProperty.PropertyBuilderExtension<SuiScrollPaneBuilder>,
+			FitToWidthProperty.PropertyBuilderExtension<SuiScrollPaneBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiScrollPaneBuilder>,
+			ShowScrollbarsProperty.PropertyBuilderExtension<SuiScrollPaneBuilder>,
+			OnScrollVerticalEventProperty.PropertyBuilderExtension<SuiScrollPaneBuilder>,
+			OnScrollHorizontalEventProperty.PropertyBuilderExtension<SuiScrollPaneBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiScrollPane.class,
+					state,
+					tags,
+					SuiNodeChildListener.DEFAULT,
+					SuiNodeChildTransformListener.DEFAULT
+			);
+		}
+
+
 	}
 
 
@@ -88,10 +109,10 @@ public final class SuiScrollPane {
 		registry.registerProperties(SuiScrollPane.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiScrollPane.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiScrollPane.class, List.of(
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneBuilder(), null),
 				PropertyEntry.of(FitToWidthProperty.class, new FitToWidthProperty.ScrollPaneUpdatingBuilder()),
 				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.ScrollPaneUpdatingBuilder()),
 				PropertyEntry.of(ShowScrollbarsProperty.class, new ShowScrollbarsProperty.ScrollPaneUpdatingBuilder()),
-				PropertyEntry.of(ItemProperty.class, new ItemProperty.ScrollPaneBuilder(), null),
 				PropertyEntry.of(OnScrollHorizontalEventProperty.class, new OnScrollHorizontalEventProperty.ScrollPaneUpdatingBuilder()),
 				PropertyEntry.of(OnScrollVerticalEventProperty.class, new OnScrollVerticalEventProperty.ScrollPaneUpdatingBuilder()),
 				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())

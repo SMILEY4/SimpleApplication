@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -36,6 +37,26 @@ public class ExpandedSectionProperty extends SuiProperty {
 		super(ExpandedSectionProperty.class, COMPARATOR);
 		this.title = title;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param title the title of the expanded section or null
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T expandedSection(final String title) {
+			getBuilderProperties().add(new ExpandedSectionProperty(title));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -1,9 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.List;
@@ -82,11 +84,22 @@ public class MutationBehaviourProperty extends SuiProperty {
 
 	/**
 	 * @param behaviour the behaviour
+	 */
+	public MutationBehaviourProperty(final MutationBehaviour behaviour) {
+		this(behaviour, null);
+	}
+
+
+
+
+	/**
+	 * @param behaviour the behaviour
 	 * @param condition The filter for tag values (or null for no additional filter).
 	 *                  See {@link MutationBehaviourProperty#condition} or table at {@link MutationBehaviourProperty}.
 	 */
 	public MutationBehaviourProperty(final MutationBehaviour behaviour, final TagConditionExpression condition) {
 		super(MutationBehaviourProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(behaviour).exception("The behaviour may not be null.");
 		this.behaviour = behaviour;
 		this.condition = condition;
 	}
@@ -124,6 +137,37 @@ public class MutationBehaviourProperty extends SuiProperty {
 				.map(MutationBehaviourProperty::getBehaviour)
 				.findAny()
 				.orElse(MutationBehaviour.DEFAULT);
+	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param behaviour the behaviour
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T mutationBehaviour(final MutationBehaviour behaviour) {
+			getBuilderProperties().add(new MutationBehaviourProperty(behaviour));
+			return (T) this;
+		}
+
+
+		/**
+		 * @param behaviour the behaviour
+		 * @param condition The filter for tag values (or null for no additional filter).
+		 *                  See {@link MutationBehaviourProperty#condition} or table at {@link MutationBehaviourProperty}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T mutationBehaviour(final MutationBehaviour behaviour, final TagConditionExpression condition) {
+			getBuilderProperties().add(new MutationBehaviourProperty(behaviour, condition));
+			return (T) this;
+		}
+
 	}
 
 

@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
@@ -61,9 +63,32 @@ public class ImageSizeProperty extends SuiProperty {
 	 */
 	public ImageSizeProperty(final ImageDimension width, final ImageDimension height) {
 		super(ImageSizeProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(width).exception("The width may not be null.");
+		Validations.INPUT.notNull(height).exception("The height may not be null.");
 		this.width = width;
 		this.height = height;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param width  the width-dimension.
+		 * @param height the height-dimension.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T imageSize(final ImageSizeProperty.ImageDimension width, final ImageSizeProperty.ImageDimension height) {
+			getBuilderProperties().add(new ImageSizeProperty(width, height));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 
@@ -114,6 +139,7 @@ public class ImageSizeProperty extends SuiProperty {
 		 * @return an image dimension with an absolute size
 		 */
 		public static ImageDimension absolute(final Number size) {
+			Validations.INPUT.notNull(size).exception("The size may not be null.");
 			return new ImageDimension(Type.ABSOLUTE, size);
 		}
 
@@ -124,6 +150,7 @@ public class ImageSizeProperty extends SuiProperty {
 		 * @return an image dimension with a size relative to the original image size
 		 */
 		public static ImageDimension relative(final Number percentage) {
+			Validations.INPUT.notNull(percentage).exception("The percentage may not be null.");
 			return new ImageDimension(Type.RELATIVE, percentage);
 		}
 
@@ -134,6 +161,7 @@ public class ImageSizeProperty extends SuiProperty {
 		 * @return an image dimension with a size relative to the parent node
 		 */
 		public static ImageDimension parentRelative(final Number percentage) {
+			Validations.INPUT.notNull(percentage).exception("The percentage may not be null.");
 			return new ImageDimension(Type.PARENT_RELATIVE, percentage);
 		}
 

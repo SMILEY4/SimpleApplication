@@ -1,11 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu.SuiAbstractMenuItem;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import lombok.Getter;
@@ -49,8 +51,38 @@ public class MenuContentProperty extends SuiProperty {
 	 */
 	public MenuContentProperty(final List<SuiAbstractMenuItem> menuItems) {
 		super(MenuContentProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(menuItems).exception("The menu items list may not be null.");
+		Validations.INPUT.containsNoNull(menuItems).exception("The menu items list may not contain any null-elements.");
 		this.menuItems = menuItems;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param items the top level items of the menu
+		 * @return this builder for chaining
+		 */
+		default T menuBarContent(final SuiAbstractMenuItem... items) {
+			return menuBarContent(List.of(items));
+		}
+
+		/**
+		 * @param items the top level items of the menu
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T menuBarContent(final List<SuiAbstractMenuItem> items) {
+			getBuilderProperties().add(new MenuContentProperty(items));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.image.ImageView;
 import lombok.Getter;
 
@@ -35,6 +36,33 @@ public class PreserveRatioProperty extends SuiProperty {
 		super(PreserveRatioProperty.class, COMPARATOR);
 		this.preserveRatio = preserveRatio;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @return this builder for chaining
+		 */
+		default T preserveRatio() {
+			return preserveRatio(true);
+		}
+
+		/**
+		 * @param preserveRatio whether to preserve the original ratio
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T preserveRatio(final boolean preserveRatio) {
+			getBuilderProperties().add(new PreserveRatioProperty(preserveRatio));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

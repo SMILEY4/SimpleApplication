@@ -1,12 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
@@ -130,42 +128,24 @@ public class EarlyOutBuildTest extends ApplicationTest {
 
 
 	private NodeFactory buildFactory(final MutationBehaviourProperty.MutationBehaviour behaviour, final TagConditionExpression condition) {
-		return SuiVBox.vbox(
-				Properties.id("root"),
-				Properties.items(
-						SuiVBox.vbox(
-								Properties.id("box-left"),
-								Properties.items(
-										SuiButton.button(
-												Properties.id("btn-left-1"),
-												Properties.textContent("Button Left 1")
-										),
-										SuiButton.button(
-												Properties.id("btn-left-2"),
-												Properties.textContent("Button Left 2")
-										)
+		return SuiElements.vBox()
+				.id("root")
+				.items(
+						SuiElements.vBox()
+								.id("box-left")
+								.items(
+										SuiElements.button().id("btn-left-1").textContent("Button Left 1"),
+										SuiElements.button().id("btn-left-2").textContent("Button Left 2")
+								),
+						SuiElements.vBox()
+								.id("box-right")
+								.mutationBehaviour(behaviour, condition) // <- this node has the mutation behaviour
+								.items(
+										SuiElements.button().id("btn-right-1").textContent("Button Right 1"),
+										SuiElements.button().id("btn-right-2").textContent("Button Right 2"),
+										SuiElements.button().id("btn-right-3").textContent("Button Right 3")
 								)
-						),
-						SuiVBox.vbox(
-								Properties.id("box-right"),
-								Properties.mutationBehaviour(behaviour, condition), // <- this node has the mutation behaviour
-								Properties.items(
-										SuiButton.button(
-												Properties.id("btn-right-1"),
-												Properties.textContent("Button Right 1")
-										),
-										SuiButton.button(
-												Properties.id("btn-right-2"),
-												Properties.textContent("Button Right 2")
-										),
-										SuiButton.button(
-												Properties.id("btn-right-3"),
-												Properties.textContent("Button Right 3")
-										)
-								)
-						)
-				)
-		);
+				);
 	}
 
 

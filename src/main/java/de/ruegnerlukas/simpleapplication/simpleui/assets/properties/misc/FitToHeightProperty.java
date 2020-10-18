@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
@@ -36,6 +37,33 @@ public class FitToHeightProperty extends SuiProperty {
 		super(FitToHeightProperty.class, COMPARATOR);
 		this.fitToHeight = fitToHeight;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @return this builder for chaining
+		 */
+		default T fitToHeight() {
+			return fitToHeight(true);
+		}
+
+		/**
+		 * @param fitToHeight whether to fit the element(s) to the height
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T fitToHeight(final boolean fitToHeight) {
+			getBuilderProperties().add(new FitToHeightProperty(fitToHeight));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

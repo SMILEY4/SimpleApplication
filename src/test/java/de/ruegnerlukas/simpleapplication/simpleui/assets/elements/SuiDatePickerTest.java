@@ -1,9 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DateSelectedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.DatePicker;
 import javafx.scene.input.KeyCode;
@@ -25,11 +24,10 @@ public class SuiDatePickerTest extends SuiElementTest {
 	public void test_create_date_picker() {
 
 		final DatePicker datePicker = (DatePicker) new SuiSceneController(
-				SuiDatePicker.datePicker(
-						Properties.promptText("My Date"),
-						Properties.editable(),
-						Properties.chronology(Locale.KOREA)
-				)
+				SuiElements.datePicker()
+						.promptText("My Date")
+						.editable()
+						.chronology(Locale.KOREA)
 		).getRootFxNode();
 
 		assertThat(datePicker.getPromptText()).isEqualTo("My Date");
@@ -46,13 +44,12 @@ public class SuiDatePickerTest extends SuiElementTest {
 			return;
 		}
 
-		final List<DatePickerActionEventData> capturedEvents = new ArrayList<>();
+		final List<DateSelectedEventData> capturedEvents = new ArrayList<>();
 		final SuiSceneController controller = new SuiSceneController(
-				SuiDatePicker.datePicker(
-						Properties.editable(),
-						Properties.chronology(Locale.GERMANY),
-						EventProperties.eventDatePickerAction(".", capturedEvents::add)
-				)
+				SuiElements.datePicker()
+						.editable()
+						.chronology(Locale.GERMANY)
+						.eventSelectedDate(".", capturedEvents::add)
 		);
 		final DatePicker datePicker = (DatePicker) controller.getRootFxNode();
 		show(datePicker);

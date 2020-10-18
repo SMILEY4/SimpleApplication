@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiImage;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
@@ -8,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,6 +42,34 @@ public class ImageProperty extends SuiProperty {
 		super(ImageProperty.class, COMPARATOR);
 		this.image = image;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param image the resource pointing to the image
+		 * @return this builder for chaining
+		 */
+		default T image(final Resource image) {
+			return image(new Image(image.getPath()));
+		}
+
+		/**
+		 * @param image the resource pointing to the image
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T image(final Image image) {
+			getBuilderProperties().add(new ImageProperty(image));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

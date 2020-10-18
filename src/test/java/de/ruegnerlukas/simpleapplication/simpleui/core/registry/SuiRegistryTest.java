@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Alignme
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import org.junit.After;
 import org.junit.Test;
 import org.mockito.Mockito;

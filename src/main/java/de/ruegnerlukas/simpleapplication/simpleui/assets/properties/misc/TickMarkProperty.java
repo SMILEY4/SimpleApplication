@@ -2,11 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -132,6 +134,30 @@ public class TickMarkProperty extends SuiProperty {
 
 
 	/**
+	 * @param tickMarkStyle the style of the tick marks
+	 */
+	public TickMarkProperty(final TickMarkStyle tickMarkStyle) {
+		this(tickMarkStyle, DEFAULT_MAJOR_TICK_UNIT, DEFAULT_MINOR_TICK_COUNT, DEFAULT_SNAP_TO_TICKS);
+	}
+
+
+
+
+	/**
+	 * @param tickMarkStyle  the style of the tick marks
+	 * @param majorTickUnit  the unit of the major tick marks
+	 * @param minorTickCount how many minor tick marks for each major mark
+	 */
+	public TickMarkProperty(final TickMarkStyle tickMarkStyle,
+							final Number majorTickUnit,
+							final int minorTickCount) {
+		this(tickMarkStyle, majorTickUnit, minorTickCount, DEFAULT_SNAP_TO_TICKS);
+	}
+
+
+
+
+	/**
 	 * @param tickMarkStyle  the style of the tick marks
 	 * @param majorTickUnit  the unit of the major tick marks
 	 * @param minorTickCount how many minor tick marks for each major mark
@@ -142,11 +168,63 @@ public class TickMarkProperty extends SuiProperty {
 							final int minorTickCount,
 							final boolean snapToTicks) {
 		super(TickMarkProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(tickMarkStyle).exception("The tick mark style may not be null.");
 		this.tickMarkStyle = tickMarkStyle;
 		this.majorTickUnit = majorTickUnit;
 		this.minorTickCount = minorTickCount;
 		this.snapToTicks = snapToTicks;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param tickMarkStyle the tick mark style
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle) {
+			getBuilderProperties().add(new TickMarkProperty(tickMarkStyle));
+			return (T) this;
+		}
+
+		/**
+		 * @param tickMarkStyle  the tick mark style
+		 * @param majorTickUnit  the units for major ticks
+		 * @param minorTickCount the count of minor ticks between major ticks
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle,
+							final Number majorTickUnit,
+							final int minorTickCount) {
+			getBuilderProperties().add(new TickMarkProperty(tickMarkStyle, majorTickUnit, minorTickCount));
+			return (T) this;
+		}
+
+		/**
+		 * @param tickMarkStyle  the tick mark style
+		 * @param majorTickUnit  the units for major ticks
+		 * @param minorTickCount the count of minor ticks between major ticks
+		 * @param snapToTicks    whether to snap to ticks
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T tickMarks(final TickMarkProperty.TickMarkStyle tickMarkStyle,
+							final Number majorTickUnit,
+							final int minorTickCount,
+							final boolean snapToTicks) {
+			getBuilderProperties().add(new TickMarkProperty(tickMarkStyle, majorTickUnit, minorTickCount, snapToTicks));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

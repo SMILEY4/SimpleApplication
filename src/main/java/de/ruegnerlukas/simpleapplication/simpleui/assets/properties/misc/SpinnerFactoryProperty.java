@@ -8,6 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdati
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -119,6 +120,10 @@ public class SpinnerFactoryProperty extends SuiProperty {
 	 */
 	public SpinnerFactoryProperty(final int min, final int max, final int stepSize, final int initialValue) {
 		super(SpinnerFactoryProperty.class, COMPARATOR);
+		Validations.INPUT.isLessThan(min, max).exception("The min value must be less than the max value: {} < {}.", min, max);
+		Validations.INPUT.isNotNegative(stepSize).exception("The step size may not be negative: {}", stepSize);
+		Validations.INPUT.inRange(initialValue, min, max)
+				.exception("The initial value must be between min and max. {} <= {} <= {}", min, max, initialValue);
 		this.max = max;
 		this.min = min;
 		this.stepSize = stepSize;
@@ -140,6 +145,10 @@ public class SpinnerFactoryProperty extends SuiProperty {
 	 */
 	public SpinnerFactoryProperty(final double min, final double max, final double stepSize, final double initialValue) {
 		super(SpinnerFactoryProperty.class, COMPARATOR);
+		Validations.INPUT.isLessThan(min, max).exception("The min value must be less than the max value: {} < {}.", min, max);
+		Validations.INPUT.isNotNegative(stepSize).exception("The step size may not be negative: {}", stepSize);
+		Validations.INPUT.inRange(initialValue, min, max)
+				.exception("The initial value must be between min and max. {} <= {} <= {}", min, max, initialValue);
 		this.max = max;
 		this.min = min;
 		this.stepSize = stepSize;
@@ -154,12 +163,15 @@ public class SpinnerFactoryProperty extends SuiProperty {
 
 
 	/**
-	 * @param items      the items
+	 * @param items        the items
 	 * @param initialValue the initial value
-	 * @param wrapAround whether to wrap around or stop at the end/start
+	 * @param wrapAround   whether to wrap around or stop at the end/start
 	 */
 	public SpinnerFactoryProperty(final List<String> items, final String initialValue, final boolean wrapAround) {
 		super(SpinnerFactoryProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(items).exception("The item-list may not be null.");
+		Validations.INPUT.isTrue(initialValue == null || items.contains(initialValue))
+				.exception("The initial item be in the list of items or be null.");
 		this.max = null;
 		this.min = null;
 		this.stepSize = null;
@@ -169,6 +181,60 @@ public class SpinnerFactoryProperty extends SuiProperty {
 		this.wrapAround = wrapAround;
 		this.dataType = DataType.STRINGS;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param min      the min value.
+		 * @param max      the max value.
+		 * @param stepSize the amount to step by.
+		 * @param value    the initial value
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T integerSpinnerValues(final int min,
+									   final int max,
+									   final int stepSize,
+									   final int value) {
+			getBuilderProperties().add(new SpinnerFactoryProperty(min, max, stepSize, value));
+			return (T) this;
+		}
+
+		/**
+		 * @param min      the min value.
+		 * @param max      the max value.
+		 * @param stepSize the amount to step by.
+		 * @param value    the initial value
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T floatingPointSpinnerValues(final double min,
+											 final double max,
+											 final double stepSize,
+											 final double value) {
+			getBuilderProperties().add(new SpinnerFactoryProperty(min, max, stepSize, value));
+			return (T) this;
+		}
+
+		/**
+		 * @param items        the items
+		 * @param initialValue the initial value
+		 * @param wrapAround   whether to wrap around or stop at the end/start
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T listSpinnerValues(final List<String> items, final String initialValue, final boolean wrapAround) {
+			getBuilderProperties().add(new SpinnerFactoryProperty(items, initialValue, wrapAround));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

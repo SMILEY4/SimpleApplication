@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
@@ -73,6 +75,12 @@ public class SizeProperty extends SuiProperty {
 						final Number maxWidth, final Number maxHeight) {
 
 		super(SizeProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(minWidth).exception("The min width may not be null.");
+		Validations.INPUT.notNull(minHeight).exception("The min height may not be null.");
+		Validations.INPUT.notNull(preferredWidth).exception("The preferred width may not be null.");
+		Validations.INPUT.notNull(preferredHeight).exception("The preferred height may not be null.");
+		Validations.INPUT.notNull(maxWidth).exception("The max width may not be null.");
+		Validations.INPUT.notNull(maxHeight).exception("The max height may not be null.");
 		this.minWidth = minWidth;
 		this.minHeight = minHeight;
 		this.preferredWidth = preferredWidth;
@@ -80,6 +88,33 @@ public class SizeProperty extends SuiProperty {
 		this.maxWidth = maxWidth;
 		this.maxHeight = maxHeight;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param minWidth        the minimum width.
+		 * @param minHeight       the minimum height.
+		 * @param preferredWidth  the preferred width.
+		 * @param preferredHeight the preferred height.
+		 * @param maxWidth        the maximum width.
+		 * @param maxHeight       the maximum height.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T size(final Number minWidth, final Number minHeight,
+					   final Number preferredWidth, final Number preferredHeight,
+					   final Number maxWidth, final Number maxHeight) {
+			getBuilderProperties().add(new SizeProperty(minWidth, minHeight, preferredWidth, preferredHeight, maxWidth, maxHeight));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

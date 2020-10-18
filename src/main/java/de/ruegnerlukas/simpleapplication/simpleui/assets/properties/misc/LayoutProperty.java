@@ -1,11 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedPane;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import lombok.Getter;
 
 import java.util.function.BiFunction;
@@ -35,9 +37,28 @@ public class LayoutProperty extends SuiProperty {
 	 */
 	public LayoutProperty(final String propertyId, final ExtendedPane.LayoutFunction layoutFunction) {
 		super(LayoutProperty.class, COMPARATOR, propertyId);
+		Validations.INPUT.notNull(layoutFunction).exception("The layout function may not be null.");
 		this.layoutFunction = layoutFunction;
 	}
 
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param propertyId     see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param layoutFunction the layout function
+		 * @return
+		 */
+		@SuppressWarnings ("unchecked")
+		default T layout(final String propertyId, final ExtendedPane.LayoutFunction layoutFunction) {
+			getBuilderProperties().add(new LayoutProperty(propertyId, layoutFunction));
+			return (T) this;
+		}
+
+	}
 
 
 

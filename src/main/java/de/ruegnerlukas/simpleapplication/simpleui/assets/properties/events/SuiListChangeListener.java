@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.assets;
+package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
 import javafx.collections.ListChangeListener;
 import lombok.AllArgsConstructor;

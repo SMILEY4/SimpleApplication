@@ -4,7 +4,7 @@
 //import de.ruegnerlukas.simpleapplication.simpleui.SceneContext;
 //import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SimpleUIRegistry;
 //import de.ruegnerlukas.simpleapplication.simpleui.State;
-//import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+//import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 //import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.Component;
 //import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.injection.InjectionContext;
 //import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.InjectionPoint;

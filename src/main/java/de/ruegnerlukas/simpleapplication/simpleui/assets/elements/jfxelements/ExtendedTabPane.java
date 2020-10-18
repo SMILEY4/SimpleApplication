@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiListChangeListener;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SuiListChangeListener;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableBiConsumer;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableConsumer;
 import javafx.scene.Node;

@@ -1,22 +1,23 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToHeightProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.layout.HBox;
 
 import java.util.List;
@@ -37,23 +38,39 @@ public final class SuiHBox {
 
 
 	/**
-	 * Creates a new hbox node.
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a hbox node
+	 * @return the builder for the element
 	 */
-	public static NodeFactory hbox(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiHBox.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiHBox.class,
-				List.of(properties),
-				state,
-				tags,
-				SuiNodeChildListener.DEFAULT,
-				SuiNodeChildTransformListener.DEFAULT
-		);
+	public static SuiHBoxBuilder create() {
+		return new SuiHBoxBuilder();
+	}
+
+
+
+
+	public static class SuiHBoxBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiHBoxBuilder>,
+			RegionBuilderExtension<SuiHBoxBuilder>,
+			CommonEventBuilderExtension<SuiHBoxBuilder>,
+			ItemListProperty.PropertyBuilderExtension<SuiHBoxBuilder>,
+			ItemProperty.PropertyBuilderExtension<SuiHBoxBuilder>,
+			AlignmentProperty.PropertyBuilderExtension<SuiHBoxBuilder>,
+			SpacingProperty.PropertyBuilderExtension<SuiHBoxBuilder>,
+			FitToHeightProperty.PropertyBuilderExtension<SuiHBoxBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiHBox.class,
+					state,
+					tags,
+					SuiNodeChildListener.DEFAULT,
+					SuiNodeChildTransformListener.DEFAULT
+			);
+		}
+
 	}
 
 
@@ -70,7 +87,7 @@ public final class SuiHBox {
 		registry.registerProperties(SuiHBox.class, PropertyGroups.commonRegionProperties());
 		registry.registerProperties(SuiHBox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiHBox.class, List.of(
-				PropertyEntry.of(FitToWidthProperty.class, new FitToHeightProperty.HBoxUpdatingBuilder()),
+				PropertyEntry.of(FitToHeightProperty.class, new FitToHeightProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.HBoxUpdatingBuilder()),
 				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.PaneBuilder(), null),

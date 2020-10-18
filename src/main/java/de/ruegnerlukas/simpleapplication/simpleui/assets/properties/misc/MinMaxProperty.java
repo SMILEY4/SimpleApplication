@@ -2,12 +2,14 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +48,36 @@ public class MinMaxProperty extends SuiProperty {
 	 */
 	public MinMaxProperty(final Number min, final Number max) {
 		super(MinMaxProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(min).exception("The min value may not be null.");
+		Validations.INPUT.notNull(max).exception("The max value may not be null.");
+		Validations.INPUT.isLessThan(min.doubleValue(), max.doubleValue())
+				.exception("The min value must be smaller than the max value.");
 		this.min = min;
 		this.max = max;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param min the min value (inclusive)
+		 * @param max the max value (inclusive)
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T minMax(final Number min, final Number max) {
+			getBuilderProperties().add(new MinMaxProperty(
+					min == null ? Integer.MIN_VALUE : min,
+					max == null ? Integer.MAX_VALUE : max));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

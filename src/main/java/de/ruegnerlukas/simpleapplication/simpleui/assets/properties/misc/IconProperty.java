@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,10 +54,37 @@ public class IconProperty extends SuiProperty {
 	 */
 	public IconProperty(final Resource imgResource, final Number width, final Number gap) {
 		super(IconProperty.class, COMPARATOR);
+		if (imgResource != null) {
+			Validations.INPUT.notNull(width).exception("The width may not be null");
+			Validations.INPUT.notNull(gap).exception("The gap may not be null");
+		}
 		this.imgResource = imgResource;
 		this.width = width;
 		this.gap = gap;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param resource the resource pointing to the image
+		 * @param width    the width of the icon. The height is then calculated automatically to keep the original aspect ratio
+		 * @param gap      the gap between the icon and the text content
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T icon(final Resource resource, final Number width, final Number gap) {
+			getBuilderProperties().add(new IconProperty(resource, width, gap));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

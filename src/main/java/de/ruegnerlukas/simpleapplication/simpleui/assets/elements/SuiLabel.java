@@ -1,17 +1,19 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Label;
 
 import java.util.List;
@@ -32,21 +34,36 @@ public final class SuiLabel {
 
 
 	/**
-	 * Creates a new label node
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a label node
+	 * @return the builder for the element
 	 */
-	public static NodeFactory label(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiLabel.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiLabel.class,
-				List.of(properties),
-				state,
-				tags
-		);
+	public static SuiLabelBuilder create() {
+		return new SuiLabelBuilder();
+	}
+
+
+
+
+	public static class SuiLabelBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiLabelBuilder>,
+			RegionBuilderExtension<SuiLabelBuilder>,
+			CommonEventBuilderExtension<SuiLabelBuilder>,
+			TextContentProperty.PropertyBuilderExtension<SuiLabelBuilder>,
+			WrapTextProperty.PropertyBuilderExtension<SuiLabelBuilder>,
+			AlignmentProperty.PropertyBuilderExtension<SuiLabelBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiLabelBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiLabel.class,
+					state,
+					tags
+			);
+		}
+
 	}
 
 

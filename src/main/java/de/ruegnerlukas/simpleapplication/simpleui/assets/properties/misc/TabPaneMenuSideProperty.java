@@ -1,10 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.geometry.Side;
 import javafx.scene.control.TabPane;
 import lombok.Getter;
@@ -35,8 +37,29 @@ public class TabPaneMenuSideProperty extends SuiProperty {
 	 */
 	public TabPaneMenuSideProperty(final Side side) {
 		super(TabPaneMenuSideProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(side).exception("The tab menu side may not be null.");
 		this.side = side;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param side the side of the tabs
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T tabMenuSide(final Side side) {
+			getBuilderProperties().add(new TabPaneMenuSideProperty(side));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 
@@ -68,8 +91,6 @@ public class TabPaneMenuSideProperty extends SuiProperty {
 		}
 
 	}
-
-
 
 
 }

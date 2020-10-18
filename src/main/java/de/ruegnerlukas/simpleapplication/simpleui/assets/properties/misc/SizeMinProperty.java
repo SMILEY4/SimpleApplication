@@ -2,10 +2,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.layout.Region;
 import lombok.Getter;
 
@@ -41,9 +43,32 @@ public class SizeMinProperty extends SuiProperty {
 	 */
 	public SizeMinProperty(final Number width, final Number height) {
 		super(SizeMinProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(width).exception("The width may not be null.");
+		Validations.INPUT.notNull(height).exception("The height may not be null.");
 		this.width = width;
 		this.height = height;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param width  the minimum width.
+		 * @param height the minimum height.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T sizeMin(final Number width, final Number height) {
+			getBuilderProperties().add(new SizeMinProperty(width, height));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

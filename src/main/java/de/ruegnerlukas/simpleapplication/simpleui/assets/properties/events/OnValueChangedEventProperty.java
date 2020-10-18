@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedComboBox;
@@ -9,6 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEven
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -46,12 +48,48 @@ public class OnValueChangedEventProperty<T> extends AbstractEventListenerPropert
 	 */
 	public OnValueChangedEventProperty(final String propertyId, final SuiEventListener<ValueChangedEventData<T>> listener) {
 		super(OnValueChangedEventProperty.class, propertyId);
+		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 		this.listenerProxy = (prev, next) -> listener.onEvent(new ValueChangedEventData<>(next, prev));
 		this.changeListenerProxy = new ChangeListenerProxy<>((prev, next) -> listener.onEvent(
 				new ValueChangedEventData<>(next, prev))
 		);
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param propertyId   see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param expectedType the expected type of the value
+		 * @param listener     the listener for events with {@link ValueChangedEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unused")
+		default <E> T eventValueChanged(final String propertyId,
+										final Class<E> expectedType,
+										final SuiEventListener<ValueChangedEventData<E>> listener) {
+			return this.eventValueChanged(propertyId, listener);
+		}
+
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param listener   the listener for events with {@link ValueChangedEventData}.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default <E> T eventValueChanged(final String propertyId, final SuiEventListener<ValueChangedEventData<E>> listener) {
+			getBuilderProperties().add(new OnValueChangedEventProperty<>(propertyId, listener));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

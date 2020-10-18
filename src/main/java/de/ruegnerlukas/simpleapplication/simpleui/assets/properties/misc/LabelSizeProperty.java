@@ -2,11 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.NumberUtils;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
@@ -52,10 +54,45 @@ public class LabelSizeProperty extends SuiProperty {
 	 */
 	public LabelSizeProperty(final Number minSize, final Number prefSize, final Number maxSize) {
 		super(LabelSizeProperty.class, COMPARATOR);
+		Validations.INPUT.notNull(minSize).exception("The min size may not be null.");
+		Validations.INPUT.notNull(prefSize).exception("The preferred size may not be null.");
+		Validations.INPUT.notNull(maxSize).exception("The max size may not be null.");
 		this.minSize = minSize;
 		this.prefSize = prefSize;
 		this.maxSize = maxSize;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param size the exact size of the label
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T labelSize(final Number size) {
+			getBuilderProperties().add(new LabelSizeProperty(size, size, size));
+			return (T) this;
+		}
+
+		/**
+		 * @param minSize  the min width or height of the label.
+		 * @param prefSize the preferred width or height of the label.
+		 * @param maxSize  the max width or height of the label.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T labelSize(final Number minSize, final Number prefSize, final Number maxSize) {
+			getBuilderProperties().add(new LabelSizeProperty(minSize, prefSize, maxSize));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

@@ -1,21 +1,23 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedPane;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LayoutProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
 import java.util.List;
 
@@ -34,23 +36,38 @@ public final class SuiContainer {
 
 
 	/**
-	 * Creates a new anchor-pane node.
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for an anchor-pane node
+	 * @return the builder for the element
 	 */
-	public static NodeFactory container(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiContainer.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiContainer.class,
-				List.of(properties),
-				state,
-				tags,
-				SuiNodeChildListener.DEFAULT,
-				SuiNodeChildTransformListener.DEFAULT
-		);
+	public static SuiContainerBuilder create() {
+		return new SuiContainerBuilder();
+	}
+
+
+
+
+	public static class SuiContainerBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiContainerBuilder>,
+			RegionBuilderExtension<SuiContainerBuilder>,
+			CommonEventBuilderExtension<SuiContainerBuilder>,
+			ItemListProperty.PropertyBuilderExtension<SuiContainerBuilder>,
+			ItemProperty.PropertyBuilderExtension<SuiContainerBuilder>,
+			LayoutProperty.PropertyBuilderExtension<SuiContainerBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiContainer.class,
+					state,
+					tags,
+					SuiNodeChildListener.DEFAULT,
+					SuiNodeChildTransformListener.DEFAULT
+			);
+		}
+
+
 	}
 
 

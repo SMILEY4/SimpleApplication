@@ -1,11 +1,13 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.util.StringConverter;
@@ -38,8 +40,30 @@ public class LabelFormatterProperty extends SuiProperty {
 	 */
 	public LabelFormatterProperty(final String propertyId, final Function<Double, String> formatter) {
 		super(LabelFormatterProperty.class, COMPARATOR, propertyId);
+		Validations.INPUT.notNull(formatter).exception("The formatter may not be null.");
 		this.formatter = formatter;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+
+		/**
+		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty#getPropertyId()}.
+		 * @param formatter  the label formatting function
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T labelFormatter(final String propertyId, final Function<Double, String> formatter) {
+			getBuilderProperties().add(new LabelFormatterProperty(propertyId, formatter));
+			return (T) this;
+		}
+
+	}
+
+
 
 
 

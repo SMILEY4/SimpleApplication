@@ -5,10 +5,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
@@ -54,6 +55,28 @@ public class ItemProperty extends SuiProperty {
 		super(ItemProperty.class, COMPARATOR);
 		this.factory = item;
 	}
+
+
+
+
+	public interface PropertyBuilderExtension<T extends FactoryExtension>
+			extends FactoryExtension, InjectableItemProperty.PropertyBuilderExtension<T> {
+
+
+		/**
+		 * @param item the factory for creating the item/node.
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T item(final NodeFactory item) {
+			getBuilderProperties().add(new ItemProperty(item));
+			return (T) this;
+		}
+
+
+	}
+
+
 
 
 

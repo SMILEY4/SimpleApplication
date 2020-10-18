@@ -1,9 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -23,10 +22,9 @@ public class SuiSpinnerTest extends SuiElementTest {
 	public void test_create_integer_spinner() {
 
 		@SuppressWarnings ("unchecked") final Spinner<Integer> spinner = (Spinner<Integer>) new SuiSceneController(
-				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.integerSpinnerValues(-3, 7, 2, 1)
-				)
+				SuiElements.spinner()
+						.editable()
+						.integerSpinnerValues(-3, 7, 2, 1)
 		).getRootFxNode();
 
 		assertThat(((SpinnerValueFactory.IntegerSpinnerValueFactory) spinner.getValueFactory()).getMin()).isEqualTo(-3);
@@ -43,10 +41,9 @@ public class SuiSpinnerTest extends SuiElementTest {
 	public void test_create_float_spinner() {
 
 		@SuppressWarnings ("unchecked") final Spinner<Double> spinner = (Spinner<Double>) new SuiSceneController(
-				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.floatingPointSpinnerValues(-3.6, 7.2, 1.4, 1.3)
-				)
+				SuiElements.spinner()
+						.editable()
+						.floatingPointSpinnerValues(-3.6, 7.2, 1.4, 1.3)
 		).getRootFxNode();
 
 		assertThat(((SpinnerValueFactory.DoubleSpinnerValueFactory) spinner.getValueFactory()).getMin()).isCloseTo(-3.6, Percentage.withPercentage(0.01));
@@ -63,10 +60,9 @@ public class SuiSpinnerTest extends SuiElementTest {
 	public void test_create_list_spinner() {
 
 		@SuppressWarnings ("unchecked") final Spinner<String> spinner = (Spinner<String>) new SuiSceneController(
-				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.listSpinnerValues(List.of("A", "B", "C"), "B", true)
-				)
+				SuiElements.spinner()
+						.editable()
+						.listSpinnerValues(List.of("A", "B", "C"), "B", true)
 		).getRootFxNode();
 
 		assertThat(((SpinnerValueFactory.ListSpinnerValueFactory<String>) spinner.getValueFactory()).getItems()).containsExactly("A", "B", "C");
@@ -84,10 +80,9 @@ public class SuiSpinnerTest extends SuiElementTest {
 		final List<ValueChangedEventData<Integer>> capturedEvents = new ArrayList<>();
 
 		final SuiSceneController controller = new SuiSceneController(
-				SuiSpinner.spinner(
-						Properties.integerSpinnerValues(-3, 7, 2, 1),
-						EventProperties.eventValueChangedType(".", Integer.class, capturedEvents::add)
-				)
+				SuiElements.spinner()
+						.integerSpinnerValues(-3, 7, 2, 1)
+						.eventValueChanged(".", Integer.class, capturedEvents::add)
 		);
 
 		@SuppressWarnings ("unchecked") final Spinner<Integer> spinner = (Spinner<Integer>) controller.getRootFxNode();
@@ -136,11 +131,10 @@ public class SuiSpinnerTest extends SuiElementTest {
 
 		final List<ValueChangedEventData<Integer>> capturedEvents = new ArrayList<>();
 		final SuiSceneController controller = new SuiSceneController(
-				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.integerSpinnerValues(-3, 7, 2, 1),
-						EventProperties.eventValueChangedType(".", Integer.class, capturedEvents::add)
-				)
+				SuiElements.spinner()
+						.editable()
+						.integerSpinnerValues(-3, 7, 2, 1)
+						.eventValueChanged(".", Integer.class, capturedEvents::add)
 		);
 
 		@SuppressWarnings ("unchecked") final Spinner<Integer> spinner = (Spinner<Integer>) controller.getRootFxNode();
@@ -195,11 +189,10 @@ public class SuiSpinnerTest extends SuiElementTest {
 
 		final List<ValueChangedEventData<String>> capturedEvents = new ArrayList<>();
 		final SuiSceneController controller = new SuiSceneController(
-				SuiSpinner.spinner(
-						Properties.editable(),
-						Properties.listSpinnerValues(List.of("first", "second", "third"), "first", true),
-						EventProperties.eventValueChangedType(".", String.class, capturedEvents::add)
-				)
+				SuiElements.spinner()
+						.editable()
+						.listSpinnerValues(List.of("first", "second", "third"), "first", true)
+						.eventValueChanged(".", String.class, capturedEvents::add)
 		);
 
 		@SuppressWarnings ("unchecked") final Spinner<String> spinner = (Spinner<String>) controller.getRootFxNode();

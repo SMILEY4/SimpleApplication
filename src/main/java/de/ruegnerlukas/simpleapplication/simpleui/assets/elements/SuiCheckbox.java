@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedCheckbox;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnCheckedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.CheckedProperty;
@@ -13,10 +13,12 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextCon
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
 import java.util.List;
 
@@ -36,21 +38,40 @@ public final class SuiCheckbox {
 
 
 	/**
-	 * Creates a new checkbox node
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a checkbox node
+	 * @return the builder for the element
 	 */
-	public static NodeFactory checkbox(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiCheckbox.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiCheckbox.class,
-				List.of(properties),
-				state,
-				tags
-		);
+	public static SuiCheckBoxBuilder create() {
+		return new SuiCheckBoxBuilder();
+	}
+
+
+
+
+	public static class SuiCheckBoxBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiCheckBoxBuilder>,
+			RegionBuilderExtension<SuiCheckBoxBuilder>,
+			CommonEventBuilderExtension<SuiCheckBoxBuilder>,
+			TextContentProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			IconProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			WrapTextProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			AlignmentProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			CheckedProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			OnCheckedEventProperty.PropertyBuilderExtension<SuiCheckBoxBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiCheckbox.class,
+					state,
+					tags
+			);
+		}
+
+
 	}
 
 

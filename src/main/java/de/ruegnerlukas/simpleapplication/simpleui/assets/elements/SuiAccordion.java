@@ -1,21 +1,23 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedAccordion;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnAccordionExpandedEventProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSectionToggleEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnimateProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ExpandedSectionProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
 import java.util.List;
 
@@ -35,24 +37,44 @@ public final class SuiAccordion {
 
 
 	/**
-	 * Creates a new accordion
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a accordion
+	 * @return the builder for the element
 	 */
-	public static NodeFactory accordion(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiAccordion.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiAccordion.class,
-				List.of(properties),
-				state,
-				tags,
-				CHILD_LISTENER,
-				null
-		);
+	public static SuiAccordionBuilder create() {
+		return new SuiAccordionBuilder();
 	}
+
+
+
+
+	public static class SuiAccordionBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiAccordionBuilder>,
+			RegionBuilderExtension<SuiAccordionBuilder>,
+			CommonEventBuilderExtension<SuiAccordionBuilder>,
+			ItemListProperty.PropertyBuilderExtension<SuiAccordionBuilder>,
+			ItemProperty.PropertyBuilderExtension<SuiAccordionBuilder>,
+			ExpandedSectionProperty.PropertyBuilderExtension<SuiAccordionBuilder>,
+			AnimateProperty.PropertyBuilderExtension<SuiAccordionBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiAccordionBuilder>,
+			OnSectionToggleEventProperty.PropertyBuilderExtension<SuiAccordionBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiAccordion.class,
+					state,
+					tags,
+					SuiAccordion.CHILD_LISTENER,
+					null
+			);
+		}
+
+
+	}
+
+
 
 
 
@@ -60,7 +82,7 @@ public final class SuiAccordion {
 	/**
 	 * A child listener applicable to {@link ExtendedAccordion}s.
 	 */
-	private static final SuiNodeChildListener CHILD_LISTENER = node -> {
+	protected static final SuiNodeChildListener CHILD_LISTENER = node -> {
 		final ExtendedAccordion accordion = (ExtendedAccordion) node.getFxNodeStore().get();
 		if (accordion != null) {
 			if (node.getChildNodeStore().hasChildren()) {
@@ -89,7 +111,7 @@ public final class SuiAccordion {
 				PropertyEntry.of(ItemProperty.class, new ItemProperty.AccordionBuilder(), null),
 				PropertyEntry.of(ExpandedSectionProperty.class, new ExpandedSectionProperty.AccordionUpdatingBuilder()),
 				PropertyEntry.of(AnimateProperty.class, new AnimateProperty.AccordionUpdatingBuilder()),
-				PropertyEntry.of(OnAccordionExpandedEventProperty.class, new OnAccordionExpandedEventProperty.AccordionUpdatingBuilder()),
+				PropertyEntry.of(OnSectionToggleEventProperty.class, new OnSectionToggleEventProperty.AccordionUpdatingBuilder()),
 				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
 		));
 	}

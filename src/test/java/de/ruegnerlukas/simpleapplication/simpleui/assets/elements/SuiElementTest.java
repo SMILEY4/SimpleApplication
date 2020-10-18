@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DatePickerActionEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DateSelectedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
@@ -22,7 +22,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
-import org.junit.After;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.time.LocalDate;
@@ -46,19 +45,8 @@ public class SuiElementTest extends ApplicationTest {
 	public void start(Stage stage) {
 		SuiRegistry.initialize();
 		this.stage = stage;
+		this.stage.setAlwaysOnTop(true);
 		this.stage.show();
-	}
-
-
-
-
-	@After
-	public void cleanup() {
-		syncJfxThread(() -> {
-			getStage().setScene(null);
-			getStage().hide();
-		});
-		delay(100);
 	}
 
 
@@ -67,7 +55,6 @@ public class SuiElementTest extends ApplicationTest {
 	public void show(final Parent node) {
 		syncJfxThread(() -> {
 			getStage().setScene(new Scene(node));
-			getStage().setAlwaysOnTop(true);
 			getStage().show();
 			getStage().sizeToScene();
 		});
@@ -162,9 +149,9 @@ public class SuiElementTest extends ApplicationTest {
 
 
 
-	public void assertEvent(final List<DatePickerActionEventData> events, final int year, final Month month, final int day) {
+	public void assertEvent(final List<DateSelectedEventData> events, final int year, final Month month, final int day) {
 		assertThat(events).hasSize(1);
-		final DatePickerActionEventData event = events.remove(0);
+		final DateSelectedEventData event = events.remove(0);
 		assertThat(event.getDate()).isEqualTo(LocalDate.of(year, month, day));
 	}
 

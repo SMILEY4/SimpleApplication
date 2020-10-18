@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.Properties;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnSelectedTabEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTabClosedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
@@ -13,11 +13,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TabPane
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -41,23 +43,42 @@ public final class SuiTabPane {
 
 
 	/**
-	 * Creates a new tab pane
+	 * Build a new element
 	 *
-	 * @param properties the properties
-	 * @return the factory for a tab pane
+	 * @return the builder for the element
 	 */
-	public static NodeFactory tabPane(final SuiProperty... properties) {
-		Validations.INPUT.notNull(properties).exception("The properties may not be null.");
-		Validations.INPUT.containsNoNull(properties).exception("The properties may not contain null-entries");
-		Properties.validate(SuiTabPane.class, properties);
-		return (state, tags) -> SuiNode.create(
-				SuiTabPane.class,
-				List.of(properties),
-				state,
-				tags,
-				CHILD_NODE_LISTENER,
-				null
-		);
+	public static SuiTabPaneBuilder create() {
+		return new SuiTabPaneBuilder();
+	}
+
+
+
+
+	public static class SuiTabPaneBuilder extends BuilderExtensionContainer implements
+			BaseBuilderExtension<SuiTabPaneBuilder>,
+			RegionBuilderExtension<SuiTabPaneBuilder>,
+			CommonEventBuilderExtension<SuiTabPaneBuilder>,
+			ItemProperty.PropertyBuilderExtension<SuiTabPaneBuilder>,
+			ItemListProperty.PropertyBuilderExtension<SuiTabPaneBuilder>,
+			TooltipProperty.PropertyBuilderExtension<SuiTabPaneBuilder>,
+			TabPaneMenuSideProperty.PropertyBuilderExtension<SuiTabPaneBuilder>,
+			TabClosingPolicyProperty.PropertyBuilderExtension<SuiTabPaneBuilder>,
+			OnTabClosedEventProperty.PropertyBuilderExtension<SuiTabPaneBuilder>,
+			OnSelectedTabEventProperty.PropertyBuilderExtension<SuiTabPaneBuilder> {
+
+
+		@Override
+		public SuiNode create(final SuiState state, final Tags tags) {
+			return create(
+					SuiTabPane.class,
+					state,
+					tags,
+					SuiTabPane.CHILD_NODE_LISTENER,
+					null
+			);
+		}
+
+
 	}
 
 
@@ -90,7 +111,7 @@ public final class SuiTabPane {
 	/**
 	 * The child node listener for tab panes.
 	 */
-	private static final SuiNodeChildListener CHILD_NODE_LISTENER = node -> {
+	protected static final SuiNodeChildListener CHILD_NODE_LISTENER = node -> {
 		final ExtendedTabPane pane = (ExtendedTabPane) node.getFxNodeStore().get();
 		if (pane != null) {
 			if (node.getChildNodeStore().hasChildren()) {

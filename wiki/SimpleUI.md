@@ -127,11 +127,10 @@ public class SimpleUIDemo extends Application {
         stage.show();
     }
     
-    private NodeFactory buildUI(MyState currentState) {
-        return SuiButton.button(
-        	Properties.textContent("Button: " + currentState.text),
-            EventProperties.eventAction(event -> System.out.println("Click!"));
-        );
+    private NodeFactory buildUI(String currentState) {
+        return SuiElements.button()
+                .textContent("Button: " + currentState.text)
+                .eventAction(".", event -> System.out.println("Click!"));
     }
     
 }
@@ -153,13 +152,12 @@ public class SimpleUIDemo extends Application {
     //...
 
     private NodeFactory buildUI(MyState currentState) {
-        return SuiButton.button(
-        	Properties.textContent("Button: " + currentState.text),
-            EventProperties.eventAction(event -> {
-                // we can not set the value of the state directly. This will not update the interface
-                currentState.update(state -> state.value++);
-            });
-        );
+        return SuiElements.button()
+                .textContent("Button: " + currentState.text)
+                .eventAction(event -> {
+                    // we can not set the value of the state directly. This will not update the interface
+                    currentState.update(state -> state.value++);
+                });
     }
     
 }
@@ -214,24 +212,20 @@ There are two options of breaking up the code into smaller parts. By using Simpl
 
 ```java
 private NodeFactory buildUI(MyState currentState) {
-    return SuiVBox.vbox(
-        Properties.spacing(5),
-        Properties.alignment(Pos.CENTER),
-        Properties.items(
-            SuiButton.button(
-                Properties.textContent("Button 1 (" + state.value + ")"),
-                EventProperties.eventAction(e -> currentState.update(MyState.class, s -> s.value++))
-            ),
-            SuiButton.button(
-                Properties.textContent("Button 2 (" + state.value + ")"),
-                EventProperties.eventAction(e -> currentState.update(MyState.class, s -> s.value++))
-            ),
-            SuiButton.button(
-                Properties.textContent("Button 3 (" + state.value + ")"),
-                EventProperties.eventAction(e -> currentState.update(MyState.class, s -> s.value++))
-            )
-        )
-    );
+	return SuiElements.vBox()
+			.spacing(5)
+			.alignment(Pos.CENTER)
+			.items(
+					SuiElements.button()
+							.textContent("Button 1 (" + state.value + ")")
+							.eventAction(".", e -> currentState.update(MyState.class, s -> s.value++)),
+					SuiElements.button()
+							.textContent("Button 2 (" + state.value + ")")
+							.eventAction(".", e -> currentState.update(MyState.class, s -> s.value++)),
+					SuiElements.button()
+							.textContent("Button 3 (" + state.value + ")")
+							.eventAction(".", e -> currentState.update(MyState.class, s -> s.value++))
+	);
 }
 ```
 
@@ -241,26 +235,25 @@ private NodeFactory buildUI(MyState currentState) {
 
 ```java
 private NodeFactory buildUI(MyState currentState) {
-    return SuiVBox.vbox(
-        Properties.spacing(5),
-        Properties.alignment(Pos.CENTER),
-        Properties.items(
-            new MyComponent("Button 1"),
-            new MyComponent("Button 2"),
-            new MyComponent("Button 3")
-        )
-    );
+	return SuiElements.vBox()
+			.spacing(5)
+			.alignment(Pos.CENTER)
+			.items(
+					new MyComponent("Button 1"),
+					new MyComponent("Button 2"),
+					new MyComponent("Button 3")
+			);
 }
 
-...
+//...
 
 class MyComponent extends SuiComponent<MyState> {
     
     public MyComponent(String title) {
-        super(state -> SuiButton.button(
-            Properties.textContent(text + " (" + state.value + ")"),
-            EventProperties.eventAction(e -> state.update(MyState.class, s -> s.value++))
-        ));
+        super(state -> SuiElements.button()
+        		.textContent(title + " (" + state.value + ")")
+        		.eventAction(e -> state.update(MyState.class, s -> s.value++))
+        );
     }
     
 }
@@ -272,24 +265,20 @@ class MyComponent extends SuiComponent<MyState> {
 
 ```java
 private NodeFactory buildUI(MyState currentState) {
-    return SuiVBox.vbox(
-        Properties.spacing(5),
-        Properties.alignment(Pos.CENTER),
-        Properties.items(
-            myComponent(state, "Button 1"),
-            myComponent(state, "Button 2"),
-            myComponent(state, "Button 3")
-        )
-    );
+	return SuiElements.vBox()
+			.spacing(5)
+			.alignment(Pos.CENTER)
+			.items(
+					myComponent(state, "Button 1"),
+					myComponent(state, "Button 2"),
+					myComponent(state, "Button 3")
+			);
 }
 
-...
-
 private NodeFactory myComponent(MyState state, String text) {
-    return SuiButton.button(
-            Properties.textContent(text + " (" + state.value + ")"),
-            EventProperties.eventAction(e -> state.update(MyState.class, s -> s.value++))
-    );
+	return SuiElements.button()
+			.textContent(text + " (" + state.value + ")")
+			.eventAction(e -> state.update(MyState.class, s -> s.value++));
 }
 ```
 
@@ -429,7 +418,7 @@ An element consists of tree basic parts:
 
 - **The Node Factory**
 
-  The node factory create a new SimpleUI-Node from a given ui-state.
+  The node factory create a new SimpleUI-Node from a given ui-state. Usually, this factory is wrapped inside an additional  builder to only expose valid properties of that element.
 
 - **The JavaFx-Node Builder**
 
@@ -463,11 +452,10 @@ An element consists of tree basic parts:
 ##### Example: Button
 
 ```java
-SuiButton.button(
-	Properties.id("myButton"), // (1)
-    Properties.textContent("My Button (" + state.counter + ")"), // (2)
-    EventProperties.eventAction(e -> state.update(MyState.class, s -> s.counter++)) // (3)
-)
+SuiElements.button()
+	.id("myButton") // (1)
+    .textContent("My Button (" + state.counter + ")") // (2)
+    .eventAction(".", e -> state.update(MyState.class, s -> s.counter++)); // (3)
 ```
 
 - Creates a node factory for a simpleui-node of the button-type with the  given three properties.
@@ -478,15 +466,13 @@ SuiButton.button(
 ##### Example: VBox
 
 ```java
-SuiVBox.vbox(
-        Properties.spacing(5), // (1)
-        Properties.items( // (2)
-                IntStream.range(0, state.counter).mapToObj( // (3)
-                        index -> SuiLabel.label(
-                                Properties.textContent("Item " + index)
-                        ))
-        )
-);
+SuiElements.vBox()
+		.spacing(5) // (1)
+		.items( // (2)
+				IntStream.range(0, state.counter).mapToObj( // (3)
+						index -> SuiElements.label().textContent("Item " + index)
+				)
+		);
 ```
 
 - Creates a node factory for a simpleui-node of the vbox-type with the  given properties and the resulting child nodes.
@@ -506,13 +492,15 @@ To create a custom element, you need the parts listed in "6.1 Overview". Usually
 
 ##### 6.3.1 Creating the Node Factory
 
+(Skip this step if you want to use a builder from 6.3.4)
+
 The node factory looks mostly the same for all elements.
 
 ```java
-public static NodeFactory myElement(SuiProperty... properties) {
+public static NodeFactory myElement(List<SuiProperty> properties) {
 	return (state, tags) -> SuiNode.create( // create a NodeFactory which build the simpleui-node
 			MyElement.class, 		// the type of the node. Usually just the class it is defined in. "MyElement" in this case
-			List.of(properties),	// the properties of the node
+			properties,				// the properties of the node
 			state,					// the state
 			tags					// the update tags
 	);
@@ -533,7 +521,7 @@ Validations.INPUT.containsNoNull(properties).exception("The properties may not c
 
 ```java
 // Checks that all properties are valid and allowed for "MyElement"-nodes.
-Properties.validate(MyElement.class, SuiRegistry.get().getEntry(MyElement.class).getProperties(), properties);
+PropertyValidation.validate(MyElement.class, SuiRegistry.get().getEntry(MyElement.class).getProperties(), properties);
 ```
 
 
@@ -581,6 +569,47 @@ public static void register(SuiRegistry registry) {
 ```
 
 
+
+##### 6.3.4 Wrapping the Node Factory in a Builder
+
+The wrapper allows the "user" to only* add properties to the element that are exposed by the builder.
+
+```java
+public static MyElementBuilder myElement() {
+    return new MyElementBuilder();
+}
+
+public static class MyElementBuilder extends BuilderExtensionContainer implements
+        BaseBuilderExtension<MyElementBuilder>, // expose all "common"-properties
+        RegionBuilderExtension<MyElementBuilder>, // expose all "region"-properties
+        CommonEventBuilderExtension<MyElementBuilder>, // expose all "common-event"-properties
+        TextContentProperty.PropertyBuilderExtension<MyElementBuilder>,
+        WrapTextProperty.PropertyBuilderExtension<MyElementBuilder> {
+
+
+    @Override
+    public SuiNode create(final SuiState state, final Tags tags) {
+        return create(
+                MyElement.class,
+                state,
+                tags
+        );
+    }
+
+}
+```
+
+```java
+SuiElements.vBox()
+    .items(
+        myElement()
+            .textContent("My Element 1")
+            .wrapText(true)
+        myElement()
+            .textContent("My Element 1")
+            .wrapText(true)
+    );
+```
 
 
 
@@ -729,19 +758,31 @@ See "8.2 The Mutation Behavior Property"
 
 
 
+##### 7.2.6 Properties "Property"
+
+This is not a real property, but an exposed function of element builders (see 6.3.4). It allows the developer to add properties to an element via an builder that were not exposed by said builder.
+
+```java
+SuiElements.button()
+	.properties(
+        new MyProperty("Some Text") // "MyProperty" is not exposed by the "SuiButton-Builder". 
+    );
+```
+
+Properties added this way must still be registered with the element (See 6.3.3).
+
+
+
 #### 7.3 Custom Properties
 
 The property consists of four parts.
 
 - The property itself holding the data
-
 - a comparison function checking two properties for equality
-
 - One or more "NodeBuilder" for one or more JavaFx-node-types
-
 - One or more "NodeUpdater" for one or more JavaFx-node-types
 
-  
+
 
 **The Property holding the data**
 
@@ -880,6 +921,33 @@ class MyProperty extends SuiProperty {
 }
 ```
 
+**Using the Property with Builders from 6.3.4**
+
+To use our new property with the builder pattern from 6.3.4, we need to create a "FactoryExtension" for the property.
+
+```java
+public interface MyPropertyBuilderExtension<T extends FactoryExtension> extends FactoryExtension {
+
+	default T myProperty(String text) {
+		getBuilderProperties().add(new MyProperty(wrapText));
+		return (T) this;
+	}
+    
+}
+```
+
+The property can then be exposed via the builder:
+
+```java
+public static class MyElementBuilder extends BuilderExtensionContainer implements
+        MyPropertyBuilderExtension<MyElementBuilder>, // expose the new propert
+		...
+            
+myElement()
+        myProperty("id", "text")
+        ...
+```
+
 
 
 
@@ -894,19 +962,16 @@ When looking for differences between two lists of children, the mutation algorit
 
 ```java
 ...
-Properties.items(
-    SuiButton.button(
-        Properties.id("btn_1"),
-        Properties.textContent("Button 1"),
-    ),
-    SuiButton.button(
-        Properties.id("btn_2"),
-        Properties.textContent("Button 2"),
-    ),
-    SuiButton.button(
-        Properties.id("btn_3"),
-        Properties.textContent("Button 3"),
-    )
+.items(
+    SuiElements.button()
+        .id("btn_1")
+        .textContent("Button 1"),
+    SuiElements.button()
+        .id("btn_2"),
+        .textContent("Button 2"),
+    SuiElements.button()
+        .id("btn_3"),
+        .textContent("Button 3")
 )
 ...
 ```
@@ -919,10 +984,9 @@ If we already know that some parts of the tree can never change, we can give Sim
 
 ```java
 // Example: Never mutate properties of this button.
-SuiButton.button(
-    Properties.behaviourStatic(),
-    Properties.textContent("Button 1"),
-)
+SuiElements.button()
+    .behaviourStatic()
+    .textContent("Button 1")
 ```
 
 - **Default**
@@ -930,9 +994,8 @@ SuiButton.button(
   The default behavior. Always consider the node and its child nodes during mutation.
 
   - add nothing
-  - add Properties.behaviourDefault()
-  - add Properties.mutationBehaviour(MutationBehaviour.DEFAULT)
-
+  - set to MutationBehaviour.DEFAULT
+  
 - **Static Node**
 
   The properties of this node will not be considered during mutation but its child nodes can be freely modified.
@@ -942,20 +1005,15 @@ SuiButton.button(
   ```java
   // The properties of the vbox will not be changed and no properties can be added or removed.
   // However child nodes can still be removed, added or modified.
-  SuiVBox.vbox(
-      Properties.staticNode(),
-      Properties.spacing(5),
-      Properties.items(
-          SuiButton.button(
-              Properties.textContent("My Button"),
-          )
-      )
-  );
+  SuiElements.vBox()
+      .mutationBehaviour(MutationBehaviour.STATIC_NODE)
+      .spacing(5)
+      .item(SuiElements.button().textContent("My Button"))
   ```
-
+  
   - add Properties.behaviourStaticNode()
   - add Properties.mutationBehaviour(MutationBehaviour.STATIC_NODE)
-
+  
 - **Static Subtree**
 
   The properties of this node can be changed but its child nodes are not considered during mutation
@@ -965,20 +1023,15 @@ SuiButton.button(
   ```java
   // The properties of the vbox can be freely modified, added and removed.
   // The childs nodes are not considered during mutation. No child node can be added or removed and no properties of them can be changed.
-  SuiVBox.vbox(
-      Properties.behaviourStaticSubtree(),
-      Properties.spacing(5),
-      Properties.items(
-          SuiButton.button(
-              Properties.textContent("My Button"),
-          )
-      )
-  );
+  SuiElements.vBox()
+      .mutationBehaviour(MutationBehaviour.STATIC_SUBTREE)
+      .spacing(5)
+      .item(SuiElements.button().textContent("My Button"))
   ```
-
+  
   - add Properties.behaviourStaticSubtree()
   - add Properties.mutationBehaviour(MutationBehaviour.STATIC_SUBTREE)
-
+  
 - **Static**
 
   Neither the properties of the node can be changed nor its child nodes
@@ -986,17 +1039,12 @@ SuiButton.button(
   ```java
   // The properties and children of the vbox can not be changed, added or removed.
   // Properties of child nodes can not be modified either.
-  SuiVBox.vbox(
-      Properties.behaviourStatic(),
-      Properties.spacing(5),
-      Properties.items(
-          SuiButton.button(
-              Properties.textContent("My Button"),
-          )
-      )
-  );
+  SuiElements.vBox()
+      .mutationBehaviour(MutationBehaviour.STATIC)
+      .spacing(5)
+      .item(SuiElements.button().textContent("My Button"))
   ```
-
+  
   - add Properties.behaviourStatic()
   - add Properties.mutationBehaviour(MutationBehaviour.STATIC)
 
@@ -1021,7 +1069,7 @@ uiState.update(MyState.class, (TaggedSuiStateUpdate<MyState>) state -> {
 **Reacting to the Tags**
 
 ```java
-Properties.mutationBehaviour(MutationBehaviourProperty.MutationBehaviour.STATIC,
+.mutationBehaviour(MutationBehaviour.STATIC,
         Tags.or(
                 Tags.contains("important"),
                 Tags.and(
@@ -1079,41 +1127,24 @@ When building the scene tree, so called injection points can be defined where no
 #### 9.1 Creating the Injection Points
 
 ```java
-SuiVBox.vbox(
-		Properties.itemsInjectable("my.injectionpoint")
-);
+SuiElements.vBox()
+		.itemsInjectable("my.injectionpoint");
 ```
 
-This creates a vbox with the ability to add any amount of child nodes from the outside. We can also inject additional items into a node that already has children.  By default, the injected children will be first in the list before the normal child nodes. To customize the position of the injected items in the list, we can use an "InjectionIndexMarker".
+This creates a vbox with the ability to add any amount of child nodes from the outside. We can also inject additional items into a node that already has child-nodes.  To customize the position of the injected items in the list, we can use an "InjectionIndexMarker".
 
 ```java
-// no index marker -> items will be injected at the beginning of the list.
-SuiVBox.vbox(
-        Properties.itemsInjectable(
-                "my.injectionpoint",
-                SuiButton.button(
-                        Properties.id("btn.1"),
-                        Properties.textContent("Button 1")
-                ),
-                SuiButton.button(
-                        Properties.id("btn.2"),
-                        Properties.textContent("Button 2")
-                )
-);
- 
-SuiVBox.vbox(
-        Properties.itemsInjectable(
-                "my.injectionpoint",
-                InjectionIndexMarker.injectAt(1), // inject all nodes at index 1, i.e. between "Button 1" and "Button 2"
-                SuiButton.button(
-                        Properties.id("btn.1"),
-                        Properties.textContent("Button 1")
-                ),
-                SuiButton.button(
-                        Properties.id("btn.2"),
-                        Properties.textContent("Button 2")
-                )
-);
+SuiElements.vBox()
+		.itemsInjectable(
+				"my.injectionpoint",
+				InjectionIndexMarker.injectAt(1), // inject all nodes at index 1, i.e. between "Button 1" and "Button 2"
+				SuiElements.button()
+						.id("btn.1")
+						.textContent("Button 1"),
+				SuiElements.button()
+						.id("btn.2")
+						.textContent("Button 2")
+		);
 ```
 
 
@@ -1124,15 +1155,13 @@ Items can then be injected via the "SuiRegistry" and the id of the injection poi
 
 ```java
 SuiRegistry.get().inject(
-        "my.injectionpoint",
-        SuiButton.button(
-                Properties.id("btn.injected"),
-                Properties.textContent("Button Injected")
-        ),
-        SuiLabel.label(
-                Properties.id("label.injected"),
-                Properties.textContent("Label Injected")
-        )
+		"my.injectionpoint",
+		SuiElements.button()
+				.id("btn.injected")
+				.textContent("Button Injected"),
+		SuiElements.label()
+				.id("label.injected")
+				.textContent("Label Injected")
 );
 ```
 

@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.EventProperties;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.Button;
 import org.junit.Test;
@@ -17,15 +17,13 @@ public class SuiButtonTest extends SuiElementTest {
 
 	@Test
 	public void test_pressing_button_triggers_action() {
-		if(shouldSkipFxTest()) {
+		if (shouldSkipFxTest()) {
 			return;
 		}
 
 		final List<ActionEventData> capturedEvents = new ArrayList<>();
 		final Button button = (Button) new SuiSceneController(
-				SuiButton.button(
-						EventProperties.eventAction(".", capturedEvents::add)
-				)
+				SuiElements.button().eventAction(".", capturedEvents::add)
 		).getRootFxNode();
 
 		show(button);
