@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationStrategyDecider;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutator;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.NodeMutatorImpl;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.RegistryEntry;

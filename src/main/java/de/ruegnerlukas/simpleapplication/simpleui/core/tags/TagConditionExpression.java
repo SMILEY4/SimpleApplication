@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags;
+package de.ruegnerlukas.simpleapplication.simpleui.core.tags;
 
 import lombok.AllArgsConstructor;
 

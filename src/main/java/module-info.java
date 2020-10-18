@@ -46,7 +46,7 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags;
+	exports de.ruegnerlukas.simpleapplication.simpleui.core.tags;
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.node;
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.node.builders;
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.registry;

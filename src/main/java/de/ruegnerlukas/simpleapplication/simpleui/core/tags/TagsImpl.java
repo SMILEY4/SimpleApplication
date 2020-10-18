@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags;
+package de.ruegnerlukas.simpleapplication.simpleui.core.tags;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import lombok.Getter;

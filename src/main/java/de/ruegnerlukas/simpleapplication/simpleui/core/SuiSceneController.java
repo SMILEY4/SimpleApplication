@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;

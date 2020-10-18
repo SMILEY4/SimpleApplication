@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.state;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
