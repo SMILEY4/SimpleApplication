@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.streams;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SuiEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources.CollectionStreamSource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources.EventStreamSource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources.ObservableStreamSource;
