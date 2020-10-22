@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseDragEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEmittingEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -44,6 +46,16 @@ public class OnMouseDragExitedEventProperty extends AbstractEventListenerPropert
 		@SuppressWarnings ("unchecked")
 		default T eventMouseDragExited(final String propertyId, final SuiEventListener<MouseDragEventData> listener) {
 			getBuilderProperties().add(new OnMouseDragExitedEventProperty(propertyId, listener));
+			return (T) this;
+		}
+
+		/**
+		 * @param tags the tags to attach to the emitted event
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T emitEventMouseDragExited(final Tags tags) {
+			getBuilderProperties().add(new OnActionEventProperty(".", new SuiEmittingEventListener<>(tags)));
 			return (T) this;
 		}
 

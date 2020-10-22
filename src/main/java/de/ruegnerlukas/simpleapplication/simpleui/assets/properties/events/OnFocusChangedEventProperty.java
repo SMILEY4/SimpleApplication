@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.FocusEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEmittingEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -55,6 +57,16 @@ public class OnFocusChangedEventProperty extends AbstractEventListenerProperty<F
 		@SuppressWarnings ("unchecked")
 		default T eventFocusChanged(final String propertyId, final SuiEventListener<FocusEventData> listener) {
 			getBuilderProperties().add(new OnFocusChangedEventProperty(propertyId, listener));
+			return (T) this;
+		}
+
+		/**
+		 * @param tags the tags to attach to the emitted event
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T emitEventFocusChanged(final Tags tags) {
+			getBuilderProperties().add(new OnFocusChangedEventProperty(".", new SuiEmittingEventListener<>(tags)));
 			return (T) this;
 		}
 

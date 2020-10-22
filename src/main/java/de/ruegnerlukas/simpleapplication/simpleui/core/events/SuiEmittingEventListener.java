@@ -9,11 +9,17 @@ import java.util.Set;
 public class SuiEmittingEventListener<T> implements SuiEventListener<T> {
 
 
+	/**
+	 * The additional tags to emit with the events
+	 */
 	private final Tags tags;
 
 
 
 
+	/**
+	 * @param tags tags to add to the emitted events
+	 */
 	public SuiEmittingEventListener(final Tags tags) {
 		this.tags = tags;
 	}
@@ -29,6 +35,13 @@ public class SuiEmittingEventListener<T> implements SuiEventListener<T> {
 
 
 
+	/**
+	 * Get the complete list of tags for the given event
+	 *
+	 * @param event        the event
+	 * @param listenerTags the additional tags of this listener
+	 * @return the complete list of tags for the given event
+	 */
 	private Tags getEventTags(final T event, final Tags listenerTags) {
 		Set<String> eventTags = new HashSet<>(listenerTags.getTags());
 		eventTags.add(event.getClass().getSimpleName());
