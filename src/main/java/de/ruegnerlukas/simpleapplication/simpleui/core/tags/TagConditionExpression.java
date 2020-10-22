@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.tags;
 
+import de.ruegnerlukas.simpleapplication.common.utils.HashCode;
 import lombok.AllArgsConstructor;
 
 import java.util.Set;
@@ -55,7 +56,7 @@ public abstract class TagConditionExpression {
 
 		@Override
 		public int hashCode() {
-			return super.hashCode();
+			return tag.hashCode();
 		}
 
 	}
@@ -100,7 +101,7 @@ public abstract class TagConditionExpression {
 
 		@Override
 		public int hashCode() {
-			return super.hashCode();
+			return tags.hashCode();
 		}
 
 	}
@@ -145,7 +146,7 @@ public abstract class TagConditionExpression {
 
 		@Override
 		public int hashCode() {
-			return super.hashCode();
+			return tags.hashCode();
 		}
 
 	}
@@ -190,7 +191,7 @@ public abstract class TagConditionExpression {
 
 		@Override
 		public int hashCode() {
-			return super.hashCode();
+			return expressions.hashCode();
 		}
 
 	}
@@ -235,7 +236,7 @@ public abstract class TagConditionExpression {
 
 		@Override
 		public int hashCode() {
-			return super.hashCode();
+			return expressions.hashCode();
 		}
 
 	}
@@ -280,7 +281,7 @@ public abstract class TagConditionExpression {
 
 		@Override
 		public int hashCode() {
-			return super.hashCode();
+			return expression.hashCode() + HashCode.CONSTANT;
 		}
 
 	}
@@ -335,7 +336,7 @@ public abstract class TagConditionExpression {
 
 		@Override
 		public int hashCode() {
-			return super.hashCode();
+			return Boolean.hashCode(result);
 		}
 
 	}
