@@ -116,5 +116,4 @@ public class OnActionEventProperty extends AbstractEventListenerProperty<ActionE
 
 	}
 
-
 }

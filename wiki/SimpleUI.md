@@ -740,9 +740,11 @@ The size-property combines the three other properties in one, making it possible
 
 Event properties can be used to add listeners to nodes for certain events. There are a lot of properties for different events available. Some can be added to (almost) all nodes (e.g.: "EventProperties.eventFocusChanged" when the node get focused/unfocused) some can only be added to specific nodes.
 
-Property-Ids can usually be added to every event-property, preventing unnecessary mutations when using lambdas for example (see "7.2 The Property-Id").
+Property-Ids are added to every event-property, preventing unnecessary mutations when using lambdas for example (see "7.2 The Property-Id").
 
 Event Properties can also be used in combination with SimpleUI-Streams (See "10. SimpleUI Streams").
+
+For more information about events, see 8. Events
 
 
 
@@ -950,11 +952,61 @@ myElement()
 
 
 
+### 8. Events
+
+#### 8.1 Direct Listeners
+
+Listeners can be added directly to elements. This way, only the one listener will immediately receive all events created by that one element.
+
+```java
+SuiElements.button()
+	.eventAction("my.listener", e -> System.out.println("Click!"));
+```
 
 
-### 8. Performance Optimisations
 
-#### 8.1 The Id-Property
+#### 8.2. Emitting Listener
+
+The emitting-listener does not handle events directly, but forwards them to the global "SimpleUI-Event-Bus", where additional handlers can be registered to handle the forwarded events. To better manage the events at the bus, tags can be added to each event. Listeners at the event-but can then filter the incoming events with these tags. In addition to the manually specified tags, the event type will be added to the tags (e.g. "type.ActionEventData").
+
+```java
+// forwards all action-events to the event-bus together with the tags "my.button" and "type.ActionEventData"
+
+SuiElements.button()
+	.eventAction("my.listener", new SuiEmittingEventListener(Tags.from("my.button")));
+
+SuiElements.button().
+    .emitEventAction("my.listener", Tags.from("my.button"));
+```
+
+Listeners can then subscribe to the "SimpleUI-Event-Bus" via the registry.
+
+```java
+// get the event bus from the registry
+EventBus eventBus = SuiRegistry.get().getEventBus();
+
+// listen to events of the type "ActionEventData" that contain the tag "my.button".
+eventBus.subscribe(
+    SubscriptionData.ofType(ActionEventData.class, Tags.containsAll("my.button")),
+    event -> System.out.println("Click!")
+);
+```
+
+#### 8.3 Emitting Streams
+
+The same functionality as emitting listeners can be achieved with SimpleUI-Streams. Here, the "emitAsSuiEvent"-step will forward the event to the bus.
+
+```java
+SuiElements.button()
+	.eventAction("my.listener", SuiStream.eventStream(ActionEventData.class,
+                                                      stream -> stream.emitAsSuiEvent(Tags.from("my.button"))));
+```
+
+
+
+### 9. Performance Optimizations
+
+#### 9.1 The Id-Property
 
 Also see "5.1 The Mutation Algorithm".
 
@@ -978,7 +1030,7 @@ When looking for differences between two lists of children, the mutation algorit
 
  
 
-#### 8.2 The Mutation Behavior Property
+#### 9.2 The Mutation Behavior Property
 
 If we already know that some parts of the tree can never change, we can give SimpleUI a small hint with the MutationBehaviourProperty.
 
@@ -1112,19 +1164,19 @@ This system allows for complex expressions. The following operations are availab
 
 
 
-#### 8.3 Property-Ids
+#### 9.3 Property-Ids
 
 See "7.1 The Property-Id"
 
 
 
-### 9. Injecting Nodes
+### 10. Injecting Nodes
 
 When building the scene tree, so called injection points can be defined where nodes can be added from the outside.
 
 
 
-#### 9.1 Creating the Injection Points
+#### 10.1 Creating the Injection Points
 
 ```java
 SuiElements.vBox()
@@ -1149,7 +1201,7 @@ SuiElements.vBox()
 
 
 
-####   9.2 Injecting Nodes
+####   10.2 Injecting Nodes
 
 Items can then be injected via the "SuiRegistry" and the id of the injection point. Items to inject must be registered before the scene tree is created/mutated, or else the nodes will not show up. Nodes added after creating the scene tree will only show up after the mutation process. It is possible to add all nodes and then trigger a state update that does not modify the state, but runs the mutation process, adding the injected children. 
 
@@ -1169,7 +1221,7 @@ SuiRegistry.get().inject(
 
 
 
-### 10. SimpleUI Streams
+### 11. SimpleUI Streams
 
 The stream-api provided by SimpleUI is very similar to the one build into java. The main difference lies in the source of the elements. Java Streams usually have a collection or array as a source. Operations can then iterate over this source and process the elements this way. The whole process is done once the end of the collection/array/... has been reached. SimpleUI-Streams have a source producing elements as "events" and pushing them to the stream (asynchronously). These source do not have a start, end  or fixed size and can not be iterated over the stream can not know when the current event/element is going to be the last event ever produced. Examples for event sources are JavaFx-Observables or event listeners.  
 
@@ -1191,7 +1243,7 @@ observable.set("123");
 
 
 
-#### 10.1 Stream sources
+#### 11.1 Stream sources
 
 - **Observable JavaFx Values**
 
@@ -1212,21 +1264,19 @@ observable.set("123");
           .map(e -> e.getText())
           .forEach(e -> System.out.println(e)));
   
-  SuiTextField.textField(
-          EventProperties.eventTextEntered("my.listener", eventListener)
-  );
+  SuiElements.textField()
+          .eventTextEntered("my.listener", eventListener);
   
   // or as a single block:
-  SuiTextField.textField(
-          EventProperties.eventTextEntered(
+  SuiElements.textField()
+          .eventTextEntered(
                   "my.listener",
                   SuiStream.eventStream(TextContentEventData.class,
                           stream -> stream
                                   .map(e -> e.getText())
-                                  .forEach(e -> System.out.println(e))))
-  ),
+                                  .forEach(e -> System.out.println(e))));
   ```
-
+  
 - **Normal Java Collections**
 
   The behavior is a bit different with collections than described above. Here we process all elements in the source collection at once and in order synchronously. This can be very useful for testing streams however.
@@ -1240,7 +1290,7 @@ observable.set("123");
 
 
 
-#### 10.2 Stream operations
+#### 11.2 Stream operations
 
 - **for each**
 
@@ -1608,8 +1658,20 @@ SuiStream.from(observable)
       .updateState(MyState.class, myState, (state, value) -> state.text = value);
   
   observable.setValue("abc"); // triggers a state update. The "text"-field of the state will be set to the value of the element.
-  
   ```
+  
+- **emit as a simpleui-event**
+
+   Forwards each incoming element to the global SimpleUI-Event-Bus together with the given tags.
+
+   ```java
+   SimpleStringProperty observable = new SimpleStringProperty();
+   SuiStream.from(observable)
+       .map(value -> "Event: " + value)
+       .emitAsSuiEvent(Tags.from("tag1", "tag2"));
+   
+   observable.setValue("abc"); // forwards the string "Event: abc" as an event with the tags "tag1", "tag2" to the event bus
+   ```
 
    
 

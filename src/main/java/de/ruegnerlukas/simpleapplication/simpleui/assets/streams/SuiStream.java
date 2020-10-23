@@ -1,10 +1,11 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.streams;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources.CollectionStreamSource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources.EventStreamSource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources.ObservableStreamSource;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WritableValue;
 import javafx.util.Duration;
@@ -276,6 +277,13 @@ public interface SuiStream<IN, OUT> {
 	 * @param <T>            the generic type of the state
 	 */
 	<T extends SuiState> void updateStateSilent(Class<T> stateType, T state, BiConsumer<T, OUT> updateFunction);
+
+	/**
+	 * Forwards all elements to the simpleui-event bus.
+	 *
+	 * @param tags tags to add to all events
+	 */
+	void emitAsSuiEvent(Tags tags);
 
 
 }
