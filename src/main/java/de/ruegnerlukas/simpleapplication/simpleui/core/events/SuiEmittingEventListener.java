@@ -10,6 +10,11 @@ public class SuiEmittingEventListener<T> implements SuiEventListener<T> {
 
 
 	/**
+	 * The prefix added to the event-type-tag.
+	 */
+	public static final String TAG_PREFIX_EVENT_TYPE = "type.";
+
+	/**
 	 * The additional tags to emit with the events
 	 */
 	private final Tags tags;
@@ -44,7 +49,7 @@ public class SuiEmittingEventListener<T> implements SuiEventListener<T> {
 	 */
 	private Tags getEventTags(final T event, final Tags listenerTags) {
 		Set<String> eventTags = new HashSet<>(listenerTags.getTags());
-		eventTags.add(event.getClass().getSimpleName());
+		eventTags.add(TAG_PREFIX_EVENT_TYPE + event.getClass().getSimpleName());
 		return Tags.from(eventTags);
 	}
 

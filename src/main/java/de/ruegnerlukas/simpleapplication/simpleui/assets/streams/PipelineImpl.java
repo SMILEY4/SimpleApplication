@@ -1,12 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.streams;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.AccumulateStream;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.AsyncStream;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.CollectIntoStream;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.CollectIntoValueStream;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.DistinctStream;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.EmittingSuiEventStream;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.FilterStream;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.FlatMapIgnoreNullStream;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.FlatMapNullsStream;
@@ -25,6 +25,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.ToSt
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.UnpackStream;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.WaitForAndPackStream;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.WaitForStream;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.beans.value.WritableValue;
 import javafx.util.Duration;
 
@@ -314,6 +316,15 @@ public abstract class PipelineImpl<IN, OUT> extends Pipeline<IN, OUT> {
 		Validations.INPUT.notNull(state).exception("The state may not be null.");
 		Validations.INPUT.notNull(updateFunction).exception("The update function may not be null.");
 		new StateUpdateStream<>(this, true, stateType, state, updateFunction);
+	}
+
+
+
+
+	@Override
+	public void emitAsSuiEvent(final Tags tags) {
+		Validations.INPUT.notNull(tags).exception("The tags may not be null.");
+		new EmittingSuiEventStream<>(this, tags);
 	}
 
 }
