@@ -4,9 +4,12 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEmittingEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.scene.control.Tab;
 import lombok.Getter;
 
@@ -59,6 +62,16 @@ public class OnSelectedTabEventProperty extends AbstractEventListenerProperty<Ta
 		@SuppressWarnings ("unchecked")
 		default T eventSelectedTab(final String propertyId, final SuiEventListener<TabActionEventData> listener) {
 			getBuilderProperties().add(new OnSelectedTabEventProperty(propertyId, listener));
+			return (T) this;
+		}
+
+		/**
+		 * @param tags the tags to attach to the emitted event
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T emitEventSelectedTab(final Tags tags) {
+			getBuilderProperties().add(new OnActionEventProperty(".", new SuiEmittingEventListener<>(tags)));
 			return (T) this;
 		}
 

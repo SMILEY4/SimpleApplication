@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.state;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 
 public interface SuiStateListener {
 

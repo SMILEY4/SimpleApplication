@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 /**

@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.IdShuf
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.RemoveAllStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StandardMutationStrategy;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies.StrategyDecisionResult;
-import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.tags.Tags;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 
 import java.util.List;

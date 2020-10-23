@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.streams;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SuiEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations.JFXTimer;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
 import javafx.beans.property.SimpleObjectProperty;

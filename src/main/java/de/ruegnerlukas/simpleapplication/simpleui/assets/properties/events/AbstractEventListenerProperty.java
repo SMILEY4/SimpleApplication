@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 
 import java.util.function.BiFunction;

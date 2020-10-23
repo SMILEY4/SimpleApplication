@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.SuiListChangeListener;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiListChangeListener;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.utils.MutableBiConsumer;

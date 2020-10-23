@@ -3,9 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.KeyEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEmittingEventListener;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.scene.Node;
 import lombok.Getter;
 
@@ -48,6 +51,15 @@ public class OnKeyPressedEventProperty extends AbstractEventListenerProperty<Key
 			return (T) this;
 		}
 
+		/**
+		 * @param tags the tags to attach to the emitted event
+		 * @return this builder for chaining
+		 */
+		@SuppressWarnings ("unchecked")
+		default T emitEventKeyPressed(final Tags tags) {
+			getBuilderProperties().add(new OnKeyPressedEventProperty(".", new SuiEmittingEventListener<>(tags)));
+			return (T) this;
+		}
 	}
 
 

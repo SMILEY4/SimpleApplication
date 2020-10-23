@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
+package de.ruegnerlukas.simpleapplication.simpleui.core.events;
 
 public interface SuiEventListener<T> {
 

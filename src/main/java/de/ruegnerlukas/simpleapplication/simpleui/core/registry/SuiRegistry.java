@@ -1,6 +1,8 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.registry;
 
 
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBusImpl;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
@@ -26,10 +28,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import javafx.scene.Node;
 import lombok.AllArgsConstructor;
@@ -104,6 +106,13 @@ public class SuiRegistry {
 	 * The list of registered factories ready to be injected at defined points.
 	 */
 	private final Map<String, List<NodeFactory>> injectedFactories = new HashMap<>();
+
+
+	/**
+	 * The event bus for global simpleui-events.
+	 */
+	@Getter
+	private final EventBus eventBus = new EventBusImpl();
 
 
 
