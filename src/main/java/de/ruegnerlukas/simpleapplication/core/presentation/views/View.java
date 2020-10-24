@@ -14,13 +14,13 @@ public class View {
 
 
 	/**
-	 * THe default min size of a view.
+	 * The default min size of a view.
 	 */
 	public static final Dimension2D DEFAULT_SIZE_MIN = new Dimension2D(0, 0);
 
 
 	/**
-	 * THe default max size of a view.
+	 * The default max size of a view.
 	 */
 	public static final Dimension2D DEFAULT_SIZE_MAX = new Dimension2D(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
