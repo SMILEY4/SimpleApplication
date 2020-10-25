@@ -33,7 +33,7 @@
         <jackson-core.version>2.10.1</jackson-core.version>
         <exp4j.version>0.4.8</exp4j.version>
         <!-- Tests-->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <assertj.version>3.14.0</assertj.version>
         <mockito.version>3.2.4</mockito.version>
         <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
