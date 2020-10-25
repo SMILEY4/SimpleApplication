@@ -30,25 +30,38 @@ public class SuiWindowManager implements WindowManager {
 
 
 	@Override
-	public void openNew(final WindowInformation windowInfo) {
-		Validations.INPUT.notNull(windowInfo).exception("The window information may not be null.");
+	public void openNew(final WindowOpenData windowOpenData) {
+		Validations.INPUT.notNull(windowOpenData).exception("The window data may not be null.");
+		Validations.INPUT.typeOf(windowOpenData, SuiWindowOpenData.class)
+				.exception("Window-open-data not of type {}", SuiWindowOpenData.class);
+		openNew((SuiWindowOpenData) windowOpenData);
+	}
 
+
+
+
+	/**
+	 * Opens the new window
+	 *
+	 * @param windowOpenData information about the window
+	 */
+	private void openNew(final SuiWindowOpenData windowOpenData) {
 		final SuiSceneController controller = new SuiSceneController(
-				Optional.ofNullable(windowInfo.getState()).orElse(new SuiState()),
-				Optional.ofNullable(windowInfo.getRootNodeFactory()).orElse(SuiElements.anchorPane()));
+				Optional.ofNullable(windowOpenData.getState()).orElse(new SuiState()),
+				Optional.ofNullable(windowOpenData.getRootNodeFactory()).orElse(SuiElements.anchorPane()));
 
-		final Scene scene = createScene(controller, windowInfo.getSize());
-		final Stage stage = createStage(scene, windowInfo.getTitle(), windowInfo.getOwner(), windowInfo.getModality());
+		final Scene scene = createScene(controller, windowOpenData.getSize());
+		final Stage stage = createStage(scene, windowOpenData.getTitle(), windowOpenData.getOwner(), windowOpenData.getModality());
 
 		stage.setOnCloseRequest(e -> {
-			Optional.ofNullable(windowInfo.getOnClose()).ifPresent(onClose -> onClose.accept(stage));
+			Optional.ofNullable(windowOpenData.getOnClose()).ifPresent(onClose -> onClose.accept(stage));
 			stage.setOnCloseRequest(null);
 			onClose(stage);
 		});
 
-		log.debug("Opening new window: {}", windowInfo.getTitle());
+		log.debug("Opening new window: title={}", windowOpenData.getTitle());
 		controllerMap.put(stage, controller);
-		showStage(stage, windowInfo.isWait(), windowInfo.getOnOpen());
+		showStage(stage, windowOpenData.isWait(), windowOpenData.getOnOpen());
 	}
 
 
@@ -115,8 +128,24 @@ public class SuiWindowManager implements WindowManager {
 
 
 	@Override
-	public void close(final Stage stage) {
-		if (stage.isShowing()) {
+	public void close(final WindowCloseData windowCloseData) {
+		Validations.INPUT.notNull(windowCloseData).exception("The window data may not be null.");
+		Validations.INPUT.typeOf(windowCloseData, SuiWindowCloseData.class)
+				.exception("Window-close-data not of type {}", SuiWindowCloseData.class);
+		close((SuiWindowCloseData) windowCloseData);
+	}
+
+
+
+
+	/**
+	 * Closes an open window
+	 *
+	 * @param windowCloseData info about the window to close.
+	 */
+	private void close(final SuiWindowCloseData windowCloseData) {
+		final Stage stage = windowCloseData.getWindow();
+		if (stage != null && stage.isShowing()) {
 			onClose(stage);
 			stage.close();
 		}
@@ -127,12 +156,12 @@ public class SuiWindowManager implements WindowManager {
 
 	/**
 	 * Called when closing a window/stage.
+	 *
 	 * @param stage the closed stage
 	 */
 	private void onClose(final Stage stage) {
-		log.debug("Properly closing window: {}.", stage.getTitle());
-		final SuiSceneController controller = controllerMap.remove(stage);
-		controller.getState().removeStateListener(controller);
+		log.debug("Properly closing window: title={}.", stage.getTitle());
+		controllerMap.remove(stage).dispose();
 	}
 
 

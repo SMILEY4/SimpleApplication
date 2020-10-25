@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Prov
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
-import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleData;
+import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SuiWindowHandleData;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleServiceImpl;
@@ -82,7 +82,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle.getCurrentRootNode()).getText()).isEqualTo("A Button");
 
-			final SuiSceneController context = ((SUIWindowHandleData) handle.getData()).getSceneContext();
+			final SuiSceneController context = ((SuiWindowHandleData) handle.getData()).getController();
 			assertThat(context).isNotNull();
 			assertThat(context.getState()).isEqualTo(state);
 			assertThat(state.getListeners()).hasSize(1);
@@ -113,7 +113,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle2.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle2.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			final SuiSceneController context = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			final SuiSceneController context = ((SuiWindowHandleData) handle2.getData()).getController();
 			assertThat(context.getState()).isEqualTo(state);
 			assertThat(state.getListeners()).hasSize(1);
 			assertThat(state.getListeners()).containsExactlyInAnyOrder((SuiSceneController) context);
@@ -147,8 +147,8 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle2.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle2.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			final SuiSceneController context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
-			final SuiSceneController context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
+			final SuiSceneController context1 = ((SuiWindowHandleData) handle1.getData()).getController();
+			final SuiSceneController context2 = ((SuiWindowHandleData) handle2.getData()).getController();
 			assertThat(context1).isNotEqualTo(context2);
 
 			assertThat(context1.getState()).isEqualTo(state);
@@ -198,10 +198,10 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(handle4.getCurrentRootNode() instanceof Button).isTrue();
 			assertThat(((Button) handle4.getCurrentRootNode()).getText()).isEqualTo("Button 2");
 
-			final SuiSceneController context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
-			final SuiSceneController context2 = ((SUIWindowHandleData) handle2.getData()).getSceneContext();
-			final SuiSceneController context3 = ((SUIWindowHandleData) handle3.getData()).getSceneContext();
-			final SuiSceneController context4 = ((SUIWindowHandleData) handle4.getData()).getSceneContext();
+			final SuiSceneController context1 = ((SuiWindowHandleData) handle1.getData()).getController();
+			final SuiSceneController context2 = ((SuiWindowHandleData) handle2.getData()).getController();
+			final SuiSceneController context3 = ((SuiWindowHandleData) handle3.getData()).getController();
+			final SuiSceneController context4 = ((SuiWindowHandleData) handle4.getData()).getController();
 			assertThat(context1).isNotEqualTo(context2);
 			assertThat(context1).isNotEqualTo(context3);
 			assertThat(context1).isNotEqualTo(context4);
@@ -241,7 +241,7 @@ public class SimpleUIViewTest extends ApplicationTest {
 			assertThat(viewService.isWindowHandleActive(handle1)).isTrue();
 			assertThat(viewService.isWindowHandleActive(handle2)).isFalse();
 
-			final SuiSceneController context1 = ((SUIWindowHandleData) handle1.getData()).getSceneContext();
+			final SuiSceneController context1 = ((SuiWindowHandleData) handle1.getData()).getController();
 			assertThat(handle2.getData()).isNull();
 			assertThat(context1.getState()).isEqualTo(state);
 

@@ -4,12 +4,12 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateUpdate;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.scene.Node;
 
 import java.util.ArrayList;
@@ -115,6 +115,16 @@ public class SuiSceneController implements SuiStateListener {
 	 */
 	public SuiState getState() {
 		return this.state;
+	}
+
+
+
+
+	/**
+	 * Disposes this controller and all its resources
+	 */
+	public void dispose() {
+		getState().removeStateListener(this);
 	}
 
 

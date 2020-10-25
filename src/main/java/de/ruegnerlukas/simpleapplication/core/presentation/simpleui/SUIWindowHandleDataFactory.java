@@ -26,7 +26,7 @@ public class SUIWindowHandleDataFactory implements WindowHandleDataFactory {
 
 	@Override
 	public WindowHandleData build() {
-		return new SUIWindowHandleData(sceneContextFactory.build());
+		return new SuiWindowHandleData(sceneContextFactory.build());
 	}
 
 }

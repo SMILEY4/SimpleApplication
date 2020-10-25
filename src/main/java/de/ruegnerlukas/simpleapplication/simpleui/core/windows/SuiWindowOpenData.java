@@ -6,6 +6,7 @@ import javafx.geometry.Dimension2D;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,7 +14,8 @@ import java.util.function.Consumer;
 
 @Builder
 @Getter
-public class WindowInformation {
+@AllArgsConstructor
+public class SuiWindowOpenData implements WindowOpenData {
 
 
 	/**
@@ -52,7 +54,7 @@ public class WindowInformation {
 	private final boolean wait;
 
 	/**
-	 * A listener called when the stage is shown (called before when {@link WindowInformation#wait} is set to true).
+	 * A listener called when the stage is shown (called before when {@link SuiWindowOpenData#wait} is set to true).
 	 */
 	private final Consumer<Stage> onOpen;
 
