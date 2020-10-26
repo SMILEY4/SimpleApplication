@@ -14,10 +14,6 @@ import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyleProperty;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
-import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.windowmanager.SAppWindowCloseData;
-import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.windowmanager.SAppWindowManager;
-import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.windowmanager.SAppWindowOpenData;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.PopupConfiguration;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
@@ -28,8 +24,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
-import de.ruegnerlukas.simpleapplication.simpleui.core.windows.WindowManager;
+import de.ruegnerlukas.simpleapplication.simpleui.core.windows.SuiWindows;
+import de.ruegnerlukas.simpleapplication.simpleui.core.windows.WindowConfig;
 import javafx.geometry.Dimension2D;
+import javafx.geometry.Orientation;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -37,20 +35,18 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 import static de.ruegnerlukas.simpleapplication.common.eventbus.SubscriptionData.ofType;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.anchorPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.button;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.component;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.label;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.separator;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.vBox;
 
 @Slf4j
 public class SUITestApplication {
 
-
-	public static final Map<String, Stage> stages = new HashMap<>();
 
 	public static final TestUIState testUIState = new TestUIState();
 
@@ -59,7 +55,6 @@ public class SUITestApplication {
 
 	public static void main(String[] args) {
 		SuiRegistry.initialize();
-		SuiRegistry.get().setWindowManager(new SAppWindowManager());
 		SuiRegistry.get().registerProperty(SuiButton.class, ManagedStyleProperty.class, new ManagedStyleProperty.ManagedStyleUpdatingBuilder());
 
 		final ApplicationConfiguration configuration = new ApplicationConfiguration();
@@ -79,6 +74,7 @@ public class SUITestApplication {
 
 		private String text = "-";
 
+		private boolean showPopup = false;
 
 	}
 
@@ -113,28 +109,14 @@ public class SUITestApplication {
 		private void createViews() {
 			log.info("{} creating views.", this.getId());
 
+			log.info("Main State: {}", testUIState);
+
 			final View viewParent = View.builder()
 					.id("sui.test.view")
 					.size(new Dimension2D(600, 500))
 					.title(new StringProvider("application_name").get())
 					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, SUITestApplication::parentWindow)))
-					.build();
-
-			final View viewChild = View.builder()
-					.id("sui.test.view.child")
-					.size(new Dimension2D(300, 100))
-					.title(new StringProvider("application_name").get() + " - child")
-					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, SUITestApplication::childWindow)))
-					.build();
-
-			final View viewPopup = View.builder()
-					.id("sui.test.view.popup")
-					.size(new Dimension2D(200, 200))
-					.title(new StringProvider("application_name").get() + " - popup")
-					.icon(Resource.internal("testResources/icon.png"))
-					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, popupWindow())))
+					.dataFactory(new SUIWindowHandleDataFactory(() -> new SuiSceneController(testUIState, TestUIState.class, SUITestApplication::createUI)))
 					.build();
 
 			final EventBus suiEventBus = SuiRegistry.get().getEventBus();
@@ -144,17 +126,13 @@ public class SUITestApplication {
 
 			final ViewService viewService = new Provider<>(ViewService.class).get();
 			viewService.registerView(viewParent);
-			viewService.registerView(viewChild);
-			viewService.registerView(viewPopup);
-			WindowHandle parentHandle = viewService.showView(viewParent.getId());
-			viewService.popupView(viewChild.getId(), PopupConfiguration.builder().parent(parentHandle).modality(Modality.NONE).build());
+			viewService.showView(viewParent.getId());
 
 			try {
-				stages.put("PRIMARY", forceExtractPrimaryStage());
+				SuiWindows.initializePrimaryWindow("primary", forceExtractPrimaryStage());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
 
 
@@ -178,9 +156,7 @@ public class SUITestApplication {
 	}
 
 
-
-
-	private static NodeFactory parentWindow(final TestUIState state) {
+	private static NodeFactory createUI(final TestUIState state) {
 		return vBox()
 				.id("vbox")
 				.items(
@@ -200,66 +176,40 @@ public class SUITestApplication {
 						button()
 								.id("button3")
 								.textContent("Very Long Tooltip")
-								.emitEventAction(Tags.from("button3"))
-				);
-	}
-
-
-
-
-	private static NodeFactory childWindow(final TestUIState state) {
-		return vBox()
-				.id("vbox")
-				.items(
-						label()
-								.id("label")
-								.textContent("CHILD: " + state.getText())
-								.tooltip(state.getText(), true, 200)
-								.sizeMin(300, 30),
+								.emitEventAction(Tags.from("button3")),
+						separator()
+								.id("separator")
+								.orientation(Orientation.HORIZONTAL),
 						button()
-								.id("button")
+								.id("buttonOpen")
 								.textContent("Open Popup")
-								.eventAction(".", e -> openSAppWindow())
-				);
-	}
-
-
-
-
-	private static NodeFactory popupWindow() {
-		return component(TestUIState.class,
-				state -> vBox()
-						.items(
-								label()
-										.id("label1")
-										.textContent("POPUP !!!"),
-								label()
-										.id("label2")
-										.textContent("   -> " + state.getText()),
-								button()
-										.id("button")
-										.textContent("Close Window")
-										.eventAction(".", e -> WindowManager.closeWindow(
-												SAppWindowCloseData.builder()
-														.viewId("sui.test.view.popup")
-														.build()
-										))
+								.eventAction(".", e -> state.update(TestUIState.class, s -> s.setShowPopup(true))),
+						button()
+								.id("buttonClose")
+								.textContent("Close Popup")
+								.eventAction(".", e -> state.update(TestUIState.class, s -> s.setShowPopup(false)))
+				)
+				.popup(state.showPopup, WindowConfig.builder()
+						.title("My Popup")
+						.windowId("my.popup")
+						.width(600)
+						.height(100)
+						.wait(false)
+						.modality(Modality.WINDOW_MODAL)
+						.ownerWindowId("primary")
+						.state(state)
+						.nodeFactory(
+								component(TestUIState.class,
+										s -> anchorPane()
+												.id("anchor.pane")
+												.item(
+														label()
+																.id("label")
+																.anchorsFitParent()
+																.textContent("Popup: \"" + state.getText() + "\"")
+												)
+								)
 						)
-		);
-	}
-
-
-
-
-	private static void openSAppWindow() {
-		WindowManager.openWindow(
-				SAppWindowOpenData.builder()
-						.viewId("sui.test.view.popup")
-						.popupConfig(PopupConfiguration.builder()
-								.modality(Modality.APPLICATION_MODAL)
-								.parent(new Provider<>(ViewService.class).get().getPrimaryWindowHandle())
-								.wait(false)
-								.build())
 						.build());
 	}
 
