@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
-import de.ruegnerlukas.simpleapplication.simpleui.core.windows.SuiWindows;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.windows.WindowConfig;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -118,7 +118,7 @@ public class PopupProperty extends SuiProperty {
 		 * @param property the popup property
 		 */
 		private void open(final PopupProperty property) {
-			Platform.runLater(() -> SuiWindows.open(property.getWindowConfig()));
+			Platform.runLater(() -> SuiRegistry.get().getWindows().openWindow(property.getWindowConfig()));
 		}
 
 
@@ -130,7 +130,7 @@ public class PopupProperty extends SuiProperty {
 		 * @param property the popup property
 		 */
 		private void close(final PopupProperty property) {
-			Platform.runLater(() -> SuiWindows.close(property.getWindowConfig().getWindowId()));
+			Platform.runLater(() -> SuiRegistry.get().getWindows().closeWindow(property.getWindowConfig().getWindowId()));
 		}
 
 	}

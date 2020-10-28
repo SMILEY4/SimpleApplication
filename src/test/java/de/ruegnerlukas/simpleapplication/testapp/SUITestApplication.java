@@ -24,7 +24,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
-import de.ruegnerlukas.simpleapplication.simpleui.core.windows.SuiWindows;
+import de.ruegnerlukas.simpleapplication.simpleui.core.windows.SuiWindowsImpl;
 import de.ruegnerlukas.simpleapplication.simpleui.core.windows.WindowConfig;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Orientation;
@@ -129,7 +129,7 @@ public class SUITestApplication {
 			viewService.showView(viewParent.getId());
 
 			try {
-				SuiWindows.initializePrimaryWindow("primary", forceExtractPrimaryStage());
+				((SuiWindowsImpl) SuiRegistry.get().getWindows()).registerPrimaryWindow(forceExtractPrimaryStage());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -154,6 +154,8 @@ public class SUITestApplication {
 		field.setAccessible(true);
 		return (Stage) field.get(primaryWindowHandle);
 	}
+
+
 
 
 	private static NodeFactory createUI(final TestUIState state) {
@@ -196,8 +198,9 @@ public class SUITestApplication {
 						.height(100)
 						.wait(false)
 						.modality(Modality.WINDOW_MODAL)
-						.ownerWindowId("primary")
+						.ownerWindowId(SuiWindowsImpl.DEFAULT_PRIMARY_WINDOW_ID)
 						.state(state)
+						.onClose(() -> state.update(TestUIState.class, s -> s.setShowPopup(false)))
 						.nodeFactory(
 								component(TestUIState.class,
 										s -> anchorPane()

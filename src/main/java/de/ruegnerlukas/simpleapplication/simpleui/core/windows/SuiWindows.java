@@ -1,65 +1,46 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.windows;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import lombok.extern.slf4j.Slf4j;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@Slf4j
-public class SuiWindows {
+public interface SuiWindows {
 
 
-	private static final Map<String, Stage> openStages = new HashMap<>();
-
-	private static final Map<String, SuiSceneController> openControllers = new HashMap<>();
-
-
-
-
-	public static void initializePrimaryWindow(final String primaryWindowId, final Stage stage) {
-		openStages.put(primaryWindowId, stage);
+	/**
+	 * Opens a new window with the given config using the {@link SuiWindows}-instance from the {@link SuiRegistry}.
+	 * If a window with the window-id in the given config is already open, it will not be opened again.
+	 *
+	 * @param config the configuration of the new window
+	 */
+	static void open(final WindowConfig config) {
+		SuiRegistry.get().getWindows().openWindow(config);
 	}
 
 
-
-
-	public static void open(final WindowConfig config) {
-
-		final SuiSceneController controller = new SuiSceneController(config.getState(), config.getNodeFactory());
-
-		final Scene scene = new Scene((Parent) controller.getRootFxNode());
-		controller.addListener(suiNode -> scene.setRoot((Parent) suiNode.getFxNodeStore().get())); // todo: remove listener when closing ?
-
-		final Stage stage = new Stage();
-		stage.setScene(scene);
-		stage.setTitle(config.getTitle());
-		stage.setWidth(config.getWidth());
-		stage.setHeight(config.getHeight());
-		stage.initModality(config.getModality());
-		stage.initOwner(openStages.get(config.getOwnerWindowId()));
-
-		openStages.put(config.getWindowId(), stage);
-		openControllers.put(config.getWindowId(), controller);
-
-		if (config.isWait()) {
-			stage.showAndWait();
-		} else {
-			stage.show();
-		}
+	/**
+	 * Closes and disposes of the window with the given window id  using the {@link SuiWindows}-instance from the {@link SuiRegistry}.
+	 *
+	 * @param windowId the id of the window (id was specified in the window-config when opening it)
+	 */
+	static void close(final String windowId) {
+		SuiRegistry.get().getWindows().closeWindow(windowId);
 	}
 
 
+	/**
+	 * Opens a new window with the given config.
+	 * If a window with the window-id in the given config is already open, it will not be opened again.
+	 *
+	 * @param config the configuration of the new window
+	 */
+	void openWindow(WindowConfig config);
 
 
-	public static void close(final String windowId) {
-		final Stage stage = openStages.remove(windowId);
-		final SuiSceneController controller = openControllers.remove(windowId);
-		controller.getState().removeStateListener(controller);
-		stage.close();
-	}
+	/**
+	 * Closes and disposes of the window with the given window id
+	 *
+	 * @param windowId the id of the window (id was specified in the window-config when opening it)
+	 */
+	void closeWindow(String windowId);
+
 
 }
