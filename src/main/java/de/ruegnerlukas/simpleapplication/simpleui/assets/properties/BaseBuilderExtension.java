@@ -2,11 +2,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.HGrowProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PopupProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.VGrowProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.VisibleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
@@ -20,6 +22,8 @@ public interface BaseBuilderExtension<T extends FactoryExtension> extends Factor
 		DisabledProperty.PropertyBuilderExtension<T>,
 		VisibleProperty.PropertyBuilderExtension<T>,
 		AnchorProperty.PropertyBuilderExtension<T>,
+		HGrowProperty.PropertyBuilderExtension<T>,
+		VGrowProperty.PropertyBuilderExtension<T>,
 		TitleProperty.PropertyBuilderExtension<T>,
 		StyleProperty.PropertyBuilderExtension<T> {
 

@@ -25,6 +25,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMou
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollStartedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.HGrowProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PopupProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
@@ -33,6 +34,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePre
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.VGrowProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.VisibleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
@@ -61,6 +63,8 @@ public final class PropertyGroups {
 				PropertyEntry.of(PopupProperty.class, new PopupProperty.UpdatingBuilder()),
 				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.UpdatingBuilder()),
 				PropertyEntry.of(VisibleProperty.class, new VisibleProperty.UpdatingBuilder()),
+				PropertyEntry.of(HGrowProperty.class, new HGrowProperty.UpdatingBuilder()),
+				PropertyEntry.of(VGrowProperty.class, new VGrowProperty.UpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.UpdatingBuilder()),
 				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder()),
 				PropertyEntry.of(TitleProperty.class, new TitleProperty.UpdatingBuilder())
