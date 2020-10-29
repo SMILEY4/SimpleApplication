@@ -52,4 +52,5 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.node.builders;
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.registry;
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.state;
+	exports de.ruegnerlukas.simpleapplication.simpleui.core.windows;
 }

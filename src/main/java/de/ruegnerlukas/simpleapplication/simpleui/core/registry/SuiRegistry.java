@@ -33,9 +33,12 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdate
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.windows.SuiWindows;
+import de.ruegnerlukas.simpleapplication.simpleui.core.windows.SuiWindowsImpl;
 import javafx.scene.Node;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -112,7 +115,16 @@ public class SuiRegistry {
 	 * The event bus for global simpleui-events.
 	 */
 	@Getter
-	private final EventBus eventBus = new EventBusImpl();
+	@Setter
+	private EventBus eventBus = new EventBusImpl();
+
+
+	/**
+	 * The handler for opening/closing windows.
+	 */
+	@Getter
+	@Setter
+	private SuiWindows windows = new SuiWindowsImpl();
 
 
 

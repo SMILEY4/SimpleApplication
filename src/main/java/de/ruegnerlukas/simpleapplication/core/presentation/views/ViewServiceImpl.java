@@ -11,7 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -211,9 +213,9 @@ public class ViewServiceImpl implements ViewService {
 		final Scene scene = new Scene(viewNode, view.getSize().getWidth(), view.getSize().getHeight());
 		scene.setRoot(viewNode);
 
-		stage.initModality(config.getModality());
+		stage.initModality(Optional.ofNullable(config.getModality()).orElse(Modality.APPLICATION_MODAL));
 		stage.initOwner(config.getParent() == null ? getPrimaryWindowHandle().getStage() : config.getParent().getStage());
-		stage.initStyle(config.getStyle());
+		stage.initStyle(Optional.ofNullable(config.getStyle()).orElse(StageStyle.DECORATED));
 		stage.setAlwaysOnTop(config.isAlwaysOnTop());
 		stage.setTitle(view.getTitle());
 		setStageSize(stage, view);
@@ -357,10 +359,14 @@ public class ViewServiceImpl implements ViewService {
 			stage.setWidth(view.getSize().getWidth());
 			stage.setHeight(view.getSize().getHeight());
 		}
-		stage.setMinWidth(view.getMinSize().getWidth());
-		stage.setMinHeight(view.getMinSize().getHeight());
-		stage.setMaxWidth(view.getMaxSize().getWidth());
-		stage.setMaxHeight(view.getMaxSize().getHeight());
+		if (view.getMinSize() != null) {
+			stage.setMinWidth(view.getMinSize().getWidth());
+			stage.setMinHeight(view.getMinSize().getHeight());
+		}
+		if (view.getMaxSize() != null) {
+			stage.setMaxWidth(view.getMaxSize().getWidth());
+			stage.setMaxHeight(view.getMaxSize().getHeight());
+		}
 	}
 
 

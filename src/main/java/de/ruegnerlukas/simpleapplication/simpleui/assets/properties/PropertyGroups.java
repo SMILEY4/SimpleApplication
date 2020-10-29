@@ -26,6 +26,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMou
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PopupProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePreferredProperty;
@@ -56,6 +57,7 @@ public final class PropertyGroups {
 	public static List<PropertyEntry> commonProperties() {
 		return List.of(
 				PropertyEntry.of(MutationBehaviourProperty.class, new NoOpUpdatingBuilder()),
+				PropertyEntry.of(PopupProperty.class, new PopupProperty.UpdatingBuilder()),
 				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.UpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.UpdatingBuilder()),
 				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder()),

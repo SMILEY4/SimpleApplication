@@ -4,6 +4,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorP
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PopupProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
@@ -14,6 +15,7 @@ import java.util.List;
 public interface BaseBuilderExtension<T extends FactoryExtension> extends FactoryExtension,
 		IdProperty.PropertyBuilderExtension<T>,
 		MutationBehaviourProperty.PropertyBuilderExtension<T>,
+		PopupProperty.PropertyBuilderExtension<T>,
 		DisabledProperty.PropertyBuilderExtension<T>,
 		AnchorProperty.PropertyBuilderExtension<T>,
 		TitleProperty.PropertyBuilderExtension<T>,

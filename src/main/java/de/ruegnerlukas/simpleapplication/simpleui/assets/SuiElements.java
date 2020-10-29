@@ -6,6 +6,8 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiCheckbox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiChoiceBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComboBox;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiDatePicker;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiHBox;
@@ -23,6 +25,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiTextField;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiVBox;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 
 public final class SuiElements {
 
@@ -104,6 +107,21 @@ public final class SuiElements {
 	 */
 	public static SuiComboBox.SuiComboBoxBuilder comboBox() {
 		return new SuiComboBox.SuiComboBoxBuilder();
+	}
+
+
+
+
+	/**
+	 * Builds a new component
+	 *
+	 * @param state    the type of the state
+	 * @param renderer the renderer for the component
+	 * @param <T>      the generic type of the state
+	 * @return the component
+	 */
+	public static <T extends SuiState> SuiComponent<T> component(final Class<T> state, final SuiComponentRenderer<T> renderer) {
+		return new SuiComponent<>(renderer);
 	}
 
 
