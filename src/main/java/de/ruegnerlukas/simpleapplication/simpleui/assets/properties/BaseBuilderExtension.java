@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Mutatio
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PopupProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.VisibleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.FactoryExtension;
 
@@ -17,6 +18,7 @@ public interface BaseBuilderExtension<T extends FactoryExtension> extends Factor
 		MutationBehaviourProperty.PropertyBuilderExtension<T>,
 		PopupProperty.PropertyBuilderExtension<T>,
 		DisabledProperty.PropertyBuilderExtension<T>,
+		VisibleProperty.PropertyBuilderExtension<T>,
 		AnchorProperty.PropertyBuilderExtension<T>,
 		TitleProperty.PropertyBuilderExtension<T>,
 		StyleProperty.PropertyBuilderExtension<T> {

@@ -33,6 +33,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePre
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.VisibleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.NoOpUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry.PropertyEntry;
 
@@ -59,6 +60,7 @@ public final class PropertyGroups {
 				PropertyEntry.of(MutationBehaviourProperty.class, new NoOpUpdatingBuilder()),
 				PropertyEntry.of(PopupProperty.class, new PopupProperty.UpdatingBuilder()),
 				PropertyEntry.of(DisabledProperty.class, new DisabledProperty.UpdatingBuilder()),
+				PropertyEntry.of(VisibleProperty.class, new VisibleProperty.UpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.UpdatingBuilder()),
 				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder()),
 				PropertyEntry.of(TitleProperty.class, new TitleProperty.UpdatingBuilder())
