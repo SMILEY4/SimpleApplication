@@ -3,9 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.windows;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneControllerListener;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 public class SuiWindowsImpl implements SuiWindows {
@@ -62,8 +66,14 @@ public class SuiWindowsImpl implements SuiWindows {
 
 
 	@Override
-	public void openWindow(final WindowConfig config) {
-		if (!openWindows.containsKey(config.getWindowId())) {
+	public void openWindow(final WindowConfig windowConfig) {
+		if (!openWindows.containsKey(windowConfig.getWindowId())) {
+
+			Validations.INPUT.typeOf(windowConfig, SuiWindowConfig.class)
+					.exception("The window config must be of type {}.", SuiWindowConfig.class);
+
+			final SuiWindowConfig config = (SuiWindowConfig) windowConfig;
+
 			if (config.getOwnerWindowId() != null) {
 				Validations.INPUT.containsKey(openWindows, config.getOwnerWindowId())
 						.exception("The owner window with the id {} is not open.", config.getOwnerWindowId());
@@ -87,8 +97,9 @@ public class SuiWindowsImpl implements SuiWindows {
 			} else {
 				stage.show();
 			}
+
 		} else {
-			log.warn("Can not open window {}. Window is already open.", config.getWindowId());
+			log.warn("Can not open window {}. Window with same id is already open.", windowConfig.getWindowId());
 		}
 	}
 
@@ -116,10 +127,9 @@ public class SuiWindowsImpl implements SuiWindows {
 	 * @param config the window config
 	 * @return the create controller
 	 */
-	private SuiSceneController createSuiSceneController(final WindowConfig config) {
-		Validations.INPUT.notNull(config.getState()).exception("the simpleui-state may not be null.");
+	private SuiSceneController createSuiSceneController(final SuiWindowConfig config) {
 		Validations.INPUT.notNull(config.getNodeFactory()).exception("the node factory may not be null.");
-		return new SuiSceneController(config.getState(), config.getNodeFactory());
+		return new SuiSceneController(Optional.ofNullable(config.getState()).orElse(new SuiState()), config.getNodeFactory());
 	}
 
 
@@ -160,13 +170,25 @@ public class SuiWindowsImpl implements SuiWindows {
 	 * @param config the window config
 	 * @return the create stage
 	 */
-	private Stage createStage(final Scene scene, final WindowConfig config) {
+	private Stage createStage(final Scene scene, final SuiWindowConfig config) {
 		final Stage stage = new Stage();
 		stage.setScene(scene);
 		stage.setTitle(config.getTitle());
-		stage.setWidth(config.getWidth());
-		stage.setHeight(config.getHeight());
-		stage.initModality(config.getModality());
+		stage.initModality(Optional.ofNullable(config.getModality()).orElse(Modality.APPLICATION_MODAL));
+		stage.initStyle(Optional.ofNullable(config.getWindowStyle()).orElse(StageStyle.DECORATED));
+		stage.setAlwaysOnTop(config.isAlwaysOnTop());
+		if (config.getSize() != null) {
+			stage.setWidth(config.getSize().getWidth());
+			stage.setHeight(config.getSize().getHeight());
+		}
+		if (config.getSizeMin() != null) {
+			stage.setMinWidth(config.getSizeMin().getWidth());
+			stage.setMinHeight(config.getSizeMin().getHeight());
+		}
+		if (config.getSizeMax() != null) {
+			stage.setMaxWidth(config.getSizeMax().getWidth());
+			stage.setMaxHeight(config.getSizeMax().getHeight());
+		}
 		if (config.getOwnerWindowId() != null) {
 			stage.initOwner(openWindows.get(config.getOwnerWindowId()).getStage());
 		}

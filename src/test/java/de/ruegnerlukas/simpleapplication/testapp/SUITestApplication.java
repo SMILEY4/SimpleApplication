@@ -13,6 +13,8 @@ import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyleProperty;
+import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SAppWindowConfig;
+import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SAppWindowsImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
@@ -24,8 +26,6 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
-import de.ruegnerlukas.simpleapplication.simpleui.core.windows.SuiWindowsImpl;
-import de.ruegnerlukas.simpleapplication.simpleui.core.windows.WindowConfig;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Orientation;
 import javafx.stage.Modality;
@@ -56,6 +56,7 @@ public class SUITestApplication {
 	public static void main(String[] args) {
 		SuiRegistry.initialize();
 		SuiRegistry.get().registerProperty(SuiButton.class, ManagedStyleProperty.class, new ManagedStyleProperty.ManagedStyleUpdatingBuilder());
+		SuiRegistry.get().setWindows(new SAppWindowsImpl());
 
 		final ApplicationConfiguration configuration = new ApplicationConfiguration();
 		configuration.getPlugins().add(new UIPlugin());
@@ -128,11 +129,11 @@ public class SUITestApplication {
 			viewService.registerView(viewParent);
 			viewService.showView(viewParent.getId());
 
-			try {
-				((SuiWindowsImpl) SuiRegistry.get().getWindows()).registerPrimaryWindow(forceExtractPrimaryStage());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+//			try {
+//				((SuiWindowsImpl) SuiRegistry.get().getWindows()).registerPrimaryWindow(forceExtractPrimaryStage());
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
 		}
 
 
@@ -191,16 +192,19 @@ public class SUITestApplication {
 								.textContent("Close Popup")
 								.eventAction(".", e -> state.update(TestUIState.class, s -> s.setShowPopup(false)))
 				)
-				.popup(state.showPopup, WindowConfig.builder()
+				.popup(state.showPopup, SAppWindowConfig.builder()
+						.viewId("view.my.popup")
 						.title("My Popup")
 						.windowId("my.popup")
-						.width(600)
-						.height(100)
+						.size(new Dimension2D(600, 100))
 						.wait(false)
-						.modality(Modality.WINDOW_MODAL)
-						.ownerWindowId(SuiWindowsImpl.DEFAULT_PRIMARY_WINDOW_ID)
+						.modality(Modality.NONE)
+						.ownerWindowId(WindowHandle.ID_PRIMARY)
 						.state(state)
-						.onClose(() -> state.update(TestUIState.class, s -> s.setShowPopup(false)))
+						.onClose(() -> {
+							System.out.println("ON CLOSE");
+							state.update(TestUIState.class, s -> s.setShowPopup(false));
+						})
 						.nodeFactory(
 								component(TestUIState.class,
 										s -> anchorPane()
