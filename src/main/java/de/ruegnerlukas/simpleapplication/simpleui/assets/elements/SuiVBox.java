@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
@@ -103,8 +104,8 @@ public final class SuiVBox {
 
 
 		@Override
-		public VBox build(final SuiNode node) {
-			return new VBox();
+		public ExtendedVBox build(final SuiNode node) {
+			return new ExtendedVBox();
 		}
 
 	}
