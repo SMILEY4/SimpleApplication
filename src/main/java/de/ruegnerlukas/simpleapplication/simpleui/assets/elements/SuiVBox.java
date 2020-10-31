@@ -3,22 +3,23 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedVBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FitToWidthProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ItemProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OptimizedProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpacingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNodeChildTransformListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -58,7 +59,8 @@ public final class SuiVBox {
 			ItemProperty.PropertyBuilderExtension<SuiVBoxBuilder>,
 			AlignmentProperty.PropertyBuilderExtension<SuiVBoxBuilder>,
 			SpacingProperty.PropertyBuilderExtension<SuiVBoxBuilder>,
-			FitToWidthProperty.PropertyBuilderExtension<SuiVBoxBuilder> {
+			FitToWidthProperty.PropertyBuilderExtension<SuiVBoxBuilder>,
+			OptimizedProperty.PropertyBuilderExtension<SuiVBoxBuilder> {
 
 
 		@Override
@@ -93,7 +95,8 @@ public final class SuiVBox {
 				PropertyEntry.of(SpacingProperty.class, new SpacingProperty.VBoxUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.VBoxUpdatingBuilder()),
 				PropertyEntry.of(ItemListProperty.class, new ItemListProperty.PaneBuilder(), null),
-				PropertyEntry.of(ItemProperty.class, new ItemProperty.PaneBuilder(), null)
+				PropertyEntry.of(ItemProperty.class, new ItemProperty.PaneBuilder(), null),
+				PropertyEntry.of(OptimizedProperty.class, new OptimizedProperty.VBoxUpdatingBuilder())
 		));
 	}
 
