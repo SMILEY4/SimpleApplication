@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedHBox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
@@ -102,8 +103,8 @@ public final class SuiHBox {
 
 
 		@Override
-		public HBox build(final SuiNode node) {
-			return new HBox();
+		public ExtendedHBox build(final SuiNode node) {
+			return new ExtendedHBox();
 		}
 
 	}

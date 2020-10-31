@@ -13,7 +13,6 @@ import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.ManagedStyleProperty;
-import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SAppWindowConfig;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SAppWindowsImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.simpleui.SUIWindowHandleDataFactory;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
@@ -23,25 +22,23 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.geometry.Dimension2D;
-import javafx.geometry.Orientation;
-import javafx.stage.Modality;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
+import java.util.stream.IntStream;
 
 import static de.ruegnerlukas.simpleapplication.common.eventbus.SubscriptionData.ofType;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.anchorPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.component;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.label;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.separator;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.scrollPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.vBox;
 
 @Slf4j
@@ -129,6 +126,8 @@ public class SUITestApplication {
 			viewService.registerView(viewParent);
 			viewService.showView(viewParent.getId());
 
+			System.out.println(SuiProfiler.get().getStatisticsAsPrettyString());
+
 //			try {
 //				((SuiWindowsImpl) SuiRegistry.get().getWindows()).registerPrimaryWindow(forceExtractPrimaryStage());
 //			} catch (Exception e) {
@@ -160,64 +159,26 @@ public class SUITestApplication {
 
 
 	private static NodeFactory createUI(final TestUIState state) {
-		return vBox()
-				.id("vbox")
-				.items(
-						label()
-								.id("label")
-								.textContent(state.getText())
-								.tooltip(state.getText(), true, 200)
-								.sizeMin(300, 30),
-						button()
-								.id("button1")
-								.textContent("Hello World")
-								.emitEventAction(Tags.from("button1")),
-						button()
-								.id("button2")
-								.textContent("Some Tooltip")
-								.emitEventAction(Tags.from("button2")),
-						button()
-								.id("button3")
-								.textContent("Very Long Tooltip")
-								.emitEventAction(Tags.from("button3")),
-						separator()
-								.id("separator")
-								.orientation(Orientation.HORIZONTAL),
-						button()
-								.id("buttonOpen")
-								.textContent("Open Popup")
-								.eventAction(".", e -> state.update(TestUIState.class, s -> s.setShowPopup(true))),
-						button()
-								.id("buttonClose")
-								.textContent("Close Popup")
-								.eventAction(".", e -> state.update(TestUIState.class, s -> s.setShowPopup(false)))
-				)
-				.popup(state.showPopup, SAppWindowConfig.builder()
-						.viewId("view.my.popup")
-						.title("My Popup")
-						.windowId("my.popup")
-						.size(new Dimension2D(600, 100))
-						.wait(false)
-						.modality(Modality.NONE)
-						.ownerWindowId(WindowHandle.ID_PRIMARY)
-						.state(state)
-						.onClose(() -> {
-							System.out.println("ON CLOSE");
-							state.update(TestUIState.class, s -> s.setShowPopup(false));
-						})
-						.nodeFactory(
-								component(TestUIState.class,
-										s -> anchorPane()
-												.id("anchor.pane")
-												.item(
-														label()
-																.id("label")
-																.anchorsFitParent()
-																.textContent("Popup: \"" + state.getText() + "\"")
-												)
-								)
-						)
-						.build());
+		return scrollPane()
+				.id("scrollpane")
+				.showScrollbars(ScrollPane.ScrollBarPolicy.NEVER, ScrollPane.ScrollBarPolicy.ALWAYS)
+				.fitToHeight()
+				.fitToWidth()
+				.item(vBox()
+						.spacing(5)
+						.id("vbox")
+						.items(IntStream.range(0, 10_000).mapToObj(SUITestApplication::buildButton)));
+	}
+
+
+
+
+	private static NodeFactory buildButton(final int index) {
+		return button()
+				.id("btn-" + index)
+				.sizePreferred(100000, 80)
+				.sizeMin(0, 80)
+				.textContent("Button " + index);
 	}
 
 
