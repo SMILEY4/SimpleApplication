@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.HGrowPr
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PopupProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleClassProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.VGrowProperty;
@@ -25,7 +26,8 @@ public interface BaseBuilderExtension<T extends FactoryExtension> extends Factor
 		HGrowProperty.PropertyBuilderExtension<T>,
 		VGrowProperty.PropertyBuilderExtension<T>,
 		TitleProperty.PropertyBuilderExtension<T>,
-		StyleProperty.PropertyBuilderExtension<T> {
+		StyleProperty.PropertyBuilderExtension<T>,
+		StyleClassProperty.PropertyBuilderExtension<T> {
 
 
 	/**
