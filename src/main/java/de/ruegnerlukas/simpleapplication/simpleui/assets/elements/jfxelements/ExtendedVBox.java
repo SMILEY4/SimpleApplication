@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 public class ExtendedVBox extends VBox {
 
@@ -17,6 +18,14 @@ public class ExtendedVBox extends VBox {
 	 * The current parent scroll pane
 	 */
 	private ScrollPane parentScrollPane = null;
+
+
+	/**
+	 * Whether the optimisation is enabled
+	 */
+	@Setter
+	private boolean enableOptimisation = false;
+
 
 	/**
 	 * The listener to the scroll pane
@@ -106,6 +115,9 @@ public class ExtendedVBox extends VBox {
 	 * @param visibleArea the new visible area
 	 */
 	private void doUpdate(final Rectangle visibleArea) {
+		if (!enableOptimisation) {
+			return;
+		}
 		for (int i = 0, n = getChildrenUnmodifiable().size(); i < n; i++) {
 			final Node node = getChildren().get(i);
 			final boolean visible = isVisible(node, visibleArea);

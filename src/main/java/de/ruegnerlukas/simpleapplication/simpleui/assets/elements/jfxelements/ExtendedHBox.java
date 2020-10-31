@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 public class ExtendedHBox extends HBox {
 
@@ -17,6 +18,12 @@ public class ExtendedHBox extends HBox {
 	 * The current parent scroll pane
 	 */
 	private ScrollPane parentScrollPane = null;
+
+	/**
+	 * Whether the optimisation is enabled
+	 */
+	@Setter
+	private boolean enableOptimisation = false;
 
 	/**
 	 * The listener to the scroll pane
@@ -106,6 +113,9 @@ public class ExtendedHBox extends HBox {
 	 * @param visibleArea the new visible area
 	 */
 	private void doUpdate(final Rectangle visibleArea) {
+		if (!enableOptimisation) {
+			return;
+		}
 		for (int i = 0, n = getChildrenUnmodifiable().size(); i < n; i++) {
 			final Node node = getChildren().get(i);
 			final boolean visible = isVisible(node, visibleArea);
