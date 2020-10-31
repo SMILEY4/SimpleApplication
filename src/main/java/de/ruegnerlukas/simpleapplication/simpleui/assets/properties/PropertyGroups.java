@@ -33,6 +33,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMin
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePreferredProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleClassProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleIdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.VGrowProperty;
@@ -68,6 +69,7 @@ public final class PropertyGroups {
 				PropertyEntry.of(VGrowProperty.class, new VGrowProperty.UpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.UpdatingBuilder()),
 				PropertyEntry.of(StyleClassProperty.class, new StyleClassProperty.UpdatingBuilder()),
+				PropertyEntry.of(StyleIdProperty.class, new StyleIdProperty.UpdatingBuilder()),
 				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder()),
 				PropertyEntry.of(TitleProperty.class, new TitleProperty.UpdatingBuilder())
 		);

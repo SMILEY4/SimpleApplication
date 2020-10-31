@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdPrope
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PopupProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleClassProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleIdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TitleProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.VGrowProperty;
@@ -27,7 +28,8 @@ public interface BaseBuilderExtension<T extends FactoryExtension> extends Factor
 		VGrowProperty.PropertyBuilderExtension<T>,
 		TitleProperty.PropertyBuilderExtension<T>,
 		StyleProperty.PropertyBuilderExtension<T>,
-		StyleClassProperty.PropertyBuilderExtension<T> {
+		StyleClassProperty.PropertyBuilderExtension<T>,
+		StyleIdProperty.PropertyBuilderExtension<T> {
 
 
 	/**
