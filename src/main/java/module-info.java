@@ -9,6 +9,7 @@ open module SimpleApplication {
 	requires exp4j;
 	requires sysout.over.slf4j;
 	requires static lombok;
+	requires java.desktop;
 
 	exports de.ruegnerlukas.simpleapplication.common.callbacks;
 	exports de.ruegnerlukas.simpleapplication.common.events;
