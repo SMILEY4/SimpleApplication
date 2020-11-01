@@ -3,18 +3,17 @@ package de.ruegnerlukas.simpleapplication;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneControllerV2;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.Toolkit;
@@ -24,11 +23,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.anchorPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.button;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.component;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.hBox;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.label;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.scrollPane;
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.vBox;
+import static de.ruegnerlukas.simpleapplication.simpleui.core.node.WindowRootElement.windowRoot;
 
 @Slf4j
 @SuppressWarnings ("ALL")
@@ -44,8 +46,13 @@ public class JFXTestApp extends Application {
 
 	@Getter
 	@Setter
+	@ToString
 	private static class TestUIState extends SuiState {
 
+
+		private boolean showPopupEnableAutosave = false;
+
+		private boolean showPopupAlwaysOnTop = false;
 
 		private List<Pair<String, Long>> content = new ArrayList<>();
 
@@ -60,27 +67,57 @@ public class JFXTestApp extends Application {
 		SuiRegistry.initialize();
 
 		final TestUIState testUIState = new TestUIState();
-		final SuiSceneController controller = new SuiSceneController(testUIState, TestUIState.class, JFXTestApp::createUI);
+		final SuiSceneControllerV2 controller = new SuiSceneControllerV2(
+				testUIState,
+				windowRoot(stage)
+						.title("JFX Clipboard Testing")
+						.size(400, 500)
+						.content(TestUIState.class, state -> createUI(state))
+						.modal(windowRoot()
+								.title("NotImplemented: Enable Autosave")
+								.size(400, 100)
+								.condition(TestUIState.class, state -> state.showPopupEnableAutosave)
+								.onClose(TestUIState.class, state -> state.setShowPopupEnableAutosave(false))
+								.content(TestUIState.class, state -> createPopupUI(state, "Enable Autosave")))
+						.modal(windowRoot()
+								.title("NotImplemented: Always on top")
+								.size(400, 100)
+								.condition(TestUIState.class, state -> state.showPopupAlwaysOnTop)
+								.onClose(TestUIState.class, state -> state.setShowPopupAlwaysOnTop(false))
+								.content(TestUIState.class, state -> createPopupUI(state, "Always on top")))
+		);
 
 		SuiRegistry.get().inject("ij-point.toolbar",
-				button()
-						.id("btn.enable-auto")
-						.sizeMax(150, 30)
-						.hGrow(Priority.ALWAYS)
-						.textContent("Enable Autosave")
-						.eventAction(".", e -> log.debug("NotImplemented: Enable Autosave")));
+				component(TestUIState.class,
+						state -> button()
+								.id("btn.enable-auto")
+								.sizeMax(150, 30)
+								.hGrow(Priority.ALWAYS)
+								.textContent("Enable Autosave")
+								.eventAction(".", e -> state.update(TestUIState.class, s -> s.setShowPopupEnableAutosave(true)))));
 
 		SuiRegistry.get().inject("ij-point.toolbar",
-				button()
-						.id("btn.always-on-top")
-						.sizeMax(150, 30)
-						.hGrow(Priority.ALWAYS)
-						.textContent("Always On Top")
-						.eventAction(".", e -> log.debug("NotImplemented: Always on top")));
+				component(TestUIState.class,
+						state -> button()
+								.id("btn.always-on-top")
+								.sizeMax(150, 30)
+								.hGrow(Priority.ALWAYS)
+								.textContent("Always On Top")
+								.eventAction(".", e -> state.update(TestUIState.class, s -> s.setShowPopupAlwaysOnTop(true)))));
 
-		final Scene scene = new Scene((Parent) controller.getRootFxNode(), 500, 600);
-		stage.setScene(scene);
-		stage.show();
+		controller.show();
+	}
+
+
+
+
+	private static NodeFactory createPopupUI(final TestUIState state, final String str) {
+		return anchorPane()
+				.item(
+						label()
+								.anchorsFitParent()
+								.textContent("Not Implemented: " + str)
+				);
 	}
 
 
