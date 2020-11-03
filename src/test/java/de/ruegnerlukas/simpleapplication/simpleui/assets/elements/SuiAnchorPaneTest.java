@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import org.junit.Test;
@@ -14,8 +13,8 @@ public class SuiAnchorPaneTest extends SuiElementTest {
 	@Test
 	public void test_anchor_pane() {
 
-		final AnchorPane anchorPane = (AnchorPane) new SuiSceneController(
-				SuiElements.anchorPane()
+		final AnchorPane anchorPane = buildFxNode(
+				state -> SuiElements.anchorPane()
 						.items(
 								SuiElements.button()
 										.id("btn-fit")
@@ -30,7 +29,7 @@ public class SuiAnchorPaneTest extends SuiElementTest {
 										.textContent("Button Missing")
 
 						)
-		).getRootFxNode();
+		);
 
 
 		assertThat(anchorPane.getChildren()).hasSize(3);

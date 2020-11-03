@@ -1,8 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ItemSelectedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -14,6 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.list;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SuiListTest extends SuiElementTest {
@@ -22,8 +21,8 @@ public class SuiListTest extends SuiElementTest {
 	@Test
 	public void test_create_list() {
 
-		@SuppressWarnings ("unchecked") final ListView<TestItem> list = (ListView<TestItem>) new SuiSceneController(
-				SuiElements.list()
+		final ListView<TestItem> list = buildFxNode(
+				state -> list()
 						.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
@@ -32,7 +31,7 @@ public class SuiListTest extends SuiElementTest {
 						))
 						.promptText("List is empty.")
 						.multiselect()
-		).getRootFxNode();
+		);
 
 		assertThat(((Label) list.getPlaceholder()).getText()).isEqualTo("List is empty.");
 		assertThat(list.getSelectionModel().getSelectionMode()).isEqualTo(SelectionMode.MULTIPLE);
@@ -59,13 +58,9 @@ public class SuiListTest extends SuiElementTest {
 
 		final TestState testState = new TestState();
 
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.list().contentItems(state.items)
+		final ListView<TestItem> listView = buildFxNode(TestState.class, testState,
+				state -> list().contentItems(state.items)
 		);
-
-		final ListView<TestItem> listView = (ListView<TestItem>) controller.getRootFxNode();
 		assertItems(listView, List.of());
 
 		// add all items
@@ -134,15 +129,12 @@ public class SuiListTest extends SuiElementTest {
 		final TestState testState = new TestState();
 		final List<ItemSelectedEventData<TestItem>> capturedEvents = new ArrayList<>();
 
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.list()
+
+		final ListView<TestItem> listView = buildFxNode(TestState.class, testState,
+				state -> list()
 						.contentItems(state.items)
 						.eventItemSelected(".", TestItem.class, capturedEvents::add)
 		);
-
-		final ListView<TestItem> listView = (ListView<TestItem>) controller.getRootFxNode();
 
 		// select an item
 		syncJfxThread(() -> listView.getSelectionModel().select(1));

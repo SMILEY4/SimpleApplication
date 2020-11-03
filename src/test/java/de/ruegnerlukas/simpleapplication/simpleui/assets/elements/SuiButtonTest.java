@@ -3,7 +3,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ActionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.Button;
 import org.junit.Test;
 
@@ -22,9 +21,7 @@ public class SuiButtonTest extends SuiElementTest {
 		}
 
 		final List<ActionEventData> capturedEvents = new ArrayList<>();
-		final Button button = (Button) new SuiSceneController(
-				SuiElements.button().eventAction(".", capturedEvents::add)
-		).getRootFxNode();
+		final Button button = buildFxNode(state -> SuiElements.button().eventAction(".", capturedEvents::add));
 
 		show(button);
 		clickButton(button);

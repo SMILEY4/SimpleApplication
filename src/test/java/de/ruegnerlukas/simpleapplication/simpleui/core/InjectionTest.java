@@ -5,10 +5,10 @@ import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateExceptio
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -190,8 +190,8 @@ public class InjectionTest extends ApplicationTest {
 		);
 
 		final TestState state = new TestState("Text 1");
-		final SuiSceneController context = new SuiSceneController(state, nodeFactory);
-		final SuiNode node = context.getRootNode();
+		final SuiNode node = nodeFactory.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(node);
 		final VBox fxNode = (VBox) node.getFxNodeStore().get();
 
 		assertThat(fxNode.getChildren()).hasSize(3);
@@ -238,8 +238,9 @@ public class InjectionTest extends ApplicationTest {
 
 
 	private Node createJFXNode(final NodeFactory nodeFactory) {
-		SuiSceneController context = new SuiSceneController(new TestState(), nodeFactory);
-		return context.getRootNode().getFxNodeStore().get();
+		SuiNode suiNode = nodeFactory.create(new TestState(), Tags.empty());
+		SuiServices.get().enrichWithFxNodes(suiNode);
+		return suiNode.getFxNodeStore().get();
 	}
 
 

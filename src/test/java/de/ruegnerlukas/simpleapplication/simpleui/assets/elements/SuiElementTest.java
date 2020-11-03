@@ -4,7 +4,12 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DateSelectedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -30,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.Phaser;
 import java.util.stream.Collectors;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.component;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SuiElementTest extends ApplicationTest {
@@ -47,6 +53,19 @@ public class SuiElementTest extends ApplicationTest {
 		this.stage = stage;
 		this.stage.setAlwaysOnTop(true);
 		this.stage.show();
+	}
+
+
+	public <T extends Node> T buildFxNode(final SuiComponentRenderer<SuiState> renderer) {
+		return buildFxNode(SuiState.class, new SuiState(), renderer);
+	}
+
+	public <T extends Node, S extends SuiState> T buildFxNode(final Class<S> stateType, final S state, final SuiComponentRenderer<S> renderer) {
+		final NodeFactory factory = component(stateType, renderer);
+		final SuiNode suiNode = factory.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(suiNode);
+		//noinspection unchecked
+		return (T) suiNode.getFxNodeStore().get();
 	}
 
 

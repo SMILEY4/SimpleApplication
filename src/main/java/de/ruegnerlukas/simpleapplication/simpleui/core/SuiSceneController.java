@@ -1,130 +1,100 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.WindowRootElement;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateUpdate;
 import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SuiSceneController implements SuiStateListener {
 
 
-	/**
-	 * The state of this context.
-	 */
 	private final SuiState state;
 
-	/**
-	 * The node factory for the root node of this context.
-	 */
-	private final NodeFactory nodeFactory;
+	@Getter
+	private final WindowRootElement windowRootElement;
 
-	/**
-	 * The tree of nodes making up the current scene.
-	 */
+	private final SuiComponent<?> rootComponent;
+
 	private SuiSceneTree sceneTree;
 
-	/**
-	 * The listeners listening to this context.
-	 */
-	private List<SuiSceneControllerListener> listeners = new ArrayList<>();
+	private final SuiSceneController parentController;
+
+	private final List<SuiSceneController> childControllers = new ArrayList<>();
 
 
 
+	public SuiSceneController(final WindowRootElement windowRootElement) {
+		this(new SuiState(), windowRootElement, null);
+	}
 
-	/**
-	 * Creates a new scene context with the given root node factory and a basic empty state.
-	 *
-	 * @param nodeFactory the node factory for the root node of this context.
-	 */
-	public SuiSceneController(final NodeFactory nodeFactory) {
-		this(new SuiState(), nodeFactory);
+
+	public SuiSceneController(final SuiState state, final WindowRootElement windowRootElement) {
+		this(state, windowRootElement, null);
 	}
 
 
 
 
-	/**
-	 * Creates a new scene context with the given state and component with the given renderer as root node.
-	 *
-	 * @param state     the state of this context
-	 * @param stateType the exact type of the state to use
-	 * @param renderer  the node renderer used for a component as the root node
-	 */
-	public <T extends SuiState> SuiSceneController(final SuiState state,
-												   final Class<T> stateType,
-												   final SuiComponentRenderer<T> renderer) {
-		this(state, new SuiComponent<>(renderer));
-	}
-
-
-
-
-	/**
-	 * Creates a new scene context with the given state and root node factory.
-	 *
-	 * @param state       the state of this context
-	 * @param nodeFactory the node factory for the root node of this context.
-	 */
-	public SuiSceneController(final SuiState state, final NodeFactory nodeFactory) {
-		Validations.INPUT.notNull(state).exception("The state can not be null.");
-		Validations.INPUT.notNull(nodeFactory).exception("The node factory can not be null.");
+	public SuiSceneController(final SuiState state, final WindowRootElement windowRootElement, final SuiSceneController parent) {
+		// todo: validate window root element
 		this.state = state;
 		this.state.addStateListener(this);
-		this.nodeFactory = nodeFactory;
+		this.windowRootElement = windowRootElement;
+		this.rootComponent = new SuiComponent<>(windowRootElement.getNodeFactoryBuilder());
+		this.parentController = parent;
 	}
 
 
 
 
-	/**
-	 * @return the javafx node of the simpleui root node. Builds the root node with the node factory if necessary.
-	 */
-	public Node getRootFxNode() {
-		return getRootNode().getFxNodeStore().get();
-	}
+	public void show() {
 
-
-
-
-	/**
-	 * @return the simpleui root node. Builds the root node with the node factory if necessary.
-	 */
-	public SuiNode getRootNode() {
 		if (sceneTree == null) {
-			sceneTree = SuiSceneTree.build(nodeFactory, state, null);
+			sceneTree = SuiSceneTree.build(rootComponent, state, null);
 			sceneTree.buildFxNodes();
 		}
-		return sceneTree.getRoot();
-	}
+		final Node fxNode = sceneTree.getRoot().getFxNodeStore().get();
+		final Scene scene = new Scene((Parent) fxNode);
 
+		Stage stage = windowRootElement.getStage();
+		if (stage == null) {
+			stage = new Stage();
+			if (parentController != null) {
+				stage.initOwner(parentController.getWindowRootElement().getStage());
+			}
+			stage.initModality(Modality.WINDOW_MODAL);
+			windowRootElement.setStage(stage);
+		}
+		stage.setScene(scene);
+		stage.setTitle(windowRootElement.getTitle());
+		stage.setWidth(windowRootElement.getWidth().doubleValue());
+		stage.setHeight(windowRootElement.getHeight().doubleValue());
+		stage.setOnCloseRequest(e -> {
+			if(parentController != null) {
+				parentController.onChildClosed(this);
+			}
+			close(true);
+		});
 
+		if (windowRootElement.isWait()) {
+			stage.showAndWait();
+		} else {
+			stage.show();
+		}
 
-
-	/**
-	 * @return the current simpleui state managed by this context.
-	 */
-	public SuiState getState() {
-		return this.state;
-	}
-
-
-
-
-	/**
-	 * Disposes this controller and all its resources
-	 */
-	public void dispose() {
-		getState().removeStateListener(this);
 	}
 
 
@@ -132,39 +102,62 @@ public class SuiSceneController implements SuiStateListener {
 
 	@Override
 	public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update, final Tags tags) {
-		final SuiSceneTree targetTree = SuiSceneTree.build(nodeFactory, state, tags);
+		final SuiSceneTree targetTree = SuiSceneTree.build(rootComponent, state, tags);
 		SuiProfiler.get().countSceneMutated();
-		if (sceneTree.mutate(targetTree, tags)) {
-			listeners.forEach(listener -> listener.onNewSuiRootNode(sceneTree.getRoot()));
+		sceneTree.mutate(targetTree, tags);
+
+		windowRootElement.getModalWindowRootElements().forEach(popupWindowRootElement -> {
+			final Optional<SuiSceneController> openController = childControllers.stream()
+					.filter(c -> c.getWindowRootElement().equals(popupWindowRootElement))
+					.findAny();
+
+			final boolean isCurrentlyOpen = openController.isPresent();
+			final boolean shouldBeOpen = popupWindowRootElement.getCondition().test(state);
+			if (shouldBeOpen && !isCurrentlyOpen) {
+				final SuiSceneController popupController = new SuiSceneController(this.state, popupWindowRootElement, this);
+				this.childControllers.add(popupController);
+				popupController.show();
+			}
+			if (!shouldBeOpen && isCurrentlyOpen) {
+				openController.get().close();
+				childControllers.remove(openController.get());
+
+			}
+		});
+	}
+
+
+
+
+	protected void onChildClosed(final SuiSceneController childController) {
+		childControllers.remove(childController);
+	}
+
+
+
+
+	public void close() {
+		close(false);
+	}
+
+
+
+
+	private void close(final boolean alreadyClosed) {
+		if (!alreadyClosed) {
+			windowRootElement.getStage().close();
+		}
+		dispose();
+		if (getWindowRootElement().getOnClose() != null) {
+			getWindowRootElement().getOnClose().accept(state);
 		}
 	}
 
 
 
 
-	/**
-	 * Adds the given listener to this context. Any listener is only added once to this context.
-	 *
-	 * @param listener the listener to add
-	 */
-	public void addListener(final SuiSceneControllerListener listener) {
-		Validations.INPUT.notNull(listener).exception("The context listener may not be null.");
-		if (!listeners.contains(listener)) {
-			listeners.add(listener);
-		}
+	public void dispose() {
+		this.state.removeStateListener(this);
 	}
-
-
-
-
-	/**
-	 * Removes the given listener from this context.
-	 *
-	 * @param listener the listener to remove
-	 */
-	public void removeListener(final SuiSceneControllerListener listener) {
-		listeners.remove(listener);
-	}
-
 
 }

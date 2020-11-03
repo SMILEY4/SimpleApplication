@@ -1,9 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
@@ -16,6 +14,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.comboBox;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SuiComboBoxTest extends SuiElementTest {
@@ -27,8 +26,8 @@ public class SuiComboBoxTest extends SuiElementTest {
 			return;
 		}
 
-		@SuppressWarnings ("unchecked") final ComboBox<TestItem> combobox = (ComboBox<TestItem>) new SuiSceneController(
-				SuiElements.comboBox()
+		final ComboBox<TestItem> combobox = buildFxNode(
+				state -> comboBox()
 						.contentItems(
 								List.of(
 										new TestItem("A", 1),
@@ -43,7 +42,7 @@ public class SuiComboBoxTest extends SuiElementTest {
 						)
 						.promptText("Test Prompt-Text")
 						.editable()
-		).getRootFxNode();
+		);
 
 		show(combobox);
 
@@ -92,16 +91,13 @@ public class SuiComboBoxTest extends SuiElementTest {
 		final TestState testState = new TestState();
 		final List<ValueChangedEventData<TestItem>> collectedEvents = new ArrayList<>();
 
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.comboBox()
+		final ComboBox<TestItem> comboBox = buildFxNode(TestState.class, testState,
+				state -> comboBox()
 						.sizeMax(100, 40)
 						.contentItems(state.items, null)
 						.eventValueChanged(".", TestItem.class, collectedEvents::add)
 		);
 
-		@SuppressWarnings ("unchecked") final ComboBox<TestItem> comboBox = (ComboBox<TestItem>) controller.getRootFxNode();
 		show(comboBox);
 
 		// select a new item -> item selected + event
@@ -145,10 +141,8 @@ public class SuiComboBoxTest extends SuiElementTest {
 		final TestState testState = new TestState();
 		final List<ValueChangedEventData<TestItem>> collectedEvents = new ArrayList<>();
 
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.comboBox()
+		final ComboBox<TestItem> comboBox = buildFxNode(TestState.class, testState,
+				state -> comboBox()
 						.sizeMax(100, 40)
 						.contentItems(state.items, null)
 						.searchable()
@@ -158,8 +152,6 @@ public class SuiComboBoxTest extends SuiElementTest {
 								item -> item != null ? (item.name + ": " + item.number) : "null"
 						)
 		);
-
-		@SuppressWarnings ("unchecked") final ComboBox<TestItem> comboBox = (ComboBox<TestItem>) controller.getRootFxNode();
 		show(comboBox);
 
 		// select a new item -> item selected + event
@@ -208,10 +200,9 @@ public class SuiComboBoxTest extends SuiElementTest {
 		final TestState testState = new TestState();
 		final List<ValueChangedEventData<TestItem>> collectedEvents = new ArrayList<>();
 
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.comboBox()
+
+		final ComboBox<TestItem> comboBox = buildFxNode(TestState.class, testState,
+				state -> comboBox()
 						.sizeMax(100, 40)
 						.contentItems(state.items, null)
 						.editable()
@@ -221,8 +212,6 @@ public class SuiComboBoxTest extends SuiElementTest {
 								item -> item != null ? (item.name + item.number) : "null"
 						)
 		);
-
-		@SuppressWarnings ("unchecked") final ComboBox<TestItem> comboBox = (ComboBox<TestItem>) controller.getRootFxNode();
 		show(comboBox);
 
 		// select a new item -> item selected + event

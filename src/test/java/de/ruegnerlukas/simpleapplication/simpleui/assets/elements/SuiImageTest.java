@@ -3,13 +3,13 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.ImageSizeProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.assertj.core.data.Percentage;
 import org.junit.Test;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.anchorPane;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -22,11 +22,10 @@ public class SuiImageTest extends SuiElementTest {
 			return;
 		}
 
-		final SuiSceneController controller = buildScene(
+		final AnchorPane root = buildScene(
 				ImageSizeProperty.ImageDimension.absolute(200),
 				ImageSizeProperty.ImageDimension.absolute(150));
 
-		final AnchorPane root = (AnchorPane) controller.getRootFxNode();
 		final VBox vbox = (VBox) root.getChildren().get(0);
 		final ImageView imageView = (ImageView) vbox.getChildren().get(0);
 		show(root);
@@ -52,11 +51,10 @@ public class SuiImageTest extends SuiElementTest {
 			return;
 		}
 
-		final SuiSceneController controller = buildScene(
+		final AnchorPane root = buildScene(
 				ImageSizeProperty.ImageDimension.relative(0.1),
 				ImageSizeProperty.ImageDimension.relative(0.1));
 
-		final AnchorPane root = (AnchorPane) controller.getRootFxNode();
 		final VBox vbox = (VBox) root.getChildren().get(0);
 		final ImageView imageView = (ImageView) vbox.getChildren().get(0);
 		show(root);
@@ -82,11 +80,10 @@ public class SuiImageTest extends SuiElementTest {
 			return;
 		}
 
-		final SuiSceneController controller = buildScene(
+		final AnchorPane root = buildScene(
 				ImageSizeProperty.ImageDimension.parentRelative(0.5),
 				ImageSizeProperty.ImageDimension.parentRelative(0.25));
 
-		final AnchorPane root = (AnchorPane) controller.getRootFxNode();
 		final VBox vbox = (VBox) root.getChildren().get(0);
 		final ImageView imageView = (ImageView) vbox.getChildren().get(0);
 		show(root);
@@ -106,9 +103,9 @@ public class SuiImageTest extends SuiElementTest {
 
 
 
-	private SuiSceneController buildScene(ImageSizeProperty.ImageDimension width, ImageSizeProperty.ImageDimension height) {
-		return new SuiSceneController(
-				SuiElements.anchorPane()
+	private AnchorPane buildScene(ImageSizeProperty.ImageDimension width, ImageSizeProperty.ImageDimension height) {
+		return buildFxNode(
+				state -> anchorPane()
 						.sizeMin(400, 400)
 						.sizeMax(400, 400)
 						.item(
@@ -119,7 +116,7 @@ public class SuiImageTest extends SuiElementTest {
 														.image(Resource.internal("testResources/test-image.png"))
 														.imageSize(width, height)
 										)
-								)
+						)
 		);
 	}
 

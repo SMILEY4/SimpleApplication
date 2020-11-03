@@ -1,15 +1,16 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Accordion;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.accordion;
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.anchorPane;
 
 public class SuiAccordionTest extends SuiElementTest {
 
@@ -22,16 +23,16 @@ public class SuiAccordionTest extends SuiElementTest {
 
 		// build accordion with fixed sections and capture all events in a list
 		final List<SectionEventData> capturedEvents = new ArrayList<>();
-		final Accordion accordion = (Accordion) new SuiSceneController(
-				SuiElements.accordion()
+		final Accordion accordion = buildFxNode(
+				state -> accordion()
 						.items(
-								SuiElements.anchorPane().id("section-0").title("Section 0"),
-								SuiElements.anchorPane().id("section-1").title("Section 1"),
-								SuiElements.anchorPane().id("section-2").title("Section 2"),
-								SuiElements.anchorPane().id("section-3").title("Section 3")
+								anchorPane().id("section-0").title("Section 0"),
+								anchorPane().id("section-1").title("Section 1"),
+								anchorPane().id("section-2").title("Section 2"),
+								anchorPane().id("section-3").title("Section 3")
 						)
 						.eventToggleSection(".", capturedEvents::add)
-		).getRootFxNode();
+		);
 
 		show(accordion);
 		capturedEvents.clear();
@@ -69,19 +70,17 @@ public class SuiAccordionTest extends SuiElementTest {
 		// build accordion with section from the state and capture all events in a list
 		final List<SectionEventData> capturedEvents = new ArrayList<>();
 		final TestState testState = new TestState();
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.accordion()
+		final Accordion accordion = buildFxNode(TestState.class, testState,
+				state -> accordion()
 						.items(
-								state.sections.stream().map(section -> SuiElements.anchorPane()
+								state.sections.stream().map(section -> anchorPane()
 										.id("section-" + section)
 										.title("Section " + section)
 								)
 						)
 						.eventToggleSection(".", capturedEvents::add)
 		);
-		final Accordion accordion = (Accordion) controller.getRootFxNode();
+
 		show(accordion);
 
 		// expand "section 1" as preparation, ignore event and assert sections
@@ -117,19 +116,17 @@ public class SuiAccordionTest extends SuiElementTest {
 		// build accordion with section from the state and capture all events in a list
 		final List<SectionEventData> capturedEvents = new ArrayList<>();
 		final TestState testState = new TestState();
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.accordion()
+		final Accordion accordion = buildFxNode(TestState.class, testState,
+				state -> accordion()
 						.items(
-								state.sections.stream().map(section -> SuiElements.anchorPane()
+								state.sections.stream().map(section -> anchorPane()
 										.id("section-" + section)
 										.title("Section " + section)
 								)
 						)
 						.eventToggleSection(".", capturedEvents::add)
 		);
-		final Accordion accordion = (Accordion) controller.getRootFxNode();
+
 		show(accordion);
 
 		// expand "section 1" as preparation, ignore event and assert sections
@@ -164,20 +161,18 @@ public class SuiAccordionTest extends SuiElementTest {
 		// build accordion with section from the state and capture all events in a list
 		final List<SectionEventData> capturedEvents = new ArrayList<>();
 		final TestState testState = new TestState();
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.accordion()
+		final Accordion accordion = buildFxNode(TestState.class, testState,
+				state -> accordion()
 						.expandedSection(state.section)
 						.items(
-								state.sections.stream().map(section -> SuiElements.anchorPane()
+								state.sections.stream().map(section -> anchorPane()
 										.id("section-" + section)
 										.title("Section " + section)
 								)
 						)
 						.eventToggleSection(".", capturedEvents::add)
 		);
-		final Accordion accordion = (Accordion) controller.getRootFxNode();
+
 		show(accordion);
 
 		// test initially expanded section

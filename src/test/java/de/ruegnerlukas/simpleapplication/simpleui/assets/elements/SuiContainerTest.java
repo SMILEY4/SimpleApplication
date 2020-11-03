@@ -1,8 +1,6 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import org.junit.Test;
@@ -10,6 +8,7 @@ import org.junit.Test;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.container;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SuiContainerTest extends SuiElementTest {
@@ -24,13 +23,13 @@ public class SuiContainerTest extends SuiElementTest {
 		final Phaser phaser = new Phaser(2);
 		final AtomicInteger counter = new AtomicInteger(0);
 
-		final Node container = new SuiSceneController(
-				SuiElements.container()
+		final Node container = buildFxNode(
+				state -> container()
 						.layout(".", (parent, nodes) -> {
 							counter.incrementAndGet();
 							phaser.arrive();
 						})
-		).getRootFxNode();
+		);
 
 		show((Parent) container);
 		assertThat(counter.get()).isEqualTo(1);

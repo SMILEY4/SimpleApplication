@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneControllerV2;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
@@ -67,7 +67,7 @@ public class JFXTestApp extends Application {
 		SuiRegistry.initialize();
 
 		final TestUIState testUIState = new TestUIState();
-		final SuiSceneControllerV2 controller = new SuiSceneControllerV2(
+		final SuiSceneController controller = new SuiSceneController(
 				testUIState,
 				windowRoot(stage)
 						.title("JFX Clipboard Testing")

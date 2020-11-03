@@ -3,7 +3,6 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.TabActionEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
@@ -26,8 +25,8 @@ public class SuiTabPaneTest extends SuiElementTest {
 			return;
 		}
 
-		final TabPane tabPane = (TabPane) new SuiSceneController(
-				SuiElements.tabPane()
+		final TabPane tabPane = buildFxNode(
+				state -> SuiElements.tabPane()
 						.items(
 								SuiElements.button()
 										.id("item-0")
@@ -45,7 +44,8 @@ public class SuiTabPaneTest extends SuiElementTest {
 										.id("item-3")
 										.textContent("Button 3")
 										.title("Tab 3")
-						)).getRootFxNode();
+						)
+		);
 
 		assertThat(tabPane.getTabs()).hasSize(4);
 
@@ -83,8 +83,8 @@ public class SuiTabPaneTest extends SuiElementTest {
 		final List<TabActionEventData> collectedCloseEvents = new ArrayList<>();
 		final List<TabActionEventData> collectedSelectEvents = new ArrayList<>();
 
-		final SuiSceneController controller = new SuiSceneController(
-				SuiElements.tabPane()
+		final TabPane tabPane = buildFxNode(
+				state -> SuiElements.tabPane()
 						.eventClosedTab(".", collectedCloseEvents::add)
 						.eventSelectedTab(".", collectedSelectEvents::add)
 						.items(
@@ -106,8 +106,6 @@ public class SuiTabPaneTest extends SuiElementTest {
 										.title("Tab 3")
 						)
 		);
-
-		final TabPane tabPane = (TabPane) controller.getRootFxNode();
 		show(tabPane);
 
 		assertThat(tabPane.getTabs()).hasSize(4);
@@ -155,9 +153,7 @@ public class SuiTabPaneTest extends SuiElementTest {
 		final List<TabActionEventData> collectedCloseEvents = new ArrayList<>();
 		final List<TabActionEventData> collectedSelectEvents = new ArrayList<>();
 
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
+		final TabPane tabPane = buildFxNode(TestState.class, testState,
 				state -> SuiElements.tabPane()
 						.tabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS)
 						.eventClosedTab(".", collectedCloseEvents::add)
@@ -171,8 +167,6 @@ public class SuiTabPaneTest extends SuiElementTest {
 								).collect(Collectors.toList())
 						)
 		);
-
-		final TabPane tabPane = (TabPane) controller.getRootFxNode();
 		show(tabPane);
 
 		assertThat(tabPane.getTabs()).hasSize(4);
