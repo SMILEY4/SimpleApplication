@@ -150,12 +150,12 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 
 		final List<ValueChangedEventData<Number>> capturedEvents = new ArrayList<>();
 
-		final Pane sliderRoot = buildFxNode(TestState.class, testState,
+		final Pane sliderRoot = show(testState, new SuiComponent<TestState>(
 				state -> labeledSlider()
 						.anchorsFitParent()
 						.minMax(state.getMin(), state.getMax())
 						.eventValueChanged(".", Number.class, capturedEvents::add)
-		);
+		));
 		final Slider slider = (Slider) sliderRoot.getChildren().get(0);
 
 		// mutate state -> set min/max to 10/90, expect value to stay the same

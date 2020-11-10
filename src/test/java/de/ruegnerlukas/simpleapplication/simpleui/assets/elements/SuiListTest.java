@@ -58,9 +58,9 @@ public class SuiListTest extends SuiElementTest {
 
 		final TestState testState = new TestState();
 
-		final ListView<TestItem> listView = buildFxNode(TestState.class, testState,
+		final ListView<TestItem> listView = show(testState, new SuiComponent<TestState>(
 				state -> list().contentItems(state.items)
-		);
+		));
 		assertItems(listView, List.of());
 
 		// add all items
@@ -129,12 +129,11 @@ public class SuiListTest extends SuiElementTest {
 		final TestState testState = new TestState();
 		final List<ItemSelectedEventData<TestItem>> capturedEvents = new ArrayList<>();
 
-
-		final ListView<TestItem> listView = buildFxNode(TestState.class, testState,
+		final ListView<TestItem> listView = show(testState,new SuiComponent<TestState>(
 				state -> list()
 						.contentItems(state.items)
 						.eventItemSelected(".", TestItem.class, capturedEvents::add)
-		);
+		));
 
 		// select an item
 		syncJfxThread(() -> listView.getSelectionModel().select(1));

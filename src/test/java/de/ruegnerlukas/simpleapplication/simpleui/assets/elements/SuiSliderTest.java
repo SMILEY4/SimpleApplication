@@ -82,12 +82,12 @@ public class SuiSliderTest extends SuiElementTest {
 
 		final List<ValueChangedEventData<Number>> capturedEvents = new ArrayList<>();
 
-		final Slider slider = buildFxNode(TestState.class, testState,
+		final Slider slider = show(testState, new SuiComponent<TestState>(
 				state -> slider()
 						.anchorsFitParent()
 						.minMax(state.getMin(), state.getMax())
 						.eventValueChanged(".", Number.class, capturedEvents::add)
-		);
+		));
 
 		// mutate state -> set min/max to 10/90, expect value to stay the same
 		syncJfxThread(() -> slider.setValue(50));

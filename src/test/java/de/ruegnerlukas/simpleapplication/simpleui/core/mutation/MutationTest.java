@@ -362,7 +362,7 @@ public class MutationTest extends ApplicationTest {
 						SuiElements.button().id("btn2").textContent("Renamed Child Button 2")
 				);
 
-		final SuiNode original = vbox.create(state, Tags.empty());
+		final SuiNode original = vbox.create(state, null);
 		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());

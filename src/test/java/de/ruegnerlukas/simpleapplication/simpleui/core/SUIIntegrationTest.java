@@ -2,31 +2,22 @@ package de.ruegnerlukas.simpleapplication.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateException;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiElementTest;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import org.junit.Test;
-import org.testfx.framework.junit.ApplicationTest;
-
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import org.junit.Test;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.component;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SUIIntegrationTest extends ApplicationTest {
-
-
-	@Override
-	public void start(Stage stage) {
-		SuiRegistry.initialize();
-	}
-
+public class SUIIntegrationTest extends SuiElementTest {
 
 
 
@@ -64,28 +55,17 @@ public class SUIIntegrationTest extends ApplicationTest {
 	public void test_create_and_mutate_button() {
 
 		// setup
-		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
-		testState.addStateListener((state, update, tags) -> phaser.arrive());
 
-		final NodeFactory factory = component(TestState.class,
+		final Button button = show(testState, new SuiComponent<TestState>(
 				state -> SuiElements.button()
 						.textContent("counter = " + testState.counter)
 						.eventAction(".", e -> state.update(TestState.class, TestState::increment))
-		);
-		final SuiNode suiNode = factory.create(testState, Tags.empty());
-		SuiServices.get().enrichWithFxNodes(suiNode);
+		));
 
-		// assert button text
-		final Button fxButton = (Button) suiNode.getFxNodeStore().get();
-		assertThat(fxButton.getText()).isEqualTo("counter = 0");
-
-		// press button -> update state
-		fxButton.fire();
-
-		// assert that button text changed
-		phaser.arriveAndAwaitAdvance();
-		assertThat(fxButton.getText()).isEqualTo("counter = 1");
+		assertThat(button.getText()).isEqualTo("counter = 0");
+		clickButton(button);
+		assertThat(button.getText()).isEqualTo("counter = 1");
 	}
 
 

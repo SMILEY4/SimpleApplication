@@ -153,7 +153,7 @@ public class SuiTabPaneTest extends SuiElementTest {
 		final List<TabActionEventData> collectedCloseEvents = new ArrayList<>();
 		final List<TabActionEventData> collectedSelectEvents = new ArrayList<>();
 
-		final TabPane tabPane = buildFxNode(TestState.class, testState,
+		final TabPane tabPane = show(testState, new SuiComponent<TestState>(
 				state -> SuiElements.tabPane()
 						.tabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS)
 						.eventClosedTab(".", collectedCloseEvents::add)
@@ -166,8 +166,7 @@ public class SuiTabPaneTest extends SuiElementTest {
 												.title("Tab " + value)
 								).collect(Collectors.toList())
 						)
-		);
-		show(tabPane);
+		));
 
 		assertThat(tabPane.getTabs()).hasSize(4);
 		assertNoEvent(collectedCloseEvents);

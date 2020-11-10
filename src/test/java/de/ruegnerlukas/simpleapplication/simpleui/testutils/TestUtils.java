@@ -7,10 +7,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestUtils {
 
-	public static void assertNode(SuiNode node, Class<?> nodeType) {
-		assertThat(node).isNotNull();
-		assertThat(node.getNodeType()).isEqualTo(nodeType);
-	}
+    public static void assertNode(SuiNode node, Class<?> nodeType) {
+        assertThat(node).isNotNull();
+        assertThat(node.getNodeType()).isEqualTo(nodeType);
+    }
 
 
 }

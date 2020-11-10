@@ -4,12 +4,20 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.events.CheckedEventData
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DateSelectedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.SectionEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.node.WindowRootElement;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
+import java.util.concurrent.Phaser;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -28,12 +36,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.testfx.framework.junit.ApplicationTest;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
-import java.util.concurrent.Phaser;
-import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.component;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,6 +82,24 @@ public class SuiElementTest extends ApplicationTest {
 		delay(100);
 	}
 
+
+
+
+	public <T extends Node> T show(final SuiState state, final NodeFactory node) {
+		final AtomicReference<Node> result = new AtomicReference<>();
+		syncJfxThread(100, () -> {
+			final SuiSceneController controller = new SuiSceneController(state, WindowRootElement
+					.windowRoot(getStage())
+					.content(SuiState.class, s -> node)
+					.size(400, 400)
+			);
+			controller.show();
+			getStage().sizeToScene();
+			result.set(controller.getRootNode().getFxNodeStore().get());
+		});
+		//noinspection unchecked
+		return (T) result.get();
+	}
 
 
 
