@@ -1,5 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core;
 
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
+import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.WindowRootElement;
@@ -11,10 +13,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,7 +88,8 @@ public class SuiSceneController implements SuiStateListener {
 	 * @param parent            the parent controller
 	 */
 	public SuiSceneController(final SuiState state, final WindowRootElement windowRootElement, final SuiSceneController parent) {
-		// todo: validate window root element
+		Validations.INPUT.notNull(state).exception("The state may not be null.");
+		Validations.INPUT.notNull(windowRootElement).exception("The window root element may not be null.");
 		this.state = state;
 		this.state.addStateListener(this);
 		this.windowRootElement = windowRootElement;
@@ -125,10 +131,22 @@ public class SuiSceneController implements SuiStateListener {
 			stage.initModality(Modality.WINDOW_MODAL);
 			windowRootElement.setStage(stage);
 		}
+
 		stage.setScene(scene);
 		stage.setTitle(windowRootElement.getTitle());
-		stage.setWidth(windowRootElement.getWidth().doubleValue());
-		stage.setHeight(windowRootElement.getHeight().doubleValue());
+		if (windowRootElement.getSize() != null) {
+			stage.setWidth(windowRootElement.getSize().getWidth());
+			stage.setHeight(windowRootElement.getSize().getHeight());
+		}
+		if (windowRootElement.getSizeMin() != null) {
+			stage.setMinWidth(windowRootElement.getSizeMin().getWidth());
+			stage.setMinHeight(windowRootElement.getSizeMin().getHeight());
+		}
+		if (windowRootElement.getSizeMax() != null) {
+			stage.setMaxWidth(windowRootElement.getSizeMax().getWidth());
+			stage.setMaxHeight(windowRootElement.getSizeMax().getHeight());
+		}
+		setIcon(stage, windowRootElement.getIcon());
 		stage.setOnCloseRequest(e -> {
 			if (parentController != null) {
 				parentController.onChildClosed(this);
@@ -147,6 +165,30 @@ public class SuiSceneController implements SuiStateListener {
 
 
 
+	/**
+	 * Sets the icon of the given stage. If the icon is null, the icon will not be set.
+	 *
+	 * @param stage the stage
+	 * @param icon  the new icon
+	 */
+	private void setIcon(final Stage stage, final Resource icon) {
+		if (icon != null) {
+			if (icon.isInternal()) {
+				InputStream inputStream = icon.asInputStream();
+				Validations.STATE.notNull(inputStream)
+						.exception("The internal icon resource does not exist '{}'.", icon.getPath())
+						.onSuccess(() -> stage.getIcons().setAll(new Image(inputStream)));
+			} else {
+				Validations.STATE.exists(new File(icon.getPath()))
+						.exception("The external icon resource does not exist '{}'.", icon.getPath())
+						.onSuccess(() -> stage.getIcons().setAll(new Image("file:" + icon.getPath())));
+			}
+		}
+	}
+
+
+
+
 	@Override
 	public void stateUpdated(final SuiState state, final SuiStateUpdate<?> update, final Tags tags) {
 		final SuiSceneTree targetTree = SuiSceneTree.build(rootComponent, state, tags);
@@ -157,7 +199,6 @@ public class SuiSceneController implements SuiStateListener {
 			final Optional<SuiSceneController> openController = childControllers.stream()
 					.filter(c -> c.getWindowRootElement().equals(popupWindowRootElement))
 					.findAny();
-
 			final boolean isCurrentlyOpen = openController.isPresent();
 			final boolean shouldBeOpen = popupWindowRootElement.getCondition().test(state);
 			if (shouldBeOpen && !isCurrentlyOpen) {

@@ -1,7 +1,9 @@
 package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import javafx.geometry.Dimension2D;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,16 +56,28 @@ public final class WindowRootElement {
 	private String title;
 
 	/**
-	 * The width of the window
+	 * The initial width and height of the window
 	 */
 	@Getter
-	private Number width;
+	private Dimension2D size;
 
 	/**
-	 * The height of the window
+	 * The min width and height of the window
 	 */
 	@Getter
-	private Number height;
+	private Dimension2D sizeMin;
+
+	/**
+	 * The max width and height of the window
+	 */
+	@Getter
+	private Dimension2D sizeMax;
+
+	/**
+	 * The custom icon of the window or null
+	 */
+	@Getter
+	private Resource icon;
 
 	/**
 	 * Whether to wait for the window to close
@@ -126,8 +140,45 @@ public final class WindowRootElement {
 	 * @return this window root element for chaining
 	 */
 	public WindowRootElement size(final Number width, final Number height) {
-		this.width = width;
-		this.height = height;
+		this.size = new Dimension2D(width.doubleValue(), height.doubleValue());
+		return this;
+	}
+
+
+
+
+	/**
+	 * @param width  the min width of the window
+	 * @param height the min height of the window
+	 * @return this window root element for chaining
+	 */
+	public WindowRootElement sizeMin(final Number width, final Number height) {
+		this.sizeMin = new Dimension2D(width.doubleValue(), height.doubleValue());
+		return this;
+	}
+
+
+
+
+	/**
+	 * @param width  the max width of the window
+	 * @param height the max height of the window
+	 * @return this window root element for chaining
+	 */
+	public WindowRootElement sizeMax(final Number width, final Number height) {
+		this.sizeMax = new Dimension2D(width.doubleValue(), height.doubleValue());
+		return this;
+	}
+
+
+
+
+	/**
+	 * @param icon the resource for the icon
+	 * @return this window root element for chaining
+	 */
+	public WindowRootElement sizeMax(final Resource icon) {
+		this.icon = icon;
 		return this;
 	}
 
