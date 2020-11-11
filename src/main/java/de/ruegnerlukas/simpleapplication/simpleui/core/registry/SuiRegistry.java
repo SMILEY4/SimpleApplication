@@ -3,6 +3,8 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.registry;
 
 import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
 import de.ruegnerlukas.simpleapplication.common.eventbus.EventBusImpl;
+import de.ruegnerlukas.simpleapplication.common.resources.Resource;
+import de.ruegnerlukas.simpleapplication.common.utils.Identity;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAccordion;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiAnchorPane;
@@ -31,9 +33,13 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBu
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
+import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiListChangeListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.style.BaseStyle;
+import javafx.application.Application;
 import javafx.scene.Node;
+import javafx.stage.Window;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -117,6 +123,12 @@ public class SuiRegistry {
 	private EventBus eventBus = new EventBusImpl();
 
 
+	/**
+	 * The current base style for all windows or null
+	 */
+	private BaseStyle baseStyle;
+
+
 
 
 	/**
@@ -150,6 +162,45 @@ public class SuiRegistry {
 			SuiSplitPane.register(this);
 			SuiAccordion.register(this);
 		}
+
+		Window.getWindows().addListener(new SuiListChangeListener<>(
+				this::applyBaseStyle,
+				Identity.consumer()
+		));
+	}
+
+
+
+
+	/**
+	 * Applies the base style to the given window
+	 *
+	 * @param window the window to apply the current base style to
+	 */
+	private void applyBaseStyle(final Window window) {
+		window.getScene().getStylesheets().clear();
+		if (baseStyle != null && !baseStyle.isDefaultFxStyle()) {
+			for (Resource resStylesheet : baseStyle.getCssStylesheets()) {
+				window.getScene().getStylesheets().add("file:" + resStylesheet.getPath());
+			}
+		}
+	}
+
+
+
+
+	/**
+	 * Sets and reloads the base style for all current and future windows
+	 *
+	 * @param baseStyle the new base style
+	 */
+	public void setBaseStyle(final BaseStyle baseStyle) {
+		Validations.INPUT.notNull(baseStyle).exception("The base style may not be null.");
+		this.baseStyle = baseStyle;
+		if (baseStyle.isDefaultFxStyle()) {
+			Application.setUserAgentStylesheet(baseStyle.getDefaultFxStyleName());
+		}
+		Window.getWindows().forEach(this::applyBaseStyle);
 	}
 
 
