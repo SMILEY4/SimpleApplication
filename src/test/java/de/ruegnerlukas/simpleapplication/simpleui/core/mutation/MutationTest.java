@@ -8,12 +8,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnAct
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.PropertyTestUtils;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestState;
 import de.ruegnerlukas.simpleapplication.simpleui.testutils.TestUtils;
@@ -73,8 +72,8 @@ public class MutationTest extends ApplicationTest {
 								.textContent("Renamed Child Button 2")
 				);
 
-		final SuiSceneController context = new SuiSceneController(state, vbox);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = vbox.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -103,8 +102,8 @@ public class MutationTest extends ApplicationTest {
 
 		NodeFactory factoryTarget = SuiElements.button().textContent("My Button");
 
-		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = factoryOriginal.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -131,8 +130,8 @@ public class MutationTest extends ApplicationTest {
 		NodeFactory factoryTarget = SuiElements.vBox()
 				.items(SuiElements.button().textContent("Child Button"));
 
-		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = factoryOriginal.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -158,8 +157,8 @@ public class MutationTest extends ApplicationTest {
 		NodeFactory factoryTarget = SuiElements.button()
 				.id("myButton");
 
-		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = factoryOriginal.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -186,8 +185,8 @@ public class MutationTest extends ApplicationTest {
 				.id("myButton")
 				.textContent("Button");
 
-		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = factoryOriginal.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -230,8 +229,8 @@ public class MutationTest extends ApplicationTest {
 								.textContent("Renamed Child Button 2")
 				);
 
-		final SuiSceneController context = new SuiSceneController(state, vbox);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = vbox.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -273,8 +272,8 @@ public class MutationTest extends ApplicationTest {
 						SuiElements.button().id("btn2").textContent("Renamed Child Button 2")
 				);
 
-		final SuiSceneController context = new SuiSceneController(state, vbox);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = vbox.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -316,8 +315,8 @@ public class MutationTest extends ApplicationTest {
 						SuiElements.button().id("btn2").textContent("Renamed Child Button 2")
 				);
 
-		final SuiSceneController context = new SuiSceneController(state, vbox);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = vbox.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -363,8 +362,8 @@ public class MutationTest extends ApplicationTest {
 						SuiElements.button().id("btn2").textContent("Renamed Child Button 2")
 				);
 
-		final SuiSceneController context = new SuiSceneController(state, vbox);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = vbox.create(state, null);
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = vboxTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -407,8 +406,8 @@ public class MutationTest extends ApplicationTest {
 				.textContent("Button Target")
 				.eventAction("b", e -> capturedEvents.add("from target"));
 
-		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = factoryOriginal.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -451,8 +450,8 @@ public class MutationTest extends ApplicationTest {
 				.textContent("Button Target")
 				.eventAction("myPropertyId", e -> capturedEvents.add("from target"));
 
-		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = factoryOriginal.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.empty());
 
@@ -485,8 +484,8 @@ public class MutationTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = nodeFactories.getLeft();
 		final NodeFactory factoryTarget = nodeFactories.getRight();
 
-		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = factoryOriginal.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.from("tag1"));
 
@@ -518,8 +517,8 @@ public class MutationTest extends ApplicationTest {
 		final NodeFactory factoryOriginal = nodeFactories.getLeft();
 		final NodeFactory factoryTarget = nodeFactories.getRight();
 
-		final SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		final SuiNode original = context.getRootNode();
+		final SuiNode original = factoryOriginal.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
 		final SuiNode target = factoryTarget.create(state, null);
 		final SuiNode mutatedNode = SuiServices.get().mutateNode(original, target, Tags.from("tag2"));
 

@@ -1,9 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.DateSelectedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import javafx.scene.control.DatePicker;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -15,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.datePicker;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SuiDatePickerTest extends SuiElementTest {
@@ -23,12 +22,12 @@ public class SuiDatePickerTest extends SuiElementTest {
 	@Test
 	public void test_create_date_picker() {
 
-		final DatePicker datePicker = (DatePicker) new SuiSceneController(
-				SuiElements.datePicker()
+		final DatePicker datePicker = buildFxNode(
+				state -> 				datePicker()
 						.promptText("My Date")
 						.editable()
 						.chronology(Locale.KOREA)
-		).getRootFxNode();
+		);
 
 		assertThat(datePicker.getPromptText()).isEqualTo("My Date");
 		assertThat(datePicker.isEditable()).isEqualTo(true);
@@ -45,13 +44,12 @@ public class SuiDatePickerTest extends SuiElementTest {
 		}
 
 		final List<DateSelectedEventData> capturedEvents = new ArrayList<>();
-		final SuiSceneController controller = new SuiSceneController(
-				SuiElements.datePicker()
+		final DatePicker datePicker = buildFxNode(
+				state -> 				datePicker()
 						.editable()
 						.chronology(Locale.GERMANY)
 						.eventSelectedDate(".", capturedEvents::add)
 		);
-		final DatePicker datePicker = (DatePicker) controller.getRootFxNode();
 		show(datePicker);
 
 		// enter text for first time

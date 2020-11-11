@@ -3,29 +3,21 @@ package de.ruegnerlukas.simpleapplication.simpleui.core;
 import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateException;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiElementTest;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import org.junit.Test;
-import org.testfx.framework.junit.ApplicationTest;
-
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import java.util.concurrent.Phaser;
 import java.util.concurrent.atomic.AtomicInteger;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import org.junit.Test;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.component;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SUIIntegrationTest extends ApplicationTest {
-
-
-	@Override
-	public void start(Stage stage) {
-		SuiRegistry.initialize();
-	}
-
+public class SUIIntegrationTest extends SuiElementTest {
 
 
 
@@ -35,14 +27,16 @@ public class SUIIntegrationTest extends ApplicationTest {
 
 		final AtomicInteger buttonPressCounter = new AtomicInteger(0);
 
-		final SuiSceneController context = new SuiSceneController(
-				SuiElements.button()
+		final NodeFactory factory = component(SuiState.class,
+				state -> SuiElements.button()
 						.textContent("Some Button")
 						.wrapText()
 						.eventAction(".", e -> buttonPressCounter.incrementAndGet())
 		);
+		final SuiNode suiNode = factory.create(new SuiState(), Tags.empty());
+		SuiServices.get().enrichWithFxNodes(suiNode);
 
-		final Node fxNode = context.getRootFxNode();
+		final Node fxNode = suiNode.getFxNodeStore().get();
 		assertThat(fxNode instanceof Button).isTrue();
 
 		final Button fxButton = (Button) fxNode;
@@ -61,26 +55,17 @@ public class SUIIntegrationTest extends ApplicationTest {
 	public void test_create_and_mutate_button() {
 
 		// setup
-		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
-		final SuiSceneController context = new SuiSceneController(testState,
-				new SuiComponent<TestState>(state -> SuiElements.button()
+
+		final Button button = show(testState, new SuiComponent<TestState>(
+				state -> SuiElements.button()
 						.textContent("counter = " + testState.counter)
 						.eventAction(".", e -> state.update(TestState.class, TestState::increment))
-				)
-		);
-		testState.addStateListener((state, update, tags) -> phaser.arrive());
+		));
 
-		// assert button text
-		final Button fxButton = (Button) context.getRootFxNode();
-		assertThat(fxButton.getText()).isEqualTo("counter = 0");
-
-		// press button -> update state
-		fxButton.fire();
-
-		// assert that button text changed
-		phaser.arriveAndAwaitAdvance();
-		assertThat(fxButton.getText()).isEqualTo("counter = 1");
+		assertThat(button.getText()).isEqualTo("counter = 0");
+		clickButton(button);
+		assertThat(button.getText()).isEqualTo("counter = 1");
 	}
 
 
@@ -92,19 +77,21 @@ public class SUIIntegrationTest extends ApplicationTest {
 		// setup
 		final Phaser phaser = new Phaser(2);
 		final TestState testState = new TestState();
-		final SuiSceneController context = new SuiSceneController(testState,
-				new SuiComponent<TestState>(state -> SuiElements.button()
+		testState.addStateListener((state, update, tags) -> phaser.arrive());
+
+		final NodeFactory factory = component(TestState.class,
+				state -> SuiElements.button()
 						.textContent("counter = " + testState.counter)
 						.eventAction(".", e -> state.update(TestState.class, true, s -> {
 							s.increment();
 							phaser.arrive();
 						}))
-				)
 		);
-		testState.addStateListener((state, update, tags) -> phaser.arrive());
+		final SuiNode suiNode = factory.create(testState, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(suiNode);
 
 		// assert button text
-		final Button fxButton = (Button) context.getRootFxNode();
+		final Button fxButton = (Button) suiNode.getFxNodeStore().get();
 		assertThat(fxButton.getText()).isEqualTo("counter = 0");
 
 		// press button -> silent update state
@@ -123,21 +110,21 @@ public class SUIIntegrationTest extends ApplicationTest {
 	@Test (expected = ValidateStateException.class)
 	public void test_build_children_with_duplicate_ids_expect_failed_validation_and_missing_children() {
 
-		final TestState state = new TestState();
+		final TestState testState = new TestState();
 
-		NodeFactory nodeFactory = SuiElements.vBox()
-				.id("myVBox")
-				.items(
-						SuiElements.button().id("sameId").textContent("Child Button 1"),
-						SuiElements.button().id("diffId").textContent("Child Button 2"),
-						SuiElements.button().id("sameId").textContent("Child Button 3")
-				);
+		final NodeFactory factory = component(TestState.class,
+				state -> SuiElements.vBox()
+						.id("myVBox")
+						.items(
+								SuiElements.button().id("sameId").textContent("Child Button 1"),
+								SuiElements.button().id("diffId").textContent("Child Button 2"),
+								SuiElements.button().id("sameId").textContent("Child Button 3")
+						)
+		);
+		final SuiNode suiNode = factory.create(testState, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(suiNode);
 
-		final SuiSceneController context = new SuiSceneController(state, nodeFactory);
-		final SuiNode node = context.getRootNode();
-
-		assertThat(node.getChildNodeStore().count()).isEqualTo(0);
-
+		assertThat(suiNode.getChildNodeStore().count()).isEqualTo(0);
 	}
 
 

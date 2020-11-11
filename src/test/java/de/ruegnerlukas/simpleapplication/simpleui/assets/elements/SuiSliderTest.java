@@ -2,10 +2,8 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.ValidateInputException;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Slider;
@@ -16,6 +14,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.slider;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SuiSliderTest extends SuiElementTest {
@@ -24,13 +23,13 @@ public class SuiSliderTest extends SuiElementTest {
 	@Test
 	public void test_create_slider() {
 
-		final Slider slider = (Slider) new SuiSceneController(
-				SuiElements.slider()
+		final Slider slider = buildFxNode(
+				state -> slider()
 						.minMax(16, 42)
 						.blockIncrement(3)
 						.tickMarks(TickMarkProperty.TickMarkStyle.ONLY_LABELS, 4, 2, true)
 						.orientation(Orientation.VERTICAL)
-		).getRootFxNode();
+		);
 
 		assertThat((int) slider.getMin()).isEqualTo(16);
 		assertThat((int) slider.getMax()).isEqualTo(42);
@@ -48,9 +47,7 @@ public class SuiSliderTest extends SuiElementTest {
 
 	@Test (expected = ValidateInputException.class)
 	public void test_create_slider_swapped_min_max() {
-		new SuiSceneController(
-				SuiElements.slider().minMax(42, 16)
-		).getRootFxNode();
+		buildFxNode(state -> slider().minMax(42, 16));
 	}
 
 
@@ -59,9 +56,7 @@ public class SuiSliderTest extends SuiElementTest {
 	@Test
 	public void test_create_slider_only_min() {
 
-		final Slider slider = (Slider) new SuiSceneController(
-				SuiElements.slider().minMax(16, null)
-		).getRootFxNode();
+		final Slider slider = buildFxNode(state -> slider().minMax(16, null));
 
 		assertThat((int) slider.getMin()).isEqualTo(16);
 		assertThat((int) slider.getMax()).isGreaterThan(9999999);
@@ -87,16 +82,12 @@ public class SuiSliderTest extends SuiElementTest {
 
 		final List<ValueChangedEventData<Number>> capturedEvents = new ArrayList<>();
 
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.slider()
+		final Slider slider = show(testState, new SuiComponent<TestState>(
+				state -> slider()
 						.anchorsFitParent()
 						.minMax(state.getMin(), state.getMax())
 						.eventValueChanged(".", Number.class, capturedEvents::add)
-		);
-
-		final Slider slider = (Slider) controller.getRootFxNode();
+		));
 
 		// mutate state -> set min/max to 10/90, expect value to stay the same
 		syncJfxThread(() -> slider.setValue(50));

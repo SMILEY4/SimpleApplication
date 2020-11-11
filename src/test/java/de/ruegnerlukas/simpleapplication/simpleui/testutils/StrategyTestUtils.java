@@ -1,11 +1,12 @@
 package de.ruegnerlukas.simpleapplication.simpleui.testutils;
 
-import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
+import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -38,12 +39,12 @@ public class StrategyTestUtils {
 
 
 
-	public static Triplet<SuiSceneController, SuiNode, SuiNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
+	public static Pair<SuiNode, SuiNode> buildTest(final NodeFactory factoryOriginal, final NodeFactory factoryTarget) {
 		TestState state = new TestState();
-		SuiSceneController context = new SuiSceneController(state, factoryOriginal);
-		SuiNode original = context.getRootNode();
-		SuiNode target = factoryTarget.create(state, null);
-		return Triplet.of(context, original, target);
+		SuiNode original = factoryOriginal.create(state, Tags.empty());
+		SuiServices.get().enrichWithFxNodes(original);
+		SuiNode target = factoryTarget.create(state, Tags.empty());
+		return Pair.of(original, target);
 	}
 
 

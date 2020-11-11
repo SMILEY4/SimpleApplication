@@ -1,19 +1,17 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
-import de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.events.ValueChangedEventData;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.control.ChoiceBox;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.choiceBox;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SuiChoiceBoxTest extends SuiElementTest {
@@ -22,8 +20,8 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 	@Test
 	public void test_creating_choice_box() {
 
-		@SuppressWarnings ("unchecked") final ChoiceBox<TestItem> choiceBox = (ChoiceBox<TestItem>) new SuiSceneController(
-				SuiElements.choiceBox()
+		final ChoiceBox<TestItem> choiceBox = buildFxNode(
+				state -> choiceBox()
 						.contentItems(
 								List.of(
 										new TestItem("A", 1),
@@ -36,7 +34,7 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 								str -> new TestItem(str.split(":")[0].trim(), Integer.parseInt(str.split(":")[1].trim())),
 								item -> item.name + ": " + item.number
 						)
-		).getRootFxNode();
+		);
 
 		assertItems(choiceBox, List.of(
 				new TestItem("A", 1),
@@ -69,10 +67,8 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 		final List<ValueChangedEventData<TestItem>> collectedEvents = new ArrayList<>();
 
 		// create controller with choice-box
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.choiceBox()
+		final ChoiceBox<TestItem> choiceBox = show(testState, new SuiComponent<TestState>(
+				state -> choiceBox()
 						.contentItems(List.of(
 								new TestItem("A", 1),
 								new TestItem("B", 2),
@@ -81,8 +77,7 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 								state.selectedItem
 						)
 						.eventValueChanged(".", TestItem.class, collectedEvents::add)
-		);
-		@SuppressWarnings ("unchecked") final ChoiceBox<TestItem> choiceBox = (ChoiceBox<TestItem>) controller.getRootFxNode();
+		));
 
 		// no value selected at first
 		assertSelected(choiceBox, null);
@@ -114,7 +109,7 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 
 			private TestItem selected = null;
 
-			private List<TestItem> items = new ArrayList<>(List.of(
+			private final List<TestItem> items = new ArrayList<>(List.of(
 					new TestItem("A", 1),
 					new TestItem("B", 2),
 					new TestItem("C", 3)
@@ -126,14 +121,11 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 		final List<ValueChangedEventData<TestItem>> collectedEvents = new ArrayList<>();
 
 		// create controller with choice-box
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.choiceBox()
+		final ChoiceBox<TestItem> choiceBox = show(testState, new SuiComponent<TestState>(
+				state -> choiceBox()
 						.contentItems(state.items, state.selected)
 						.eventValueChanged(".", TestItem.class, collectedEvents::add)
-		);
-		@SuppressWarnings ("unchecked") final ChoiceBox<TestItem> choiceBox = (ChoiceBox<TestItem>) controller.getRootFxNode();
+		));
 
 		// correct items were added to choice-box -> [A, B, C]
 		assertItems(choiceBox, List.of(
@@ -219,14 +211,12 @@ public class SuiChoiceBoxTest extends SuiElementTest {
 		final List<ValueChangedEventData<TestItem>> collectedEvents = new ArrayList<>();
 
 		// create controller with choice-box
-		final SuiSceneController controller = new SuiSceneController(
-				testState,
-				TestState.class,
-				state -> SuiElements.choiceBox()
+
+		final ChoiceBox<TestItem> choiceBox = buildFxNode(TestState.class, testState,
+				state -> choiceBox()
 						.contentItems(state.items, state.selected)
 						.eventValueChanged(".", TestItem.class, collectedEvents::add)
 		);
-		@SuppressWarnings ("unchecked") final ChoiceBox<TestItem> choiceBox = (ChoiceBox<TestItem>) controller.getRootFxNode();
 		show(choiceBox);
 
 		// select a new item -> item selected + event

@@ -1,9 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.simpleui;
 
-import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandleData;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import lombok.Getter;
 
@@ -31,9 +29,10 @@ public class SuiWindowHandleData implements WindowHandleData {
 
 	@Override
 	public Parent getNode() {
-		final Node rootNode = controller.getRootFxNode();
-		Validations.STATE.typeOf(rootNode, Parent.class).exception("The root node must be of type 'Parent'.");
-		return (Parent) rootNode;
+		return null; // todo
+//		final Node rootNode = controller.getRootFxNode();
+//		Validations.STATE.typeOf(rootNode, Parent.class).exception("The root node must be of type 'Parent'.");
+//		return (Parent) rootNode;
 	}
 
 

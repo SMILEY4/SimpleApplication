@@ -101,7 +101,8 @@ public class SuiState {
 		}
 		final Tags tags = doUpdate(update);
 		if (!silent) {
-			listeners.forEach(listener -> listener.stateUpdated(this, update, tags));
+			final List<SuiStateListener> openListeners = new ArrayList<>(listeners);
+			openListeners.forEach(listener -> listener.stateUpdated(this, update, tags));
 		}
 	}
 

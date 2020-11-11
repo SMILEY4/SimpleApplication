@@ -9,6 +9,7 @@ open module SimpleApplication {
 	requires exp4j;
 	requires sysout.over.slf4j;
 	requires static lombok;
+	requires java.desktop;
 
 	exports de.ruegnerlukas.simpleapplication.common.callbacks;
 	exports de.ruegnerlukas.simpleapplication.common.events;
@@ -52,5 +53,4 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.node.builders;
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.registry;
 	exports de.ruegnerlukas.simpleapplication.simpleui.core.state;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.windows;
 }
