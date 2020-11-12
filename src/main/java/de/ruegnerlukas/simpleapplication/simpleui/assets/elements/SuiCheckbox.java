@@ -3,22 +3,25 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedCheckbox;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnCheckedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.CheckedProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FontProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IconProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextFillProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.UnderlineProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 
 import java.util.List;
 
@@ -59,6 +62,9 @@ public final class SuiCheckbox {
 			AlignmentProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
 			TooltipProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
 			CheckedProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			FontProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			UnderlineProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			TextFillProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
 			OnCheckedEventProperty.PropertyBuilderExtension<SuiCheckBoxBuilder> {
 
 
@@ -94,7 +100,10 @@ public final class SuiCheckbox {
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(CheckedProperty.class, new CheckedProperty.CheckBoxUpdatingBuilder()),
 				PropertyEntry.of(OnCheckedEventProperty.class, new OnCheckedEventProperty.CheckboxUpdatingBuilder()),
-				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder()),
+				PropertyEntry.of(FontProperty.class, new FontProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(UnderlineProperty.class, new UnderlineProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(TextFillProperty.class, new TextFillProperty.LabeledUpdatingBuilder())
 		));
 	}
 

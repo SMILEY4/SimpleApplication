@@ -2,12 +2,14 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BlockIncrementProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FontProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelFormatterProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.LabelSizeProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MinMaxProperty;
@@ -16,12 +18,11 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.Spacing
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TickMarkProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -77,6 +78,7 @@ public final class SuiLabeledSlider {
 			EditableProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
 			LabelFormatterProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
 			LabelSizeProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
+			FontProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder>,
 			OnValueChangedEventProperty.PropertyBuilderExtension<SuiLabeledSliderBuilder> {
 
 
@@ -115,7 +117,8 @@ public final class SuiLabeledSlider {
 				PropertyEntry.of(LabelFormatterProperty.class, new LabelFormatterProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(LabelSizeProperty.class, new LabelSizeProperty.LabeledSliderUpdatingBuilder()),
 				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.LabeledSliderUpdatingBuilder()),
-				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.LabeledSliderUpdatingBuilder())
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.LabeledSliderUpdatingBuilder()),
+				PropertyEntry.of(FontProperty.class, new FontProperty.LabeledSliderUpdatingBuilder())
 		));
 	}
 

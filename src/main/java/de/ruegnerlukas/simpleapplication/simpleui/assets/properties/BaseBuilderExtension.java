@@ -3,10 +3,12 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.CursorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EffectProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.HGrowProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MarginProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.OpacityProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleClassProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleIdProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.StyleProperty;
@@ -31,7 +33,9 @@ public interface BaseBuilderExtension<T extends FactoryExtension> extends Factor
 		StyleProperty.PropertyBuilderExtension<T>,
 		StyleClassProperty.PropertyBuilderExtension<T>,
 		StyleIdProperty.PropertyBuilderExtension<T>,
-		CursorProperty.PropertyBuilderExtension<T> {
+		CursorProperty.PropertyBuilderExtension<T>,
+		OpacityProperty.PropertyBuilderExtension<T>,
+		EffectProperty.PropertyBuilderExtension<T> {
 
 
 	/**

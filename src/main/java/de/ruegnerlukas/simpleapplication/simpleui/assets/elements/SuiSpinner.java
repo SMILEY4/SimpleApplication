@@ -3,20 +3,21 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements.ExtendedSpinner;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnValueChangedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FontProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SpinnerFactoryProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,6 +56,7 @@ public final class SuiSpinner {
 			TooltipProperty.PropertyBuilderExtension<SuiSpinnerBuilder>,
 			OnValueChangedEventProperty.PropertyBuilderExtension<SuiSpinnerBuilder>,
 			EditableProperty.PropertyBuilderExtension<SuiSpinnerBuilder>,
+			FontProperty.PropertyBuilderExtension<SuiSpinnerBuilder>,
 			SpinnerFactoryProperty.PropertyBuilderExtension<SuiSpinnerBuilder> {
 
 
@@ -90,7 +92,8 @@ public final class SuiSpinner {
 				PropertyEntry.of(SpinnerFactoryProperty.class, new SpinnerFactoryProperty.SpinnerUpdatingBuilder()),
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.SpinnerUpdatingBuilder()),
 				PropertyEntry.of(OnValueChangedEventProperty.class, new OnValueChangedEventProperty.SpinnerUpdatingBuilder<>()),
-				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder()),
+				PropertyEntry.of(FontProperty.class, new FontProperty.SpinnerUpdatingBuilder())
 		));
 	}
 

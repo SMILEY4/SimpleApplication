@@ -1,5 +1,7 @@
 package de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
 
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BackgroundProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.BorderProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PaddingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;
@@ -12,6 +14,8 @@ public interface RegionBuilderExtension<T extends FactoryExtension> extends Fact
 		SizePreferredProperty.PropertyBuilderExtension<T>,
 		SizeMaxProperty.PropertyBuilderExtension<T>,
 		SizeProperty.PropertyBuilderExtension<T>,
+		BackgroundProperty.PropertyBuilderExtension<T>,
+		BorderProperty.PropertyBuilderExtension<T>,
 		PaddingProperty.PropertyBuilderExtension<T> {
 
 

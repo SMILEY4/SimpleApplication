@@ -2,21 +2,24 @@ package de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 
 
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.BaseBuilderExtension;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.CommonEventBuilderExtension;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.PropertyGroups;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FontProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.IconProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextFillProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.UnderlineProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.WrapTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.builders.BuilderExtensionContainer;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.RegionBuilderExtension;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import javafx.scene.control.Button;
 
 import java.util.List;
@@ -57,6 +60,9 @@ public final class SuiButton {
 			WrapTextProperty.PropertyBuilderExtension<SuiButtonBuilder>,
 			AlignmentProperty.PropertyBuilderExtension<SuiButtonBuilder>,
 			TooltipProperty.PropertyBuilderExtension<SuiButtonBuilder>,
+			FontProperty.PropertyBuilderExtension<SuiButtonBuilder>,
+			UnderlineProperty.PropertyBuilderExtension<SuiButtonBuilder>,
+			TextFillProperty.PropertyBuilderExtension<SuiButtonBuilder>,
 			OnActionEventProperty.PropertyBuilderExtension<SuiButtonBuilder> {
 
 
@@ -91,7 +97,10 @@ public final class SuiButton {
 				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(OnActionEventProperty.class, new OnActionEventProperty.ButtonBaseUpdatingBuilder()),
-				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder()),
+				PropertyEntry.of(FontProperty.class, new FontProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(UnderlineProperty.class, new UnderlineProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(TextFillProperty.class, new TextFillProperty.LabeledUpdatingBuilder())
 		));
 	}
 
