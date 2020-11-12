@@ -78,7 +78,7 @@ class MyState extends SuiState {
 
 ##### 4. Creating the scene controller
 
-The scene controller is responsible for managing the scene, i.e. the scene tree, ui state and so on. We can then get the root javafx-node from that controller.
+The scene controller is responsible for managing the scene, i.e. the scene tree, ui state and so on. We can also customize the window here.
 
 ```java
 public class SimpleUIDemo extends Application {
@@ -91,11 +91,15 @@ public class SimpleUIDemo extends Application {
         
         MyState myState = new MyState();
         
-        SuiSceneController controller = new SuiSceneController(myState, MyState.class, state -> { /*todo*/ });
-        Parent rootNode = (Parent) controller.getRootFxNode();
+		SuiSceneController controller = new SuiSceneController(
+        	myState,
+        	WindowRootElement.windowRoot(stage)        
+            	.title("SimpleUI Demo")
+            	.size(500, 400)
+            	.content(MyState.class, state -> /*TODO*/)
+        );
         
-        stage.setScene(new Scene(rootNode, 200, 100));
-        stage.show();
+        controller.show();
     }
 
 }
@@ -120,14 +124,18 @@ public class SimpleUIDemo extends Application {
         
         MyState myState = new MyState();
         
-        SuiSceneController controller = new SuiSceneController(myState, MyState.class, state -> buildUI(state));
-        Parent rootNode = (Parent) controller.getRootFxNode();
+		SuiSceneController controller = new SuiSceneController(
+        	myState,
+        	WindowRootElement.windowRoot(stage)        
+            	.title("SimpleUI Demo")
+            	.size(500, 400)
+            	.content(MyState.class, state -> buildUI(state))
+        );
         
-        stage.setScene(new Scene(rootNode, 200, 100));
-        stage.show();
+        controller.show();
     }
     
-    private NodeFactory buildUI(String currentState) {
+    private NodeFactory buildUI(MyState currentState) {
         return SuiElements.button()
                 .textContent("Button: " + currentState.text)
                 .eventAction(".", event -> System.out.println("Click!"));
@@ -166,41 +174,6 @@ class MyState extends SuiState {
     public int value = 0;
 }
 ```
-
-In case the update process can rebuild the root node, we have to tell the javafx scene when the root changes.
-
-```java
-public class SimpleUIDemo extends Application {
-
-    //...
-
-    @Override
-    public void start(Stage stage) {
-        SuiRegistry.initialize();
-        
-        MyState myState = new MyState();
-        
-        SuiSceneController controller = new SuiSceneController(myState, MyState.class, state -> buildUI(state));
-        Parent rootNode = (Parent) controller.getRootFxNode();
-        
-        final Scene scene = new Scene(rootNode, 200, 100);
-        controller.addListener(newRootNode -> {
-            Node fxRoot = newRootNode.getFxNodeStore().get();
-            scene.setRoot((Parent) fxRoot);
-        });
-        
-        stage.setScene(scene);
-        stage.show();
-    }
-    
-	//...
-    
-}
-
-//...
-```
-
-
 
 
 
@@ -1006,98 +979,44 @@ SuiElements.button()
 
 ### 9. Multiple Windows
 
-SimpleUI can open and close multiple different windows. All windows usually use the same state.
-
-**Preparing the default SimpleUI Window Handler**
-
-Before using the default window handler, we have to give it the primary Javafx stage.
+SimpleUI can open and close multiple different windows. All windows usually use the same state. Windows have to be defined as child windows of any controller (Root window is an exception). The window of this parent controller will automatically be the parent/owner of the new child window. 
 
 ```java
-// register the primary window with the window id "primary"
-SuiRegistry.get().getWindows()).registerPrimaryWindow("primary", primaryStage);
+MyState myState = new MyState();
+        
+SuiSceneController controller = new SuiSceneController(
+	myState,
+	WindowRootElement.windowRoot(stage)
+		.title("Windows Demo")
+    	.size(500, 400)
+		.content(MyState.class, state -> ...) // 1
+    	.modal(WindowRootElement.windowRoot()
+               .title("Child Window 1")
+               .size(200, 200)
+               .condition(MyState.class, state -> state.isShowWindow1() == true) // 2
+               .onClose(TestUIState.class, state -> state.setShowWindow1(false)) // 3
+               .content(TestUIState -> state ...) // 4
+               .modal(WindowRootElement.windowRoot() // 5
+                     ...
+                )
+        .modal(WindowRootElement.windowRoot()
+               .title("Child Window 2")
+               ...
+        )
+);
+        
+controller.show();
+    
+...
+    
+myState.update(MyState.class, state -> state.setShowWindow1(true)) // -> opens window 1 
 ```
 
-This primary stage can then be used as an owner by referencing it with the given window id (here: "primary").
-
-
-
-#### 9.1 Opening Windows
-
-**By Event**
-
-```java
-button()
-	.textContent("Open Popup")
-	.eventAction(".", e -> SuiWindows.open(SuiWindowConfig.builder() // same as SuiRegistry.get().getWindows().openWindow(...)
-			.windowId("my.window")
-			.title("My Window")
-			.size(new Dimension2D(400, 300))
-			.wait(false)
-			.modality(Modality.WINDOW_MODAL)
-			.ownerWindowId("primary")
-			.state(state)
-			.nodeFactory(
-				    component(TestUIState.class,
-							s -> anchorPane().item(label().textContent("My label in the new window!"))
-				    )
-			)
-			.build()));
-```
-
-**By Property**
-
-```java
-button()
-	.textContent("Open Popup")
-	.eventAction(".", e -> state.update(MyState.class, s -> s.setShowPopup(true))),
-	.popup(state.showPopup, SuiWindowConfig.builder()
-			.windowId("my.window")
-			.title("My Window")
-			.size(new Dimension2D(400, 300))
-			.wait(false)
-			.modality(Modality.WINDOW_MODAL)
-			.ownerWindowId("primary")
-			.state(state)
-			.onClose(() -> state.update(MyState.class, s -> s.setShowPopup(false)))
-			.nodeFactory(
-					component(TestUIState.class,
-							s -> anchorPane().item(label().textContent("My label in the new window!"))
-					)
-			)
-			.build());
-```
-
-- **The "Popup"-property**
-
-  Every element has access to the "Popup"-property. It does not modify the element itself, but allows us to link opening and closing of a window the the ui-state. 
-
-  Here: Show the window as long as "state.showPopup" is "true" and close it when it is "false". The flag is set by the action-event of the button.
-
-- **The  Owner Window-Id**
-
-  We can specify the owner/parent window via its id assigned when it was opened (or the id given when registering the primary window). If we want to open another window that is owned by the window in this example, we have to use "my.window" as the id of its owner. Only windows opened via Simple-UI and only windows that are currently open can be used as an owner.
-
-- **On Close**
-
-  The on-close action is always run, no matter if the user closed it manually or if it was closed when the state was changed. However, when the window was closed by the user, the state does not get modified. To always reflect the change of the closed window by the user, we can update the state with this on-close action.
-
-#### 9.2 Closing Windows
-
-**By Event**
-
-```java
-button()
-		.textContent("Close Popup")
-		.eventAction(".", e -> SuiWindows.close("my.window")) // same as SuiRegistry.get().getWindows().closeWindow(...)
-```
-
-**By Property**
-
-```java
-button()
-		.textContent("Close Popup")
-		.eventAction(".", e -> state.update(MyState.class, s -> s.setShowPopup(false)));
-```
+- **1)** Define the content of the parent/root window.
+- **2)** The condition for when the window should be shown. If this condition returns true, the window will be open and if it returns false, it will be closed.
+- **3)** an action that is triggered when the window is closed by a state-update or by the user. If the user closes the window  (via the close button at the top of the window), the state will not be updated automatically. It is recommended to manually "reset" the  state to keep the state in sync to what is displayed. This can usually be done without "state.update(...)" since the change (closing the window) already happened.
+- **4)** the actual content of the child window
+- **5)** child windows can also have their own child windows, and so on.
 
 
 
@@ -1318,7 +1237,60 @@ SuiRegistry.get().inject(
 
 
 
-### 12. SimpleUI Streams
+### 12. Styling
+
+#### 12.1 Application Style
+
+Apply a given style to the whole application (i.e. all windows). This functions as a base for window and element styles.
+
+```java
+style = SuiApplicationStyle.modena(); // use the default modena style
+style = SuiApplicationStyle.caspian(); // use the default caspian style
+style = SuiApplicationStyle.caspian(Resource.externalRelative("style.css")); // use the caspian style together with custom css
+style = SuiApplicationStyle.cssStylesheet(Resource.externalRelative("style.css")); // use the given css file(s)
+
+SuiRegistry.get().getStyleManager().setApplicationBaseStyle(style); // set the given style as the application style
+```
+
+
+
+#### 12.2 Window Style
+
+Apply a given style to a specific window. This functions as a base for element styles.
+
+```java
+style = SuiWindowBaseStyle.cssStylesheet(Resource.externalRelative("style.css")); // use the given css file(s)
+
+...
+windowRoot()
+    ...
+    .windowBaseStyle(style)
+    ...
+```
+
+
+
+#### 12.3 Element Style
+
+Add styles to individual elements (or subtrees).
+
+```java
+// style the button with css-strings
+button()
+    .textContent("Hello!")
+    .style("-fx-background-color: red", "-fx-border-color: green");
+
+// add a css stylesheet to the button
+button()
+    .textContent("Hello!")
+    .style(Resource.externalRelative("style.css"));
+
+// other properties can also be used for styling, e.g. margin, padding, background, ...
+```
+
+
+
+### 13. SimpleUI Streams
 
 The stream-api provided by SimpleUI is very similar to the one build into java. The main difference lies in the source of the elements. Java Streams usually have a collection or array as a source. Operations can then iterate over this source and process the elements this way. The whole process is done once the end of the collection/array/... has been reached. SimpleUI-Streams have a source producing elements as "events" and pushing them to the stream (asynchronously). These source do not have a start, end  or fixed size and can not be iterated over the stream can not know when the current event/element is going to be the last event ever produced. Examples for event sources are JavaFx-Observables or event listeners.  
 
@@ -1340,7 +1312,7 @@ observable.set("123");
 
 
 
-#### 12.1 Stream sources
+#### 13.1 Stream sources
 
 - **Observable JavaFx Values**
 
@@ -1387,7 +1359,7 @@ observable.set("123");
 
 
 
-#### 12.2 Stream operations
+#### 13.2 Stream operations
 
 - **for each**
 
@@ -1769,6 +1741,4 @@ SuiStream.from(observable)
    
    observable.setValue("abc"); // forwards the string "Event: abc" as an event with the tags "tag1", "tag2" to the event bus
    ```
-
-   
 

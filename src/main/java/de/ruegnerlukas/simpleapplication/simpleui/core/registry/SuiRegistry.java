@@ -33,10 +33,10 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdate
 import de.ruegnerlukas.simpleapplication.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.core.style.SuiStyleManager;
 import javafx.scene.Node;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -113,8 +113,14 @@ public class SuiRegistry {
 	 * The event bus for global simpleui-events.
 	 */
 	@Getter
-	@Setter
-	private EventBus eventBus = new EventBusImpl();
+	private final EventBus eventBus = new EventBusImpl();
+
+
+	/**
+	 * The manger for styles
+	 */
+	@Getter
+	private final SuiStyleManager styleManager;
 
 
 
@@ -150,7 +156,10 @@ public class SuiRegistry {
 			SuiSplitPane.register(this);
 			SuiAccordion.register(this);
 		}
+		this.styleManager = new SuiStyleManager();
 	}
+
+
 
 
 

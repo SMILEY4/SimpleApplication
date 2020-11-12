@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.simpleui.core.node;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponentRenderer;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.simpleui.core.style.SuiWindowBaseStyle;
 import javafx.geometry.Dimension2D;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -84,6 +85,12 @@ public final class WindowRootElement {
 	 */
 	@Getter
 	private boolean wait;
+
+	/**
+	 * The style of the window
+	 */
+	@Getter
+	private SuiWindowBaseStyle windowBaseStyle;
 
 	/**
 	 * The root node
@@ -191,6 +198,18 @@ public final class WindowRootElement {
 	 */
 	public WindowRootElement wait(final boolean wait) {
 		this.wait = wait;
+		return this;
+	}
+
+
+
+
+	/**
+	 * @param style the base style for the window
+	 * @return this window root element for chaining
+	 */
+	public WindowRootElement windowBaseStyle(final SuiWindowBaseStyle style) {
+		this.windowBaseStyle = style;
 		return this;
 	}
 
