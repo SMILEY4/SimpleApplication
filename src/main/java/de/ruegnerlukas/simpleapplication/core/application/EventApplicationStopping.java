@@ -1,19 +1,24 @@
 package de.ruegnerlukas.simpleapplication.core.application;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 
 /**
  * The event triggered when the application is about to stop and close.
  */
-public final class EventApplicationStopping extends Publishable {
+public final class EventApplicationStopping {
+
+
+	public static final String EVENT_TYPE = "event.type.application.stopping";
+
+	public static final Tags TAGS = Tags.from(EVENT_TYPE);
+
+
 
 
 	/**
 	 * The default constructor.
 	 */
 	public EventApplicationStopping() {
-		super(Channel.type(EventApplicationStopping.class));
 	}
 
 }

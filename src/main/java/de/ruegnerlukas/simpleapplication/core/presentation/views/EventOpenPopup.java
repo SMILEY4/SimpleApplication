@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,7 +9,12 @@ import lombok.Getter;
  */
 @Getter
 @Builder
-public final class EventOpenPopup extends Publishable {
+public final class EventOpenPopup {
+
+
+	public static final String EVENT_TYPE = "event.type.view.popup.open";
+
+	public static final Tags TAGS = Tags.from(EVENT_TYPE);
 
 
 	/**
@@ -31,7 +35,6 @@ public final class EventOpenPopup extends Publishable {
 	 * @param windowHandle the relevant handle
 	 */
 	public EventOpenPopup(final String viewId, final WindowHandle windowHandle) {
-		super(Channel.type(EventOpenPopup.class));
 		this.viewId = viewId;
 		this.windowHandle = windowHandle;
 	}

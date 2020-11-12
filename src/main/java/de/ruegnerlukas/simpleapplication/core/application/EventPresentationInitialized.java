@@ -1,19 +1,23 @@
 package de.ruegnerlukas.simpleapplication.core.application;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 
 /**
  * The event triggered when javafx and the presentation system was initialized.
  */
-public final class EventPresentationInitialized extends Publishable {
+public final class EventPresentationInitialized {
+
+
+	public static final String EVENT_TYPE = "event.type.presentation.initialized";
+
+	public static final Tags TAGS = Tags.from(EVENT_TYPE);
+
 
 
 	/**
 	 * The default constructor.
 	 */
 	public EventPresentationInitialized() {
-		super(Channel.type(EventPresentationInitialized.class));
 	}
 
 }

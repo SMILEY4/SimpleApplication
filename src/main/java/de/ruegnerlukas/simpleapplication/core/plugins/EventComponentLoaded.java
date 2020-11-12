@@ -1,7 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import lombok.Getter;
 
 
@@ -9,7 +8,12 @@ import lombok.Getter;
  * The event when a component (in the plugin-service) was loaded.
  */
 @Getter
-public final class EventComponentLoaded extends Publishable {
+public final class EventComponentLoaded {
+
+
+	public static final String EVENT_TYPE = "event.type.plugins.component.loaded";
+
+	public static final Tags TAGS = Tags.from(EVENT_TYPE);
 
 
 	/**
@@ -24,7 +28,6 @@ public final class EventComponentLoaded extends Publishable {
 	 * @param componentId the id of the loaded component
 	 */
 	public EventComponentLoaded(final String componentId) {
-		super(Channel.type(EventComponentLoaded.class));
 		this.componentId = componentId;
 	}
 

@@ -1,19 +1,24 @@
 package de.ruegnerlukas.simpleapplication.core.application;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 
 /**
  * The event triggered when the application is fully started.
  */
-public final class EventApplicationStarted extends Publishable {
+public final class EventApplicationStarted {
+
+
+	public static final String EVENT_TYPE = "event.type.application.started";
+
+	public static final Tags TAGS = Tags.from(EVENT_TYPE);
+
+
 
 
 	/**
 	 * The default constructor.
 	 */
 	public EventApplicationStarted() {
-		super(Channel.type(EventApplicationStarted.class));
 	}
 
 }

@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.core.events.EventService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -17,9 +17,9 @@ public class PluginServiceImpl implements PluginService {
 
 
 	/**
-	 * The provider for the {@link EventService}.
+	 * The provider for the {@link EventBus}.
 	 */
-	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
+	private final Provider<EventBus> eventBusProvider = new Provider<>(EventBus.class);
 
 	/**
 	 * All currently loaded ids as a graph.
@@ -66,7 +66,7 @@ public class PluginServiceImpl implements PluginService {
 				}
 				graph.addDependency(plugin.getId(), dependency);
 			});
-			eventServiceProvider.get().publish(new EventPluginRegistered(plugin.getId()));
+			eventBusProvider.get().publish(EventPluginRegistered.TAGS, new EventPluginRegistered(plugin.getId()));
 			log.info("Successfully registered plugin with the id {}.", plugin.getId());
 		}
 	}
@@ -79,7 +79,7 @@ public class PluginServiceImpl implements PluginService {
 		Validations.STATE.isFalse(isLoaded(id)).exception("The plugin {} can not be deregistered while it is loaded.", id);
 		if (isRegistered(id)) {
 			registeredPlugins.remove(id);
-			eventServiceProvider.get().publish(new EventPluginDeregistered(id));
+			eventBusProvider.get().publish(EventPluginDeregistered.TAGS, new EventPluginDeregistered(id));
 			log.info("Successfully de-registered plugin with the id {}.", id);
 		}
 	}
@@ -97,7 +97,7 @@ public class PluginServiceImpl implements PluginService {
 				graph.insert(id);
 			}
 			graph.setLoaded(id);
-			eventServiceProvider.get().publish(new EventComponentLoaded(id));
+			eventBusProvider.get().publish(EventComponentLoaded.TAGS, new EventComponentLoaded(id));
 			log.info("The component with the id {} was loaded.", id);
 			checkAutoloadPlugins();
 		}
@@ -135,7 +135,7 @@ public class PluginServiceImpl implements PluginService {
 	private void forceLoadPlugin(final Plugin plugin) {
 		graph.setLoaded(plugin.getId());
 		plugin.onLoad();
-		eventServiceProvider.get().publish(new EventPluginLoaded(plugin.getId()));
+		eventBusProvider.get().publish(EventPluginLoaded.TAGS, new EventPluginLoaded(plugin.getId()));
 	}
 
 
@@ -210,7 +210,7 @@ public class PluginServiceImpl implements PluginService {
 	 */
 	private void forceUnloadComponent(final String id) {
 		graph.setUnloaded(id);
-		eventServiceProvider.get().publish(new EventComponentUnloaded(id));
+		eventBusProvider.get().publish(EventComponentUnloaded.TAGS, new EventComponentUnloaded(id));
 	}
 
 
@@ -253,7 +253,7 @@ public class PluginServiceImpl implements PluginService {
 	private void forceUnloadPlugin(final Plugin plugin) {
 		graph.setUnloaded(plugin.getId());
 		plugin.onUnload();
-		eventServiceProvider.get().publish(new EventPluginUnloaded(plugin.getId()));
+		eventBusProvider.get().publish(EventPluginUnloaded.TAGS, new EventPluginUnloaded(plugin.getId()));
 	}
 
 

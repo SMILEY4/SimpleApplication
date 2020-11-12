@@ -1,14 +1,18 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import lombok.Getter;
 
 /**
  * The event when closing a popup window.
  */
 @Getter
-public final class EventClosePopup extends Publishable {
+public final class EventClosePopup {
+
+
+	public static final String EVENT_TYPE = "event.type.view.popup.close";
+
+	public static final Tags TAGS = Tags.from(EVENT_TYPE);
 
 
 
@@ -30,7 +34,6 @@ public final class EventClosePopup extends Publishable {
 	 * @param windowHandle the relevant handle
 	 */
 	public EventClosePopup(final String viewId, final WindowHandle windowHandle) {
-		super(Channel.type(EventClosePopup.class));
 		this.viewId = viewId;
 		this.windowHandle = windowHandle;
 	}

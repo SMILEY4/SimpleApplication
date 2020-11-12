@@ -1,14 +1,18 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import lombok.Getter;
 
 /**
  * The event when showing a new view in existing windows.
  */
 @Getter
-public final class EventShowView extends Publishable {
+public final class EventShowView {
+
+
+	public static final String EVENT_TYPE = "event.type.view.show";
+
+	public static final Tags TAGS = Tags.from(EVENT_TYPE);
 
 
 	/**
@@ -35,7 +39,6 @@ public final class EventShowView extends Publishable {
 	 * @param windowHandle the relevant handle
 	 */
 	public EventShowView(final String prevViewId, final String viewId, final WindowHandle windowHandle) {
-		super(Channel.type(EventShowView.class));
 		this.prevViewId = prevViewId;
 		this.viewId = viewId;
 		this.windowHandle = windowHandle;

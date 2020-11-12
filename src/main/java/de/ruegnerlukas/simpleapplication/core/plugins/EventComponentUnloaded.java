@@ -1,14 +1,18 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import lombok.Getter;
 
 /**
  * The event when a component (in the plugin-service) was unloaded.
  */
 @Getter
-public final  class EventComponentUnloaded extends Publishable {
+public final  class EventComponentUnloaded {
+
+
+	public static final String EVENT_TYPE = "event.type.plugins.component.unloaded";
+
+	public static final Tags TAGS = Tags.from(EVENT_TYPE);
 
 
 	/**
@@ -23,7 +27,6 @@ public final  class EventComponentUnloaded extends Publishable {
 	 * @param componentId the id of the unloaded component
 	 */
 	public EventComponentUnloaded(final String componentId) {
-		super(Channel.type(EventComponentUnloaded.class));
 		this.componentId = componentId;
 	}
 

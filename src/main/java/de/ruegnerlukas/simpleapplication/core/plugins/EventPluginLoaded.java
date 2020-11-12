@@ -1,14 +1,18 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
+import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
 import lombok.Getter;
 
 /**
  * The event when a plugin was loaded.
  */
 @Getter
-public final class EventPluginLoaded extends Publishable {
+public final class EventPluginLoaded {
+
+
+	public static final String EVENT_TYPE = "event.type.plugins.plugin.loaded";
+
+	public static final Tags TAGS = Tags.from(EVENT_TYPE);
 
 
 	/**
@@ -23,7 +27,6 @@ public final class EventPluginLoaded extends Publishable {
 	 * @param pluginId the id of the loaded plugin
 	 */
 	public EventPluginLoaded(final String pluginId) {
-		super(Channel.type(EventPluginLoaded.class));
 		this.pluginId = pluginId;
 	}
 

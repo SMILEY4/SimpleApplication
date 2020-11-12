@@ -1,12 +1,9 @@
 package de.ruegnerlukas.simpleapplication.core.presentation.views;
 
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.core.events.EventService;
-import de.ruegnerlukas.simpleapplication.core.presentation.style.EventRootStyleMark;
-import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -32,12 +29,8 @@ public class ViewServiceImpl implements ViewService {
 	/**
 	 * The provider for the event service.
 	 */
-	private final Provider<EventService> eventServiceProvider = new Provider<>(EventService.class);
+	private final Provider<EventBus> eventBusProvider = new Provider<>(EventBus.class);
 
-	/**
-	 * The provider for the style service.
-	 */
-	private final Provider<StyleService> styleServiceProvider = new Provider<>(StyleService.class);
 
 	/**
 	 * The primary stage of the (javafx-) application
@@ -60,9 +53,8 @@ public class ViewServiceImpl implements ViewService {
 	@Override
 	public void initialize(final Stage stage, final boolean showViewAtStartup, final View view) {
 		Validations.INPUT.notNull(stage).exception("The stage can not be null.");
+		Validations.INPUT.notNull(view).exception("The view can not be null.");
 		Validations.STATE.isNull(primaryStage).exception("The view service was already initialized.");
-
-		listenRootStyles();
 
 		View startupView = view;
 		if (startupView == null) {
@@ -78,22 +70,6 @@ public class ViewServiceImpl implements ViewService {
 
 
 
-	/**
-	 * Setup listeners to listen for changes of root-styles.
-	 */
-	private void listenRootStyles() {
-		eventServiceProvider.get().subscribe(Channel.type(EventRootStyleMark.class), publishable -> {
-			final EventRootStyleMark event = (EventRootStyleMark) publishable;
-			if (event.isRootStyle()) {
-				windowHandles.values().forEach(handle -> {
-					final Parent root = handle.getCurrentRootNode();
-					styleServiceProvider.get().applyStyleTo(event.getStyle(), root);
-				});
-			}
-		});
-	}
-
-
 
 
 	/**
@@ -107,7 +83,6 @@ public class ViewServiceImpl implements ViewService {
 		primaryStage = stage;
 		primaryStage.setScene(scene);
 		primaryStage.setTitle(view.getTitle());
-		styleServiceProvider.get().applyStylesTo(styleServiceProvider.get().getRootStyles(), scene.getRoot());
 	}
 
 
@@ -179,16 +154,11 @@ public class ViewServiceImpl implements ViewService {
 		stage.setTitle(view.getTitle());
 		setIcon(stage, view.getIcon());
 
-		final StyleService styleService = styleServiceProvider.get();
-		styleService.disconnectNode(prevViewNode);
-		styleService.applyStylesTo(styleService.getRootStyles(), viewNode);
-		styleService.applyStylesTo(view.getStyles(), viewNode);
-
 		if (!stage.isShowing()) {
 			stage.show();
 		}
 
-		eventServiceProvider.get().publish(new EventShowView((viewId.equals(prevViewId) ? null : prevViewId), viewId, handle));
+		eventBusProvider.get().publish(EventShowView.TAGS, new EventShowView((viewId.equals(prevViewId) ? null : prevViewId), viewId, handle));
 
 		return handle;
 	}
@@ -222,12 +192,7 @@ public class ViewServiceImpl implements ViewService {
 		stage.setScene(scene);
 		setIcon(stage, view.getIcon());
 
-
-		final StyleService styleService = styleServiceProvider.get();
-		styleService.applyStylesTo(styleService.getRootStyles(), viewNode);
-		styleService.applyStylesTo(view.getStyles(), viewNode);
-
-		eventServiceProvider.get().publish(new EventOpenPopup(viewId, handle));
+		eventBusProvider.get().publish(EventOpenPopup.TAGS, new EventOpenPopup(viewId, handle));
 
 		if (config.isWait()) {
 			stage.showAndWait();
@@ -258,12 +223,10 @@ public class ViewServiceImpl implements ViewService {
 	 * @param handle the handle of the closed window
 	 */
 	private void onCloseWindow(final WindowHandle handle) {
-		final Parent prevViewNode = handle.getCurrentRootNode();
 		handle.getStage().getScene().setRoot(new Pane());
 		handle.disposeCurrentData();
 		windowHandles.remove(handle.getHandleId());
-		styleServiceProvider.get().disconnectNode(prevViewNode);
-		eventServiceProvider.get().publish(new EventClosePopup(handle.getView().getId(), handle));
+		eventBusProvider.get().publish(EventClosePopup.TAGS, new EventClosePopup(handle.getView().getId(), handle));
 	}
 
 

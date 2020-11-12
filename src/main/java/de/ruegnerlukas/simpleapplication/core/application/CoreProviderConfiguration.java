@@ -1,15 +1,13 @@
 package de.ruegnerlukas.simpleapplication.core.application;
 
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBusImpl;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.ProviderConfiguration;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
-import de.ruegnerlukas.simpleapplication.core.events.EventService;
-import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointService;
 import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginServiceImpl;
-import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
-import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 
@@ -30,22 +28,16 @@ public class CoreProviderConfiguration extends ProviderConfiguration {
 				return new ViewServiceImpl();
 			}
 		});
-		add(new InstanceFactory<>(EventService.class) {
+		add(new InstanceFactory<>(EventBus.class) {
 			@Override
-			public EventService buildObject() {
-				return new EventServiceImpl();
+			public EventBus buildObject() {
+				return new EventBusImpl();
 			}
 		});
 		add(new InstanceFactory<>(ExtensionPointService.class) {
 			@Override
 			public ExtensionPointService buildObject() {
 				return new ExtensionPointServiceImpl();
-			}
-		});
-		add(new InstanceFactory<>(StyleService.class) {
-			@Override
-			public StyleService buildObject() {
-				return new StyleServiceImpl();
 			}
 		});
 	}
