@@ -24,9 +24,12 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMou
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollFinishedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnMouseScrollStartedEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AnchorProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.CursorProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.HGrowProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MarginProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.MutationBehaviourProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PaddingProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMaxProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizeMinProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.SizePreferredProperty;
@@ -65,11 +68,13 @@ public final class PropertyGroups {
 				PropertyEntry.of(VisibleProperty.class, new VisibleProperty.UpdatingBuilder()),
 				PropertyEntry.of(HGrowProperty.class, new HGrowProperty.UpdatingBuilder()),
 				PropertyEntry.of(VGrowProperty.class, new VGrowProperty.UpdatingBuilder()),
+				PropertyEntry.of(MarginProperty.class, new MarginProperty.UpdatingBuilder()),
 				PropertyEntry.of(StyleProperty.class, new StyleProperty.UpdatingBuilder()),
 				PropertyEntry.of(StyleClassProperty.class, new StyleClassProperty.UpdatingBuilder()),
 				PropertyEntry.of(StyleIdProperty.class, new StyleIdProperty.UpdatingBuilder()),
 				PropertyEntry.of(AnchorProperty.class, new AnchorProperty.UpdatingBuilder()),
-				PropertyEntry.of(TitleProperty.class, new TitleProperty.UpdatingBuilder())
+				PropertyEntry.of(TitleProperty.class, new TitleProperty.UpdatingBuilder()),
+				PropertyEntry.of(CursorProperty.class, new CursorProperty.UpdatingBuilder())
 		);
 	}
 
@@ -124,7 +129,8 @@ public final class PropertyGroups {
 				PropertyEntry.of(SizeMinProperty.class, new SizeMinProperty.RegionUpdatingBuilder()),
 				PropertyEntry.of(SizePreferredProperty.class, new SizePreferredProperty.RegionUpdatingBuilder()),
 				PropertyEntry.of(SizeMaxProperty.class, new SizeMaxProperty.RegionUpdatingBuilder()),
-				PropertyEntry.of(SizeProperty.class, new SizeProperty.RegionUpdatingBuilder())
+				PropertyEntry.of(SizeProperty.class, new SizeProperty.RegionUpdatingBuilder()),
+				PropertyEntry.of(PaddingProperty.class, new PaddingProperty.RegionUpdatingBuilder())
 		);
 	}
 
