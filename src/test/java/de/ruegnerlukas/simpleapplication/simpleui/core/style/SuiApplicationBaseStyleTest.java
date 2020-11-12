@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BaseStyleTest extends ApplicationTest {
+public class SuiApplicationBaseStyleTest extends ApplicationTest {
 
 
 	private static final String PATH_STYLESHEET_1 = "src\\test\\resources\\testResources\\testStyle_1.css";
@@ -36,7 +36,7 @@ public class BaseStyleTest extends ApplicationTest {
 
 	@Test
 	public void test_apply_default_javafx_style() {
-		SuiRegistry.get().setBaseStyle(BaseStyle.caspian());
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.caspian());
 		assertThat(Application.getUserAgentStylesheet()).isEqualTo(Application.STYLESHEET_CASPIAN);
 	}
 
@@ -45,7 +45,7 @@ public class BaseStyleTest extends ApplicationTest {
 
 	@Test
 	public void test_apply_stylesheets() {
-		SuiRegistry.get().setBaseStyle(BaseStyle.cssStylesheet(
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.cssStylesheet(
 				Resource.externalRelative(PATH_STYLESHEET_1),
 				Resource.externalRelative(PATH_STYLESHEET_2)
 		));
@@ -57,9 +57,9 @@ public class BaseStyleTest extends ApplicationTest {
 
 	@Test
 	public void test_switch_default_javafx_style() {
-		SuiRegistry.get().setBaseStyle(BaseStyle.caspian());
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.caspian());
 		assertThat(Application.getUserAgentStylesheet()).isEqualTo(Application.STYLESHEET_CASPIAN);
-		SuiRegistry.get().setBaseStyle(BaseStyle.modena());
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.modena());
 		assertThat(Application.getUserAgentStylesheet()).isEqualTo(Application.STYLESHEET_MODENA);
 	}
 
@@ -68,10 +68,10 @@ public class BaseStyleTest extends ApplicationTest {
 
 	@Test
 	public void test_switch_stylesheets() {
-		SuiRegistry.get().setBaseStyle(BaseStyle.cssStylesheet(Resource.externalRelative(PATH_STYLESHEET_1)));
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.cssStylesheet(Resource.externalRelative(PATH_STYLESHEET_1)));
 		assertStylesheets(Window.getWindows().get(0).getScene(), PATH_STYLESHEET_1);
 
-		SuiRegistry.get().setBaseStyle(BaseStyle.cssStylesheet(Resource.externalRelative(PATH_STYLESHEET_2)));
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.cssStylesheet(Resource.externalRelative(PATH_STYLESHEET_2)));
 		assertStylesheets(Window.getWindows().get(0).getScene(), PATH_STYLESHEET_2);
 	}
 
@@ -80,11 +80,11 @@ public class BaseStyleTest extends ApplicationTest {
 
 	@Test
 	public void test_switch_from_javafx_default_style_to_stylesheets() {
-		SuiRegistry.get().setBaseStyle(BaseStyle.caspian());
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.caspian());
 		assertThat(Application.getUserAgentStylesheet()).isEqualTo(Application.STYLESHEET_CASPIAN);
 
-		SuiRegistry.get().setBaseStyle(BaseStyle.cssStylesheet(Resource.externalRelative(PATH_STYLESHEET_1)));
-		SuiRegistry.get().setBaseStyle(BaseStyle.cssStylesheet(
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.cssStylesheet(Resource.externalRelative(PATH_STYLESHEET_1)));
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.cssStylesheet(
 				Resource.externalRelative(PATH_STYLESHEET_1),
 				Resource.externalRelative(PATH_STYLESHEET_2)
 		));
@@ -96,14 +96,14 @@ public class BaseStyleTest extends ApplicationTest {
 
 	@Test
 	public void test_switch_from_stylesheets_to_javafx_default_style() {
-		SuiRegistry.get().setBaseStyle(BaseStyle.cssStylesheet(Resource.externalRelative(PATH_STYLESHEET_1)));
-		SuiRegistry.get().setBaseStyle(BaseStyle.cssStylesheet(
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.cssStylesheet(Resource.externalRelative(PATH_STYLESHEET_1)));
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.cssStylesheet(
 				Resource.externalRelative(PATH_STYLESHEET_1),
 				Resource.externalRelative(PATH_STYLESHEET_2)
 		));
 		assertStylesheets(Window.getWindows().get(0).getScene(), PATH_STYLESHEET_1, PATH_STYLESHEET_2);
 
-		SuiRegistry.get().setBaseStyle(BaseStyle.caspian());
+		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.caspian());
 		assertThat(Application.getUserAgentStylesheet()).isEqualTo(Application.STYLESHEET_CASPIAN);
 	}
 

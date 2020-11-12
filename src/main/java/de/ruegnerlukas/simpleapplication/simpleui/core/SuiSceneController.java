@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.WindowRootElement;
 import de.ruegnerlukas.simpleapplication.simpleui.core.profiler.SuiProfiler;
+import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateListener;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiStateUpdate;
@@ -153,6 +154,10 @@ public class SuiSceneController implements SuiStateListener {
 			}
 			close(true);
 		});
+
+		if (windowRootElement.getWindowBaseStyle() != null) {
+			SuiRegistry.get().getStyleManager().applyStyle(stage, windowRootElement.getWindowBaseStyle());
+		}
 
 		if (windowRootElement.isWait()) {
 			stage.showAndWait();

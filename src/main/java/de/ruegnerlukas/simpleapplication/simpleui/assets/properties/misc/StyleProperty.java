@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.function.BiFunction;
 
 public class StyleProperty extends SuiProperty {
@@ -50,12 +51,12 @@ public class StyleProperty extends SuiProperty {
 
 
 	/**
-	 * @param style the style as a string
+	 * @param style the style as a string / strings
 	 */
-	public StyleProperty(final String style) {
+	public StyleProperty(final String... style) {
 		super(StyleProperty.class, COMPARATOR);
 		Validations.INPUT.notNull(style).exception("The style may not be null.");
-		this.strStyle = style;
+		this.strStyle = String.join("; " + Arrays.asList(style));
 		this.resStyle = null;
 	}
 
