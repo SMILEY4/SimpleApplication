@@ -78,6 +78,14 @@ public class AnchorProperty extends SuiProperty {
 		}
 
 		/**
+		 * @param sides the value for the anchors on all sides (or null)
+		 * @return this builder for chaining
+		 */
+		default T anchors(final Number sides) {
+			return anchors(sides, sides, sides, sides);
+		}
+
+		/**
 		 * @param top    the value for the top anchor or null.
 		 * @param bottom the value for the bottom anchor or null.
 		 * @param left   the value for the left anchor or null.

@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTex
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events.OnTextEnteredEventProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.EditableProperty;
+import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.FontProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.PromptTextProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.TooltipProperty;
@@ -57,6 +58,7 @@ public final class SuiTextField {
 			PromptTextProperty.PropertyBuilderExtension<SuiTextFieldBuilder>,
 			TooltipProperty.PropertyBuilderExtension<SuiTextFieldBuilder>,
 			EditableProperty.PropertyBuilderExtension<SuiTextFieldBuilder>,
+			FontProperty.PropertyBuilderExtension<SuiTextFieldBuilder>,
 			OnTextChangedEventProperty.PropertyBuilderExtension<SuiTextFieldBuilder>,
 			OnTextEnteredEventProperty.PropertyBuilderExtension<SuiTextFieldBuilder> {
 
@@ -93,7 +95,8 @@ public final class SuiTextField {
 				PropertyEntry.of(EditableProperty.class, new EditableProperty.TextInputControlUpdatingBuilder()),
 				PropertyEntry.of(OnTextEnteredEventProperty.class, new OnTextEnteredEventProperty.TextFieldUpdatingBuilder()),
 				PropertyEntry.of(OnTextChangedEventProperty.class, new OnTextChangedEventProperty.TextFieldUpdatingBuilder()),
-				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder())
+				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder()),
+				PropertyEntry.of(FontProperty.class, new FontProperty.TextInputControlUpdatingBuilder())
 		));
 	}
 

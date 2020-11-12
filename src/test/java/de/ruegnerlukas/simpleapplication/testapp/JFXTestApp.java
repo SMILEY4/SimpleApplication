@@ -10,6 +10,7 @@ import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -132,6 +133,7 @@ public class JFXTestApp extends Application {
 						hBox()
 								.id("toolbar")
 								.spacing(5)
+								.backgroundSolid(Color.RED)
 								.sizeMin(0, 40)
 								.sizeMax(100000, 40)
 								.alignment(Pos.CENTER)
