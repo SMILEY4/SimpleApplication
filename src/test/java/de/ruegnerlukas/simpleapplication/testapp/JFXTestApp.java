@@ -1,14 +1,12 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
 
-import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
 import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.simpleui.core.style.SuiApplicationBaseStyle;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
@@ -69,7 +67,6 @@ public class JFXTestApp extends Application {
 
 
 		SuiRegistry.initialize();
-		SuiRegistry.get().getStyleManager().setApplicationBaseStyle(SuiApplicationBaseStyle.caspian(Resource.externalRelative("src\\main\\resources\\testStyle.css")));
 
 
 		final TestUIState testUIState = new TestUIState();

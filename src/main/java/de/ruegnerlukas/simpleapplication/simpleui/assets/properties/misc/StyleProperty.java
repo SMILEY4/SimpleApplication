@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import lombok.Getter;
 
-import java.util.Arrays;
 import java.util.function.BiFunction;
 
 public class StyleProperty extends SuiProperty {
@@ -56,7 +55,7 @@ public class StyleProperty extends SuiProperty {
 	public StyleProperty(final String... style) {
 		super(StyleProperty.class, COMPARATOR);
 		Validations.INPUT.notNull(style).exception("The style may not be null.");
-		this.strStyle = String.join("; " + Arrays.asList(style));
+		this.strStyle = String.join("; ", style);
 		this.resStyle = null;
 	}
 
@@ -108,11 +107,11 @@ public class StyleProperty extends SuiProperty {
 
 
 		/**
-		 * @param style the style as a css-string.
+		 * @param style the style as a css-string(s).
 		 * @return this builder for chaining
 		 */
 		@SuppressWarnings ("unchecked")
-		default T style(final String style) {
+		default T style(final String... style) {
 			getBuilderProperties().add(new StyleProperty(style));
 			return (T) this;
 		}

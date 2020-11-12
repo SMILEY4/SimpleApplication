@@ -5,10 +5,12 @@ import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.simpleui.core.events.SuiListChangeListener;
 import javafx.application.Application;
 import javafx.stage.Window;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class SuiStyleManager {
 
 
@@ -97,6 +99,10 @@ public class SuiStyleManager {
 	 * @param window the window
 	 */
 	private void clearStylesheets(final Window window) {
+		if (window == null || window.getScene() == null) {
+			log.warn("Could not clear stylesheets. Either the window or its scene is null.");
+			return;
+		}
 		final SuiWindowBaseStyle windowBaseStyle = windowStyles.get(window);
 		if (windowBaseStyle == null) {
 			window.getScene().getStylesheets().clear();
