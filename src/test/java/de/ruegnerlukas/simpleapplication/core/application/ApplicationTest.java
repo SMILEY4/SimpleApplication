@@ -1,29 +1,23 @@
 package de.ruegnerlukas.simpleapplication.core.application;
 
-import de.ruegnerlukas.simpleapplication.common.callbacks.Callback;
-import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
-import de.ruegnerlukas.simpleapplication.common.events.Channel;
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBusImpl;
+import de.ruegnerlukas.simpleapplication.common.eventbus.SubscriptionData;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
-import de.ruegnerlukas.simpleapplication.core.events.EventService;
-import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
-import de.ruegnerlukas.simpleapplication.core.events.Publishable;
-import de.ruegnerlukas.simpleapplication.core.plugins.EventComponentLoaded;
-import de.ruegnerlukas.simpleapplication.core.plugins.EventComponentUnloaded;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginServiceImpl;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,7 +28,7 @@ public class ApplicationTest {
 	@Test
 	public void testSimple() {
 
-		final TestEventService eventService = new TestEventService();
+		final TestEventBus eventService = new TestEventBus();
 		final TestJfxStarter starter = new TestJfxStarter();
 
 		final Application application = new Application(new ApplicationConfiguration());
@@ -42,17 +36,14 @@ public class ApplicationTest {
 		application.setCoreProviderConfiguration(new TestCoreProviderConfig(eventService));
 
 		application.run();
-		final List<Publishable> eventsStart = eventService.getEventPackages();
-		assertThat(eventsStart.size()).isEqualTo(3);
-		assertThat(eventsStart.get(0).getChannel()).isEqualTo(Channel.type(EventPresentationInitialized.class));
-		assertThat(eventsStart.get(1).getChannel()).isEqualTo(Channel.type(EventComponentLoaded.class));
-		assertThat(eventsStart.get(2).getChannel()).isEqualTo(Channel.type(EventApplicationStarted.class));
+		final List<Object> eventsStart = eventService.getEventPackages();
+		assertThat(eventsStart.size()).isEqualTo(1);
+		assertThat(eventsStart.get(0).getClass()).isEqualTo(EventApplicationStarted.class);
 
 		starter.stop();
-		final List<Publishable> eventsStop = eventService.getEventPackages();
-		assertThat(eventsStop.size()).isEqualTo(2);
-		assertThat(eventsStop.get(0).getChannel()).isEqualTo(Channel.type(EventComponentUnloaded.class));
-		assertThat(eventsStop.get(1).getChannel()).isEqualTo(Channel.type(EventApplicationStopping.class));
+		final List<Object> eventsStop = eventService.getEventPackages();
+		assertThat(eventsStop.size()).isEqualTo(1);
+		assertThat(eventsStop.get(0).getClass()).isEqualTo(EventApplicationStopping.class);
 	}
 
 
@@ -64,7 +55,7 @@ public class ApplicationTest {
 		final String PROVIDER_NAME = "test_provider";
 		final String PROVIDER_VALUE = "Test Provider";
 
-		final TestEventService eventService = new TestEventService();
+		final TestEventBus eventService = new TestEventBus();
 		final TestJfxStarter starter = new TestJfxStarter();
 
 		final ApplicationConfiguration applicationConfiguration = new ApplicationConfiguration();
@@ -97,7 +88,7 @@ public class ApplicationTest {
 
 		final Application application = new Application(applicationConfiguration);
 		application.setJFXApplicationStarter(starter);
-		application.setCoreProviderConfiguration(new TestCoreProviderConfig(new TestEventService()));
+		application.setCoreProviderConfiguration(new TestCoreProviderConfig(new TestEventBus()));
 
 		application.run();
 		assertThat(plugin.getLoadedCounter()).isEqualTo(1); // is 0
@@ -114,23 +105,23 @@ public class ApplicationTest {
 	private static class TestJfxStarter extends JFXApplication.JFXStarter {
 
 
-		private EmptyCallback stopCallback = () -> {
+		private Runnable stopAction = () -> {
 		};
 
 
 
 
 		@Override
-		public void start(final Callback<Stage> startCallback, final EmptyCallback stopCallback) {
-			startCallback.execute(null);
-			this.stopCallback = stopCallback;
+		public void start(final Consumer<Stage> startAction, final Runnable stopAction) {
+			startAction.accept(null);
+			this.stopAction = stopAction;
 		}
 
 
 
 
 		public void stop() {
-			stopCallback.execute();
+			stopAction.run();
 		}
 
 	}
@@ -143,12 +134,12 @@ public class ApplicationTest {
 	private static class TestCoreProviderConfig extends CoreProviderConfiguration {
 
 
-		private final TestEventService eventService;
+		private final TestEventBus eventService;
 
 
 
 
-		private TestCoreProviderConfig(final TestEventService eventService) {
+		private TestCoreProviderConfig(final TestEventBus eventService) {
 			this.eventService = eventService;
 		}
 
@@ -163,15 +154,9 @@ public class ApplicationTest {
 					return new PluginServiceImpl();
 				}
 			});
-			add(new InstanceFactory<>(ViewService.class) {
+			add(new InstanceFactory<>(EventBus.class) {
 				@Override
-				public ViewService buildObject() {
-					return Mockito.mock(ViewService.class);
-				}
-			});
-			add(new InstanceFactory<>(EventService.class) {
-				@Override
-				public EventService buildObject() {
+				public EventBus buildObject() {
 					return eventService;
 				}
 			});
@@ -185,23 +170,23 @@ public class ApplicationTest {
 
 
 	@Slf4j
-	private static class TestEventService extends EventServiceImpl {
+	private static class TestEventBus extends EventBusImpl {
 
 
-		private final List<Publishable> events = new ArrayList<>();
+		private final List<Object> events = new ArrayList<>();
 
 
 
 
-		public TestEventService() {
-			this.subscribe(events::add);
+		public TestEventBus() {
+			this.subscribe(SubscriptionData.anyType(), events::add);
 		}
 
 
 
 
-		public List<Publishable> getEventPackages() {
-			final List<Publishable> resultList = new ArrayList<>(events);
+		public List<Object> getEventPackages() {
+			final List<Object> resultList = new ArrayList<>(events);
 			events.clear();
 			return resultList;
 		}

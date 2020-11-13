@@ -1,16 +1,15 @@
 package de.ruegnerlukas.simpleapplication.core.application;
 
-import de.ruegnerlukas.simpleapplication.common.callbacks.Callback;
-import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
 import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
+
+import java.util.function.Consumer;
 
 @Slf4j
 public class Application {
@@ -22,15 +21,9 @@ public class Application {
 	private final Provider<PluginService> pluginServiceProvider = new Provider<>(PluginService.class);
 
 	/**
-	 * The provider for the {@link ViewService}.
-	 */
-	private final Provider<ViewService> viewServiceProvider = new Provider<>(ViewService.class);
-
-	/**
 	 * The provider for the {@link EventBus}.
 	 */
-	private final Provider<EventBus> eventServiceProvider = new Provider<>(EventBus.class);
-
+	private final Provider<EventBus> eventBusProvider = new Provider<>(EventBus.class);
 
 	/**
 	 * The configuration of this application.
@@ -68,9 +61,9 @@ public class Application {
 	public void run() {
 		log.info("Running application.");
 		SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
-		final Callback<Stage> startCallback = this::onStart;
-		final EmptyCallback stopCallback = this::onStop;
-		jfxStarter.start(startCallback, stopCallback);
+		final Consumer<Stage> startAction = this::onStart;
+		final Runnable stopAction = this::onStop;
+		jfxStarter.start(startAction, stopAction);
 	}
 
 
@@ -86,9 +79,8 @@ public class Application {
 		setupProviderConfigurations();
 		registerPrimaryStageProvider(stage);
 		setupPlugins();
-		setupViews(stage);
 		log.info("Application started.");
-		eventServiceProvider.get().publish(EventApplicationStarted.TAGS, new EventApplicationStarted());
+		eventBusProvider.get().publish(EventApplicationStarted.TAGS, new EventApplicationStarted());
 	}
 
 
@@ -137,20 +129,6 @@ public class Application {
 
 
 
-	/**
-	 * Setup the {@link ViewService}.
-	 *
-	 * @param stage the primary stage
-	 */
-	private void setupViews(final Stage stage) {
-		log.info("Setup views.");
-		final ViewService viewService = viewServiceProvider.get();
-		viewService.initialize(stage, configuration.isShowViewAtStartup(), configuration.getView());
-		eventServiceProvider.get().publish(EventPresentationInitialized.TAGS, new EventPresentationInitialized());
-		pluginServiceProvider.get().loadComponent(ApplicationConstants.COMPONENT_VIEW_SYSTEM);
-	}
-
-
 
 
 	/**
@@ -158,8 +136,7 @@ public class Application {
 	 */
 	private void onStop() {
 		log.info("Application on stop.");
-		pluginServiceProvider.get().unloadComponent(ApplicationConstants.COMPONENT_VIEW_SYSTEM);
-		eventServiceProvider.get().publish(EventApplicationStopping.TAGS, new EventApplicationStopping());
+		eventBusProvider.get().publish(EventApplicationStopping.TAGS, new EventApplicationStopping());
 		pluginServiceProvider.get().unloadAllPlugins();
 		ProviderService.cleanup();
 		log.info("Application stopped.");

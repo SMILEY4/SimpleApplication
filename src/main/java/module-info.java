@@ -11,7 +11,6 @@ open module SimpleApplication {
 	requires static lombok;
 	requires java.desktop;
 
-	exports de.ruegnerlukas.simpleapplication.common.callbacks;
 	exports de.ruegnerlukas.simpleapplication.common.events;
 	exports de.ruegnerlukas.simpleapplication.common.events.specializedevents;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders;
@@ -22,14 +21,8 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.common.utils;
 
 	exports de.ruegnerlukas.simpleapplication.core.application;
-	exports de.ruegnerlukas.simpleapplication.core.events;
 	exports de.ruegnerlukas.simpleapplication.core.extensions;
 	exports de.ruegnerlukas.simpleapplication.core.plugins;
-	exports de.ruegnerlukas.simpleapplication.core.presentation;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.module;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.views;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.style;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.simpleui;
 
 	exports de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
 	exports de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;

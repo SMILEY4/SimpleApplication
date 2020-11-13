@@ -1,9 +1,9 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBusImpl;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
-import de.ruegnerlukas.simpleapplication.core.events.EventService;
-import de.ruegnerlukas.simpleapplication.core.events.EventServiceImpl;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,10 +28,10 @@ public class PluginServiceTest {
 
 	@BeforeClass
 	public static void setup() {
-		ProviderService.registerFactory(new InstanceFactory<>(EventService.class) {
+		ProviderService.registerFactory(new InstanceFactory<>(EventBus.class) {
 			@Override
-			public EventService buildObject() {
-				return new EventServiceImpl();
+			public EventBus buildObject() {
+				return new EventBusImpl();
 			}
 		});
 	}

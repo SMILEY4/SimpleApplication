@@ -1,22 +1,22 @@
 package de.ruegnerlukas.simpleapplication.core.application;
 
-import de.ruegnerlukas.simpleapplication.common.callbacks.Callback;
-import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.util.function.Consumer;
 
 public class JFXApplication extends Application {
 
 
 	/**
-	 * Callback when the javafx application was started.
+	 * The action when the javafx application was started.
 	 */
-	private static Callback<Stage> startCallback;
+	private static Consumer<Stage> startAction;
 
 	/**
-	 * Callback when the javafx application was stopped.
+	 * The action when the javafx application was stopped.
 	 */
-	private static EmptyCallback stopCallback;
+	private static Runnable stopAction;
 
 
 
@@ -24,12 +24,12 @@ public class JFXApplication extends Application {
 	/**
 	 * Starts the javafx application.
 	 *
-	 * @param startCallback callback when the javafx application was started
-	 * @param stopCallback  callback when the javafx application was stopped
+	 * @param startAction the action when the javafx application was started
+	 * @param stopAction  the action when the javafx application was stopped
 	 */
-	private static void start(final Callback<Stage> startCallback, final EmptyCallback stopCallback) {
-		JFXApplication.startCallback = startCallback;
-		JFXApplication.stopCallback = stopCallback;
+	private static void start(final Consumer<Stage> startAction, final Runnable stopAction) {
+		JFXApplication.startAction = startAction;
+		JFXApplication.stopAction = stopAction;
 		launch();
 	}
 
@@ -38,7 +38,7 @@ public class JFXApplication extends Application {
 
 	@Override
 	public void start(final Stage primaryStage) {
-		startCallback.execute(primaryStage);
+		startAction.accept(primaryStage);
 	}
 
 
@@ -46,7 +46,7 @@ public class JFXApplication extends Application {
 
 	@Override
 	public void stop() {
-		stopCallback.execute();
+		stopAction.run();
 	}
 
 
@@ -61,11 +61,11 @@ public class JFXApplication extends Application {
 		/**
 		 * Starts the javafx application.
 		 *
-		 * @param startCallback callback when the javafx application was started
-		 * @param stopCallback  callback when the javafx application was stopped
+		 * @param startAction the action when the javafx application was started
+		 * @param stopAction  the action when the javafx application was stopped
 		 */
-		public void start(final Callback<Stage> startCallback, final EmptyCallback stopCallback) {
-			JFXApplication.start(startCallback, stopCallback);
+		public void start(final Consumer<Stage> startAction, final Runnable stopAction) {
+			JFXApplication.start(startAction, stopAction);
 		}
 
 	}

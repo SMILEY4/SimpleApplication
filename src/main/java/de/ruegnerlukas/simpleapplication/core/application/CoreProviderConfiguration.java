@@ -8,8 +8,6 @@ import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointService;
 import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginServiceImpl;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewServiceImpl;
 
 public class CoreProviderConfiguration extends ProviderConfiguration {
 
@@ -20,12 +18,6 @@ public class CoreProviderConfiguration extends ProviderConfiguration {
 			@Override
 			public PluginService buildObject() {
 				return new PluginServiceImpl();
-			}
-		});
-		add(new InstanceFactory<>(ViewService.class) {
-			@Override
-			public ViewService buildObject() {
-				return new ViewServiceImpl();
 			}
 		});
 		add(new InstanceFactory<>(EventBus.class) {
