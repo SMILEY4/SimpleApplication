@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.eventbus;
 
-enum ThreadMode {
+public enum ThreadMode {
 
 	/**
 	 * event is received on same thread as the thread that published it.

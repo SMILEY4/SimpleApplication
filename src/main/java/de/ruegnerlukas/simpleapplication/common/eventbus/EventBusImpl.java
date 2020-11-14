@@ -4,12 +4,16 @@ import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEv
 import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.utils.HashCode;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.core.plugins.EventComponentUnloaded;
+import de.ruegnerlukas.simpleapplication.core.plugins.EventPluginUnloaded;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -83,6 +87,28 @@ public class EventBusImpl implements EventBus {
 					Validations.STATE.fail().exception("Unexpected thread-mode: {}.", threadMode);
 			}
 		});
+
+		checkAutoUnsubscibe(tags, event);
+	}
+
+
+
+
+	/**
+	 * Checks if subscribers have to be removed when a plugin/components gets unloaded.
+	 *
+	 * @param tags  the tags of the event
+	 * @param event the event
+	 */
+	private void checkAutoUnsubscibe(final Tags tags, final Object event) {
+		if (Tags.contains(ApplicationConstants.EVENT_PLUGIN_UNLOADED_TYPE).matches(tags)) {
+			final EventPluginUnloaded unloadedEvent = (EventPluginUnloaded) event;
+			subscriptions.removeIf(subscription -> Objects.equals(unloadedEvent.getPluginId(), subscription.getMeta().getPluginId()));
+		}
+		if (Tags.contains(ApplicationConstants.EVENT_COMPONENT_UNLOADED_TYPE).matches(tags)) {
+			final EventComponentUnloaded unloadedEvent = (EventComponentUnloaded) event;
+			subscriptions.removeIf(subscription -> Objects.equals(unloadedEvent.getComponentId(), subscription.getMeta().getPluginId()));
+		}
 	}
 
 

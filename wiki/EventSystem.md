@@ -264,6 +264,19 @@ Because the thread mode is specified by the subscribers, the same event can be r
 
 
 
+##### Plugin-Linking
+
+Subscriptions can be linked to plugins or components via their id. If the linked plugin is unloaded the subscription gets removed from the event bus.
+
+```java
+eventBus.subscribe(SubscriptionData.ofType(String.class).linkedPlugin("my.plugin"), e -> { ... });
+// -> unloading "my.plugin" automatically removes the subscription to "String"-events
+```
+
+
+
+
+
 #### 2.4 Existing Application Events
 
 ##### Application Started
