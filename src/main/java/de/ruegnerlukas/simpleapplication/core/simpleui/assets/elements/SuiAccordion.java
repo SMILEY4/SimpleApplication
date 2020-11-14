@@ -11,7 +11,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.It
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNodeChildListener;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.BuilderExtensionContainer;

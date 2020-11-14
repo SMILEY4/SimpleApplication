@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.state;
 
 import de.ruegnerlukas.simpleapplication.common.utils.Triplet;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestState;
 import javafx.application.Platform;
 import org.junit.Test;

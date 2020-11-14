@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.node;
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import lombok.AccessLevel;
 import lombok.Getter;

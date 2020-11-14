@@ -9,7 +9,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.S
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;

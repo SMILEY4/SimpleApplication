@@ -26,7 +26,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.operations
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.operations.WaitForAndPackStream;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.operations.WaitForStream;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import javafx.beans.value.WritableValue;
 import javafx.util.Duration;
 

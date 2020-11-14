@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.events.SuiEventListe
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.FactoryExtension;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import javafx.scene.control.ButtonBase;
 import lombok.Getter;
 

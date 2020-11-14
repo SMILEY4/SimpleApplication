@@ -6,8 +6,8 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.It
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.MutationBehaviourProperty.MutationBehaviour;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.TagConditionExpression;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import lombok.extern.slf4j.Slf4j;
 

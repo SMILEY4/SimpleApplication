@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.CommonE
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.OrientationProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.BuilderExtensionContainer;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.RegionBuilderExtension;

@@ -17,8 +17,9 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.factories;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.providers;
 	exports de.ruegnerlukas.simpleapplication.common.resources;
-	exports de.ruegnerlukas.simpleapplication.common.validation;
+	exports de.ruegnerlukas.simpleapplication.common.tags;
 	exports de.ruegnerlukas.simpleapplication.common.utils;
+	exports de.ruegnerlukas.simpleapplication.common.validation;
 
 	exports de.ruegnerlukas.simpleapplication.core.application;
 	exports de.ruegnerlukas.simpleapplication.core.application.jfx;
@@ -48,7 +49,6 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.registry;
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.state;
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.style;
-	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.tags;
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.utils;
 
 

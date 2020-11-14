@@ -7,7 +7,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.Im
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ImageSizeProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.PreserveRatioProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.BuilderExtensionContainer;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.RegionBuilderExtension;

@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.I
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.RemoveAllStrategy;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.StandardMutationStrategy;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.StrategyDecisionResult;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 
 import java.util.List;

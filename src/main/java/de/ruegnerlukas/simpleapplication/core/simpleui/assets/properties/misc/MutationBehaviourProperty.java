@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.common.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.FactoryExtension;

@@ -5,7 +5,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.sources.Ev
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.sources.ObservableStreamSource;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import javafx.beans.value.ObservableValue;
 import javafx.beans.value.WritableValue;
 import javafx.util.Duration;

@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.state;
 
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 
 public interface TaggedSuiStateUpdate<T> extends SuiStateUpdate<T> {
 

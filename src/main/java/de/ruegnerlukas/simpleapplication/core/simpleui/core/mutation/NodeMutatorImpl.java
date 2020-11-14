@@ -7,8 +7,8 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.It
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeUpdater;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.ChildNodesMutationStrategy;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.TagConditionExpression;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.profiler.SuiProfiler;

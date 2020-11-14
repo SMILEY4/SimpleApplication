@@ -3,7 +3,7 @@ package de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.operation
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.Pipeline;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.PipelineImpl;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 
 public class EmittingSuiEventStream<T> extends PipelineImpl<T, T> {
 

@@ -2,8 +2,8 @@ package de.ruegnerlukas.simpleapplication.core.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.MutationBehaviourProperty;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.TagConditionExpression;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;

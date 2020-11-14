@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.In
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestState;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

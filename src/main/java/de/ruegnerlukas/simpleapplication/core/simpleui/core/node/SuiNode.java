@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.node;
 
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import lombok.Getter;
 

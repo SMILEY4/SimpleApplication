@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.core.simpleui.core.tags;
+package de.ruegnerlukas.simpleapplication.common.tags;
 
 import org.junit.Test;
 

@@ -1,7 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.events;
 
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 
 import java.util.HashSet;
 import java.util.Set;

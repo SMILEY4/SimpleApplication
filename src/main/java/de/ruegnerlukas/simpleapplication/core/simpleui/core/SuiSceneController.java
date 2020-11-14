@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiStateListener;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiStateUpdate;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

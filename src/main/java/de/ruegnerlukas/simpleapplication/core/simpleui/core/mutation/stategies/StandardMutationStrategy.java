@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies;
 
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 
 import java.util.ArrayList;

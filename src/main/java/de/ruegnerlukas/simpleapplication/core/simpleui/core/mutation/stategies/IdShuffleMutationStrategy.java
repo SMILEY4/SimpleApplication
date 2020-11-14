@@ -4,7 +4,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.operations.OperationType;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.operations.ReplaceOperation;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import lombok.Getter;
 

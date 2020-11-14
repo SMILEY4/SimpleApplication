@@ -12,7 +12,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.operations.
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.operations.SwapOperation;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.ListTransformer.BaseTransformation;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.ListTransformer.ReplaceTransformation;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNodeChildListener;
 

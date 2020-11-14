@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.Co
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ContentItemsProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TooltipProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.AbstractFxNodeBuilder;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.BuilderExtensionContainer;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.RegionBuilderExtension;
