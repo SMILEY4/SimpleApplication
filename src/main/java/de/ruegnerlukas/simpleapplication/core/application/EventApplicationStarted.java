@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.application;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
 
 /**
  * The event triggered when the application is fully started.

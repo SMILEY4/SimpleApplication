@@ -2,11 +2,11 @@ package de.ruegnerlukas.simpleapplication.testapp;
 
 
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.InjectionIndexMarker;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
@@ -24,15 +24,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.choiceBox;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.component;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.hBox;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.label;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.scrollPane;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.slider;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.vBox;
-import static de.ruegnerlukas.simpleapplication.simpleui.core.node.WindowRootElement.windowRoot;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.button;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.choiceBox;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.component;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.hBox;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.label;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.scrollPane;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.slider;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.vBox;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.core.node.WindowRootElement.windowRoot;
 
 @Slf4j
 @SuppressWarnings ("ALL")

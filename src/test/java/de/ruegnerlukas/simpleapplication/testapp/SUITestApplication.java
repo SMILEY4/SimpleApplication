@@ -16,11 +16,11 @@
 //import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 //import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
 //import de.ruegnerlukas.simpleapplication.core.presentation.views.WindowHandle;
-//import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
-//import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-//import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
-//import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-//import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.InjectionIndexMarker;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiSceneController;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 //import javafx.geometry.Dimension2D;
 //import javafx.geometry.Pos;
 //import javafx.scene.layout.Priority;
@@ -39,11 +39,11 @@
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.button;
-//import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.hBox;
-//import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.label;
-//import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.scrollPane;
-//import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.vBox;
+//import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.button;
+//import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.hBox;
+//import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.label;
+//import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.scrollPane;
+//import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.vBox;
 //
 //@Slf4j
 //public class SUITestApplication {

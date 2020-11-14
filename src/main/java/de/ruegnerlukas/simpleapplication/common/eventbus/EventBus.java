@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.common.eventbus;
 
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
 
 import java.util.function.Consumer;
 

@@ -2,7 +2,7 @@ package de.ruegnerlukas.simpleapplication.common.eventbus;
 
 import de.ruegnerlukas.simpleapplication.common.utils.HashCode;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.tags.Tags;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
