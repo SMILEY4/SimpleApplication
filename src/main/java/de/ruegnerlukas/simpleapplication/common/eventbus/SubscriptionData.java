@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.common.eventbus;
 
-import de.ruegnerlukas.simpleapplication.common.utils.HashCode;
 import de.ruegnerlukas.simpleapplication.common.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.common.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.utils.HashCode;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -27,6 +27,13 @@ public final class SubscriptionData<T> {
 	 */
 	@Getter
 	private ThreadMode threadMode = ThreadMode.POSTING;
+
+
+	/**
+	 * The id of the plugin the subscription belongs to. When the plugin with the id gets unloaded, the listeners gets unsubscribed
+	 */
+	@Getter
+	private String pluginId = null;
 
 
 
@@ -113,6 +120,19 @@ public final class SubscriptionData<T> {
 	 */
 	public SubscriptionData<T> threadMode(final ThreadMode threadMode) {
 		this.threadMode = threadMode;
+		return this;
+	}
+
+
+
+
+	/**
+	 * @param pluginId id of the plugin the subscription belongs to.
+	 *                  When the plugin with the id gets unloaded, the subscription gets removed automatically.
+	 * @return this subscriber meta for chaining
+	 */
+	public SubscriptionData<T> linkedPlugin(final String pluginId) {
+		this.pluginId = pluginId;
 		return this;
 	}
 

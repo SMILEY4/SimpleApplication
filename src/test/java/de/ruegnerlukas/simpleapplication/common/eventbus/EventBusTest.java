@@ -1,6 +1,9 @@
 package de.ruegnerlukas.simpleapplication.common.eventbus;
 
 import de.ruegnerlukas.simpleapplication.common.tags.Tags;
+import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
+import de.ruegnerlukas.simpleapplication.core.plugins.EventComponentUnloaded;
+import de.ruegnerlukas.simpleapplication.core.plugins.EventPluginUnloaded;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -164,6 +167,25 @@ public class EventBusTest {
 		eventBus.publish(Tags.from("y", "b"), "Event 3");
 		eventBus.publish(Tags.from("x", "y"), "Event 4");
 
+		assertThat(collectedEvents).isEmpty();
+	}
+
+
+	@Test
+	public void automatic_unsubscribe_on_unload() {
+
+		final EventBus eventBus = new EventBusImpl();
+		final List<String> collectedEvents = new ArrayList<>();
+		final Consumer<String> consumer = collectedEvents::add;
+
+		eventBus.subscribe(SubscriptionData.ofType(String.class).filter(Tags.contains("x")).linkedPlugin("test.plugin"), consumer);
+		eventBus.subscribe(SubscriptionData.ofType(String.class).filter(Tags.contains("y")).linkedPlugin("test.component"), consumer);
+
+		eventBus.publish(ApplicationConstants.EVENT_PLUGIN_UNLOADED_TAGS, new EventPluginUnloaded("test.plugin"));
+		eventBus.publish(ApplicationConstants.EVENT_COMPONENT_UNLOADED_TAGS, new EventComponentUnloaded("test.component"));
+
+		eventBus.publish(Tags.from("x", "b"), "Event 1");
+		eventBus.publish(Tags.from("y", "b"), "Event 2");
 		assertThat(collectedEvents).isEmpty();
 	}
 
