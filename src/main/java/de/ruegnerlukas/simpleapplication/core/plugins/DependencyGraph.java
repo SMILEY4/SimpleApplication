@@ -21,7 +21,7 @@ public class DependencyGraph {
 	/**
 	 * All vertices of this graph. The key is the id.
 	 */
-	private Map<String, Vertex> vertices = new HashMap<>();
+	private final Map<String, Vertex> vertices = new HashMap<>();
 
 
 	/**

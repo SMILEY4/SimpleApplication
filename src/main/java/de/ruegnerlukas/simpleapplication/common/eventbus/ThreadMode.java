@@ -8,7 +8,7 @@ enum ThreadMode {
 	POSTING,
 
 	/**
-	 * event is received on "completely new" thread.
+	 * event is received on a "completely new" thread.
 	 */
 	ASYNC,
 

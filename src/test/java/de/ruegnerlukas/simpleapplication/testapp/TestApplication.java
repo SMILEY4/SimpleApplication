@@ -18,12 +18,12 @@
 //import de.ruegnerlukas.simpleapplication.core.presentation.style.StyleService;
 //import de.ruegnerlukas.simpleapplication.core.presentation.views.View;
 //import de.ruegnerlukas.simpleapplication.core.presentation.views.ViewService;
-//import de.ruegnerlukas.simpleapplication.simpleui.assets.elements.SuiButton;
-//import de.ruegnerlukas.simpleapplication.simpleui.assets.events.MouseMoveEventData;
-//import de.ruegnerlukas.simpleapplication.simpleui.assets.streams.SuiStream;
-//import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-//import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-//import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiButton;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.assets.events.MouseMoveEventData;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.SuiStream;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiSceneController;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
+//import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 //import javafx.geometry.Dimension2D;
 //import javafx.scene.Node;
 //import lombok.AllArgsConstructor;
@@ -34,9 +34,9 @@
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.anchorPane;
-//import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.button;
-//import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.container;
+//import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.anchorPane;
+//import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.button;
+//import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.container;
 //
 //
 //@Slf4j

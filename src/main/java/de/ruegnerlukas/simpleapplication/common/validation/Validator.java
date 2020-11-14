@@ -57,6 +57,23 @@ public class Validator {
 
 
 	/**
+	 * Assert that the given object is not null and returns it again. Throws an exception with the given message if the validation failed.
+	 *
+	 * @param object       the object to examine
+	 * @param errorMessage the error message (with placeholder for the arguments)
+	 * @param args         the arguments to insert into the message
+	 * @param <T>          Generic type
+	 * @return the object
+	 */
+	public <T> T require(final T object, final String errorMessage, final Object... args) {
+		validated(object == null).exception(errorMessage, args);
+		return object;
+	}
+
+
+
+
+	/**
 	 * Assert that the given object is not null.
 	 *
 	 * @param object the object to examine

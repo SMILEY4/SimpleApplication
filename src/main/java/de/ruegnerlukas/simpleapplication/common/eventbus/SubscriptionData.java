@@ -1,8 +1,8 @@
 package de.ruegnerlukas.simpleapplication.common.eventbus;
 
 import de.ruegnerlukas.simpleapplication.common.utils.HashCode;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.TagConditionExpression;
-import de.ruegnerlukas.simpleapplication.simpleui.core.tags.Tags;
+import de.ruegnerlukas.simpleapplication.common.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import lombok.Getter;
 
 import java.util.Objects;

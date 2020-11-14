@@ -1,12 +1,15 @@
 package de.ruegnerlukas.simpleapplication.testapp;
 
 
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBusImpl;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
-import de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc.InjectionIndexMarker;
-import de.ruegnerlukas.simpleapplication.simpleui.core.SuiSceneController;
-import de.ruegnerlukas.simpleapplication.simpleui.core.node.NodeFactory;
-import de.ruegnerlukas.simpleapplication.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.InjectionIndexMarker;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiSceneController;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
+import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestUtils;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Priority;
@@ -24,15 +27,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.button;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.choiceBox;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.component;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.hBox;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.label;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.scrollPane;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.slider;
-import static de.ruegnerlukas.simpleapplication.simpleui.assets.SuiElements.vBox;
-import static de.ruegnerlukas.simpleapplication.simpleui.core.node.WindowRootElement.windowRoot;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.button;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.choiceBox;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.component;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.hBox;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.label;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.scrollPane;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.slider;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.vBox;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.core.node.WindowRootElement.windowRoot;
 
 @Slf4j
 @SuppressWarnings ("ALL")
@@ -66,8 +69,8 @@ public class JFXTestApp extends Application {
 	@Override
 	public void start(final Stage stage) throws Exception {
 
-
-		SuiRegistry.initialize();
+		TestUtils.registerSuiRegistryFactory(new EventBusImpl());
+		final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
 
 
 		final TestUIState testUIState = new TestUIState();
@@ -91,7 +94,7 @@ public class JFXTestApp extends Application {
 								.content(TestUIState.class, state -> createPopupUI(state, "Always on top")))
 		);
 
-		SuiRegistry.get().inject("ij-point.toolbar",
+		suiRegistry.inject("ij-point.toolbar",
 				component(TestUIState.class,
 						state -> button()
 								.id("btn.enable-auto")
@@ -100,7 +103,7 @@ public class JFXTestApp extends Application {
 								.textContent("Enable Autosave")
 								.eventAction(".", e -> state.update(TestUIState.class, s -> s.setShowPopupEnableAutosave(true)))));
 
-		SuiRegistry.get().inject("ij-point.toolbar",
+		suiRegistry.inject("ij-point.toolbar",
 				component(TestUIState.class,
 						state -> choiceBox()
 								.id("cb.test")

@@ -137,13 +137,3 @@ service.unloadComponent("my.component");
 ```
 
 Components can be used have plugins depend on external systems, like for example JavaFx.
-
-
-
-#### 4.2 Predefined Components
-
-- ##### View System
-
-  - id of the component is "ApplicationConstants.COMPONENT_VIEW_SYSTEM"
-  - is loaded when the view system is initialized.
-

@@ -11,51 +11,45 @@ open module SimpleApplication {
 	requires static lombok;
 	requires java.desktop;
 
-	exports de.ruegnerlukas.simpleapplication.common.callbacks;
 	exports de.ruegnerlukas.simpleapplication.common.events;
 	exports de.ruegnerlukas.simpleapplication.common.events.specializedevents;
+	exports de.ruegnerlukas.simpleapplication.common.eventbus;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.factories;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.providers;
 	exports de.ruegnerlukas.simpleapplication.common.resources;
-	exports de.ruegnerlukas.simpleapplication.common.validation;
+	exports de.ruegnerlukas.simpleapplication.common.tags;
 	exports de.ruegnerlukas.simpleapplication.common.utils;
+	exports de.ruegnerlukas.simpleapplication.common.validation;
 
 	exports de.ruegnerlukas.simpleapplication.core.application;
-	exports de.ruegnerlukas.simpleapplication.core.events;
-	exports de.ruegnerlukas.simpleapplication.core.extensions;
+	exports de.ruegnerlukas.simpleapplication.core.application.jfx;
 	exports de.ruegnerlukas.simpleapplication.core.plugins;
-	exports de.ruegnerlukas.simpleapplication.core.presentation;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.module;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.views;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.style;
-	exports de.ruegnerlukas.simpleapplication.core.presentation.simpleui;
 
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.elements;
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.elements.jfxelements;
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.elements.suimenu;
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.events;
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.properties;
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.properties.events;
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.properties.misc;
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.streams;
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.streams.sources;
-	exports de.ruegnerlukas.simpleapplication.simpleui.assets.streams.operations;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.suimenu;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.events;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.events;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.sources;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.operations;
 
-	exports de.ruegnerlukas.simpleapplication.simpleui.core;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.builders;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.events;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation.stategies;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.mutation.operations;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.node;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.node.builders;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.profiler;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.registry;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.state;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.style;
-	exports de.ruegnerlukas.simpleapplication.simpleui.core.tags;
-	exports de.ruegnerlukas.simpleapplication.simpleui.utils;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.builders;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.events;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.operations;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.node;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.profiler;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.registry;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.state;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.core.style;
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.utils;
 
 
 }
