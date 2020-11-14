@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements;
 
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.events.DateSelectedEventData;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.events.SectionEventData;
@@ -9,15 +10,8 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.WindowRootElement;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
-import java.util.concurrent.Phaser;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
+import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestUtils;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -37,6 +31,13 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import org.testfx.framework.junit.ApplicationTest;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
+import java.util.concurrent.Phaser;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.component;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,7 +52,7 @@ public class SuiElementTest extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) {
-		SuiRegistry.initialize();
+		TestUtils.registerSuiRegistryFactory();
 		this.stage = stage;
 		this.stage.setAlwaysOnTop(true);
 		this.stage.show();

@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.strategies;
 
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.StandardMutationStrategy;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.StrategyDecisionResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
+import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestUtils;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -25,7 +25,7 @@ public class StandardMutationStrategyTest extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) {
-		SuiRegistry.initialize();
+		TestUtils.registerSuiRegistryFactory();
 	}
 
 

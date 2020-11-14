@@ -115,12 +115,13 @@ public class ChildNodeBuilder {
 	 */
 	private List<SuiNode> fromItemListProperty(final SuiState state, final ItemListProperty property, final Tags tags) {
 		List<SuiNode> childNodes;
-		if (property.getFactories().size() < CREATE_CHILD_LIST_ASYNC_CUTOFF) {
-			childNodes = property.getFactories().stream()
+		final List<NodeFactory> factories = property.getFactories();
+		if (factories.size() < CREATE_CHILD_LIST_ASYNC_CUTOFF) {
+			childNodes = factories.stream()
 					.map(factory -> factory.create(state, tags))
 					.collect(Collectors.toList());
 		} else {
-			childNodes = LoopUtils.asyncCollectingLoop(property.getFactories(), factory -> factory.create(state, tags));
+			childNodes = LoopUtils.asyncCollectingLoop(factories, factory -> factory.create(state, tags));
 		}
 
 		if (checkValidIds(childNodes)) {

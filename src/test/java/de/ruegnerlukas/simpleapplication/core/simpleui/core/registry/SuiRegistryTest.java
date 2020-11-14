@@ -1,12 +1,12 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.registry;
 
+import de.ruegnerlukas.simpleapplication.common.eventbus.EventBusImpl;
 import de.ruegnerlukas.simpleapplication.common.validation.ValidatePresenceException;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
-import org.junit.After;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -18,27 +18,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class SuiRegistryTest {
 
 
-	@After
-	public void cleanup() {
-		SuiRegistry.dispose();
-	}
 
-
-
-
-	@Test (expected = ValidatePresenceException.class)
-	public void test_not_initialized() {
-		assertThat(SuiRegistry.get()).isNull();
-	}
-
-
-
-
-	@Test
-	public void test_initialize() {
-		SuiRegistry.initialize();
-		assertThat(SuiRegistry.get()).isNotNull();
-	}
 
 
 
@@ -46,17 +26,17 @@ public class SuiRegistryTest {
 	@Test
 	public void test_register_base_fx_node_builder() {
 
-		SuiRegistry.initializeEmpty();
+		final SuiRegistry suiRegistry = new SuiRegistry(true, new EventBusImpl());
 
-		assertThatThrownBy(() -> SuiRegistry.get().getEntry(SuiRegistryTest.class)).isInstanceOf(ValidatePresenceException.class);
+		assertThatThrownBy(() -> suiRegistry.getEntry(SuiRegistryTest.class)).isInstanceOf(ValidatePresenceException.class);
 
 		final AbstractFxNodeBuilder<?> fxNodeBuilder = Mockito.mock(AbstractFxNodeBuilder.class);
-		SuiRegistry.get().registerBaseFxNodeBuilder(SuiRegistryTest.class, fxNodeBuilder);
+		suiRegistry.registerBaseFxNodeBuilder(SuiRegistryTest.class, fxNodeBuilder);
 
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getProperties()).containsExactly(IdProperty.class);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).hasSize(1);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).hasSize(1);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getBaseFxNodeBuilder()).isEqualTo(fxNodeBuilder);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getProperties()).containsExactly(IdProperty.class);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).hasSize(1);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).hasSize(1);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getBaseFxNodeBuilder()).isEqualTo(fxNodeBuilder);
 
 	}
 
@@ -66,10 +46,10 @@ public class SuiRegistryTest {
 	@Test
 	public void test_register_single_property() {
 
-		SuiRegistry.initializeEmpty();
+		final SuiRegistry suiRegistry = new SuiRegistry(true, new EventBusImpl());
 
 		assertThatThrownBy(
-				() -> SuiRegistry.get().registerProperty(
+				() -> suiRegistry.registerProperty(
 						SuiRegistryTest.class,
 						TextContentProperty.class,
 						new TextContentProperty.LabeledUpdatingBuilder())
@@ -78,15 +58,15 @@ public class SuiRegistryTest {
 		final AbstractFxNodeBuilder<?> fxNodeBuilder = Mockito.mock(AbstractFxNodeBuilder.class);
 		TextContentProperty.LabeledUpdatingBuilder propUpdatingBuilder = new TextContentProperty.LabeledUpdatingBuilder();
 
-		SuiRegistry.get().registerBaseFxNodeBuilder(SuiRegistryTest.class, fxNodeBuilder);
-		SuiRegistry.get().registerProperty(SuiRegistryTest.class, TextContentProperty.class, propUpdatingBuilder);
+		suiRegistry.registerBaseFxNodeBuilder(SuiRegistryTest.class, fxNodeBuilder);
+		suiRegistry.registerProperty(SuiRegistryTest.class, TextContentProperty.class, propUpdatingBuilder);
 
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getProperties()).containsExactlyInAnyOrder(IdProperty.class, TextContentProperty.class);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).hasSize(2);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).hasSize(2);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getProperties()).containsExactlyInAnyOrder(IdProperty.class, TextContentProperty.class);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).hasSize(2);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).hasSize(2);
 
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).containsEntry(TextContentProperty.class, propUpdatingBuilder);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).containsEntry(TextContentProperty.class, propUpdatingBuilder);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).containsEntry(TextContentProperty.class, propUpdatingBuilder);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).containsEntry(TextContentProperty.class, propUpdatingBuilder);
 
 	}
 
@@ -96,28 +76,28 @@ public class SuiRegistryTest {
 	@Test
 	public void test_register_multiple_properties_at_once() {
 
-		SuiRegistry.initializeEmpty();
+		final SuiRegistry suiRegistry = new SuiRegistry(true, new EventBusImpl());
 
 		final AbstractFxNodeBuilder<?> fxNodeBuilder = Mockito.mock(AbstractFxNodeBuilder.class);
 
 		TextContentProperty.LabeledUpdatingBuilder textUpdatingBuilder = new TextContentProperty.LabeledUpdatingBuilder();
 		AlignmentProperty.LabeledUpdatingBuilder alignmentUpdatingBuilder = new AlignmentProperty.LabeledUpdatingBuilder();
 
-		SuiRegistry.get().registerBaseFxNodeBuilder(SuiRegistryTest.class, fxNodeBuilder);
-		SuiRegistry.get().registerProperties(SuiRegistryTest.class, List.of(
+		suiRegistry.registerBaseFxNodeBuilder(SuiRegistryTest.class, fxNodeBuilder);
+		suiRegistry.registerProperties(SuiRegistryTest.class, List.of(
 				SuiRegistry.PropertyEntry.of(TextContentProperty.class, textUpdatingBuilder),
 				SuiRegistry.PropertyEntry.of(AlignmentProperty.class, alignmentUpdatingBuilder)
 		));
 
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getProperties()).containsExactlyInAnyOrder(IdProperty.class, TextContentProperty.class, AlignmentProperty.class);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).hasSize(3);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).hasSize(3);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getProperties()).containsExactlyInAnyOrder(IdProperty.class, TextContentProperty.class, AlignmentProperty.class);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).hasSize(3);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).hasSize(3);
 
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).containsEntry(TextContentProperty.class, textUpdatingBuilder);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).containsEntry(TextContentProperty.class, textUpdatingBuilder);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).containsEntry(TextContentProperty.class, textUpdatingBuilder);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).containsEntry(TextContentProperty.class, textUpdatingBuilder);
 
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).containsEntry(AlignmentProperty.class, alignmentUpdatingBuilder);
-		assertThat(SuiRegistry.get().getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).containsEntry(AlignmentProperty.class, alignmentUpdatingBuilder);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeBuilders()).containsEntry(AlignmentProperty.class, alignmentUpdatingBuilder);
+		assertThat(suiRegistry.getEntry(SuiRegistryTest.class).getPropFxNodeUpdaters()).containsEntry(AlignmentProperty.class, alignmentUpdatingBuilder);
 
 	}
 
@@ -127,18 +107,19 @@ public class SuiRegistryTest {
 	@Test
 	public void test_inject() {
 
+
 		final String INJECTION_POINT_ID = "injectionPoint";
 		NodeFactory factory1 = Mockito.mock(NodeFactory.class);
 		NodeFactory factory2 = Mockito.mock(NodeFactory.class);
 		NodeFactory factory3 = Mockito.mock(NodeFactory.class);
 
-		SuiRegistry.initializeEmpty();
+		final SuiRegistry suiRegistry = new SuiRegistry(true, new EventBusImpl());
 
-		SuiRegistry.get().inject(INJECTION_POINT_ID, List.of(factory1, factory2, factory3));
+		suiRegistry.inject(INJECTION_POINT_ID, List.of(factory1, factory2, factory3));
 
-		assertThat(SuiRegistry.get().getInjected("otherInjectionPoint")).isEmpty();
-		assertThat(SuiRegistry.get().getInjected(INJECTION_POINT_ID)).hasSize(3);
-		assertThat(SuiRegistry.get().getInjected(INJECTION_POINT_ID)).containsExactly(factory1, factory2, factory3);
+		assertThat(suiRegistry.getInjected("otherInjectionPoint")).isEmpty();
+		assertThat(suiRegistry.getInjected(INJECTION_POINT_ID)).hasSize(3);
+		assertThat(suiRegistry.getInjected(INJECTION_POINT_ID)).containsExactly(factory1, factory2, factory3);
 	}
 
 

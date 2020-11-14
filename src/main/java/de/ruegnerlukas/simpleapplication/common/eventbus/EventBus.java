@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 public interface EventBus {
 
+
 	/**
 	 * Subscribes the given consumer to events of this event bus.
 	 *
@@ -39,5 +40,13 @@ public interface EventBus {
 	 * @param event the object to publish
 	 */
 	void publish(Tags tags, Object event);
+
+
+	/**
+	 * Publish an {@link de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEvent} on the event bus with the given tags
+	 *
+	 * @param tags the tags of the event
+	 */
+	void publishEmpty(Tags tags);
 
 }

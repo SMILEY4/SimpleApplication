@@ -1,9 +1,10 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.operations;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.Pipeline;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.streams.PipelineImpl;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 
 public class EmittingSuiEventStream<T> extends PipelineImpl<T, T> {
 
@@ -13,6 +14,11 @@ public class EmittingSuiEventStream<T> extends PipelineImpl<T, T> {
 	 */
 	private final Tags tags;
 
+	/**
+	 * The instance of the sui registry
+	 */
+	private final SuiRegistry suiRegistry;
+
 
 
 
@@ -21,8 +27,21 @@ public class EmittingSuiEventStream<T> extends PipelineImpl<T, T> {
 	 * @param tags   the tags to add to the events
 	 */
 	public EmittingSuiEventStream(final Pipeline<?, T> source, final Tags tags) {
+		this(source, tags, new Provider<>(SuiRegistry.class).get());
+	}
+
+
+
+
+	/**
+	 * @param source   the source pipeline
+	 * @param tags     the tags to add to the events
+	 * @param registry the sui registry instance
+	 */
+	public EmittingSuiEventStream(final Pipeline<?, T> source, final Tags tags, final SuiRegistry registry) {
 		super(source);
 		this.tags = tags;
+		this.suiRegistry = registry;
 	}
 
 
@@ -30,7 +49,7 @@ public class EmittingSuiEventStream<T> extends PipelineImpl<T, T> {
 
 	@Override
 	protected void process(final T element) {
-		SuiRegistry.get().getEventBus().publish(tags, element);
+		suiRegistry.getEventBus().publish(tags, element);
 	}
 
 }

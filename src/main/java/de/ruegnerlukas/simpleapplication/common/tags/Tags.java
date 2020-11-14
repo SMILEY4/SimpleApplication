@@ -8,10 +8,15 @@ public interface Tags {
 
 
 	/**
+	 * @return the tags as strings.
+	 */
+	Set<String> getTags();
+
+
+	/**
 	 * An empty tags object.
 	 */
 	Tags EMPTY = new TagsImpl(Set.of());
-
 
 	/**
 	 * Creates a new empty {@link Tags} object.
@@ -43,7 +48,6 @@ public interface Tags {
 	static Tags from(final String... tags) {
 		return (tags == null || tags.length == 0) ? empty() : new TagsImpl(Set.of(tags));
 	}
-
 
 	/**
 	 * @param tag the tag that must be in the list of tags
@@ -165,10 +169,5 @@ public interface Tags {
 		}
 	}
 
-
-	/**
-	 * @return the tags as strings.
-	 */
-	Set<String> getTags();
 
 }

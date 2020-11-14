@@ -1,7 +1,8 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.events;
 
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.tags.Tags;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +20,11 @@ public class SuiEmittingEventListener<T> implements SuiEventListener<T> {
 	 */
 	private final Tags tags;
 
+	/**
+	 * THe sui registry instance
+	 */
+	private final SuiRegistry suiRegistry;
+
 
 
 
@@ -26,7 +32,19 @@ public class SuiEmittingEventListener<T> implements SuiEventListener<T> {
 	 * @param tags tags to add to the emitted events
 	 */
 	public SuiEmittingEventListener(final Tags tags) {
+		this(tags, new Provider<>(SuiRegistry.class).get());
+	}
+
+
+
+
+	/**
+	 * @param tags        tags to add to the emitted events
+	 * @param suiRegistry the sui registry instance
+	 */
+	public SuiEmittingEventListener(final Tags tags, final SuiRegistry suiRegistry) {
 		this.tags = tags;
+		this.suiRegistry = suiRegistry;
 	}
 
 
@@ -34,7 +52,7 @@ public class SuiEmittingEventListener<T> implements SuiEventListener<T> {
 
 	@Override
 	public void onEvent(final T event) {
-		SuiRegistry.get().getEventBus().publish(getEventTags(event, tags), event);
+		suiRegistry.getEventBus().publish(getEventTags(event, tags), event);
 	}
 
 

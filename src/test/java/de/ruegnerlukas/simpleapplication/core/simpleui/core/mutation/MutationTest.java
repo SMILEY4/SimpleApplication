@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiButton;
@@ -40,7 +41,7 @@ public class MutationTest extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) {
-		SuiRegistry.initialize();
+		TestUtils.registerSuiRegistryFactory();
 	}
 
 
@@ -394,7 +395,7 @@ public class MutationTest extends ApplicationTest {
 		final List<String> capturedEvents = new ArrayList<>();
 
 		final OnActionEventProperty.ButtonBaseUpdatingBuilder spyOnActionUpdatingBuilder = Mockito.spy(new OnActionEventProperty.ButtonBaseUpdatingBuilder());
-		SuiRegistry.get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
+		new Provider<>(SuiRegistry.class).get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
 
 		NodeFactory factoryOriginal = SuiElements.button()
 				.id("btn")
@@ -438,7 +439,7 @@ public class MutationTest extends ApplicationTest {
 		final List<String> capturedEvents = new ArrayList<>();
 
 		final OnActionEventProperty.ButtonBaseUpdatingBuilder spyOnActionUpdatingBuilder = Mockito.spy(new OnActionEventProperty.ButtonBaseUpdatingBuilder());
-		SuiRegistry.get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
+		new Provider<>(SuiRegistry.class).get().registerProperty(SuiButton.class, OnActionEventProperty.class, spyOnActionUpdatingBuilder);
 
 		NodeFactory factoryOriginal = SuiElements.button()
 				.id("btn")

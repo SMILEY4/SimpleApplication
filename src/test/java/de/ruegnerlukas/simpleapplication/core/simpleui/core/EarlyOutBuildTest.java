@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core;
 
-import de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements;
-import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.common.tags.TagConditionExpression;
 import de.ruegnerlukas.simpleapplication.common.tags.Tags;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestState;
+import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -21,7 +21,7 @@ public class EarlyOutBuildTest extends ApplicationTest {
 
 	@Before
 	public void setup() {
-		SuiRegistry.initialize();
+		TestUtils.registerSuiRegistryFactory();
 	}
 
 

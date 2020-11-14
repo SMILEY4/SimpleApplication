@@ -7,6 +7,7 @@ import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Prov
 import de.ruegnerlukas.simpleapplication.core.application.jfx.JFXApplication;
 import de.ruegnerlukas.simpleapplication.core.application.jfx.JFXStarter;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
@@ -79,9 +80,10 @@ public class Application {
 	private void onStart(final Stage stage) {
 		log.debug("Application on start.");
 		setupProviders(stage);
+		setupSimpleUI();
 		setupPlugins();
 		log.info("Application started.");
-		eventBusProvider.get().publish(EventApplicationStarted.TAGS, new EventApplicationStarted());
+		eventBusProvider.get().publishEmpty(ApplicationConstants.EVENT_APPLICATION_STARTED_TAGS);
 	}
 
 
@@ -107,6 +109,20 @@ public class Application {
 
 
 
+	private void setupSimpleUI() {
+		log.debug("Setup SimpleUI.");
+		final SuiRegistry suiRegistry = new SuiRegistry(false, new Provider<>(EventBus.class).get());
+		ProviderService.registerFactory(new InstanceFactory<>(SuiRegistry.class) {
+			@Override
+			public SuiRegistry buildObject() {
+				return suiRegistry;
+			}
+		});
+	}
+
+
+
+
 	/**
 	 * Setup and load the core plugins and the {@link PluginService}.
 	 */
@@ -125,7 +141,7 @@ public class Application {
 	 */
 	private void onStop() {
 		log.debug("Application stopping.");
-		eventBusProvider.get().publish(EventApplicationStopping.TAGS, new EventApplicationStopping());
+		eventBusProvider.get().publishEmpty(ApplicationConstants.EVENT_APPLICATION_STOPPING_TAGS);
 		pluginServiceProvider.get().unloadAllPlugins();
 		ProviderService.cleanup();
 		log.info("Application stopped.");

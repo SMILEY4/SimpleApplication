@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders;
 
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ItemProperty;
@@ -36,7 +37,8 @@ public final class PropertyValidation {
 	 * @param properties the given properties to check
 	 */
 	public static void validate(final Class<?> nodeType, final List<SuiProperty> properties) {
-		validate(nodeType, SuiRegistry.get().getEntry(nodeType).getProperties(), properties);
+		final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
+		validate(nodeType, suiRegistry.getEntry(nodeType).getProperties(), properties);
 	}
 
 

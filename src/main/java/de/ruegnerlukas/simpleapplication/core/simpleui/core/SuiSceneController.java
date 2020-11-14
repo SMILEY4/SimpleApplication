@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComponent;
@@ -156,7 +157,8 @@ public class SuiSceneController implements SuiStateListener {
 		});
 
 		if (windowRootElement.getWindowBaseStyle() != null) {
-			SuiRegistry.get().getStyleManager().applyStyle(stage, windowRootElement.getWindowBaseStyle());
+			final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
+			suiRegistry.getStyleManager().applyStyle(stage, windowRootElement.getWindowBaseStyle());
 		}
 
 		if (windowRootElement.isWait()) {

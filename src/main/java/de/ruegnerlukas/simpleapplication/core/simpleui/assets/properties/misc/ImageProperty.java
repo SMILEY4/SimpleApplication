@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiImage;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeBuilder;
@@ -78,13 +79,12 @@ public class ImageProperty extends SuiProperty {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final ImageProperty property,
-						  final ImageView fxNode) {
+		public void build(final SuiNode node, final ImageProperty property, final ImageView fxNode) {
 			fxNode.setImage(property.getImage());
 			node.getPropertyStore().getSafe(ImageSizeProperty.class).ifPresent(sizeProp -> {
+				final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
 				@SuppressWarnings ("unchecked") final PropFxNodeBuilder<ImageSizeProperty, ImageView> builder =
-						(PropFxNodeBuilder<ImageSizeProperty, ImageView>) SuiRegistry.get()
+						(PropFxNodeBuilder<ImageSizeProperty, ImageView>) suiRegistry
 								.getEntry(SuiImage.class)
 								.getPropFxNodeBuilders().get(ImageSizeProperty.class);
 				if (builder != null) {
@@ -97,13 +97,12 @@ public class ImageProperty extends SuiProperty {
 
 
 		@Override
-		public MutationResult update(final ImageProperty property,
-									 final SuiNode node,
-									 final ImageView fxNode) {
+		public MutationResult update(final ImageProperty property, final SuiNode node, final ImageView fxNode) {
 			fxNode.setImage(property.getImage());
 			node.getPropertyStore().getSafe(ImageSizeProperty.class).ifPresent(sizeProp -> {
+				final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
 				@SuppressWarnings ("unchecked") final PropFxNodeUpdater<ImageSizeProperty, ImageView> updater =
-						(PropFxNodeUpdater<ImageSizeProperty, ImageView>) SuiRegistry.get()
+						(PropFxNodeUpdater<ImageSizeProperty, ImageView>) suiRegistry
 								.getEntry(SuiImage.class)
 								.getPropFxNodeUpdaters().get(ImageSizeProperty.class);
 				if (updater != null) {
@@ -122,8 +121,9 @@ public class ImageProperty extends SuiProperty {
 									 final ImageView fxNode) {
 			fxNode.setImage(property.getImage());
 			node.getPropertyStore().getSafe(ImageSizeProperty.class).ifPresent(sizeProp -> {
+				final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
 				@SuppressWarnings ("unchecked") final PropFxNodeUpdater<ImageSizeProperty, ImageView> updater =
-						(PropFxNodeUpdater<ImageSizeProperty, ImageView>) SuiRegistry.get()
+						(PropFxNodeUpdater<ImageSizeProperty, ImageView>) suiRegistry
 								.getEntry(SuiImage.class)
 								.getPropFxNodeUpdaters().get(ImageSizeProperty.class);
 				if (updater != null) {

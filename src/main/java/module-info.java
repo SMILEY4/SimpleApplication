@@ -13,6 +13,7 @@ open module SimpleApplication {
 
 	exports de.ruegnerlukas.simpleapplication.common.events;
 	exports de.ruegnerlukas.simpleapplication.common.events.specializedevents;
+	exports de.ruegnerlukas.simpleapplication.common.eventbus;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.factories;
 	exports de.ruegnerlukas.simpleapplication.common.instanceproviders.providers;

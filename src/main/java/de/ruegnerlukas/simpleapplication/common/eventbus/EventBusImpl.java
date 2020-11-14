@@ -1,8 +1,9 @@
 package de.ruegnerlukas.simpleapplication.common.eventbus;
 
+import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEvent;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.utils.HashCode;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import javafx.application.Platform;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -82,6 +83,15 @@ public class EventBusImpl implements EventBus {
 					Validations.STATE.fail().exception("Unexpected thread-mode: {}.", threadMode);
 			}
 		});
+	}
+
+
+
+
+	@Override
+	public void publishEmpty(final Tags tags) {
+		Validations.INPUT.notNull(tags).exception("The tags can not be null.");
+		publish(tags, EmptyEvent.INSTANCE);
 	}
 
 

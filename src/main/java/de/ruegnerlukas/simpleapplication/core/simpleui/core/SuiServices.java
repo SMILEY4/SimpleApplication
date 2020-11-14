@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationStrategyDecider;
@@ -83,7 +84,8 @@ public class SuiServices {
 	 */
 	public void enrichWithFxNodes(final SuiNode node) {
 		node.getChildNodeStore().stream().forEach(this::enrichWithFxNodes);
-		final RegistryEntry registryEntry = SuiRegistry.get().getEntry(node.getNodeType());
+		final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
+		final RegistryEntry registryEntry = suiRegistry.getEntry(node.getNodeType());
 		final Node fxNode = buildBaseFxNode(node, registryEntry);
 		applyProperties(node, registryEntry, fxNode);
 		node.getFxNodeStore().set(fxNode);

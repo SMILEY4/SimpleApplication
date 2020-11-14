@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation;
 
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ItemProperty;
@@ -302,8 +303,10 @@ public class NodeMutatorImpl implements NodeMutator {
 	 * @return the {@link PropFxNodeUpdater} for the given property and given node type
 	 */
 	private PropFxNodeUpdater<SuiProperty, Node> getPropNodeUpdater(final Class<?> nodeType, final Class<? extends SuiProperty> propType) {
+
+		final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
 		@SuppressWarnings ("unchecked") final PropFxNodeUpdater<SuiProperty, Node> updater =
-				(PropFxNodeUpdater<SuiProperty, Node>) SuiRegistry.get()
+				(PropFxNodeUpdater<SuiProperty, Node>) suiRegistry
 						.getEntry(nodeType)
 						.getPropFxNodeUpdaters().get(propType);
 		return updater;

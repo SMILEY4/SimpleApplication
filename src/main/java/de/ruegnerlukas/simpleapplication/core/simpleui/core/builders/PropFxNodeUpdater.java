@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.builders;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiProperty;
@@ -44,7 +45,8 @@ public interface PropFxNodeUpdater<P extends SuiProperty, T extends Node> {
 											final SuiNode node,
 											final T fxNode) {
 		node.getPropertyStore().getSafe(propType).ifPresent(prop -> {
-			PropFxNodeUpdater updater = SuiRegistry.get().getEntry(nodeType).getPropFxNodeUpdaters().get(propType);
+			final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
+			PropFxNodeUpdater updater = suiRegistry.getEntry(nodeType).getPropFxNodeUpdaters().get(propType);
 			if (updater != null) {
 				updater.update(prop, node, fxNode);
 			}
@@ -65,7 +67,8 @@ public interface PropFxNodeUpdater<P extends SuiProperty, T extends Node> {
 											final SuiNode node,
 											final T fxNode) {
 		node.getPropertyStore().getSafe(propType).ifPresent(prop -> {
-			PropFxNodeUpdater updater = SuiRegistry.get().getEntry(nodeType).getPropFxNodeUpdaters().get(propType);
+			final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
+			PropFxNodeUpdater updater = suiRegistry.getEntry(nodeType).getPropFxNodeUpdaters().get(propType);
 			if (updater != null) {
 				updater.remove(prop, node, fxNode);
 			}

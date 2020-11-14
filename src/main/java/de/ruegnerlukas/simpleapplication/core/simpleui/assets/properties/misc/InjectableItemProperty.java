@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.FactoryExtension;
@@ -51,7 +52,8 @@ public class InjectableItemProperty extends ItemProperty {
 
 	@Override
 	public NodeFactory getFactory() {
-		List<NodeFactory> injected = SuiRegistry.get().getInjected(injectionPointId);
+		final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
+		final List<NodeFactory> injected = suiRegistry.getInjected(injectionPointId);
 		if (!injected.isEmpty()) {
 			return injected.get(injected.size() - 1);
 		} else {

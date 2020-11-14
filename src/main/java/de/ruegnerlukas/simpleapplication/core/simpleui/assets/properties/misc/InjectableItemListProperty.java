@@ -1,6 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc;
 
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.FactoryExtension;
@@ -42,12 +43,51 @@ public class InjectableItemListProperty extends ItemListProperty {
 	public InjectableItemListProperty(final String injectionPointId,
 									  final InjectionIndexMarker indexMarker,
 									  final NodeFactory... items) {
-		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null or empty.");
-		Validations.INPUT.notNull(indexMarker).exception("The index marker can not be null or empty.");
-		Validations.INPUT.notNull(items).exception("The items can not be null.");
-		this.injectionPointId = injectionPointId;
-		this.injectionIndexMarker = indexMarker;
-		this.defaultFactories = List.of(items);
+		this(injectionPointId,
+				indexMarker,
+				List.of(Validations.INPUT.require(items, "The items can not be null.")));
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the id of this injection point.
+	 * @param indexMarker      the marker defining at what position to inject items into
+	 * @param items            the factories for creating the items/nodes.
+	 */
+	public InjectableItemListProperty(final String injectionPointId,
+									  final InjectionIndexMarker indexMarker,
+									  final Stream<NodeFactory> items) {
+		this(injectionPointId,
+				indexMarker,
+				Validations.INPUT.require(items, "The items can not be null.").collect(Collectors.toList()));
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the id of this injection point.
+	 * @param indexMarker      the marker defining at what position to inject items into
+	 * @param supplier         the supplier for creating factories for creating the items/nodes.
+	 */
+	public InjectableItemListProperty(final String injectionPointId,
+									  final InjectionIndexMarker indexMarker,
+									  final Supplier<List<NodeFactory>> supplier) {
+		this(injectionPointId,
+				indexMarker,
+				Validations.INPUT.require(supplier, "The supplier can not be null.").get());
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the id of this injection point.
+	 */
+	public InjectableItemListProperty(final String injectionPointId) {
+		this(injectionPointId, InjectionIndexMarker.injectFirst(), List.of());
 	}
 
 
@@ -64,6 +104,7 @@ public class InjectableItemListProperty extends ItemListProperty {
 		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null or empty.");
 		Validations.INPUT.notNull(indexMarker).exception("The index marker can not be null or empty.");
 		Validations.INPUT.notNull(items).exception("The items can not be null.");
+		Validations.INPUT.containsNoNull(items).exception("The items can not contain any null elements.");
 		this.injectionPointId = injectionPointId;
 		this.injectionIndexMarker = indexMarker;
 		this.defaultFactories = List.copyOf(items);
@@ -72,60 +113,11 @@ public class InjectableItemListProperty extends ItemListProperty {
 
 
 
-	/**
-	 * @param injectionPointId the id of this injection point.
-	 * @param indexMarker      the marker defining at what position to inject items into
-	 * @param items            the factories for creating the items/nodes.
-	 */
-	public InjectableItemListProperty(final String injectionPointId,
-									  final InjectionIndexMarker indexMarker,
-									  final Stream<NodeFactory> items) {
-		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null or empty.");
-		Validations.INPUT.notNull(indexMarker).exception("The index marker can not be null or empty.");
-		Validations.INPUT.notNull(items).exception("The items can not be null.");
-		this.injectionPointId = injectionPointId;
-		this.injectionIndexMarker = indexMarker;
-		this.defaultFactories = List.copyOf(items.collect(Collectors.toList()));
-	}
-
-
-
-
-	/**
-	 * @param injectionPointId the id of this injection point.
-	 * @param indexMarker      the marker defining at what position to inject items into
-	 * @param supplier         the supplier for creating factories for creating the items/nodes.
-	 */
-	public InjectableItemListProperty(final String injectionPointId,
-									  final InjectionIndexMarker indexMarker,
-									  final Supplier<List<NodeFactory>> supplier) {
-		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null or empty.");
-		Validations.INPUT.notNull(indexMarker).exception("The index marker can not be null or empty.");
-		Validations.INPUT.notNull(supplier).exception("The supplier can not be null.");
-		this.injectionPointId = injectionPointId;
-		this.injectionIndexMarker = indexMarker;
-		this.defaultFactories = supplier.get();
-	}
-
-
-
-
-	/**
-	 * @param injectionPointId the id of this injection point.
-	 */
-	public InjectableItemListProperty(final String injectionPointId) {
-		this.injectionPointId = injectionPointId;
-		this.injectionIndexMarker = InjectionIndexMarker.injectFirst();
-		this.defaultFactories = List.of();
-	}
-
-
-
-
 	@Override
 	public List<NodeFactory> getFactories() {
-		List<NodeFactory> injected = SuiRegistry.get().getInjected(injectionPointId);
-		List<NodeFactory> factories = new ArrayList<>(injected.size() + defaultFactories.size());
+		final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
+		final List<NodeFactory> injected = suiRegistry.getInjected(injectionPointId);
+		final List<NodeFactory> factories = new ArrayList<>(injected.size() + defaultFactories.size());
 		factories.addAll(defaultFactories);
 		factories.addAll(injectionIndexMarker.getIndex(factories), injected);
 		return factories;
@@ -150,7 +142,7 @@ public class InjectableItemListProperty extends ItemListProperty {
 		/**
 		 * @param injectionPointId the id of this injection point.
 		 * @param indexMarker      the marker defining at what position to inject items into
-		 * @param items            the factories for creating thedefault  items/nodes.
+		 * @param items            the factories for creating the default  items/nodes.
 		 * @return this builder for chaining
 		 */
 		@SuppressWarnings ("unchecked")

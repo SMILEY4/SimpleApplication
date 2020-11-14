@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.core.application;
 import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
 import de.ruegnerlukas.simpleapplication.common.eventbus.EventBusImpl;
 import de.ruegnerlukas.simpleapplication.common.eventbus.SubscriptionData;
+import de.ruegnerlukas.simpleapplication.common.events.specializedevents.EmptyEvent;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
@@ -39,12 +40,12 @@ public class ApplicationTest {
 		application.run();
 		final List<Object> eventsStart = eventService.getEventPackages();
 		assertThat(eventsStart.size()).isEqualTo(1);
-		assertThat(eventsStart.get(0).getClass()).isEqualTo(EventApplicationStarted.class);
+		assertThat(eventsStart.get(0).getClass()).isEqualTo(EmptyEvent.class);
 
 		starter.stop();
 		final List<Object> eventsStop = eventService.getEventPackages();
 		assertThat(eventsStop.size()).isEqualTo(1);
-		assertThat(eventsStop.get(0).getClass()).isEqualTo(EventApplicationStopping.class);
+		assertThat(eventsStop.get(0).getClass()).isEqualTo(EmptyEvent.class);
 	}
 
 
@@ -191,6 +192,9 @@ public class ApplicationTest {
 			events.clear();
 			return resultList;
 		}
+
+
+
 
 	}
 

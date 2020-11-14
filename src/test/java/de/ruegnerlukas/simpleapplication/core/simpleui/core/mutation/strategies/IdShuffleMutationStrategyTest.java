@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.strategies;
 
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TextContentProperty;
@@ -8,8 +9,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.I
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.StrategyDecisionResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
+import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestUtils;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -31,7 +31,7 @@ public class IdShuffleMutationStrategyTest extends ApplicationTest {
 
 	@Override
 	public void start(Stage stage) {
-		SuiRegistry.initialize();
+		TestUtils.registerSuiRegistryFactory();
 	}
 
 

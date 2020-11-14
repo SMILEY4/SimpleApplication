@@ -4,11 +4,11 @@ import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
 import de.ruegnerlukas.simpleapplication.common.eventbus.SubscriptionData;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.core.application.Application;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfiguration;
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
-import de.ruegnerlukas.simpleapplication.core.application.EventApplicationStarted;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.InjectionIndexMarker;
@@ -46,8 +46,6 @@ public class TestApplicationV2 {
 
 
 	public static void main(String[] args) {
-		SuiRegistry.initialize();
-
 		final ApplicationConfiguration configuration = new ApplicationConfiguration();
 		configuration.getPlugins().add(new EventLoggingPlugin());
 		configuration.getPlugins().add(new UIPlugin());
@@ -92,7 +90,7 @@ public class TestApplicationV2 {
 		public void onLoad() {
 			final EventBus eventBus = new Provider<>(EventBus.class).get();
 			eventBus.subscribe(
-					SubscriptionData.ofType(EventApplicationStarted.class),
+					SubscriptionData.anyType(Tags.contains(ApplicationConstants.EVENT_APPLICATION_STARTED_TYPE)),
 					e -> createViews(new Provider<Stage>(ApplicationConstants.PROVIDED_PRIMARY_STAGE).get()));
 		}
 
@@ -128,7 +126,7 @@ public class TestApplicationV2 {
 									.content(TestUIState.class, state -> createPopupUI(state, "Always on top")))
 			);
 
-			SuiRegistry.get().inject("ij-point.toolbar",
+			new Provider<>(SuiRegistry.class).get().inject("ij-point.toolbar",
 					component(TestUIState.class,
 							state -> button()
 									.id("btn.enable-auto")
@@ -137,7 +135,7 @@ public class TestApplicationV2 {
 									.textContent("Enable Autosave")
 									.eventAction(".", e -> state.update(TestUIState.class, s -> s.setShowPopupEnableAutosave(true)))));
 
-			SuiRegistry.get().inject("ij-point.toolbar",
+			new Provider<>(SuiRegistry.class).get().inject("ij-point.toolbar",
 					component(TestUIState.class,
 							state -> choiceBox()
 									.id("cb.test")

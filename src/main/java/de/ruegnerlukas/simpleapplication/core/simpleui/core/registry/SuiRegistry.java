@@ -49,59 +49,9 @@ public class SuiRegistry {
 
 
 	/**
-	 * The singleton instance of the registry.
-	 */
-	private static SuiRegistry instance;
-
-
-
-
-	/**
-	 * initializes the singleton instance of this registry with all pre-build nodes registered.
-	 */
-	public static void initialize() {
-		instance = new SuiRegistry(false);
-	}
-
-
-
-
-	/**
-	 * initializes the singleton instance of this registry.
-	 */
-	public static void initializeEmpty() {
-		instance = new SuiRegistry(true);
-	}
-
-
-
-
-	/**
-	 * Disposes of the current registry instance.
-	 */
-	public static void dispose() {
-		instance = null;
-	}
-
-
-
-
-	/**
-	 * @return the singleton instance of this registry after initialisation.
-	 */
-	public static SuiRegistry get() {
-		Validations.PRESENCE.notNull(instance).exception("SuiRegistry is not initialized. Call SuiRegistry#initialize() first.");
-		return instance;
-	}
-
-
-
-
-	/**
 	 * The map of all entries. The key is the type of a node.
 	 */
 	private final Map<Class<?>, RegistryEntry> entries = new HashMap<>();
-
 
 	/**
 	 * The list of registered factories ready to be injected at defined points.
@@ -113,8 +63,7 @@ public class SuiRegistry {
 	 * The event bus for global simpleui-events.
 	 */
 	@Getter
-	private final EventBus eventBus = new EventBusImpl();
-
+	private final EventBus eventBus;
 
 	/**
 	 * The manger for styles
@@ -126,11 +75,24 @@ public class SuiRegistry {
 
 
 	/**
-	 * Default constructor. Optionally registers the pre-build nodes.
+	 * Default constructor with an own event bus for simpleui. Optionally registers the pre-build nodes.
 	 *
 	 * @param initEmpty whether to initialize this registry with the pre-build nodes
 	 */
 	public SuiRegistry(final boolean initEmpty) {
+		this(initEmpty, new EventBusImpl());
+	}
+
+
+
+
+	/**
+	 * Default constructor with a custom event bus. Optionally registers the pre-build nodes.
+	 *
+	 * @param initEmpty   whether to initialize this registry with the pre-build nodes
+	 * @param suiEventBus the eventbus to use for simpleui events
+	 */
+	public SuiRegistry(final boolean initEmpty, final EventBus suiEventBus) {
 		if (!initEmpty) {
 			SuiSeparator.register(this);
 			SuiLabel.register(this);
@@ -156,10 +118,9 @@ public class SuiRegistry {
 			SuiSplitPane.register(this);
 			SuiAccordion.register(this);
 		}
+		this.eventBus = suiEventBus;
 		this.styleManager = new SuiStyleManager();
 	}
-
-
 
 
 

@@ -3,6 +3,7 @@ package de.ruegnerlukas.simpleapplication.core.plugins;
 import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
+import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class PluginServiceImpl implements PluginService {
 				}
 				graph.addDependency(plugin.getId(), dependency);
 			});
-			eventBusProvider.get().publish(EventPluginRegistered.TAGS, new EventPluginRegistered(plugin.getId()));
+			eventBusProvider.get().publish(ApplicationConstants.EVENT_PLUGIN_REGISTERED_TAGS, new EventPluginRegistered(plugin.getId()));
 			log.info("Successfully registered plugin with the id '{}'.", plugin.getId());
 		}
 	}
@@ -79,7 +80,7 @@ public class PluginServiceImpl implements PluginService {
 		Validations.STATE.isFalse(isLoaded(id)).exception("The plugin '{}' can not be de-registered while it is loaded.", id);
 		if (isRegistered(id)) {
 			registeredPlugins.remove(id);
-			eventBusProvider.get().publish(EventPluginDeregistered.TAGS, new EventPluginDeregistered(id));
+			eventBusProvider.get().publish(ApplicationConstants.EVENT_PLUGIN_DEREGISTERED_TAGS, new EventPluginDeregistered(id));
 			log.info("Successfully de-registered plugin with the id '{}'.", id);
 		}
 	}
@@ -97,7 +98,7 @@ public class PluginServiceImpl implements PluginService {
 				graph.insert(id);
 			}
 			graph.setLoaded(id);
-			eventBusProvider.get().publish(EventComponentLoaded.TAGS, new EventComponentLoaded(id));
+			eventBusProvider.get().publish(ApplicationConstants.EVENT_COMPONENT_LOADED_TAGS, new EventComponentLoaded(id));
 			log.info("The component with the id '{}' was loaded.", id);
 			checkAutoloadPlugins();
 		}
@@ -135,7 +136,7 @@ public class PluginServiceImpl implements PluginService {
 	private void forceLoadPlugin(final Plugin plugin) {
 		graph.setLoaded(plugin.getId());
 		plugin.onLoad();
-		eventBusProvider.get().publish(EventPluginLoaded.TAGS, new EventPluginLoaded(plugin.getId()));
+		eventBusProvider.get().publish(ApplicationConstants.EVENT_PLUGIN_LOADED_TAGS, new EventPluginLoaded(plugin.getId()));
 	}
 
 
@@ -210,7 +211,7 @@ public class PluginServiceImpl implements PluginService {
 	 */
 	private void forceUnloadComponent(final String id) {
 		graph.setUnloaded(id);
-		eventBusProvider.get().publish(EventComponentUnloaded.TAGS, new EventComponentUnloaded(id));
+		eventBusProvider.get().publish(ApplicationConstants.EVENT_COMPONENT_UNLOADED_TAGS, new EventComponentUnloaded(id));
 	}
 
 
@@ -253,14 +254,14 @@ public class PluginServiceImpl implements PluginService {
 	private void forceUnloadPlugin(final Plugin plugin) {
 		graph.setUnloaded(plugin.getId());
 		plugin.onUnload();
-		eventBusProvider.get().publish(EventPluginUnloaded.TAGS, new EventPluginUnloaded(plugin.getId()));
+		eventBusProvider.get().publish(ApplicationConstants.EVENT_PLUGIN_UNLOADED_TAGS, new EventPluginUnloaded(plugin.getId()));
 	}
 
 
 
 
 	/**
-	 * Checks whether any plugins marked as autoload can be loaded.
+	 * Checks whether any plugins marked as 'autoload' can be loaded.
 	 */
 	private void checkAutoloadPlugins() {
 		autoloadPlugins.stream()

@@ -1,5 +1,7 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.common.validation.ValidateStateException;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements;
@@ -8,8 +10,8 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.In
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestState;
+import de.ruegnerlukas.simpleapplication.core.simpleui.testutils.TestUtils;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -36,7 +38,7 @@ public class InjectionTest extends ApplicationTest {
 
 	@Before
 	public void setup() {
-		SuiRegistry.initialize();
+		TestUtils.registerSuiRegistryFactory();
 	}
 
 
@@ -45,7 +47,7 @@ public class InjectionTest extends ApplicationTest {
 	@Test
 	public void test_inject_twice_into_empty_vbox() {
 
-		final String INJECTION_POINT_ID = "injection_point";
+		final String INJECTION_POINT_ID = "injection_point_1";
 		final NodeFactory nodeFactory = vboxWithInjectableItems(INJECTION_POINT_ID);
 
 		injectButtonsInto(INJECTION_POINT_ID, List.of(
@@ -72,7 +74,7 @@ public class InjectionTest extends ApplicationTest {
 
 	@Test
 	public void test_inject_nothing_into_empty_vbox() {
-		final String INJECTION_POINT_ID = "injection_point";
+		final String INJECTION_POINT_ID = "injection_point_2";
 		final NodeFactory nodeFactory = vboxWithInjectableItems(INJECTION_POINT_ID);
 		final VBox fxNode = (VBox) createJFXNode(nodeFactory);
 		assertThat(fxNode.getChildren()).isEmpty();
@@ -84,7 +86,7 @@ public class InjectionTest extends ApplicationTest {
 	@Test
 	public void test_inject_elements_into_vbox_with_default_elements() {
 
-		final String INJECTION_POINT_ID = "injection_point";
+		final String INJECTION_POINT_ID = "injection_point_3";
 
 		final NodeFactory nodeFactory = SuiElements.vBox()
 				.itemsInjectable(
@@ -123,7 +125,7 @@ public class InjectionTest extends ApplicationTest {
 	public void test_conflict_exception_with_items_property_and_itemsinjectable_property() {
 		SuiElements.vBox()
 				.items(SuiElements.button().id("btn").textContent("Button"))
-				.itemsInjectable("injection_point").create(null, Tags.empty());
+				.itemsInjectable("injection_point_4").create(null, Tags.empty());
 	}
 
 
@@ -132,7 +134,7 @@ public class InjectionTest extends ApplicationTest {
 	@Test
 	public void test_inject_single_item_into_scrollpane() {
 
-		final String INJECTION_POINT_ID = "injection_point";
+		final String INJECTION_POINT_ID = "injection_point_5";
 
 		final NodeFactory nodeFactory = SuiElements.scrollPane()
 				.itemInjectable(INJECTION_POINT_ID);
@@ -154,7 +156,7 @@ public class InjectionTest extends ApplicationTest {
 	@Test
 	public void test_inject_single_into_scrollpane_with_default_item() {
 
-		final String INJECTION_POINT_ID = "injection_point";
+		final String INJECTION_POINT_ID = "injection_point_6";
 
 		final NodeFactory nodeFactory = SuiElements.scrollPane()
 				.itemInjectable(
@@ -175,7 +177,7 @@ public class InjectionTest extends ApplicationTest {
 	@Test
 	public void test_inject_component_into_vbox_and_mutate_everything() {
 
-		final String INJECTION_POINT_ID = "injection_point";
+		final String INJECTION_POINT_ID = "injection_point_7";
 
 		final NodeFactory nodeFactory = SuiElements.vBox()
 				.itemsInjectable(
@@ -185,7 +187,7 @@ public class InjectionTest extends ApplicationTest {
 						SuiElements.button().id("btn2").textContent("Button 2")
 				);
 
-		SuiRegistry.get().inject(INJECTION_POINT_ID,
+		new Provider<>(SuiRegistry.class).get().inject(INJECTION_POINT_ID,
 				new SuiComponent<TestState>(localState -> SuiElements.button().id("ij_btn1").textContent(localState.text))
 		);
 
@@ -227,7 +229,7 @@ public class InjectionTest extends ApplicationTest {
 
 
 	private void injectButtonsInto(final String injectionPointId, final List<Pair<String, String>> buttons) {
-		SuiRegistry.get().inject(injectionPointId,
+		new Provider<>(SuiRegistry.class).get().inject(injectionPointId,
 				buttons.stream()
 						.map(pair -> SuiElements.button().id(pair.getLeft()).textContent(pair.getRight()))
 						.collect(Collectors.toList())

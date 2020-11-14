@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.builders;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
@@ -30,7 +31,8 @@ public interface PropFxNodeBuilder<P extends SuiProperty, T extends Node> {
 									  final SuiNode node,
 									  final T fxNode) {
 		node.getPropertyStore().getSafe(propType).ifPresent(prop -> {
-			PropFxNodeBuilder propFxNodeBuilder = SuiRegistry.get().getEntry(nodeType).getPropFxNodeBuilders().get(propType);
+			final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
+			PropFxNodeBuilder propFxNodeBuilder = suiRegistry.getEntry(nodeType).getPropFxNodeBuilders().get(propType);
 			if (propFxNodeBuilder != null) {
 				propFxNodeBuilder.build(node, prop, fxNode);
 			}

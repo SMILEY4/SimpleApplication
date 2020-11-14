@@ -1,6 +1,5 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import lombok.Getter;
 
 
@@ -9,11 +8,6 @@ import lombok.Getter;
  */
 @Getter
 public final class EventComponentLoaded {
-
-
-	public static final String EVENT_TYPE = "event.type.plugins.component.loaded";
-
-	public static final Tags TAGS = Tags.from(EVENT_TYPE);
 
 
 	/**

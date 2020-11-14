@@ -1,18 +1,12 @@
 package de.ruegnerlukas.simpleapplication.core.plugins;
 
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import lombok.Getter;
 
 /**
  * The event when a component (in the plugin-service) was unloaded.
  */
 @Getter
-public final  class EventComponentUnloaded {
-
-
-	public static final String EVENT_TYPE = "event.type.plugins.component.unloaded";
-
-	public static final Tags TAGS = Tags.from(EVENT_TYPE);
+public final class EventComponentUnloaded {
 
 
 	/**
