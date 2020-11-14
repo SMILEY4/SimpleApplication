@@ -21,6 +21,7 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.common.utils;
 
 	exports de.ruegnerlukas.simpleapplication.core.application;
+	exports de.ruegnerlukas.simpleapplication.core.application.jfx;
 	exports de.ruegnerlukas.simpleapplication.core.extensions;
 	exports de.ruegnerlukas.simpleapplication.core.plugins;
 

@@ -37,11 +37,4 @@ public abstract class ProviderConfiguration {
 	}
 
 
-
-
-	/**
-	 * Configure and add all factories of this configuration here.
-	 */
-	public abstract void configure();
-
 }

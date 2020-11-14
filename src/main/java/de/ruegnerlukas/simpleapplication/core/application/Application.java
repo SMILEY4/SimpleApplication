@@ -4,6 +4,8 @@ import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
+import de.ruegnerlukas.simpleapplication.core.application.jfx.JFXApplication;
+import de.ruegnerlukas.simpleapplication.core.application.jfx.JFXStarter;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +35,7 @@ public class Application {
 	/**
 	 * The starter for the {@link JFXApplication}.
 	 */
-	private JFXApplication.JFXStarter jfxStarter;
+	private JFXStarter jfxStarter;
 
 	/**
 	 * The core provider configuration.
@@ -48,7 +50,7 @@ public class Application {
 	 */
 	public Application(final ApplicationConfiguration configuration) {
 		this.configuration = configuration;
-		setJFXApplicationStarter(new JFXApplication.JFXStarter());
+		setJFXApplicationStarter(new JFXStarter());
 		setCoreProviderConfiguration(new CoreProviderConfiguration());
 	}
 
@@ -75,9 +77,8 @@ public class Application {
 	 * @param stage the primary stage
 	 */
 	private void onStart(final Stage stage) {
-		log.info("Application on start.");
-		setupProviderConfigurations();
-		registerPrimaryStageProvider(stage);
+		log.debug("Application on start.");
+		setupProviders(stage);
 		setupPlugins();
 		log.info("Application started.");
 		eventBusProvider.get().publish(EventApplicationStarted.TAGS, new EventApplicationStarted());
@@ -88,23 +89,13 @@ public class Application {
 
 	/**
 	 * Setup of the providers.
-	 */
-	private void setupProviderConfigurations() {
-		log.info("Setup provider configurations.");
-		coreProviderConfiguration.configure();
-		coreProviderConfiguration.getFactories().forEach(ProviderService::registerFactory);
-		configuration.getProviderFactories().forEach(ProviderService::registerFactory);
-	}
-
-
-
-
-	/**
-	 * Registers the factory for the provider of the primars javafx-stage.
 	 *
 	 * @param stage the primary stage
 	 */
-	private void registerPrimaryStageProvider(final Stage stage) {
+	private void setupProviders(final Stage stage) {
+		log.debug("Setup provider configurations.");
+		coreProviderConfiguration.getFactories().forEach(ProviderService::registerFactory);
+		configuration.getProviderFactories().forEach(ProviderService::registerFactory);
 		ProviderService.registerFactory(new InstanceFactory<>(ApplicationConstants.PROVIDED_PRIMARY_STAGE) {
 			@Override
 			public Stage buildObject() {
@@ -120,7 +111,7 @@ public class Application {
 	 * Setup and load the core plugins and the {@link PluginService}.
 	 */
 	private void setupPlugins() {
-		log.info("Setup plugins.");
+		log.debug("Setup plugins.");
 		final PluginService pluginService = pluginServiceProvider.get();
 		configuration.getPlugins().forEach(pluginService::registerPlugin);
 		pluginService.loadAllPlugins();
@@ -129,13 +120,11 @@ public class Application {
 
 
 
-
-
 	/**
 	 * Called when the javafx application was stopped.
 	 */
 	private void onStop() {
-		log.info("Application on stop.");
+		log.debug("Application stopping.");
 		eventBusProvider.get().publish(EventApplicationStopping.TAGS, new EventApplicationStopping());
 		pluginServiceProvider.get().unloadAllPlugins();
 		ProviderService.cleanup();
@@ -150,7 +139,7 @@ public class Application {
 	 *
 	 * @param starter the starter
 	 */
-	public void setJFXApplicationStarter(final JFXApplication.JFXStarter starter) {
+	public void setJFXApplicationStarter(final JFXStarter starter) {
 		this.jfxStarter = starter;
 	}
 

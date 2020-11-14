@@ -274,7 +274,7 @@ public class TestApplicationV2 {
 
 		@Override
 		public void onLoad() {
-			log.info("LOGGING: onLoad {}.", getId());
+//			log.info("LOGGING: onLoad {}.", getId());
 			final EventBus eventBus = new Provider<>(EventBus.class).get();
 			eventBus.subscribe(SubscriptionData.anyType(), this::onEvent);
 		}
@@ -283,7 +283,7 @@ public class TestApplicationV2 {
 
 
 		private void onEvent(final Object event) {
-			log.info("LOGGING: event in channel='{}'", event);
+//			log.info("LOGGING: event in channel='{}'", event);
 		}
 
 
@@ -291,7 +291,7 @@ public class TestApplicationV2 {
 
 		@Override
 		public void onUnload() {
-			log.info("LOGGING: onUnload {}.", getId());
+//			log.info("LOGGING: onUnload {}.", getId());
 		}
 
 	}

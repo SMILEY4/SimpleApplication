@@ -6,6 +6,7 @@ import de.ruegnerlukas.simpleapplication.common.eventbus.SubscriptionData;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.StringFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.StringProvider;
+import de.ruegnerlukas.simpleapplication.core.application.jfx.JFXStarter;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
@@ -91,7 +92,7 @@ public class ApplicationTest {
 		application.setCoreProviderConfiguration(new TestCoreProviderConfig(new TestEventBus()));
 
 		application.run();
-		assertThat(plugin.getLoadedCounter()).isEqualTo(1); // is 0
+		assertThat(plugin.getLoadedCounter()).isEqualTo(1);
 		assertThat(plugin.getUnloadedCounter()).isEqualTo(0);
 
 		starter.stop();
@@ -102,7 +103,7 @@ public class ApplicationTest {
 
 
 
-	private static class TestJfxStarter extends JFXApplication.JFXStarter {
+	private static class TestJfxStarter extends JFXStarter {
 
 
 		private Runnable stopAction = () -> {
