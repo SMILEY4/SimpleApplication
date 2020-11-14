@@ -4,7 +4,6 @@ import de.ruegnerlukas.simpleapplication.common.eventbus.EventBus;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.ProviderService;
-import de.ruegnerlukas.simpleapplication.core.application.jfx.JFXApplication;
 import de.ruegnerlukas.simpleapplication.core.application.jfx.JFXStarter;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
@@ -34,7 +33,7 @@ public class Application {
 	private final ApplicationConfiguration configuration;
 
 	/**
-	 * The starter for the {@link JFXApplication}.
+	 * The starter for the javafx application.
 	 */
 	private JFXStarter jfxStarter;
 
@@ -109,6 +108,9 @@ public class Application {
 
 
 
+	/**
+	 * Sets up everything regarding simple-ui
+	 */
 	private void setupSimpleUI() {
 		log.debug("Setup SimpleUI.");
 		final SuiRegistry suiRegistry = new SuiRegistry(false, new Provider<>(EventBus.class).get());
@@ -151,7 +153,7 @@ public class Application {
 
 
 	/**
-	 * Set the starter for the {@link JFXApplication}. Usually only for internal purposes.
+	 * Set the starter for the javafx application. Usually only for internal purposes.
 	 *
 	 * @param starter the starter
 	 */

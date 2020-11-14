@@ -8,22 +8,41 @@ SimpleUI is an UI framework/library build on top of JavaFx. Its split into two g
 
 ### 1. Getting Started
 
-Short walkthrough on how to create a small gui just with SimpleUI and JavaFX.
+Short walkthrough on how to create a small UI.
 
 
 
-##### 1. Creating the empty JavaFx Application
+##### 1. Creating the application with an empty Plugin
 
 ```java
-public class SimpleUIDemo extends Application {
+public class SimpleUIDemo {
 
     public static void main(String[] args) {
-        launch(args);
+        final ApplicationConfiguration configuration = new ApplicationConfiguration();
+        configuration.getPlugins().add(new UIPlugin());
+        new Application(configuration).run();
     }
     
-    @Override
-    public void start(Stage stage) {
-        stage.show();
+    static class UIPlugin extends Plugin {
+        
+        public UIPlugin() {
+            super(new PluginInformation("ui-plugin", "UI Plugin", "0.1", false));
+        }
+        
+        @Override
+        public void onLoad() {
+            final EventBus eventBus = new Provider<>(EventBus.class).get();
+            eventBus.subscribe(
+                SubscriptionData.anyType(Tags.contains(ApplicationConstants.EVENT_APPLICATION_STARTED_TYPE)),
+                event -> onApplicationStarted()
+            );
+        }
+        
+        private void onApplicationStarted() {
+            Stage primaryStage = new Provider<Stage>(ApplicationConstants.PROVIDED_PRIMARY_STAGE).get()
+            // do nothing for now 
+        }
+        
     }
     
 }
@@ -31,131 +50,98 @@ public class SimpleUIDemo extends Application {
 
 
 
-##### 2. Initializing SimpleUI
-
-SimpleUI has to setup a few things before the application start and uses simple ui. This can be done with a single call to "SuiRegistry.initialize"
+##### 2. Creating our UI-State
 
 ```java
-public class SimpleUIDemo extends Application {
-
-    //...
-    
-    @Override
-    public void start(Stage stage) {
-        SuiRegistry.initialize();
-        stage.show();
-    }
-    
-}
-```
-
-
-
-##### 3. Creating our UI-State
-
-```java
-public class SimpleUIDemo extends Application {
-
-    //...
-    
-    @Override
-    public void start(Stage stage) {
-        SuiRegistry.initialize();
-        
-        MyState uiState = new MyState();
-        
-        stage.show();
-    }
-
-}
+// ..
 
 class MyState extends SuiState {
-    public String text = "text";
+    public final String text = "text";
 }
+
+// ...
 ```
 
 
 
-##### 4. Creating the scene controller
+##### 3. Creating the scene controller
 
 The scene controller is responsible for managing the scene, i.e. the scene tree, ui state and so on. We can also customize the window here.
 
 ```java
-public class SimpleUIDemo extends Application {
+public class SimpleUIDemo {
 
-    //...
+	// ...
     
-    @Override
-    public void start(Stage stage) {
-        SuiRegistry.initialize();
+    static class UIPlugin extends Plugin {
         
-        MyState myState = new MyState();
+        // ...
         
-		SuiSceneController controller = new SuiSceneController(
-        	myState,
-        	WindowRootElement.windowRoot(stage)        
-            	.title("SimpleUI Demo")
-            	.size(500, 400)
-            	.content(MyState.class, state -> /*TODO*/)
-        );
+        private void onApplicationStarted() {
+            Stage primaryStage = new Provider<Stage>(ApplicationConstants.PROVIDED_PRIMARY_STAGE).get()
+            MyState myState = new MyState();
+            SuiSceneController controller = new SuiSceneController(
+                    myState,
+                    windowRoot(primaryStage)
+                            .title("SimpleUI Demo")
+                            .size(500, 400)
+                            .content(MyState.class, state -> { /* do nothing for now */ })
+            );
+        }
         
-        controller.show();
     }
-
+    
 }
-
-//...
 ```
 
 
 
-##### 5. Creating the user interface
+##### 4. Creating the user interface
 
 We have to tell SimpleUI how to create a scene tree / interface from the current state. To do that we can nest elements and assign properties to then. More on that later.
 
 ```java
-public class SimpleUIDemo extends Application {
+public class SimpleUIDemo {
 
-    //...
-
-    @Override
-    public void start(Stage stage) {
-        SuiRegistry.initialize();
-        
-        MyState myState = new MyState();
-        
-		SuiSceneController controller = new SuiSceneController(
-        	myState,
-        	WindowRootElement.windowRoot(stage)        
-            	.title("SimpleUI Demo")
-            	.size(500, 400)
-            	.content(MyState.class, state -> buildUI(state))
-        );
-        
-        controller.show();
-    }
+	// ...
     
-    private NodeFactory buildUI(MyState currentState) {
-        return SuiElements.button()
-                .textContent("Button: " + currentState.text)
-                .eventAction(".", event -> System.out.println("Click!"));
+    static class UIPlugin extends Plugin {
+        
+        // ...
+        
+        private void onApplicationStarted() {
+            Stage primaryStage = new Provider<Stage>(ApplicationConstants.PROVIDED_PRIMARY_STAGE).get()
+            MyState myState = new MyState();
+            SuiSceneController controller = new SuiSceneController(
+                    myState,
+                    windowRoot(primaryStage)
+                            .title("SimpleUI Demo")
+                            .size(500, 400)
+                            .content(MyState.class, state -> buildUI(state))
+            );
+        }
+
+        private NodeFactory buildUI(MyState currentState) {
+            return SuiElements.button()
+                    .textContent("Button: " + currentState.text)
+                    .eventAction(".", event -> System.out.println("Click!"));
+        }
+        
     }
     
 }
-
-//...
 ```
 
 We now have a scene with a single button with the text "Button: text" which prints "Click!" into the console when pressed.
 
 
 
-##### 6. Making the Interface more dynamic
+##### 5. Making the Interface more dynamic
 
 To change the interface, we have to update the state and the ui will then update accordingly. In this example pressing the button will count up the value in the state and display it in the button.
 
 ```java
-public class SimpleUIDemo extends Application {
+public class SimpleUIDemo {
 
     //...
 
@@ -163,15 +149,18 @@ public class SimpleUIDemo extends Application {
         return SuiElements.button()
                 .textContent("Button: " + currentState.text)
                 .eventAction(event -> {
-                    // we can not set the value of the state directly. This will not update the interface
+                    // we can not set the value of the state directly. Only "state#update" updates the interface
                     currentState.update(state -> state.value++);
                 });
     }
     
-}
-
-class MyState extends SuiState {
-    public int value = 0;
+    //...
+    
+    class MyState extends SuiState {
+        public final String text = "text";
+        public int value = 0;
+    }
+    
 }
 ```
 
@@ -402,8 +391,8 @@ An element consists of tree basic parts:
   Every UI Element has to be registered at the SUIRegistry before it can be used. Pre-Build elements are automatically registered when initializing the registry with "SuiRegistry.initialize();" This step tells SimpleUI what properties the element can use, how to use them and how to construct the JavaFx-node.
 
   ```java
-  // get the instance of the registry. The registry must be initialized first.
-  SuiRegistry registry = SuiRegistry.get();
+  // get the instance of the registry
+  SuiRegistry registry = new Provider<>(SuiRegistry.class).get();
   
   // register the javafx-node builder for the element of the type "MyElement".
   registry.registerBaseFxNodeBuilder(MyElement.class, new MyElementNodeBilder());
@@ -518,7 +507,8 @@ class MyElementNodeBuilder implements AbstractFxNodeBuilder<Button> {
 ##### 6.3.3 Registering the new Element and its properties
 
 ```java
-MyElement.register(SuiRegistry.get());
+SuiRegistry registry = new Provider<>(SuiRegistry.class).get();
+MyElement.register(registry);
 
 public static void register(SuiRegistry registry) {
 
@@ -593,8 +583,10 @@ Already existing elements can be extended with new properties or existing builde
 Example adding/overwriting the property "MyProperty" to the existing "SuiButton"-Element:
 
 ```java
+SuiRegistry registry = new Provider<>(SuiRegistry.class).get();
+
 // new properties can be added to element by just registering them at the registry with the type of the element 
-SuiRegistry.get().registerProperty(
+registry.registerProperty(
     SuiButton.class,
     MyProperty.class,
     new MyProperty.UpdatingBuilder()
@@ -1249,7 +1241,8 @@ style = SuiApplicationStyle.caspian(); // use the default caspian style
 style = SuiApplicationStyle.caspian(Resource.externalRelative("style.css")); // use the caspian style together with custom css
 style = SuiApplicationStyle.cssStylesheet(Resource.externalRelative("style.css")); // use the given css file(s)
 
-SuiRegistry.get().getStyleManager().setApplicationBaseStyle(style); // set the given style as the application style
+SuiRegistry registry = new Provider<>(SuiRegistry.class).get();
+registry.getStyleManager().setApplicationBaseStyle(style); // set the given style as the application style
 ```
 
 

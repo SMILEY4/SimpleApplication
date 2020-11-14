@@ -5,8 +5,6 @@ import de.ruegnerlukas.simpleapplication.common.eventbus.EventBusImpl;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.ProviderConfiguration;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.GenericFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
-import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointService;
-import de.ruegnerlukas.simpleapplication.core.extensions.ExtensionPointServiceImpl;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginService;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginServiceImpl;
 
@@ -38,12 +36,6 @@ public class CoreProviderConfiguration extends ProviderConfiguration {
 			@Override
 			public EventBus buildObject() {
 				return new EventBusImpl();
-			}
-		});
-		add(new InstanceFactory<>(ExtensionPointService.class) {
-			@Override
-			public ExtensionPointService buildObject() {
-				return new ExtensionPointServiceImpl();
 			}
 		});
 	}
