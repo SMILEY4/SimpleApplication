@@ -32,7 +32,6 @@ public interface EventBus {
 	 */
 	void publish(Object event);
 
-
 	/**
 	 * Publish the given object on the event bus with the given tags.
 	 *
@@ -40,6 +39,15 @@ public interface EventBus {
 	 * @param event the object to publish
 	 */
 	void publish(Tags tags, Object event);
+
+	/**
+	 * Publish the given object on the event bus with the given tags.
+	 *
+	 * @param tags  the tags of the event
+	 * @param event the object to publish
+	 * @param wait  wait for all subscribers to finish handling the event
+	 */
+	void publish(Tags tags, Object event, final boolean wait);
 
 
 	/**

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -171,15 +172,17 @@ public class EventBusTest {
 	}
 
 
+
+
 	@Test
 	public void automatic_unsubscribe_on_unload() {
 
 		final EventBus eventBus = new EventBusImpl();
-		final List<String> collectedEvents = new ArrayList<>();
-		final Consumer<String> consumer = collectedEvents::add;
+		final List<Object> collectedEvents = new ArrayList<>();
+		final Consumer<Object> consumer = collectedEvents::add;
 
-		eventBus.subscribe(SubscriptionData.ofType(String.class).filter(Tags.contains("x")).linkedPlugin("test.plugin"), consumer);
-		eventBus.subscribe(SubscriptionData.ofType(String.class).filter(Tags.contains("y")).linkedPlugin("test.component"), consumer);
+		eventBus.subscribe(SubscriptionData.anyType().filter(Tags.contains("x")).linkedPlugin("test.plugin"), consumer);
+		eventBus.subscribe(SubscriptionData.anyType().filter(Tags.contains("y")).linkedPlugin("test.component"), consumer);
 
 		eventBus.publish(ApplicationConstants.EVENT_PLUGIN_UNLOADED_TAGS, new EventPluginUnloaded("test.plugin"));
 		eventBus.publish(ApplicationConstants.EVENT_COMPONENT_UNLOADED_TAGS, new EventComponentUnloaded("test.component"));
@@ -187,6 +190,52 @@ public class EventBusTest {
 		eventBus.publish(Tags.from("x", "b"), "Event 1");
 		eventBus.publish(Tags.from("y", "b"), "Event 2");
 		assertThat(collectedEvents).isEmpty();
+	}
+
+
+	@Test
+	public void wait_for_async_subscribers() {
+
+		final EventBus eventBus = new EventBusImpl();
+		final AtomicInteger counter = new AtomicInteger(0);
+
+		final int N = 5;
+		for(int i=0; i<N; i++) {
+			eventBus.subscribe(SubscriptionData.ofType(String.class).threadMode(ThreadMode.ASYNC), e -> {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException interruptedException) {
+					interruptedException.printStackTrace();
+				}
+				counter.incrementAndGet();
+			});
+		}
+
+		eventBus.publish(Tags.empty(), "My Event", true);
+		assertThat(counter.get()).isEqualTo(N);
+
+	}
+
+	@Test
+	public void dont_wait_for_async_subscribers() {
+
+		final EventBus eventBus = new EventBusImpl();
+		final AtomicInteger counter = new AtomicInteger(0);
+
+		final int N = 5;
+		for(int i=0; i<N; i++) {
+			eventBus.subscribe(SubscriptionData.ofType(String.class).threadMode(ThreadMode.ASYNC), e -> {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException interruptedException) {
+					interruptedException.printStackTrace();
+				}
+				counter.incrementAndGet();
+			});
+		}
+
+		eventBus.publish(Tags.empty(), "My Event", false);
+		assertThat(counter.get()).isNotEqualTo(N);
 	}
 
 

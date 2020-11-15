@@ -13,10 +13,12 @@ import lombok.Getter;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Phaser;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -65,30 +67,53 @@ public class EventBusImpl implements EventBus {
 
 	@Override
 	public void publish(final Tags tags, final Object event) {
+		publish(tags, event, false);
+	}
+
+
+
+
+	@Override
+	public void publish(final Tags tags, final Object event, final boolean wait) {
 		Validations.INPUT.notNull(tags).exception("The tags can not be null.");
 		Validations.INPUT.notNull(event).exception("The event can not be null.");
-		findApplicable(event.getClass(), tags).forEach(wrapper -> {
-			final ThreadMode threadMode = wrapper.getMeta().getThreadMode();
-			@SuppressWarnings ("rawtypes") final Consumer consumer = wrapper.getConsumer();
-			switch (threadMode) {
-				case POSTING:
-					//noinspection unchecked
-					consumer.accept(event);
-					break;
-				case ASYNC:
-					//noinspection unchecked
-					executorService.submit(() -> consumer.accept(event));
-					break;
-				case JFX:
-					//noinspection unchecked
-					Platform.runLater(() -> consumer.accept(event));
-					break;
-				default:
-					Validations.STATE.fail().exception("Unexpected thread-mode: {}.", threadMode);
-			}
+
+		final List<Subscription> applicableSubscriptions = findApplicable(event.getClass(), tags);
+		final Map<ThreadMode, List<Subscription>> groupedSubscriptions = applicableSubscriptions.stream()
+				.collect(Collectors.groupingBy(s -> s.getMeta().getThreadMode()));
+
+		// order of execution is important here
+		// -> e.g.: if POSTING first => wait for sync POSTING to complete, then wait again for ASYNC -> unnecessary wait
+
+		final Phaser phaser = new Phaser(applicableSubscriptions.size() + 1);
+		groupedSubscriptions.getOrDefault(ThreadMode.ASYNC, List.of()).forEach(subscription -> {
+			@SuppressWarnings ("rawtypes") final Consumer consumer = subscription.getConsumer();
+			executorService.submit(() -> {
+				//noinspection unchecked
+				consumer.accept(event);
+				phaser.arrive();
+			});
+		});
+		groupedSubscriptions.getOrDefault(ThreadMode.JFX, List.of()).forEach(subscription -> {
+			@SuppressWarnings ("rawtypes") final Consumer consumer = subscription.getConsumer();
+			Platform.runLater(() -> {
+				//noinspection unchecked
+				consumer.accept(event);
+				phaser.arriveAndDeregister();
+			});
+		});
+		groupedSubscriptions.getOrDefault(ThreadMode.POSTING, List.of()).forEach(subscription -> {
+			@SuppressWarnings ("rawtypes") final Consumer consumer = subscription.getConsumer();
+			//noinspection unchecked
+			consumer.accept(event);
+			phaser.arriveAndDeregister();
 		});
 
-		checkAutoUnsubscibe(tags, event);
+		if (wait) {
+			phaser.arriveAndAwaitAdvance();
+		}
+
+		checkAutoUnsubscribe(tags, event);
 	}
 
 
@@ -100,7 +125,7 @@ public class EventBusImpl implements EventBus {
 	 * @param tags  the tags of the event
 	 * @param event the event
 	 */
-	private void checkAutoUnsubscibe(final Tags tags, final Object event) {
+	private void checkAutoUnsubscribe(final Tags tags, final Object event) {
 		if (Tags.contains(ApplicationConstants.EVENT_PLUGIN_UNLOADED_TYPE).matches(tags)) {
 			final EventPluginUnloaded unloadedEvent = (EventPluginUnloaded) event;
 			subscriptions.removeIf(subscription -> Objects.equals(unloadedEvent.getPluginId(), subscription.getMeta().getPluginId()));
