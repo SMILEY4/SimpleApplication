@@ -1,4 +1,4 @@
-package de.ruegnerlukas.simpleapplication.core.simpleui.core.windows;
+package de.ruegnerlukas.simpleapplication.core.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.factories.InstanceFactory;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
