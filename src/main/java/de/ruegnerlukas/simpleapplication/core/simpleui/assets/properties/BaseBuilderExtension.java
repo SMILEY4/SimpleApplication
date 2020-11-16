@@ -2,6 +2,7 @@ package de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties;
 
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.AnchorProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.CursorProperty;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.DirectFxNodeAccessProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.EffectProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.HGrowProperty;
@@ -35,7 +36,8 @@ public interface BaseBuilderExtension<T extends FactoryExtension> extends Factor
 		StyleIdProperty.PropertyBuilderExtension<T>,
 		CursorProperty.PropertyBuilderExtension<T>,
 		OpacityProperty.PropertyBuilderExtension<T>,
-		EffectProperty.PropertyBuilderExtension<T> {
+		EffectProperty.PropertyBuilderExtension<T>,
+		DirectFxNodeAccessProperty.PropertyBuilderExtension<T> {
 
 
 	/**

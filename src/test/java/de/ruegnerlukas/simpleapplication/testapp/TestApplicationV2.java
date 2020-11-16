@@ -17,6 +17,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -130,6 +131,10 @@ public class TestApplicationV2 {
 					component(TestUIState.class,
 							state -> button()
 									.id("btn.enable-auto")
+									.directFxNodeAccess(
+											Button.class,
+											fxNode -> System.out.println("on build " + fxNode.getText()),
+											fxNode -> System.out.println("on mutate" + fxNode.getText()))
 									.sizeMax(150, 30)
 									.hGrow(Priority.ALWAYS)
 									.textContent("Enable Autosave")
