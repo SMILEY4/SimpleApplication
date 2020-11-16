@@ -1012,6 +1012,37 @@ myState.update(MyState.class, state -> state.setShowWindow1(true)) // -> opens w
 
 
 
+**Injecting Windows as Children**
+
+Other Components can register "WindowRootElements" at the registry together with an id of an injection point. This window element is then considered a child of the element providing the injection point.  Multiple window elements can be registered at the same injection point. 
+
+```java
+SuiSceneController controller = new SuiSceneController(
+	myState,
+	WindowRootElement.windowRoot(stage)
+		.title("Injection Point Demo")
+    	.size(500, 400)
+    	.modal(WindowRootElement.windowRoot()
+               .title("Child Window 1")
+               .size(200, 200)
+        .modalsInjectable("myInjectionPoint")
+);
+     
+...
+    
+SuiRegistry suiRegistry = ...
+suiRegistry.injectChildWindow(
+        "myInjectionPoint",
+        WindowRootElement.windowRoot()
+                .title("Injectioned Window")
+                .size(500, 400)
+);
+```
+
+
+
+
+
 ### 10. Performance Optimizations
 
 #### 10.1 The Id-Property
