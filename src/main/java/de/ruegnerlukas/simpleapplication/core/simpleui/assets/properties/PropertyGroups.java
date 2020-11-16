@@ -27,6 +27,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.An
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.BackgroundProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.BorderProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.CursorProperty;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.DirectFxNodeAccessProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.DisabledProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.EffectProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.HGrowProperty;
@@ -80,7 +81,8 @@ public final class PropertyGroups {
 				PropertyEntry.of(TitleProperty.class, new TitleProperty.UpdatingBuilder()),
 				PropertyEntry.of(CursorProperty.class, new CursorProperty.UpdatingBuilder()),
 				PropertyEntry.of(OpacityProperty.class, new OpacityProperty.UpdatingBuilder()),
-				PropertyEntry.of(EffectProperty.class, new EffectProperty.UpdatingBuilder())
+				PropertyEntry.of(EffectProperty.class, new EffectProperty.UpdatingBuilder()),
+				PropertyEntry.of(DirectFxNodeAccessProperty.class, new DirectFxNodeAccessProperty.UpdatingBuilder())
 		);
 	}
 
