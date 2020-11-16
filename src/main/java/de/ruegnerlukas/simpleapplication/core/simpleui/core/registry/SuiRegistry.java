@@ -34,6 +34,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeU
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.style.SuiStyleManager;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.WindowRootElement;
 import javafx.scene.Node;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,6 +58,11 @@ public class SuiRegistry {
 	 * The list of registered factories ready to be injected at defined points.
 	 */
 	private final Map<String, List<NodeFactory>> injectedFactories = new HashMap<>();
+
+	/**
+	 * The list of registered window root elements ready to be injected at defined points.
+	 */
+	private final Map<String, List<WindowRootElement>> injectedWindowRootElements = new HashMap<>();
 
 
 	/**
@@ -294,8 +300,70 @@ public class SuiRegistry {
 	 * @param injectionPointId the id of the injection point
 	 * @return the factories registered to be injection into the point with the given id
 	 */
-	public List<NodeFactory> getInjected(final String injectionPointId) {
+	public List<NodeFactory> getInjectedNodeFactories(final String injectionPointId) {
 		return injectedFactories.getOrDefault(injectionPointId, List.of());
+	}
+
+
+
+
+	/**
+	 * Registers the given window root elements at an injection point with the given id.
+	 *
+	 * @param injectionPointId   the id of the injection point
+	 * @param windowRootElements the window root elements to inject
+	 */
+	public void injectChildWindow(final String injectionPointId, final List<WindowRootElement> windowRootElements) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null");
+		Validations.INPUT.notNull(windowRootElements).exception("The window elements can not be null");
+		Validations.INPUT.containsNoNull(windowRootElements).exception("The  window elements can not contain null-entries");
+		windowRootElements.forEach(factory -> injectChildWindow(injectionPointId, windowRootElements));
+	}
+
+
+
+
+	/**
+	 * Registers the given window root elements at an injection point with the given id.
+	 *
+	 * @param injectionPointId   the id of the injection point
+	 * @param windowRootElements the window root elements to inject
+	 */
+	public void injectChildWindow(final String injectionPointId, final WindowRootElement... windowRootElements) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null");
+		Validations.INPUT.notNull(windowRootElements).exception("The window elements can not be null");
+		Validations.INPUT.containsNoNull(windowRootElements).exception("The window elements can not contain null-entries");
+		for (WindowRootElement factory : windowRootElements) {
+			injectChildWindow(injectionPointId, factory);
+		}
+	}
+
+
+
+
+	/**
+	 * Registers the given window root element at an injection point with the given id.
+	 *
+	 * @param injectionPointId  the id of the injection point
+	 * @param windowRootElement the window root element to inject
+	 */
+	public void injectChildWindow(final String injectionPointId, final WindowRootElement windowRootElement) {
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null");
+		Validations.INPUT.notNull(windowRootElement).exception("The window element can not be null");
+		injectedWindowRootElements
+				.computeIfAbsent(injectionPointId, k -> new ArrayList<>())
+				.add(windowRootElement);
+	}
+
+
+
+
+	/**
+	 * @param injectionPointId the id of the injection point
+	 * @return the window root elements registered to be injection into the point with the given id
+	 */
+	public List<WindowRootElement> getInjectedWindowElements(final String injectionPointId) {
+		return injectedWindowRootElements.getOrDefault(injectionPointId, List.of());
 	}
 
 

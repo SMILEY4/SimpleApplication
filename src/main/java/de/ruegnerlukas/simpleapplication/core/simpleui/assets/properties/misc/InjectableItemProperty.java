@@ -53,7 +53,7 @@ public class InjectableItemProperty extends ItemProperty {
 	@Override
 	public NodeFactory getFactory() {
 		final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
-		final List<NodeFactory> injected = suiRegistry.getInjected(injectionPointId);
+		final List<NodeFactory> injected = suiRegistry.getInjectedNodeFactories(injectionPointId);
 		if (!injected.isEmpty()) {
 			return injected.get(injected.size() - 1);
 		} else {

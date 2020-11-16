@@ -116,7 +116,7 @@ public class InjectableItemListProperty extends ItemListProperty {
 	@Override
 	public List<NodeFactory> getFactories() {
 		final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
-		final List<NodeFactory> injected = suiRegistry.getInjected(injectionPointId);
+		final List<NodeFactory> injected = suiRegistry.getInjectedNodeFactories(injectionPointId);
 		final List<NodeFactory> factories = new ArrayList<>(injected.size() + defaultFactories.size());
 		factories.addAll(defaultFactories);
 		factories.addAll(injectionIndexMarker.getIndex(factories), injected);

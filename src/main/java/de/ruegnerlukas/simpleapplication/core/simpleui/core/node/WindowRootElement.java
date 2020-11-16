@@ -1,7 +1,9 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.node;
 
+import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComponentRenderer;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.style.SuiWindowBaseStyle;
 import javafx.geometry.Dimension2D;
@@ -10,7 +12,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -101,8 +105,12 @@ public final class WindowRootElement {
 	/**
 	 * the possible child windows that can be opened
 	 */
-	@Getter
 	private final List<WindowRootElement> modalWindowRootElements = new ArrayList<>();
+
+	/**
+	 * The ids of the injection points for additional child window elements
+	 */
+	private final Set<String> modalInjectionPointIds = new HashSet<>();
 
 	/**
 	 * the condition for when to show this window
@@ -124,6 +132,22 @@ public final class WindowRootElement {
 	 */
 	private WindowRootElement(final Stage stage) {
 		this.stage = stage;
+	}
+
+
+
+
+	/**
+	 * @return the added child window root elements (including injected ones)
+	 */
+	public List<WindowRootElement> getModalWindowRootElements() {
+		final List<WindowRootElement> windowElements = new ArrayList<>(this.modalWindowRootElements);
+		final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
+		modalInjectionPointIds.forEach(injectionPointId -> {
+			final List<WindowRootElement> injected = suiRegistry.getInjectedWindowElements(injectionPointId);
+			windowElements.addAll(injected);
+		});
+		return windowElements;
 	}
 
 
@@ -279,9 +303,23 @@ public final class WindowRootElement {
 	 * @return this window root element for chaining
 	 */
 	public WindowRootElement modal(final WindowRootElement windowRootElement) {
-		// validate: windowRootElement must be unique
 		modalWindowRootElements.add(windowRootElement);
 		return this;
 	}
+
+
+
+
+	/**
+	 * Adds the option to inject {@link WindowRootElement}s as child windows of this one.
+	 *
+	 * @param injectionPointId the id of the injectionPoint
+	 * @return this window root element for chaining
+	 */
+	public WindowRootElement modalsInjectable(final String injectionPointId) {
+		modalInjectionPointIds.add(injectionPointId);
+		return this;
+	}
+
 
 }
