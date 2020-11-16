@@ -117,9 +117,9 @@ public class SuiRegistryTest {
 
 		suiRegistry.inject(INJECTION_POINT_ID, List.of(factory1, factory2, factory3));
 
-		assertThat(suiRegistry.getInjected("otherInjectionPoint")).isEmpty();
-		assertThat(suiRegistry.getInjected(INJECTION_POINT_ID)).hasSize(3);
-		assertThat(suiRegistry.getInjected(INJECTION_POINT_ID)).containsExactly(factory1, factory2, factory3);
+		assertThat(suiRegistry.getInjectedNodeFactories("otherInjectionPoint")).isEmpty();
+		assertThat(suiRegistry.getInjectedNodeFactories(INJECTION_POINT_ID)).hasSize(3);
+		assertThat(suiRegistry.getInjectedNodeFactories(INJECTION_POINT_ID)).containsExactly(factory1, factory2, factory3);
 	}
 
 
