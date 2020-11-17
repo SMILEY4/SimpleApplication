@@ -2,6 +2,8 @@ package de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc;
 
 
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedCheckbox;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedRadioButton;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedToggleButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
@@ -82,6 +84,70 @@ public class CheckedProperty extends SuiProperty {
 
 		@Override
 		public MutationResult remove(final CheckedProperty property, final SuiNode node, final ExtendedCheckbox fxNode) {
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class RadioButtonUpdatingBuilder implements PropFxNodeUpdatingBuilder<CheckedProperty, ExtendedRadioButton> {
+
+
+		@Override
+		public void build(final SuiNode node, final CheckedProperty property, final ExtendedRadioButton fxNode) {
+			fxNode.select(property.isChecked());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final CheckedProperty property, final SuiNode node, final ExtendedRadioButton fxNode) {
+			fxNode.select(property.isChecked());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final CheckedProperty property, final SuiNode node, final ExtendedRadioButton fxNode) {
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class ToggleButtonUpdatingBuilder implements PropFxNodeUpdatingBuilder<CheckedProperty, ExtendedToggleButton> {
+
+
+		@Override
+		public void build(final SuiNode node, final CheckedProperty property, final ExtendedToggleButton fxNode) {
+			fxNode.select(property.isChecked());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final CheckedProperty property, final SuiNode node, final ExtendedToggleButton fxNode) {
+			fxNode.select(property.isChecked());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final CheckedProperty property, final SuiNode node, final ExtendedToggleButton fxNode) {
 			return MutationResult.MUTATED;
 		}
 

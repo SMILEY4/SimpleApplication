@@ -11,6 +11,7 @@ import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfigurati
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.InjectionIndexMarker;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
@@ -32,9 +33,10 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.button;
-import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.choiceBox;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.colorPicker;
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.component;
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.hBox;
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.label;
@@ -142,9 +144,11 @@ public class TestApplicationV2 {
 
 			new Provider<>(SuiRegistry.class).get().inject("ij-point.toolbar",
 					component(TestUIState.class,
-							state -> choiceBox()
-									.id("cb.test")
-									.contentItems(List.of("a", "b", "c", "d"), "b")));
+							state -> colorPicker()
+									.id("cp.test")
+									.eventSelectedColor(".", e -> System.out.println("color: " + e.getColor()))
+					)
+			);
 
 			controller.show();
 		}
@@ -195,7 +199,33 @@ public class TestApplicationV2 {
 									.item(
 											vBox()
 													.id("content.box")
-													.items(state.getContent().stream().map(e -> buildContentItem(state, e)))
+													.items(() -> {
+														final List<NodeFactory> items = new ArrayList<>();
+														items.add(
+																SuiElements.toggleGroup("toggle-group", s -> System.out.println("group: " + s))
+														);
+														items.add(
+																SuiElements.toggleButton()
+																		.id("radio-1")
+																		.textContent("Radio 1")
+																		.checked(true)
+																		.toggleGroup("toggle-group")
+														);
+														items.add(
+																SuiElements.toggleButton()
+																		.id("radio-2")
+																		.textContent("Radio 2")
+																		.toggleGroup("toggle-group")
+														);
+														items.add(
+																SuiElements.toggleButton()
+																		.id("radio-3")
+																		.textContent("Radio 3")
+																		.toggleGroup("toggle-group")
+														);
+														items.addAll(state.getContent().stream().map(e -> buildContentItem(state, e)).collect(Collectors.toList()));
+														return items;
+													})
 									)
 					);
 		}

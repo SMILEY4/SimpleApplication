@@ -119,6 +119,7 @@ public class ChildNodeBuilder {
 		if (factories.size() < CREATE_CHILD_LIST_ASYNC_CUTOFF) {
 			childNodes = factories.stream()
 					.map(factory -> factory.create(state, tags))
+					.filter(Objects::nonNull)
 					.collect(Collectors.toList());
 		} else {
 			childNodes = LoopUtils.asyncCollectingLoop(factories, factory -> factory.create(state, tags));

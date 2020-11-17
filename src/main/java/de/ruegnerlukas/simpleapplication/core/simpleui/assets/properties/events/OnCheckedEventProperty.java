@@ -1,7 +1,10 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedCheckbox;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedRadioButton;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedToggleButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.events.CheckedEventData;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.events.SuiEmittingEventListener;
@@ -9,7 +12,6 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.events.SuiEventListe
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.FactoryExtension;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import lombok.Getter;
 
 import java.util.function.Consumer;
@@ -103,6 +105,72 @@ public class OnCheckedEventProperty extends AbstractEventListenerProperty<Checke
 
 		@Override
 		public MutationResult remove(final OnCheckedEventProperty property, final SuiNode node, final ExtendedCheckbox fxNode) {
+			fxNode.setListener(null);
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class RadioButtonUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnCheckedEventProperty, ExtendedRadioButton> {
+
+
+		@Override
+		public void build(final SuiNode node, final OnCheckedEventProperty property, final ExtendedRadioButton fxNode) {
+			fxNode.setListener(property.getListenerProxy());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final OnCheckedEventProperty property, final SuiNode node, final ExtendedRadioButton fxNode) {
+			fxNode.setListener(property.getListenerProxy());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final OnCheckedEventProperty property, final SuiNode node, final ExtendedRadioButton fxNode) {
+			fxNode.setListener(null);
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+
+
+	public static class ToggleButtonUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnCheckedEventProperty, ExtendedToggleButton> {
+
+
+		@Override
+		public void build(final SuiNode node, final OnCheckedEventProperty property, final ExtendedToggleButton fxNode) {
+			fxNode.setListener(property.getListenerProxy());
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final OnCheckedEventProperty property, final SuiNode node, final ExtendedToggleButton fxNode) {
+			fxNode.setListener(property.getListenerProxy());
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final OnCheckedEventProperty property, final SuiNode node, final ExtendedToggleButton fxNode) {
 			fxNode.setListener(null);
 			return MutationResult.MUTATED;
 		}

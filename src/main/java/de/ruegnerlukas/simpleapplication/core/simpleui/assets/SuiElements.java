@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiAnchor
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiCheckbox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiChoiceBox;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiColorPicker;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComponentRenderer;
@@ -16,6 +17,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiList;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiMenuBar;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiRadioButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSeparator;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSlider;
@@ -24,8 +26,12 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSplitP
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextField;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiToggleButton;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiToggleGroup;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
+
+import java.util.function.Consumer;
 
 public final class SuiElements {
 
@@ -71,6 +77,30 @@ public final class SuiElements {
 	 */
 	public static SuiButton.SuiButtonBuilder button() {
 		return new SuiButton.SuiButtonBuilder();
+	}
+
+
+
+
+	/**
+	 * Build a new radio button
+	 *
+	 * @return the builder for a radio button
+	 */
+	public static SuiRadioButton.SuiRadioButtonBuilder radioButton() {
+		return new SuiRadioButton.SuiRadioButtonBuilder();
+	}
+
+
+
+
+	/**
+	 * Build a new toggle button
+	 *
+	 * @return the builder for a toggle button
+	 */
+	public static SuiToggleButton.SuiToggleButtonBuilder toggleButton() {
+		return new SuiToggleButton.SuiToggleButtonBuilder();
 	}
 
 
@@ -146,6 +176,18 @@ public final class SuiElements {
 	 */
 	public static SuiDatePicker.SuiDatePickerBuilder datePicker() {
 		return new SuiDatePicker.SuiDatePickerBuilder();
+	}
+
+
+
+
+	/**
+	 * Build a new color picker
+	 *
+	 * @return the builder for color picker
+	 */
+	public static SuiColorPicker.SuiColorPickerBuilder colorPicker() {
+		return new SuiColorPicker.SuiColorPickerBuilder();
 	}
 
 
@@ -326,6 +368,33 @@ public final class SuiElements {
 	 */
 	public static SuiVBox.SuiVBoxBuilder vBox() {
 		return new SuiVBox.SuiVBoxBuilder();
+	}
+
+
+
+
+	/**
+	 * Build a new toggle group
+	 *
+	 * @param groupId the id of this toggle group
+	 * @return the builder for a toggle group
+	 */
+	public static SuiToggleGroup.SuiToggleGroupBuilder toggleGroup(final String groupId) {
+		return toggleGroup(groupId, null);
+	}
+
+
+
+
+	/**
+	 * Build a new toggle group
+	 *
+	 * @param groupId           the id of this toggle group
+	 * @param selectionListener a listener listening to the selected item
+	 * @return the builder for a toggle group
+	 */
+	public static SuiToggleGroup.SuiToggleGroupBuilder toggleGroup(final String groupId, final Consumer<String> selectionListener) {
+		return new SuiToggleGroup.SuiToggleGroupBuilder(groupId, selectionListener);
 	}
 
 

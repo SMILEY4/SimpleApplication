@@ -1,35 +1,35 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.events;
 
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
-import de.ruegnerlukas.simpleapplication.core.simpleui.assets.events.DateSelectedEventData;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.events.ColorSelectedEventData;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.events.SuiEmittingEventListener;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.events.SuiEventListener;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.FactoryExtension;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.ColorPicker;
 import lombok.Getter;
 
-public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<DateSelectedEventData> {
+public class OnSelectedColorEventProperty extends AbstractEventListenerProperty<ColorSelectedEventData> {
 
 
 	/**
-	 * The listener for events with {@link DateSelectedEventData}.
+	 * The listener for events with {@link ColorSelectedEventData}.
 	 */
 	@Getter
-	private final SuiEventListener<DateSelectedEventData> listener;
+	private final SuiEventListener<ColorSelectedEventData> listener;
 
 
 
 
 	/**
 	 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiProperty#getPropertyId()}.
-	 * @param listener   the listener for events with {@link DateSelectedEventData}.
+	 * @param listener   the listener for events with {@link ColorSelectedEventData}.
 	 */
-	public OnSelectedDateEventProperty(final String propertyId, final SuiEventListener<DateSelectedEventData> listener) {
-		super(OnSelectedDateEventProperty.class, propertyId);
+	public OnSelectedColorEventProperty(final String propertyId, final SuiEventListener<ColorSelectedEventData> listener) {
+		super(OnSelectedColorEventProperty.class, propertyId);
 		Validations.INPUT.notNull(listener).exception("The listener may not be null");
 		this.listener = listener;
 	}
@@ -42,12 +42,12 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 
 		/**
 		 * @param propertyId see {@link de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiProperty#getPropertyId()}.
-		 * @param listener   the listener for events with {@link DateSelectedEventData}.
+		 * @param listener   the listener for events with {@link ColorSelectedEventData}.
 		 * @return this builder for chaining
 		 */
 		@SuppressWarnings ("unchecked")
-		default T eventSelectedDate(final String propertyId, final SuiEventListener<DateSelectedEventData> listener) {
-			getBuilderProperties().add(new OnSelectedDateEventProperty(propertyId, listener));
+		default T eventSelectedColor(final String propertyId, final SuiEventListener<ColorSelectedEventData> listener) {
+			getBuilderProperties().add(new OnSelectedColorEventProperty(propertyId, listener));
 			return (T) this;
 		}
 
@@ -56,8 +56,8 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 		 * @return this builder for chaining
 		 */
 		@SuppressWarnings ("unchecked")
-		default T emitEventSelectedDate(final Tags tags) {
-			getBuilderProperties().add(new OnSelectedDateEventProperty(".", new SuiEmittingEventListener<>(tags)));
+		default T emitEventSelectedColor(final Tags tags) {
+			getBuilderProperties().add(new OnSelectedColorEventProperty(".", new SuiEmittingEventListener<>(tags)));
 			return (T) this;
 		}
 
@@ -68,13 +68,11 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 
 
 
-	public static class DatePickerUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedDateEventProperty, DatePicker> {
+	public static class ColorPickerUpdatingBuilder implements PropFxNodeUpdatingBuilder<OnSelectedColorEventProperty, ColorPicker> {
 
 
 		@Override
-		public void build(final SuiNode node,
-						  final OnSelectedDateEventProperty property,
-						  final DatePicker fxNode) {
+		public void build(final SuiNode node, final OnSelectedColorEventProperty property, final ColorPicker fxNode) {
 			setListener(fxNode, property);
 		}
 
@@ -82,9 +80,7 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 
 
 		@Override
-		public MutationResult update(final OnSelectedDateEventProperty property,
-									 final SuiNode node,
-									 final DatePicker fxNode) {
+		public MutationResult update(final OnSelectedColorEventProperty property, final SuiNode node, final ColorPicker fxNode) {
 			setListener(fxNode, property);
 			return MutationResult.MUTATED;
 		}
@@ -93,9 +89,7 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 
 
 		@Override
-		public MutationResult remove(final OnSelectedDateEventProperty property,
-									 final SuiNode node,
-									 final DatePicker fxNode) {
+		public MutationResult remove(final OnSelectedColorEventProperty property, final SuiNode node, final ColorPicker fxNode) {
 			fxNode.setOnAction(null);
 			return MutationResult.MUTATED;
 		}
@@ -109,8 +103,8 @@ public class OnSelectedDateEventProperty extends AbstractEventListenerProperty<D
 		 * @param fxNode   the fx node to listen to
 		 * @param property the property with the listener to add
 		 */
-		private void setListener(final DatePicker fxNode, final OnSelectedDateEventProperty property) {
-			fxNode.setOnAction(e -> property.getListener().onEvent(new DateSelectedEventData(fxNode.getValue(), e)));
+		private void setListener(final ColorPicker fxNode, final OnSelectedColorEventProperty property) {
+			fxNode.setOnAction(e -> property.getListener().onEvent(new ColorSelectedEventData(fxNode.getValue(), e)));
 		}
 
 	}
