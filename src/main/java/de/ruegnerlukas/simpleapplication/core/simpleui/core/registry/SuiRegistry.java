@@ -18,6 +18,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiList;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiMenuBar;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiRadioButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSeparator;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSlider;
@@ -26,6 +27,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSplitP
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextField;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiToggleGroup;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeBuilder;
@@ -33,9 +35,10 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeU
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiProperty;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.style.SuiStyleManager;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.WindowRootElement;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.style.SuiStyleManager;
 import javafx.scene.Node;
+import javafx.scene.control.ToggleGroup;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +47,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 public class SuiRegistry {
@@ -64,6 +68,10 @@ public class SuiRegistry {
 	 */
 	private final Map<String, List<WindowRootElement>> injectedWindowRootElements = new HashMap<>();
 
+	/**
+	 * All current toggle groups
+	 */
+	private final Map<String, ToggleGroup> toggleGroups = new HashMap<>();
 
 	/**
 	 * The event bus for global simpleui-events.
@@ -103,6 +111,7 @@ public class SuiRegistry {
 			SuiSeparator.register(this);
 			SuiLabel.register(this);
 			SuiButton.register(this);
+			SuiRadioButton.register(this);
 			SuiCheckbox.register(this);
 			SuiChoiceBox.register(this);
 			SuiComboBox.register(this);
@@ -123,6 +132,7 @@ public class SuiRegistry {
 			SuiTabPane.register(this);
 			SuiSplitPane.register(this);
 			SuiAccordion.register(this);
+			SuiToggleGroup.register(this);
 		}
 		this.eventBus = suiEventBus;
 		this.styleManager = new SuiStyleManager();
@@ -348,7 +358,7 @@ public class SuiRegistry {
 	 * @param windowRootElement the window root element to inject
 	 */
 	public void injectChildWindow(final String injectionPointId, final WindowRootElement windowRootElement) {
-		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null");
+		Validations.INPUT.notEmpty(injectionPointId).exception("The injection point id can not be null or empty");
 		Validations.INPUT.notNull(windowRootElement).exception("The window element can not be null");
 		injectedWindowRootElements
 				.computeIfAbsent(injectionPointId, k -> new ArrayList<>())
@@ -364,6 +374,34 @@ public class SuiRegistry {
 	 */
 	public List<WindowRootElement> getInjectedWindowElements(final String injectionPointId) {
 		return injectedWindowRootElements.getOrDefault(injectionPointId, List.of());
+	}
+
+
+
+
+	/**
+	 * Registers the given toggle group with the given id
+	 *
+	 * @param groupId the id of the group
+	 * @param group   the group to register
+	 */
+	public void registerToggleGroup(final String groupId, final ToggleGroup group) {
+		Validations.INPUT.notEmpty(groupId).exception("The group id can not be null or empty");
+		Validations.INPUT.notNull(group).exception("The group can not be null");
+		toggleGroups.put(groupId, group);
+	}
+
+
+
+
+	/**
+	 * Finds a registered toggle group with the given id
+	 *
+	 * @param groupId the id of the group
+	 * @return the found groupe
+	 */
+	public Optional<ToggleGroup> getToggleGroup(final String groupId) {
+		return Optional.ofNullable(toggleGroups.get(groupId));
 	}
 
 

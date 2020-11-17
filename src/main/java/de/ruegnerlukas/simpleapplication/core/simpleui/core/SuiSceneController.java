@@ -2,20 +2,21 @@ package de.ruegnerlukas.simpleapplication.core.simpleui.core;
 
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.resources.Resource;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
+import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.WindowRootElement;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.profiler.SuiProfiler;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiStateListener;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiStateUpdate;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
-import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.WindowRootElement;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -216,7 +217,6 @@ public class SuiSceneController implements SuiStateListener {
 			if (!shouldBeOpen && isCurrentlyOpen) {
 				openController.get().close();
 				childControllers.remove(openController.get());
-
 			}
 		});
 	}
@@ -252,6 +252,7 @@ public class SuiSceneController implements SuiStateListener {
 	 * @param alreadyClosed whether the window was already closed (if so, only the controller has to be disposed)
 	 */
 	private void close(final boolean alreadyClosed) {
+		dropNodes(windowRootElement.getStage().getScene());
 		if (!alreadyClosed) {
 			windowRootElement.getStage().close();
 		}
@@ -259,6 +260,18 @@ public class SuiSceneController implements SuiStateListener {
 		if (getWindowRootElement().getOnClose() != null) {
 			getWindowRootElement().getOnClose().accept(state);
 		}
+	}
+
+
+
+
+	/**
+	 * Removes nodes from scene. Nodes can then listen if they are part of a scene.
+	 *
+	 * @param scene the scene
+	 */
+	private void dropNodes(final Scene scene) {
+		scene.setRoot(new Pane());
 	}
 
 

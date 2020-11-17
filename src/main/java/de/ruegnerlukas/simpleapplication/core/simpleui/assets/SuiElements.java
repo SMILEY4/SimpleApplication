@@ -16,6 +16,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiLabel;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiLabeledSlider;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiList;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiMenuBar;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiRadioButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiScrollPane;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSeparator;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSlider;
@@ -24,8 +25,11 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSplitP
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextField;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiToggleGroup;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
+
+import java.util.function.Consumer;
 
 public final class SuiElements {
 
@@ -71,6 +75,18 @@ public final class SuiElements {
 	 */
 	public static SuiButton.SuiButtonBuilder button() {
 		return new SuiButton.SuiButtonBuilder();
+	}
+
+
+
+
+	/**
+	 * Build a new radio button
+	 *
+	 * @return the builder for a radio button
+	 */
+	public static SuiRadioButton.SuiRadioButtonBuilder radioButton() {
+		return new SuiRadioButton.SuiRadioButtonBuilder();
 	}
 
 
@@ -326,6 +342,33 @@ public final class SuiElements {
 	 */
 	public static SuiVBox.SuiVBoxBuilder vBox() {
 		return new SuiVBox.SuiVBoxBuilder();
+	}
+
+
+
+
+	/**
+	 * Build a new toggle group
+	 *
+	 * @param groupId the id of this toggle group
+	 * @return the builder for a toggle group
+	 */
+	public static SuiToggleGroup.SuiToggleGroupBuilder toggleGroup(final String groupId) {
+		return toggleGroup(groupId, null);
+	}
+
+
+
+
+	/**
+	 * Build a new toggle group
+	 *
+	 * @param groupId           the id of this toggle group
+	 * @param selectionListener a listener listening to the selected item
+	 * @return the builder for a toggle group
+	 */
+	public static SuiToggleGroup.SuiToggleGroupBuilder toggleGroup(final String groupId, final Consumer<String> selectionListener) {
+		return new SuiToggleGroup.SuiToggleGroupBuilder(groupId, selectionListener);
 	}
 
 

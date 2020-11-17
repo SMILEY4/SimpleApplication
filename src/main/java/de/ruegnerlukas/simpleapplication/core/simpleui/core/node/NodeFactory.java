@@ -8,6 +8,11 @@ public interface NodeFactory {
 
 
 	/**
+	 * A node that will not be added to the final scene tree
+	 */
+	SuiNode EMPTY_NODE = null;
+
+	/**
 	 * Create a node from the given state.
 	 *
 	 * @param state the current state

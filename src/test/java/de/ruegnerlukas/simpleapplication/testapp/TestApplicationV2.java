@@ -11,6 +11,7 @@ import de.ruegnerlukas.simpleapplication.core.application.ApplicationConfigurati
 import de.ruegnerlukas.simpleapplication.core.application.ApplicationConstants;
 import de.ruegnerlukas.simpleapplication.core.plugins.Plugin;
 import de.ruegnerlukas.simpleapplication.core.plugins.PluginInformation;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.InjectionIndexMarker;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiSceneController;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
@@ -32,6 +33,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.button;
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.choiceBox;
@@ -195,7 +197,33 @@ public class TestApplicationV2 {
 									.item(
 											vBox()
 													.id("content.box")
-													.items(state.getContent().stream().map(e -> buildContentItem(state, e)))
+													.items(() -> {
+														final List<NodeFactory> items = new ArrayList<>();
+														items.add(
+																SuiElements.toggleGroup("toggle-group", System.out::println)
+														);
+														items.add(
+																SuiElements.radioButton()
+																		.id("radio-1")
+																		.textContent("Radio 1")
+																		.checked(true)
+																		.toggleGroup("toggle-group")
+														);
+														items.add(
+																SuiElements.radioButton()
+																		.id("radio-2")
+																		.textContent("Radio 2")
+																		.toggleGroup("toggle-group")
+														);
+														items.add(
+																SuiElements.radioButton()
+																		.id("radio-3")
+																		.textContent("Radio 3")
+																		.toggleGroup("toggle-group")
+														);
+														items.addAll(state.getContent().stream().map(e -> buildContentItem(state, e)).collect(Collectors.toList()));
+														return items;
+													})
 									)
 					);
 		}
