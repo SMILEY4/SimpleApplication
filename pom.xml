@@ -4,7 +4,7 @@
 
     <groupId>de.ruegnerlukas.simpleapplication</groupId>
     <artifactId>simpleapplication</artifactId>
-    <version>0.6</version>
+    <version>0.7-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
@@ -183,10 +183,6 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>${javafx-maven-plugin.version}</version>
-                <configuration>
-                    <!--<executable>${jdk-path}</executable>-->
-                    <mainClass>${main-class}</mainClass>
-                </configuration>
             </plugin>
 
             <plugin>
