@@ -26,6 +26,7 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.core.application.jfx;
 	exports de.ruegnerlukas.simpleapplication.core.plugins;
 
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets;
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements;
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements;
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.suimenu;
