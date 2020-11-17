@@ -46,6 +46,7 @@ public final class ProviderService {
 		} else {
 			key = FactoryKey.fromName(factory.getProvidedName());
 		}
+		System.out.println("put factory " + factory + " " + key);
 		FACTORIES.put(key, factory);
 	}
 

@@ -30,7 +30,15 @@ public class FixedEventSource<T> extends EventSource<T> {
 	 * Triggers the event of this fixed event source.
 	 */
 	public void trigger() {
-		trigger(getEvent());
+		super.trigger(getEvent());
+	}
+
+
+
+
+	@Override
+	public void trigger(final T event) {
+		throw new UnsupportedOperationException("Can not trigger custom events via a fixed event source");
 	}
 
 }

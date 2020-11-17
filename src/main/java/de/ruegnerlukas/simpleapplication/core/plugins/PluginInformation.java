@@ -50,12 +50,33 @@ public class PluginInformation {
 	 * @param version     the version of the plugin
 	 * @param autoload    whether the plugin is marked as autoload
 	 */
-	public PluginInformation(final String id, final String displayName, final String version, final boolean autoload) {
+	public PluginInformation(final String id,
+							 final String displayName,
+							 final String version,
+							 final boolean autoload) {
+		this(id, displayName, version, autoload, Set.of());
+	}
+
+
+
+
+	/**
+	 * @param id            the id of the plugin
+	 * @param displayName   the name of the plugin
+	 * @param version       the version of the plugin
+	 * @param autoload      whether the plugin is marked as autoload
+	 * @param dependencyIds all ids of other plugins or components the plugin depends on.
+	 */
+	public PluginInformation(final String id,
+							 final String displayName,
+							 final String version,
+							 final boolean autoload,
+							 final Set<String> dependencyIds) {
 		this.id = id;
 		this.displayName = displayName;
 		this.version = version;
 		this.autoload = autoload;
+		this.dependencyIds.addAll(dependencyIds);
 	}
-
 
 }

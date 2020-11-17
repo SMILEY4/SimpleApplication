@@ -43,7 +43,9 @@ public abstract class GenericFactory<R, P> implements AbstractFactory<P> {
 	 * @param requestType  The type of the provider / whether to use the {@link GenericFactory#providedType}
 	 *                     or {@link GenericFactory#providedName}
 	 */
-	protected GenericFactory(final ObjectType objectType, final Class<R> providedType, final String providedName,
+	protected GenericFactory(final ObjectType objectType,
+							 final Class<R> providedType,
+							 final String providedName,
 							 final RequestType requestType) {
 		this.objectType = objectType;
 		this.providedType = providedType;

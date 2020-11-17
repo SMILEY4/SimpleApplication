@@ -4,7 +4,7 @@
 
     <groupId>de.ruegnerlukas.simpleapplication</groupId>
     <artifactId>simpleapplication</artifactId>
-    <version>0.5</version>
+    <version>0.6</version>
 
     <distributionManagement>
         <repository>
@@ -16,7 +16,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main-class>de.ruegnerlukas.test.TestApplication</main-class>
         <!--<jdk-path>path/to/jdk/bin/java</jdk-path>-->
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -27,11 +26,13 @@
         <lombok.version>1.18.10</lombok.version>
         <mapstruct-processor.version>1.3.0.Final</mapstruct-processor.version>
         <slf4j.version>2.0.0-alpha1</slf4j.version>
-        <logback-classic.version>1.3.0-alpha5</logback-classic.version>
+        <sysout-over-slf4j.version>1.0.2</sysout-over-slf4j.version>
+        <logback-classic.version>1.3.0-alpha4</logback-classic.version>
         <logback-colorizer.version>1.0.1</logback-colorizer.version>
         <jackson-core.version>2.10.1</jackson-core.version>
+        <exp4j.version>0.4.8</exp4j.version>
         <!-- Tests-->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <assertj.version>3.14.0</assertj.version>
         <mockito.version>3.2.4</mockito.version>
         <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
@@ -69,6 +70,11 @@
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
+            <groupId>uk.org.lidalia</groupId>
+            <artifactId>sysout-over-slf4j</artifactId>
+            <version>${sysout-over-slf4j.version}</version>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback-classic.version}</version>
@@ -94,6 +100,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.objecthunter</groupId>
+            <artifactId>exp4j</artifactId>
+            <version>${exp4j.version}</version>
         </dependency>
         <!-- Tests -->
         <dependency>
@@ -142,8 +153,10 @@
 
     </dependencies>
 
+
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -165,6 +178,7 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -174,6 +188,7 @@
                     <mainClass>${main-class}</mainClass>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -196,7 +211,9 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
         </plugins>
     </build>
+
 
 </project>

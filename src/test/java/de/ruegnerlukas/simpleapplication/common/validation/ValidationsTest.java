@@ -120,6 +120,7 @@ public class ValidationsTest {
 	@Test
 	public void testContainsAtLeastCollection() {
 		assertFalse(Validations.STATE.containsAtLeast(List.of("a", "b"), 1).failed());
+		assertFalse(Validations.STATE.containsAtLeast(List.of("a", "b"), 2).failed());
 		assertTrue(Validations.STATE.containsAtLeast(List.of("a", "b"), 4).failed());
 		assertTrue(Validations.STATE.containsAtLeast((ArrayList) null, 1).failed());
 	}
@@ -130,6 +131,7 @@ public class ValidationsTest {
 	@Test
 	public void testContainsAtLeastArray() {
 		assertFalse(Validations.STATE.containsAtLeast(new String[]{"a", "b"}, 1).failed());
+		assertFalse(Validations.STATE.containsAtLeast(new String[]{"a", "b"}, 2).failed());
 		assertTrue(Validations.STATE.containsAtLeast(new String[]{"a", "b"}, 4).failed());
 		assertTrue(Validations.STATE.containsAtLeast((String[]) null, 1).failed());
 	}
@@ -140,6 +142,7 @@ public class ValidationsTest {
 	@Test
 	public void testContainsAtMostCollection() {
 		assertFalse(Validations.STATE.containsAtMost(List.of("a", "b"), 4).failed());
+		assertFalse(Validations.STATE.containsAtMost(List.of("a", "b"), 2).failed());
 		assertTrue(Validations.STATE.containsAtMost(List.of("a", "b"), 1).failed());
 		assertTrue(Validations.STATE.containsAtMost((ArrayList) null, 4).failed());
 	}
@@ -150,6 +153,7 @@ public class ValidationsTest {
 	@Test
 	public void testContainsAtMostArray() {
 		assertFalse(Validations.STATE.containsAtMost(new String[]{"a", "b"}, 4).failed());
+		assertFalse(Validations.STATE.containsAtMost(new String[]{"a", "b"}, 2).failed());
 		assertTrue(Validations.STATE.containsAtMost(new String[]{"a", "b"}, 1).failed());
 		assertTrue(Validations.STATE.containsAtMost((String[]) null, 4).failed());
 	}
@@ -159,9 +163,9 @@ public class ValidationsTest {
 
 	@Test
 	public void testContainsExactlyCollection() {
-		assertFalse(Validations.STATE.containsExactly(List.of("a", "b"), 2).failed());
-		assertTrue(Validations.STATE.containsExactly(List.of("a", "b"), 4).failed());
-		assertTrue(Validations.STATE.containsExactly((ArrayList) null, 2).failed());
+		assertFalse(Validations.STATE.hasSize(List.of("a", "b"), 2).failed());
+		assertTrue(Validations.STATE.hasSize(List.of("a", "b"), 4).failed());
+		assertTrue(Validations.STATE.hasSize((ArrayList) null, 2).failed());
 	}
 
 
@@ -169,9 +173,9 @@ public class ValidationsTest {
 
 	@Test
 	public void testContainsExactlyArray() {
-		assertFalse(Validations.STATE.containsExactly(new String[]{"a", "b"}, 2).failed());
-		assertTrue(Validations.STATE.containsExactly(new String[]{"a", "b"}, 4).failed());
-		assertTrue(Validations.STATE.containsExactly((String[]) null, 2).failed());
+		assertFalse(Validations.STATE.hasSize(new String[]{"a", "b"}, 2).failed());
+		assertTrue(Validations.STATE.hasSize(new String[]{"a", "b"}, 4).failed());
+		assertTrue(Validations.STATE.hasSize((String[]) null, 2).failed());
 	}
 
 
@@ -292,6 +296,18 @@ public class ValidationsTest {
 
 
 	@Test
+	public void testIsValidIndex() {
+		assertTrue(Validations.STATE.isValidIndex(-3, List.of(1, 2, 3, 4, 5)).failed());
+		assertTrue(Validations.STATE.isValidIndex(10, List.of(1, 2, 3, 4, 5)).failed());
+		assertTrue(Validations.STATE.isValidIndex(5, List.of(1, 2, 3, 4, 5)).failed());
+		assertTrue(Validations.STATE.isValidIndex(0, List.of(1, 2, 3, 4, 5)).successful());
+		assertTrue(Validations.STATE.isValidIndex(3, List.of(1, 2, 3, 4, 5)).successful());
+	}
+
+
+
+
+	@Test
 	public void testIsTrue() {
 		assertFalse(Validations.STATE.isTrue(true).failed());
 		assertTrue(Validations.STATE.isTrue(false).failed());
@@ -367,9 +383,12 @@ public class ValidationsTest {
 
 		assertFalse(Validations.STATE.isEqual(2, 2).failed());
 		assertFalse(Validations.STATE.isEqual(objA, objA).failed());
+		assertFalse(Validations.STATE.isEqual(null, null).failed());
 		assertTrue(Validations.STATE.isEqual(1, 2).failed());
 		assertTrue(Validations.STATE.isEqual("a", "b").failed());
 		assertTrue(Validations.STATE.isEqual(objA, objB).failed());
+		assertTrue(Validations.STATE.isEqual(objA, null).failed());
+		assertTrue(Validations.STATE.isEqual(null, objB).failed());
 	}
 
 
@@ -384,6 +403,9 @@ public class ValidationsTest {
 		assertFalse(Validations.STATE.notEqual(1, 2).failed());
 		assertFalse(Validations.STATE.notEqual("a", "b").failed());
 		assertFalse(Validations.STATE.notEqual(objA, objB).failed());
+		assertFalse(Validations.STATE.notEqual(objA, null).failed());
+		assertFalse(Validations.STATE.notEqual(null, objA).failed());
+		assertTrue(Validations.STATE.notEqual(null, null).failed());
 		assertTrue(Validations.STATE.notEqual(2, 2).failed());
 		assertTrue(Validations.STATE.notEqual(objA, objA).failed());
 	}

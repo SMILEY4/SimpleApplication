@@ -1,10 +1,10 @@
 package de.ruegnerlukas.simpleapplication.common.validation;
 
-import de.ruegnerlukas.simpleapplication.common.callbacks.Callback;
-import de.ruegnerlukas.simpleapplication.common.callbacks.EmptyCallback;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
+
+import java.util.function.Consumer;
 
 @AllArgsConstructor
 @Slf4j
@@ -93,10 +93,10 @@ public class ValidationResult {
 
 
 	/**
-	 * @param callback the callback to execute. The parameter of the callback is a boolean indicating whether the validation failed.
+	 * @param action the action to execute. The parameter of the action is a boolean indicating whether the validation failed.
 	 */
-	public ValidationResult then(final Callback<Boolean> callback) {
-		callback.execute(failed);
+	public ValidationResult then(final Consumer<Boolean> action) {
+		action.accept(failed);
 		return this;
 	}
 
@@ -104,11 +104,11 @@ public class ValidationResult {
 
 
 	/**
-	 * @param callback the callback to execute when the validation failed.
+	 * @param action the action to execute when the validation failed.
 	 */
-	public ValidationResult onFail(final EmptyCallback callback) {
+	public ValidationResult onFail(final Runnable action) {
 		if (this.failed) {
-			callback.execute();
+			action.run();
 		}
 		return this;
 	}
@@ -117,11 +117,11 @@ public class ValidationResult {
 
 
 	/**
-	 * @param callback the callback to execute when the validation was successful
+	 * @param action the action to execute when the validation was successful
 	 */
-	public ValidationResult onSuccess(final EmptyCallback callback) {
+	public ValidationResult onSuccess(final Runnable action) {
 		if (!this.failed) {
-			callback.execute();
+			action.run();
 		}
 		return this;
 	}

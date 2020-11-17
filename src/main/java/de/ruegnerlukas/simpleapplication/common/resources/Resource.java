@@ -11,9 +11,9 @@ public final class Resource {
 
 
 	/**
-	 * The seperator for file paths.
+	 * The separator for file paths.
 	 */
-	private static final String PATH_SEPERATOR_TOKEN = "/";
+	private static final String PATH_SEPARATOR_TOKEN = "/";
 
 	/**
 	 * The path to the resource.
@@ -62,8 +62,8 @@ public final class Resource {
 	 * @return the create resource
 	 */
 	public static Resource externalRelative(final String path) {
-		final String rootDirectory = getRootDirectory().getPath().replaceAll("\\\\", PATH_SEPERATOR_TOKEN);
-		return Resource.external(rootDirectory + PATH_SEPERATOR_TOKEN + path);
+		final String rootDirectory = getRootDirectory().getPath().replaceAll("\\\\", PATH_SEPARATOR_TOKEN);
+		return Resource.external(rootDirectory + PATH_SEPARATOR_TOKEN + path);
 	}
 
 
@@ -85,7 +85,7 @@ public final class Resource {
 	 */
 	private Resource(final String path, final boolean internal) {
 		Validations.INPUT.notBlank(path).exception("The path must not be null or empty.");
-		this.path = path;
+		this.path = path.replace("\\", PATH_SEPARATOR_TOKEN);
 		this.internal = internal;
 	}
 
@@ -150,5 +150,21 @@ public final class Resource {
 		Validations.STATE.isTrue(isInternal()).exception("The resource '{}' must be an internal file.", getPath());
 		return this.getClass().getClassLoader().getResourceAsStream(getPath());
 	}
+
+
+
+
+	/**
+	 * Check if this resource is equal to the given one
+	 *
+	 * @param resource the other resource to compare to this one
+	 * @return whether the two resources are equal
+	 */
+	public boolean isEqual(final Resource resource) {
+		return resource != null
+				&& this.isInternal() == resource.isInternal()
+				&& this.getPath().equals(resource.getPath());
+	}
+
 
 }
