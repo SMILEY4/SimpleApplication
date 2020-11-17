@@ -25,6 +25,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSplitP
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextField;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiToggleButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiToggleGroup;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
@@ -87,6 +88,18 @@ public final class SuiElements {
 	 */
 	public static SuiRadioButton.SuiRadioButtonBuilder radioButton() {
 		return new SuiRadioButton.SuiRadioButtonBuilder();
+	}
+
+
+
+
+	/**
+	 * Build a new toggle button
+	 *
+	 * @return the builder for a toggle button
+	 */
+	public static SuiToggleButton.SuiToggleButtonBuilder toggleButton() {
+		return new SuiToggleButton.SuiToggleButtonBuilder();
 	}
 
 

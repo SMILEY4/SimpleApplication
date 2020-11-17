@@ -4,17 +4,21 @@ package de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedRadioButton;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedToggleButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.AbstractFxNodeBuilder;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.NodeFactory;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import javafx.scene.Node;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Consumer;
 
+@Slf4j
 public final class SuiToggleGroup {
 
 
@@ -65,18 +69,36 @@ public final class SuiToggleGroup {
 			if (selectionListener != null) {
 				group.selectedToggleProperty().addListener((value, prev, next) -> {
 					if (next != null) {
-						final Object suiNodeId = next.getUserData();
-						if (suiNodeId != null) {
-							selectionListener.accept((String) suiNodeId);
-						} else {
-							selectionListener.accept(((ExtendedRadioButton) next).getText());
-						}
+						onToggleSelected(next);
 					}
 				});
 			}
 			final SuiRegistry suiRegistry = new Provider<>(SuiRegistry.class).get();
 			suiRegistry.registerToggleGroup(groupId, group);
 			return NodeFactory.EMPTY_NODE;
+		}
+
+
+
+
+		/**
+		 * Called when a new toggle of the group was selected
+		 *
+		 * @param selected the new selected toggle
+		 */
+		private void onToggleSelected(final Toggle selected) {
+			final Object suiNodeId = selected.getUserData();
+			if (suiNodeId != null) {
+				selectionListener.accept((String) suiNodeId);
+			} else {
+				if (selected instanceof ExtendedRadioButton) {
+					selectionListener.accept(((ExtendedRadioButton) selected).getText());
+				} else if (selected instanceof ExtendedToggleButton) {
+					selectionListener.accept(((ExtendedToggleButton) selected).getText());
+				} else {
+					log.warn("Unknown toggle type: " + selected);
+				}
+			}
 		}
 
 	}

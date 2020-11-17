@@ -200,23 +200,23 @@ public class TestApplicationV2 {
 													.items(() -> {
 														final List<NodeFactory> items = new ArrayList<>();
 														items.add(
-																SuiElements.toggleGroup("toggle-group", System.out::println)
+																SuiElements.toggleGroup("toggle-group", s -> System.out.println("group: " + s))
 														);
 														items.add(
-																SuiElements.radioButton()
+																SuiElements.toggleButton()
 																		.id("radio-1")
 																		.textContent("Radio 1")
 																		.checked(true)
 																		.toggleGroup("toggle-group")
 														);
 														items.add(
-																SuiElements.radioButton()
+																SuiElements.toggleButton()
 																		.id("radio-2")
 																		.textContent("Radio 2")
 																		.toggleGroup("toggle-group")
 														);
 														items.add(
-																SuiElements.radioButton()
+																SuiElements.toggleButton()
 																		.id("radio-3")
 																		.textContent("Radio 3")
 																		.toggleGroup("toggle-group")

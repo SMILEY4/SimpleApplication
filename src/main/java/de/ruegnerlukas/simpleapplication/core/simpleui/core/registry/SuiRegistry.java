@@ -27,6 +27,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiSplitP
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTabPane;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextArea;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiTextField;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiToggleButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiToggleGroup;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiVBox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.AbstractFxNodeBuilder;
@@ -112,6 +113,7 @@ public class SuiRegistry {
 			SuiLabel.register(this);
 			SuiButton.register(this);
 			SuiRadioButton.register(this);
+			SuiToggleButton.register(this);
 			SuiCheckbox.register(this);
 			SuiChoiceBox.register(this);
 			SuiComboBox.register(this);

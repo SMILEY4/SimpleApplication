@@ -4,6 +4,7 @@ package de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc;
 import de.ruegnerlukas.simpleapplication.common.instanceproviders.providers.Provider;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedRadioButton;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedToggleButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.builders.PropFxNodeUpdatingBuilder;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
@@ -96,6 +97,45 @@ public class ToggleGroupProperty extends SuiProperty {
 
 		@Override
 		public MutationResult remove(final ToggleGroupProperty property, final SuiNode node, final ExtendedRadioButton fxNode) {
+			fxNode.setToggleGroup(null);
+			return MutationResult.MUTATED;
+		}
+
+	}
+
+
+
+
+	public static class ToggleButtonUpdatingBuilder implements PropFxNodeUpdatingBuilder<ToggleGroupProperty, ExtendedToggleButton> {
+
+
+		/**
+		 * The provider for the sui registry
+		 */
+		private final Provider<SuiRegistry> suiRegistryProvider = new Provider<>(SuiRegistry.class);
+
+
+
+
+		@Override
+		public void build(final SuiNode node, final ToggleGroupProperty property, final ExtendedToggleButton fxNode) {
+			suiRegistryProvider.get().getToggleGroup(property.getGroupId()).ifPresent(fxNode::setToggleGroup);
+		}
+
+
+
+
+		@Override
+		public MutationResult update(final ToggleGroupProperty property, final SuiNode node, final ExtendedToggleButton fxNode) {
+			suiRegistryProvider.get().getToggleGroup(property.getGroupId()).ifPresent(fxNode::setToggleGroup);
+			return MutationResult.MUTATED;
+		}
+
+
+
+
+		@Override
+		public MutationResult remove(final ToggleGroupProperty property, final SuiNode node, final ExtendedToggleButton fxNode) {
 			fxNode.setToggleGroup(null);
 			return MutationResult.MUTATED;
 		}
