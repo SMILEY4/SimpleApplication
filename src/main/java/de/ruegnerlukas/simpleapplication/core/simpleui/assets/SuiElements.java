@@ -5,6 +5,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiAnchor
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiCheckbox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiChoiceBox;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiColorPicker;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComponent;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComponentRenderer;
@@ -175,6 +176,18 @@ public final class SuiElements {
 	 */
 	public static SuiDatePicker.SuiDatePickerBuilder datePicker() {
 		return new SuiDatePicker.SuiDatePickerBuilder();
+	}
+
+
+
+
+	/**
+	 * Build a new color picker
+	 *
+	 * @return the builder for color picker
+	 */
+	public static SuiColorPicker.SuiColorPickerBuilder colorPicker() {
+		return new SuiColorPicker.SuiColorPickerBuilder();
 	}
 
 

@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.button;
-import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.choiceBox;
+import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.colorPicker;
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.component;
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.hBox;
 import static de.ruegnerlukas.simpleapplication.core.simpleui.assets.SuiElements.label;
@@ -144,9 +144,11 @@ public class TestApplicationV2 {
 
 			new Provider<>(SuiRegistry.class).get().inject("ij-point.toolbar",
 					component(TestUIState.class,
-							state -> choiceBox()
-									.id("cb.test")
-									.contentItems(List.of("a", "b", "c", "d"), "b")));
+							state -> colorPicker()
+									.id("cp.test")
+									.eventSelectedColor(".", e -> System.out.println("color: " + e.getColor()))
+					)
+			);
 
 			controller.show();
 		}

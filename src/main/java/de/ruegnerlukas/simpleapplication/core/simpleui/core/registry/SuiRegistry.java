@@ -9,6 +9,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiAnchor
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiButton;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiCheckbox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiChoiceBox;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiColorPicker;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiComboBox;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiContainer;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.SuiDatePicker;
@@ -120,6 +121,7 @@ public class SuiRegistry {
 			SuiTextField.register(this);
 			SuiTextArea.register(this);
 			SuiDatePicker.register(this);
+			SuiColorPicker.register(this);
 			SuiSlider.register(this);
 			SuiLabeledSlider.register(this);
 			SuiSpinner.register(this);
