@@ -8,7 +8,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.RegionB
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.events.OnActionEventProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.FontProperty;
-import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.IconProperty;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.GraphicProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TextFillProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TooltipProperty;
@@ -56,7 +56,7 @@ public final class SuiButton {
 			RegionBuilderExtension<SuiButtonBuilder>,
 			CommonEventBuilderExtension<SuiButtonBuilder>,
 			TextContentProperty.PropertyBuilderExtension<SuiButtonBuilder>,
-			IconProperty.PropertyBuilderExtension<SuiButtonBuilder>,
+			GraphicProperty.PropertyBuilderExtension<SuiButtonBuilder>,
 			WrapTextProperty.PropertyBuilderExtension<SuiButtonBuilder>,
 			AlignmentProperty.PropertyBuilderExtension<SuiButtonBuilder>,
 			TooltipProperty.PropertyBuilderExtension<SuiButtonBuilder>,
@@ -93,7 +93,7 @@ public final class SuiButton {
 		registry.registerProperties(SuiButton.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiButton.class, List.of(
 				PropertyEntry.of(TextContentProperty.class, new TextContentProperty.LabeledUpdatingBuilder()),
-				PropertyEntry.of(IconProperty.class, new IconProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(GraphicProperty.class, new GraphicProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(OnActionEventProperty.class, new OnActionEventProperty.ButtonBaseUpdatingBuilder()),
