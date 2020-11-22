@@ -10,7 +10,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.events.
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.CheckedProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.FontProperty;
-import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.IconProperty;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.GraphicProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TextFillProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TooltipProperty;
@@ -57,7 +57,7 @@ public final class SuiCheckbox {
 			RegionBuilderExtension<SuiCheckBoxBuilder>,
 			CommonEventBuilderExtension<SuiCheckBoxBuilder>,
 			TextContentProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
-			IconProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
+			GraphicProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
 			WrapTextProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
 			AlignmentProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
 			TooltipProperty.PropertyBuilderExtension<SuiCheckBoxBuilder>,
@@ -95,7 +95,7 @@ public final class SuiCheckbox {
 		registry.registerProperties(SuiCheckbox.class, PropertyGroups.commonEventProperties());
 		registry.registerProperties(SuiCheckbox.class, List.of(
 				PropertyEntry.of(TextContentProperty.class, new TextContentProperty.LabeledUpdatingBuilder()),
-				PropertyEntry.of(IconProperty.class, new IconProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(GraphicProperty.class, new GraphicProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(CheckedProperty.class, new CheckedProperty.CheckBoxUpdatingBuilder()),

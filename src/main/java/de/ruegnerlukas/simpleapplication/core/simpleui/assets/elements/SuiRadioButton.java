@@ -12,7 +12,7 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.events.
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.AlignmentProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.CheckedProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.FontProperty;
-import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.IconProperty;
+import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.GraphicProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.IdProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TextContentProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.TextFillProperty;
@@ -62,7 +62,7 @@ public final class SuiRadioButton {
 			RegionBuilderExtension<SuiRadioButtonBuilder>,
 			CommonEventBuilderExtension<SuiRadioButtonBuilder>,
 			TextContentProperty.PropertyBuilderExtension<SuiRadioButtonBuilder>,
-			IconProperty.PropertyBuilderExtension<SuiRadioButtonBuilder>,
+			GraphicProperty.PropertyBuilderExtension<SuiRadioButtonBuilder>,
 			WrapTextProperty.PropertyBuilderExtension<SuiRadioButtonBuilder>,
 			AlignmentProperty.PropertyBuilderExtension<SuiRadioButtonBuilder>,
 			TooltipProperty.PropertyBuilderExtension<SuiRadioButtonBuilder>,
@@ -103,7 +103,7 @@ public final class SuiRadioButton {
 		registry.registerProperties(SuiRadioButton.class, List.of(
 				PropertyEntry.of(IdProperty.class, new SuiRadioButton.IdUpdatingBuilder()),
 				PropertyEntry.of(TextContentProperty.class, new TextContentProperty.LabeledUpdatingBuilder()),
-				PropertyEntry.of(IconProperty.class, new IconProperty.LabeledUpdatingBuilder()),
+				PropertyEntry.of(GraphicProperty.class, new GraphicProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(WrapTextProperty.class, new WrapTextProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(AlignmentProperty.class, new AlignmentProperty.LabeledUpdatingBuilder()),
 				PropertyEntry.of(TooltipProperty.class, new TooltipProperty.ControlUpdatingBuilder()),

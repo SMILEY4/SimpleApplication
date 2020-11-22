@@ -86,7 +86,6 @@ public class StyleClassProperty extends SuiProperty {
 
 		@Override
 		public void build(final SuiNode node, final StyleClassProperty property, final Node fxNode) {
-			fxNode.getStyleClass().clear();
 			fxNode.getStyleClass().addAll(property.getStyleClasses());
 		}
 
@@ -95,7 +94,9 @@ public class StyleClassProperty extends SuiProperty {
 
 		@Override
 		public MutationResult update(final StyleClassProperty property, final SuiNode node, final Node fxNode) {
-			fxNode.getStyleClass().clear();
+			node.getPropertyStore().getSafe(StyleClassProperty.class).ifPresent(prevProp -> {
+				fxNode.getStyleClass().removeAll(prevProp.getStyleClasses());
+			});
 			fxNode.getStyleClass().addAll(property.getStyleClasses());
 			return MutationResult.MUTATED;
 		}
@@ -105,7 +106,7 @@ public class StyleClassProperty extends SuiProperty {
 
 		@Override
 		public MutationResult remove(final StyleClassProperty property, final SuiNode node, final Node fxNode) {
-			fxNode.getStyleClass().clear();
+			fxNode.getStyleClass().removeAll(property.getStyleClasses());
 			return MutationResult.MUTATED;
 		}
 
