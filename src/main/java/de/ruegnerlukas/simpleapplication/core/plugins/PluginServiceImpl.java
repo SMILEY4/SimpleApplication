@@ -158,8 +158,10 @@ public class PluginServiceImpl implements PluginService {
 				}
 			}
 			if (canLoadDirectly(plugin.getId())) {
-				forceLoadPlugin(plugin);
-				log.info("The plugin with the id '{}' was loaded.", plugin.getId());
+				if (!isLoaded(plugin.getId())) {
+					forceLoadPlugin(plugin);
+					log.info("The plugin with the id '{}' was loaded.", plugin.getId());
+				}
 			} else {
 				log.warn("The plugin with the id '{}' could not be loaded.", plugin.getId());
 			}
