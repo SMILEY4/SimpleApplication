@@ -149,7 +149,11 @@ public class SuiStyleManager {
 				: ((SuiWindowBaseStyle) style).getCssStylesheets();
 		if (cssStyleSheets != null) {
 			for (Resource resStylesheet : cssStyleSheets) {
-				window.getScene().getStylesheets().add("file:" + resStylesheet.getPath());
+				String path = resStylesheet.getPath();
+				if (!resStylesheet.isInternal()) {
+					path = "file:" + path;
+				}
+				window.getScene().getStylesheets().add(path);
 			}
 		}
 	}
