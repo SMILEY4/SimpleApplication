@@ -119,15 +119,6 @@ public class SuiLabeledSliderTest extends SuiElementTest {
 		assertSlider(slider, 10, 30, 15);
 		assertEvent(capturedEvents, 10.0, 15.0);
 
-		// set new value via label as math expression
-		syncJfxThread(() -> {
-			label.setText("30-3");
-			label.fireEvent(new ActionEvent());
-		});
-		assertThat(label.getText()).isEqualTo("27 units");
-		assertSlider(slider, 10, 30, 27);
-		assertEvent(capturedEvents, 15.0, 27.0);
-
 	}
 
 
