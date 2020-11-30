@@ -269,6 +269,32 @@ public class PluginServiceTest {
 
 
 
+	@Test
+	public void testBugPluginLoadedTwice() {
+
+		final String ID_A = "test.plugin.a";
+		final String ID_B = "test.plugin.b";
+
+		final Plugin pluginA = buildPluginMock(ID_A, Set.of(), true);
+		final Plugin pluginB = buildPluginMock(ID_B, Set.of(ID_A), true);
+
+		final PluginService pluginService = createPluginService(pluginA, pluginB);
+
+		assertThat(pluginService.isLoaded(ID_A)).isFalse();
+		assertThat(pluginService.isLoaded(ID_B)).isFalse();
+
+		pluginService.loadAllPlugins();
+
+		assertThat(pluginService.isLoaded(ID_A)).isTrue();
+		assertThat(pluginService.isLoaded(ID_B)).isTrue();
+
+		// bug = plugin b get loaded twice
+		verify(pluginA, times(1)).onLoad();
+		verify(pluginB, times(1)).onLoad();
+
+	}
+
+
 
 	private Plugin buildPluginMock(final String id, Set<String> dependencies) {
 		return buildPluginMock(id, dependencies, false);

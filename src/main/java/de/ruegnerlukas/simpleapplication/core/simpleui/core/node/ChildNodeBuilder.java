@@ -1,13 +1,13 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.node;
 
+import de.ruegnerlukas.simpleapplication.common.tags.TagConditionExpression;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
 import de.ruegnerlukas.simpleapplication.common.validation.Validations;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ItemListProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.ItemProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.MutationBehaviourProperty;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.misc.MutationBehaviourProperty.MutationBehaviour;
-import de.ruegnerlukas.simpleapplication.common.tags.TagConditionExpression;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
 import lombok.extern.slf4j.Slf4j;
 
@@ -128,7 +128,14 @@ public class ChildNodeBuilder {
 		if (checkValidIds(childNodes)) {
 			return childNodes;
 		} else {
-			Validations.STATE.fail().exception("The ids of the child nodes must be unique.");
+			Validations.STATE.fail().exception("The ids of the child nodes must be unique [{}]",
+					childNodes
+							.stream()
+							.map(node -> node.getPropertyStore().getId())
+							.filter(Optional::isPresent)
+							.map(Optional::get)
+							.collect(Collectors.joining(", "))
+			);
 			return List.of();
 		}
 	}

@@ -1,5 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements;
 
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements.ExtendedSlider;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.BaseBuilderExtension;
 import de.ruegnerlukas.simpleapplication.core.simpleui.assets.properties.CommonEventBuilderExtension;
@@ -22,7 +23,6 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.builders.BuilderExtensionContainer;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.registry.SuiRegistry;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.state.SuiState;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -31,8 +31,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import net.objecthunter.exp4j.Expression;
-import net.objecthunter.exp4j.ExpressionBuilder;
 
 import java.util.List;
 import java.util.Set;
@@ -340,20 +338,10 @@ public final class SuiLabeledSlider {
 		 */
 		private Double valueFromString(final String string, final double current, final double min, final double max) {
 			try {
-				final Expression expression = new ExpressionBuilder(string)
-						.variable("x")
-						.build()
-						.setVariable("x", current);
-				final double result = expression.evaluate();
-				return Math.max(min, Math.min(result, max));
+				return Double.parseDouble(string);
 			} catch (Exception e) {
 				return null;
 			}
-//			try {
-//				return Double.parseDouble(string);
-//			} catch (Exception e) {
-//				return null;
-//			}
 		}
 
 

@@ -93,13 +93,13 @@ public class PluginServiceImpl implements PluginService {
 		if (isLoaded(id)) {
 			log.debug("The component with the id '{}' is already loaded and will not be loaded again.", id);
 		} else {
-			log.debug("Loading component with the id '{}'.", id);
+			log.info("Loading component with the id '{}'.", id);
 			if (!graph.exists(id)) {
 				graph.insert(id);
 			}
 			graph.setLoaded(id);
 			eventBusProvider.get().publish(ApplicationConstants.EVENT_COMPONENT_LOADED_TAGS, new EventComponentLoaded(id));
-			log.info("The component with the id '{}' was loaded.", id);
+			log.debug("The component with the id '{}' was loaded.", id);
 			checkAutoloadPlugins();
 		}
 	}
@@ -117,7 +117,6 @@ public class PluginServiceImpl implements PluginService {
 			log.debug("Loading plugin with the id '{}'.", plugin.getId());
 			if (canLoadDirectly(plugin.getId())) {
 				forceLoadPlugin(plugin);
-				log.info("The plugin with the id '{}' was loaded.", plugin.getId());
 				checkAutoloadPlugins();
 			} else {
 				log.warn("The plugin with the id '{}' could not be loaded: missing dependencies.", plugin.getId());
@@ -134,6 +133,7 @@ public class PluginServiceImpl implements PluginService {
 	 * @param plugin the plugin to load
 	 */
 	private void forceLoadPlugin(final Plugin plugin) {
+		log.info("Loading the plugin with the id {}.", plugin.getId());
 		graph.setLoaded(plugin.getId());
 		plugin.onLoad();
 		eventBusProvider.get().publish(ApplicationConstants.EVENT_PLUGIN_LOADED_TAGS, new EventPluginLoaded(plugin.getId()));
@@ -158,8 +158,10 @@ public class PluginServiceImpl implements PluginService {
 				}
 			}
 			if (canLoadDirectly(plugin.getId())) {
-				forceLoadPlugin(plugin);
-				log.info("The plugin with the id '{}' was loaded.", plugin.getId());
+				if (!isLoaded(plugin.getId())) {
+					forceLoadPlugin(plugin);
+					log.info("The plugin with the id '{}' was loaded.", plugin.getId());
+				}
 			} else {
 				log.warn("The plugin with the id '{}' could not be loaded.", plugin.getId());
 			}
@@ -186,16 +188,13 @@ public class PluginServiceImpl implements PluginService {
 			for (String dependency : dependOn) {
 				if (!isLoaded(dependency)) {
 					if (isRegistered(dependency)) {
-						log.debug("Unloading dependency (plugin) with the id '{}'.", dependency);
 						forceUnloadPlugin(registeredPlugins.get(dependency));
 					} else {
-						log.debug("Unloading dependency (component) with the id '{}'.", dependency);
 						forceUnloadComponent(dependency);
 					}
 				}
 			}
 			forceUnloadComponent(id);
-			log.info("The component with the id '{}' was unloaded.", id);
 		} else {
 			log.warn("The component with the id '{}' is already unloaded and will not be unloaded again.", id);
 		}
@@ -210,6 +209,7 @@ public class PluginServiceImpl implements PluginService {
 	 * @param id the id of the component to unload
 	 */
 	private void forceUnloadComponent(final String id) {
+		log.info("Unloading the component with the id {}", id);
 		graph.setUnloaded(id);
 		eventBusProvider.get().publish(ApplicationConstants.EVENT_COMPONENT_UNLOADED_TAGS, new EventComponentUnloaded(id));
 	}
@@ -228,7 +228,6 @@ public class PluginServiceImpl implements PluginService {
 			for (String dependency : dependOn) {
 				if (isLoaded(dependency)) {
 					if (isRegistered(dependency)) {
-						log.debug("Unloading dependency (plugin) with the id '{}'.", dependency);
 						forceUnloadPlugin(registeredPlugins.get(dependency));
 					} else {
 						log.debug("Unloading dependency (component) with the id '{}'.", dependency);
@@ -252,6 +251,7 @@ public class PluginServiceImpl implements PluginService {
 	 * @param plugin the plugin to unload
 	 */
 	private void forceUnloadPlugin(final Plugin plugin) {
+		log.info("Unloading plugin with the id {}", plugin.getId());
 		graph.setUnloaded(plugin.getId());
 		plugin.onUnload();
 		eventBusProvider.get().publish(ApplicationConstants.EVENT_PLUGIN_UNLOADED_TAGS, new EventPluginUnloaded(plugin.getId()));

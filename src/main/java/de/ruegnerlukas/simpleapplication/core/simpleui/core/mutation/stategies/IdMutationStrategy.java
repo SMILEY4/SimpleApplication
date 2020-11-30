@@ -1,6 +1,6 @@
 package de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies;
 
-import de.ruegnerlukas.simpleapplication.common.utils.LoopUtils;
+import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.common.utils.Pair;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.SuiServices;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.MutationResult;
@@ -12,7 +12,6 @@ import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.operations.
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.operations.SwapOperation;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.ListTransformer.BaseTransformation;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.mutation.stategies.ListTransformer.ReplaceTransformation;
-import de.ruegnerlukas.simpleapplication.common.tags.Tags;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNode;
 import de.ruegnerlukas.simpleapplication.core.simpleui.core.node.SuiNodeChildListener;
 
@@ -23,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
- * This strategy can be applied in any situation where all participating child nodes haven an id property.
+ * This strategy can be applied in any situation where all participating child nodes have an id property.
  */
 public class IdMutationStrategy implements ChildNodesMutationStrategy {
 
@@ -142,17 +141,17 @@ public class IdMutationStrategy implements ChildNodesMutationStrategy {
 																final SuiNode target,
 																final Tags tags,
 																final Set<Pair<String, Integer>> permanents) {
-		return LoopUtils.asyncCollectingLoop(new ArrayList<>(permanents), true, permanent -> {
+		final List<ReplaceTransformation> resultTransformations = new ArrayList<>();
+		permanents.forEach(permanent -> {
 			final String nodeId = permanent.getLeft();
 			final int index = permanent.getRight();
 			final SuiNode childOriginal = original.getChildNodeStore().find(nodeId);
 			final SuiNode childTarget = target.getChildNodeStore().get(index);
 			if (SuiServices.get().mutate(childOriginal, childTarget, tags) == MutationResult.REQUIRES_REBUILD) {
-				return new ReplaceTransformation(index, nodeId);
-			} else {
-				return null;
+				resultTransformations.add(new ReplaceTransformation(index, nodeId));
 			}
 		});
+		return resultTransformations;
 	}
 
 

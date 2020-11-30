@@ -6,8 +6,6 @@ open module SimpleApplication {
 	requires transitive com.fasterxml.jackson.core;
 	requires transitive com.fasterxml.jackson.databind;
 	requires transitive com.fasterxml.jackson.annotation;
-	requires exp4j;
-	requires sysout.over.slf4j;
 	requires static lombok;
 	requires java.desktop;
 
@@ -26,6 +24,7 @@ open module SimpleApplication {
 	exports de.ruegnerlukas.simpleapplication.core.application.jfx;
 	exports de.ruegnerlukas.simpleapplication.core.plugins;
 
+	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets;
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements;
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.jfxelements;
 	exports de.ruegnerlukas.simpleapplication.core.simpleui.assets.elements.suimenu;
